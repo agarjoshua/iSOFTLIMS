@@ -1,0 +1,105 @@
+{% extends 'admin_template/base_template.html' %}
+
+{% block page_title %}
+    Edit Department  {{ department }}
+{% endblock page_title %}
+
+{% block main_content %}
+
+{% load static %}
+
+<section class="content">
+        <div class="container-fluid">
+
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- general form elements -->
+                    <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Edit Staff</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <!-- form start -->
+                    <form role="form" method="POST" action="{% url 'edit_department_save' %}">
+                        {% csrf_token %}
+
+                        
+                                {% comment %} Display Messages {% endcomment %}
+                                {% if messages %}
+                                <div class="form-group">
+                                <div class="col-12">
+                                    {% for message in messages %}
+                                    {% if message.tags == "error" %}
+                                        <div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                                        {{ message }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        </div>
+                                    {% elif message.tags == "success" %}
+                                        <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                                        {{ message }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        </div>
+                                    {% endif %}
+                                    {% endfor %}
+                                </div>
+                                </div>
+                                {% endif %}
+                            
+
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label>Institution Code</label>
+                                <input type="hidden" name="department_id" value="{{ department.id }}" />
+                                <input type="text" class="form-control" name="institution_code" placeholder="Institution Code" id="institution_code" value="{{ department.institution_code}}">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Name</label>
+                                <input type="text" class="form-control" name="name" placeholder="Name" id="name" value="{{ department.name }}">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Description</label>
+                                <input type="text" class="form-control" name="desc" placeholder="Password" id="desc" value="{{ department.desc }}">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Department Head</label>
+                                <select name="head">
+                                    {% for hod in hod %}
+                                    <option value="" disabled selected hidden>{{ hod.admin }}</option>
+                                    <option value="{{ hod.admin.id }}">{{ hod.admin }}</option>
+                                    {% endfor %}
+                                  </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Deputy Head</label>
+                                <select name="deputy">
+                                    {% for staff in staff %}
+                                    <option value="" disabled selected hidden>{{ staff.admin }}</option>
+                                    <option value="{{ staff.admin.id }}">{{ staff.admin }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <!-- /.card-body -->
+
+                        <div class="card-footer">
+                        <button type="submit" class="btn btn-primary">Update Staff</button>
+                        </div>
+                    </form>
+                    </div>
+                    <!-- /.card -->
+
+                </div>
+            </div>
+
+        </div><!-- /.container-fluid -->
+      </section>
+
+  {% endblock main_content %}

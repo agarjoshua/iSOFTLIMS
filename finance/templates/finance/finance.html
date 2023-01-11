@@ -1,0 +1,145 @@
+{% extends 'admin_template/base_template.html' %}
+
+{% block page_title %}
+Pay Fees
+{% endblock page_title %}
+
+{% block main_content %}
+
+
+{% load static %}
+
+<section class="content">
+    <div class="container-fluid">
+
+        <div class="row">
+            <div class="col-md-12">
+                <!-- general form elements -->
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Pay Fees</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <!-- form start -->
+                    <form role="form" method="POST" action="{% url 'finance:pay' %}">
+                        {% csrf_token %}
+
+                        
+                        {% comment %} Display Messages {% endcomment %}
+                        {% if messages %}
+                        <div class="form-group">
+                            <div class="col-12">
+                                {% for message in messages %}
+                                {% if message.tags == "error" %}
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert"
+                                    style="margin-top: 10px;">
+                                    {{ message }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                {% elif message.tags == "success" %}
+                                <div class="alert alert-success alert-dismissible fade show" role="alert"
+                                    style="margin-top: 10px;">
+                                    {{ message }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endif %}
+
+
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label>Student ID</label>
+                                <input type="text" class="form-control" name="id_student" placeholder="Enter ID"
+                                    id="id_student">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Type of payment</label>
+                                <select name="type_of_payment">
+                                    <option value="payment">fee payment</option>
+                                    <option value="other">other</option>
+                                  </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Form of payment</label>
+                                <select name="form_of_payment">
+                                    <option value="mobile_money">Mobile Money</option>
+                                    <option value="bank">Bank</option>
+                                    <option value="other">Other</option>
+                                  </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Enter Ammount</label>
+                                <input type="number" class="form-control" name="ammount" placeholder="ammount">
+                            </div>
+                        </div>
+                        <!-- /.card-body -->
+
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-secondary">PAY</button>
+                        </div>
+                    </form>
+                </div>
+                <!-- /.card -->
+
+            </div>
+        </div>
+
+    </div><!-- /.container-fluid -->
+</section>
+
+{% endblock main_content %}
+{% block custom_js %}
+
+{% comment %} Checking if student already exists or not usin Ajax {% endcomment %}
+
+<script>
+
+    $(document).ready(function () {
+        // keyup event will be triggered when user leaves keyboard
+        console.log('this is a test')
+        $("#id_student").keyup(function () {
+            var username = $(this).val();
+            console.log(username)
+            if (username != "") {
+                $.ajax({
+                    url: '{% url 'finance:check_student_exist' %}',
+                    type: 'POST',
+                    data: { username: username }
+                })
+                    .done(function (response) {
+                        //console.log(response);
+
+                        if (response == "False") {
+                            $(".student_error").remove();
+                            $("<span class='student_error' style='color: red; padding: 5px; font-weight: bold;'> Student Not Available. </span>").insertAfter("#id_student")
+                        }
+                        else {
+                            $(".student_error").remove();
+                            $("<span class='student_error' style='color: green; padding: 5px; font-weight: bold;'> The student ID is available. </span>").insertAfter("#id_student")
+                        }
+                    })
+
+                    .fail(function () {
+                        console.log("Failed");
+                    })
+            }
+            else {
+                $(".student_error").remove();
+            }
+
+        })
+    })
+
+</script>
+
+{% endblock custom_js %}
