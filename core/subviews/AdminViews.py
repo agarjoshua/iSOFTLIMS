@@ -679,7 +679,7 @@ def edit_hod_save(request):
         if hod_id == None:
             return redirect("/hod_id")
 
-        form = EditHodForm(request.POST, request.FILES)
+        form = EditHodForm(request.POST)
         if form.is_valid():
             first_name = form.cleaned_data["first_name"]
             last_name = form.cleaned_data["last_name"]
@@ -782,6 +782,7 @@ def edit_department_save(request):
         name = request.POST.get("name")
         desc = request.POST.get("desc")
         head = request.POST.get("head")
+        print(head)
         deputy = request.POST.get("deputy")
 
         dep_head = HOD.objects.get(admin=head)
