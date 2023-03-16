@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import Form
-from core.models import Courses, SessionYearModel
+from academics.models import Courses, SessionYearModel
 
 
 class DateInput(forms.DateInput):

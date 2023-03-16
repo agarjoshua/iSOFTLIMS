@@ -21,17 +21,19 @@ from core.models import (
     Students,
     Teacher,
     Institution,
-    Courses,
     # Subjects,
-    SessionYearModel,
     # FeedBackStudent,
     # FeedBackStaffs,
     # LeaveReportStudent,
-    # LeaveReportStaff,
+    # LeaveReportStaff,S
     # Attendance,
     # AttendanceReport,
 )
+from academics.models import (
+    SessionYearModel,
+    Courses,
 
+)
 # from core.forms import AddStudentForm, EditStudentForm
 
 
@@ -344,6 +346,7 @@ def add_student_save(request):
                     last_name=last_name,
                     user_type=3,
                 )
+                print(user)
                 user.students.address = address
 
                 course_obj = Courses.objects.get(id=course_id)
@@ -361,6 +364,7 @@ def add_student_save(request):
                 user.save()
                 messages.success(request, "Student Added Successfully!")
                 return redirect("add_student")
+
             except Exception as e:
                 messages.error(request, "Failed to Add Student!")
                 print(e)
@@ -735,7 +739,7 @@ def manage_departments(request):
 def add_department(request):
     staff = Staff.objects.all()
     hod = HOD.objects.all()
-    context = {"staff":staff, "hod": hod}
+    context = {"staff": staff, "hod": hod}
     return render(request, "admin_template/add_department_template.html", context)
 
 
@@ -767,11 +771,17 @@ def add_department_save(request):
             print(e)
             return redirect("add_department")
 
+
 def edit_department(request, department_id):
     department = Department.objects.get(id=department_id)
     staff = Staff.objects.all()
     hod = HOD.objects.all()
-    context = {"department": department, "department_id": department_id, "staff":staff,"hod":hod}
+    context = {
+        "department": department,
+        "department_id": department_id,
+        "staff": staff,
+        "hod": hod,
+    }
     return render(request, "admin_template/edit_department_template.html", context)
 
 
@@ -782,31 +792,30 @@ def edit_department_save(request):
         name = request.POST.get("name")
         desc = request.POST.get("desc")
         head = request.POST.get("head")
-        print(head)
         deputy = request.POST.get("deputy")
-
-        dep_head = HOD.objects.get(admin=head)
-        print("---------------------------------------------------")
-        print(head)
-        print("---------------------------------------------------")
+        ######TODO: HOD MATCHING QUERY DOES NOT EXIST IS FORM IS SENT OR SAVED HIVYO TU, I hope I remember what this means lol
+        # dep_head = HOD.objects.get(admin=head)
         dep_deputy = Staff.objects.get(admin=deputy)
-
         department_id = request.POST.get("department_id")
+        dep_head = HOD.objects.get(admin=head)
+
+        print(dep_head)
+        # dep_deputy = Staff.objects.get(admin=deputy)
 
         try:
             department = Department.objects.get(id=department_id)
-            department.name=name,
-            department.desc=desc,
-            department.head=dep_head,
-            department.deputy=dep_deputy,
-            
+            department.name = name
+            department.desc = desc
+            department.head = dep_head
+            department.deputy = dep_deputy
+
             department.save()
             messages.success(request, "Department upated Successfully!")
-            return redirect("edit_department")
+            return redirect("/edit_department/" + department_id)
         except Exception as e:
-            messages.error(request, "Failed to upated Department!")
+            messages.error(request, "Failed to upate Department!")
             print(e)
-            return redirect("edit_department")
+            return redirect("/edit_department/" + department_id)
 
 
 def delete_department(request, department_id):
