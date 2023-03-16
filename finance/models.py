@@ -1,6 +1,6 @@
 # Create your models here.
 from django.db import models
-from core.models import Students,Guardian, Admin, SessionYearModel
+from core.models import Students,Guardian, Admin, Session
 
 # Create your models here.
 class Transaction(models.Model):
@@ -31,7 +31,7 @@ class Fee(models.Model):
     # Structure, Schedule(period for charging),  
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=250)
-    session = models.ForeignKey(SessionYearModel, on_delete=models.CASCADE ,null=True )
+    session = models.ForeignKey(Session, on_delete=models.CASCADE ,null=True )
     ammount = models.IntegerField()
     is_recurrent = models.BooleanField(default=False)
     billed =  models.BooleanField(default=False)

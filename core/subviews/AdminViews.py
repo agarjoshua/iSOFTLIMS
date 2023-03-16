@@ -1,14 +1,19 @@
+import ast
+import uuid
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.contrib import messages
 from django.core.files.storage import FileSystemStorage  # To upload Profile Picture
+from django.core import exceptions
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.core import serializers
 import json
+from academics.forms.classforms import ClassForm
 from core.forms.departmentforms import AddDepartmentForm
 from core.forms.guardianforms import AddGuardianForm, EditGuardianForm
 from core.forms.hodforms import AddHodForm, EditHodForm
+from core.forms.institutionform import InstitutionForm
 from core.forms.studentforms import EditStudentForm, AddStudentForm
 
 from core.models import (
@@ -30,10 +35,10 @@ from core.models import (
     # AttendanceReport,
 )
 from academics.models import (
-    SessionYearModel,
-    Courses,
-
+    Class,
+    Session,
 )
+
 # from core.forms import AddStudentForm, EditStudentForm
 
 
@@ -41,28 +46,27 @@ def admin_home(request):
     all_teachers_cvount = Teacher.objects.all().count()
     all_student_count = Students.objects.all().count()
     # subject_count = Subjects.objects.all().count()
-    course_count = Courses.objects.all().count()
     staff_count = Staff.objects.all().count()
 
     # Total Subjects and students in Each Course
-    # course_all = Courses.objects.all()
-    # course_name_list = []
+    # class_all = Class.objects.all()
+    # class_name_list = []
     # subject_count_list = []
-    # student_count_list_in_course = []
+    # student_count_list_in_class = []
 
-    # for course in course_all:
-    #     subjects = Subjects.objects.filter(course_id=course.id).count()
-    #     students = Students.objects.filter(course_id=course.id).count()
-    #     course_name_list.append(course.course_name)
+    # for class in class_all:
+    #     subjects = Subjects.objects.filter(class_id=class.id).count()
+    #     students = Students.objects.filter(class_id=class.id).count()
+    #     class_name_list.append(class.class_name)
     #     subject_count_list.append(subjects)
-    #     student_count_list_in_course.append(students)
+    #     student_count_list_in_class.append(students)
 
     # subject_all = Subjects.objects.all()
     # subject_list = []
     # student_count_list_in_subject = []
     # for subject in subject_all:
-    #     course = Courses.objects.get(id=subject.course_id.id)
-    #     student_count = Students.objects.filter(course_id=course.id).count()
+    #     class = Class.objects.get(id=subject.class_id.id)
+    #     student_count = Students.objects.filter(class_id=class.id).count()
     #     subject_list.append(subject.subject_name)
     #     student_count_list_in_subject.append(student_count)
 
@@ -114,11 +118,10 @@ def admin_home(request):
         "student_attendance_leave_list": student_attendance_leave_list,
         "student_name_list": student_name_list,
         # "subject_count": subject_count,
-        "course_count": course_count,
         "staff_count": staff_count,
-        # "course_name_list": course_name_list,
+        # "class_name_list": class_name_list,
         # "subject_count_list": subject_count_list,
-        # "student_count_list_in_course": student_count_list_in_course,
+        # "student_count_list_in_class": student_count_list_in_class,
         # "subject_list": subject_list,
         # "student_count_list_in_subject": student_count_list_in_subject,
     }
@@ -157,9 +160,10 @@ def admin_profile_update(request):
 
 def school_profile(request):
     user = CustomUser.objects.get(id=request.user.id)
-    school = Admin.objects.get(admin=request.user.id).institution
+    school_id = Admin.objects.get(admin=request.user.id).institution
+    form = InstitutionForm()
 
-    context = {"school": school, "user": user}
+    context = {"user": user, "form": form}
     return render(request, "admin_template/school_profile.html", context)
 
 
@@ -168,32 +172,71 @@ def admin_school_update(request):
         messages.error(request, "Invalid Method!")
         return redirect("school_profile")
     else:
-        name = request.POST.get("name")
-        desc = request.POST.get("desc")
-        # logo = request.POST.get('password')
-        # print(name, desc)
+        form = InstitutionForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data["name"]
+            country = form.cleaned_data["country"]
+            institution_order = form.cleaned_data["institution_order"]
+            #:TODO: build the tool needed for this data processing
+            institution_location_hierarchy = form.cleaned_data[
+                "institution_location_hierarchy"
+            ]
+            institution_cluster = form.cleaned_data["institution_cluster"]
+            institution_category = form.cleaned_data["institution_category"]
+            institution_gender_category = form.cleaned_data[
+                "institution_gender_category"
+            ]
+            institution_accomodation_type = form.cleaned_data[
+                "institution_accomodation_type"
+            ]
+            institution_status = form.cleaned_data["institution_status"]
+            institution_type = form.cleaned_data["institution_type"]
+            institution_in_ASAL_area = form.cleaned_data["institution_in_ASAL_area"]
+            institution_residence = form.cleaned_data["institution_residence"]
+            contact_details = form.contact_details()
+            institution_statutory_numbers = form.other_statutory_details()
+            currency = form.cleaned_data["currency"]
+            bank_details = form.financial_details()
 
-        try:
-            institution = Institution(
-                name=name,
-                desc=desc,
-            )
-            institution.save()
-            print(institution.name)
-            # institution.institution = institution
-            # institution.name = name
-            # institution.desc = desc
-            admin = Admin.objects.get(admin=request.user)
-            admin.institution = institution
-            admin.save()
-            print(admin)
+            try:
+                specific_institution = Admin.objects.get(admin=request.user).institution
+                specific_institution.specific_institution_id = Admin.objects.get(
+                    admin=request.user
+                ).institution
+                specific_institution.name = name
+                specific_institution.country = country
+                specific_institution.institution_order = institution_order
+                specific_institution.institution_location_hierarchy = (
+                    institution_location_hierarchy
+                )
+                specific_institution.institution_cluster = institution_cluster
+                specific_institution.institution_category = institution_category
+                specific_institution.institution_gender_category = (
+                    institution_gender_category
+                )
+                specific_institution.institution_in_ASAL_area = institution_in_ASAL_area
+                specific_institution.institution_residence = institution_residence
+                specific_institution.contact_details = contact_details
+                specific_institution.institution_statutory_numbers = (
+                    institution_statutory_numbers
+                )
+                specific_institution.currency = currency
+                specific_institution.bank_details = bank_details
+                specific_institution.save()
+            except Exception as e:
+                print(e)
+                return e
+        else:
+            school_id = Admin.objects.get(admin=request.user.id).institution.id
+            school = Institution.objects.get(id=school_id)
+            form = InstitutionForm(initial=school)
 
-            messages.success(request, "Profile Updated Successfully")
-            return redirect("school_profile")
-        except Exception as e:
-            # messages.error(request, "Failed to Update Profile")
-            print(e)
-            return redirect("school_profile")
+    messages.success(request, "Profile Updated Successfully")
+    return redirect("school_profile")
+    # except Exception as e:
+    #     # messages.error(request, "Failed to Update Profile")
+    #     print(e)
+    #     return redirect("school_profile")
 
 
 def add_staff(request):
@@ -323,7 +366,7 @@ def add_student_save(request):
             password = form.cleaned_data["password"]
             address = form.cleaned_data["address"]
             session_year_id = form.cleaned_data["session_year_id"]
-            course_id = form.cleaned_data["course_id"]
+            class_id = form.cleaned_data["class_id"]
             gender = form.cleaned_data["gender"]
 
             # Getting Profile Pic first
@@ -349,10 +392,9 @@ def add_student_save(request):
                 print(user)
                 user.students.address = address
 
-                course_obj = Courses.objects.get(id=course_id)
-                user.students.course_id = course_obj
+                user.students.class_id = class_obj
 
-                session_year_obj = SessionYearModel.objects.get(id=session_year_id)
+                session_year_obj = Session.objects.get(id=session_year_id)
                 user.students.session_year_id = session_year_obj
 
                 user.students.gender = gender
@@ -391,7 +433,7 @@ def edit_student(request, student_id):
     form.fields["first_name"].initial = student.admin.first_name
     form.fields["last_name"].initial = student.admin.last_name
     form.fields["address"].initial = student.address
-    form.fields["course_id"].initial = student.course_id.id
+    form.fields["class_id"].initial = student.class_id.id
     form.fields["gender"].initial = student.gender
     form.fields["session_year_id"].initial = student.session_year_id.id
 
@@ -414,7 +456,7 @@ def edit_student_save(request):
             first_name = form.cleaned_data["first_name"]
             last_name = form.cleaned_data["last_name"]
             address = form.cleaned_data["address"]
-            course_id = form.cleaned_data["course_id"]
+            class_id = form.cleaned_data["class_id"]
             gender = form.cleaned_data["gender"]
             session_year_id = form.cleaned_data["session_year_id"]
 
@@ -442,10 +484,7 @@ def edit_student_save(request):
                 student_model = Students.objects.get(admin=student_id)
                 student_model.address = address
 
-                course = Courses.objects.get(id=course_id)
-                student_model.course_id = course
-
-                session_year_obj = SessionYearModel.objects.get(id=session_year_id)
+                session_year_obj = Session.objects.get(id=session_year_id)
                 student_model.session_year_id = session_year_obj
 
                 student_model.gender = gender
@@ -793,23 +832,21 @@ def edit_department_save(request):
         desc = request.POST.get("desc")
         head = request.POST.get("head")
         deputy = request.POST.get("deputy")
-        ######TODO: HOD MATCHING QUERY DOES NOT EXIST IS FORM IS SENT OR SAVED HIVYO TU, I hope I remember what this means lol
-        # dep_head = HOD.objects.get(admin=head)
-        dep_deputy = Staff.objects.get(admin=deputy)
         department_id = request.POST.get("department_id")
-        dep_head = HOD.objects.get(admin=head)
-
-        print(dep_head)
-        # dep_deputy = Staff.objects.get(admin=deputy)
 
         try:
             department = Department.objects.get(id=department_id)
-            department.name = name
-            department.desc = desc
-            department.head = dep_head
-            department.deputy = dep_deputy
+            if name:
+                department.name = name
+            if desc:
+                department.desc = desc
+            if head:
+                dep_head = HOD.objects.get(admin=head)
+                department.head = dep_head
+            if deputy:
+                dep_deputy = Staff.objects.get(admin=deputy)
+                department.deputy = dep_deputy
 
-            department.save()
             messages.success(request, "Department upated Successfully!")
             return redirect("/edit_department/" + department_id)
         except Exception as e:
@@ -822,78 +859,14 @@ def delete_department(request, department_id):
     pass
 
 
-#########################################MANAGE COURSES#######################################################################
-def add_course(request):
-    return render(request, "admin_template/add_course_template.html")
 
-
-def add_course_save(request):
-    if request.method != "POST":
-        messages.error(request, "Invalid Method!")
-        return redirect("add_course")
-    else:
-        course = request.POST.get("course")
-        cost = request.POST.get("fee")
-        try:
-            course_model = Courses(course_name=course, cost=cost)
-            course_model.save()
-            messages.success(request, "Course Added Successfully!")
-            return redirect("add_course")
-        except:
-            messages.error(request, "Failed to Add Course!")
-            return redirect("add_course")
-
-
-def manage_course(request):
-    courses = Courses.objects.all()
-    context = {"courses": courses}
-    return render(request, "admin_template/manage_course_template.html", context)
-
-
-def edit_course(request, course_id):
-    course = Courses.objects.get(id=course_id)
-    context = {"course": course, "id": course_id}
-    return render(request, "admin_template/edit_course_template.html", context)
-
-
-def edit_course_save(request):
-    if request.method != "POST":
-        HttpResponse("Invalid Method")
-    else:
-        course_id = request.POST.get("course_id")
-        course_name = request.POST.get("course")
-        cost = request.POST.get("course")
-
-        try:
-            course = Courses.objects.get(id=course_id)
-            course.course_name = course_name
-            course.cost = cost
-            course.save()
-
-            messages.success(request, "Course Updated Successfully.")
-            return redirect("/edit_course/" + course_id)
-
-        except:
-            messages.error(request, "Failed to Update Course.")
-            return redirect("/edit_course/" + course_id)
-
-
-def delete_course(request, course_id):
-    course = Courses.objects.get(id=course_id)
-    try:
-        course.delete()
-        messages.success(request, "Course Deleted Successfully.")
-        return redirect("manage_course")
-    except:
-        messages.error(request, "Failed to Delete Course.")
-        return redirect("manage_course")
 
 
 #########################################MANAGE SESSIONS#######################################################################
 
 
 def manage_session(request):
-    session_years = SessionYearModel.objects.all()
+    session_years = Session.objects.all()
     context = {"session_years": session_years}
     return render(request, "admin_template/manage_session_template.html", context)
 
@@ -905,25 +878,32 @@ def add_session(request):
 def add_session_save(request):
     if request.method != "POST":
         messages.error(request, "Invalid Method")
-        return redirect("add_course")
+        return redirect("add_session")
     else:
-        session_start_year = request.POST.get("session_start_year")
-        session_end_year = request.POST.get("session_end_year")
+        session_start_date = request.POST.get("session_start_date")
+        session_end_date = request.POST.get("session_end_date")
 
         try:
-            sessionyear = SessionYearModel(
-                session_start_year=session_start_year, session_end_year=session_end_year
+            sessionyear = Session(
+                session_start_date=session_start_date, 
+                session_end_date=session_end_date
             )
             sessionyear.save()
             messages.success(request, "Session Year added Successfully!")
             return redirect("add_session")
-        except:
-            messages.error(request, "Failed to Add Session Year")
+        except exceptions.ValidationError as e:
+            messages.error(
+                request,
+                f"Failed to Add Session Year Due to incomplete or incorrect entry of fields (i.e {e})",
+            )
+            return redirect("add_session")
+        except Exception as e:
+            messages.error(request, f"Failed to Add Session Year (i.e {e})")
             return redirect("add_session")
 
 
 def edit_session(request, session_id):
-    session_year = SessionYearModel.objects.get(id=session_id)
+    session_year = Session.objects.get(id=session_id)
     context = {"session_year": session_year}
     return render(request, "admin_template/edit_session_template.html", context)
 
@@ -938,7 +918,7 @@ def edit_session_save(request):
         session_end_year = request.POST.get("session_end_year")
 
         try:
-            session_year = SessionYearModel.objects.get(id=session_id)
+            session_year = Session.objects.get(id=session_id)
             session_year.session_start_year = session_start_year
             session_year.session_end_year = session_end_year
             session_year.save()
@@ -951,7 +931,7 @@ def edit_session_save(request):
 
 
 def delete_session(request, session_id):
-    session = SessionYearModel.objects.get(id=session_id)
+    session = Session.objects.get(id=session_id)
     try:
         session.delete()
         messages.success(request, "Session Deleted Successfully.")
@@ -980,3 +960,4 @@ def check_username_exist(request):
         return HttpResponse(True)
     else:
         return HttpResponse(False)
+

@@ -18,70 +18,23 @@ School Profile
                     <div class="card-header">
                         <h3 class="card-title">Update School Profile</h3>
                     </div>
-                    <!-- /.card-header -->
-                    <!-- form start -->
-                    <form role="form" method="POST" action="{% url 'admin_school_update' %}">
-                        {% csrf_token %}
-
-
-                        {% comment %} Display Messages {% endcomment %}
-                        {% if messages %}
-                        <div class="form-group">
-                            <div class="col-12">
-                                {% for message in messages %}
-                                {% if message.tags == "error" %}
-                                <div class="alert alert-danger alert-dismissible fade show" role="alert"
-                                    style="margin-top: 10px;">
-                                    {{ message }}
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                {% elif message.tags == "success" %}
-                                <div class="alert alert-success alert-dismissible fade show" role="alert"
-                                    style="margin-top: 10px;">
-                                    {{ message }}
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                {% endif %}
-                                {% endfor %}
+                    <div class="row">
+                        <div class="col-md-12">
+                            <!-- general form elements -->
+                            <div class="card card-primary">
+                            <div class="card-header">
+                                <h3 class="card-title">Add School</h3>
                             </div>
+                            <!-- /.card-header -->
+                            <!-- form start -->
+                            {% url 'admin_school_update' as action_path %}
+                            {% include 'admin_template/form_template.html' with messages=messages form=form action_path=action_path button_text="Update School Details" %}
+        
+                            </div>
+                            <!-- /.card -->
+        
                         </div>
-                        {% endif %}
-
-
-                        <div class="card-body">
-                            <div class="form-group">
-                                <label>Code </label>
-                                <input type="text" class="form-control" name="uid" disabled="disabled"
-                                    value="{{ school.id }}">
-                            </div>
-
-                            <div class="form-group">
-                                <label>Name </label>
-                                <input type="text" class="form-control" name="name" value="{{ school.name }}">
-                            </div>
-
-                            <div class="form-group">
-                                <label>Organization Type </label>
-                                <input type="text" class="form-control" name="desc"
-                                    value="{{ school.institution_type }}">
-                            </div>
-
-                            <div class="form-group">
-                                <label>Description </label>
-                                <input type="text" class="form-control" name="desc" value="{{ school.desc }}">
-                            </div>
-
-                        </div>
-                        <!-- /.card-body -->
-
-                        <div class="card-footer">
-                            <button type="submit" class="btn btn-primary">Update Profile</button>
-                        </div>
-                    </form>
+                    </div>
                 </div>
                 <!-- /.card -->
 

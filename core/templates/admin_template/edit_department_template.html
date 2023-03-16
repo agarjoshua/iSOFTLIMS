@@ -1,7 +1,7 @@
 {% extends 'admin_template/base_template.html' %}
 
 {% block page_title %}
-    Edit Department  {{ department }}
+    Edit Department :: {{ department.name }}
 {% endblock page_title %}
 
 {% block main_content %}
@@ -64,33 +64,36 @@
 
                             <div class="form-group">
                                 <label>Description</label>
-                                <input type="text" class="form-control" name="desc" placeholder="Password" id="desc" value="{{ department.desc }}">
+                                <input type="text" class="form-control" name="desc" placeholder="Description" id="description" value="{{ department.description }}">
                             </div>
 
                             <div class="form-group">
                                 <label>Department Head</label>
-                                <select name="head">
+                                <select name="head" class="form-control">
+                                    <option value="{{ current_hod.admin.id }}" selected>{{ department.head }} - (Current H.O.D)</option>
                                     {% for hod in hod %}
-                                    <option value="{{ hod.admin.id }}">{{ hod.admin.first_name }}</option>
+                                    {% if hod.admin.id != current_hod.admin.id %}
+                                    <option value="{{ hod.admin.id }}">{{ hod.admin.first_name }} </option>
+                                    {% endif %}
                                     {% endfor %}
                                 </select>
                             </div>
 
-                            <div class="form-group">
-                                <label>Deputy Head</label>
+                            <!-- <div class="form-group">
+                               <label>Deputy Head</label>
                                 <select name="deputy">
                                     {% for staff in staff %}
                                     <option value="{{ staff.admin.id }}">{{ staff.admin.first_name }}</option>
                                     {% endfor %}
                                 </select>
-                            </div>
+                            </div> -->
 
                             
                         </div>
                         <!-- /.card-body -->
 
                         <div class="card-footer">
-                        <button type="submit" class="btn btn-primary">Update Staff</button>
+                        <button type="submit" class="btn btn-primary">Update Department</button>
                         </div>
                     </form>
                     </div>

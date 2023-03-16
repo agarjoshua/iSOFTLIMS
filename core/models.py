@@ -4,22 +4,26 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 import uuid
 from django_countries.fields import CountryField
+
 # from django_countries.fields import *
+from django.forms import MultipleChoiceField
 
 
+from academics.models import Grade, Session
 
-from academics.models import Courses, ExtraCurricularActivities, Grade, SessionYearModel
 
 """
 
 
 """
+
+
 # Create your models here.
 class Institution(models.Model):
     id = models.AutoField(primary_key=True)
     institution_code = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     name = models.CharField(max_length=30)
-    country = CountryField(blank_label="(select country)")
+    country = CountryField(blank_label="(select country)", null=True)
     INSTITUTION_ORDER = [
         (1, "University"),
         (2, "College"),
@@ -29,23 +33,12 @@ class Institution(models.Model):
         (4, "Pre-Primary"),
         (5, "Kindergarten"),
     ]
-    institution_order = MultipleChoiceField(
-        max_length=100, choices=INSTITUTION_ORDER, default="5"
-    )
+    institution_order = models.TextField()
     registration_date = models.DateTimeField(auto_now=True, editable=False)
     examination_centre_number = models.CharField(max_length=12, null=True)
     # TODO: Implement a counties list programme in python (january 25th projects)
     # WRITE ABOUT THE ENTIRE THINKING PROCESS
-    # sample below
-    #     {
-    #     "county": "Kiambu",
-    #     "sub_county": "Kiambu Town",
-    #     "district": "Kiambu West",
-    #     "zone": "Zone 1",
-    #     "constituency": "Kiambu Constituency",
-    #     "ward": "Ward 1"
-    # }
-    institution_location_hierarchy = models.JSONField()
+    institution_location_hierarchy = models.JSONField(null=True)
     CLUSTER = [
         (1, "International"),
         (2, "National"),
@@ -53,9 +46,7 @@ class Institution(models.Model):
         (4, "Sub County"),
         (5, "None"),
     ]
-    institution_cluster = models.MultipleChoiceField(
-        max_length=100, choices=CLUSTER, default="5"
-    )
+    institution_cluster = models.TextField()
     CATEGORY = [
         (1, "Ordinary"),
         (2, "Integrated"),
@@ -64,82 +55,37 @@ class Institution(models.Model):
         (5, "Online"),
         (6, "None"),
     ]
-    institution_category = models.MultipleChoiceField(
-        max_length=100, choices=CATEGORY, default="6"
-    )
+    institution_category = models.TextField()
     GENDER = [
         (1, "Mixed"),
         (2, "Boys Only"),
         (3, "Girls Only"),
     ]
-    institution_gender_category = models.MultipleChoiceField(
-        max_length=100, choices=GENDER, default="1"
-    )
+    institution_gender_category = models.TextField()
     ACCOMODATION = [
         (1, "All"),
         (2, "Day Only"),
         (3, "Boarders Only"),
     ]
-    institution_accomodation_type = models.MultipleChoiceField(
-        max_length=100, choices=ACCOMODATION, default="1"
-    )
+    institution_accomodation_type = models.TextField()
     STATUS = [(1, "Public"), (2, "Private")]
     institution_status = models.CharField(max_length=100, choices=STATUS, default="1")
     TYPE = [(1, "Formal"), (2, "Informal")]
-    institution_type = models.CharField(max_length=100, choices=TYPE, default="1")
-    institution_in_ASAL_area = models.BooleanField(default=False)
-    RESIDENCE = [(1, "Rural"), (2, "Urban")]
-    institution_residence = models.MultipleChoiceField(
-        max_length=100, choices=RESIDENCE, default="1"
+    institution_type = models.CharField(
+        max_length=100, choices=TYPE, default="1", null=False
     )
-    # institution = Institution.objects.create(name="My Institution")
-    # sample data
-    #     institution.contact_details = {
-    #     "telephone1": "+1234567890",
-    #     "telephone2": "+0987654321",
-    #     "telephone3": "",
-    #     "telephone4": "",
-    #     "fax_number": "+0123456789",
-    #     "email_address": "institution@example.com",
-    #     "address": {
-    #         "postal": "123 Example St, City, Country",
-    #         "physical_address1": "456 Example Ave, City, Country",
-    #         "physical_address2": "",
-    #         "physical_address3": "",
-    #     }
-    contact_details = models.JSONField()
-    ##sample data
-    # Institution_class_level_details = {
-    # Class Student Capacity*
-    # Streams Per Class*
-    # Minimum Examinable Subjects*
-    # Maximum Examinable Subjects*
-    # Lecturers/Teachers Maximum Subjects*
-    # Student Per Lecturer/Teacher Ratio*
-    # Final Exam Marks Based On*
-    # Curriculum/Faculty Description*
-    # Class/Form/Level Progression (Mean Mark to advance to next Class/Form (Mean %age Mark)
-    # }
-    class_level_defaults = models.JSONField()
-    # Sample data
-    # PIN/Tax Number
-    # National Health Insurance Number
-    # Social Security Number
-    # Industrial Training Number
-    institution_statutory_numbers = models.JSONField()
+    institution_in_ASAL_area = models.BooleanField(null=False, default=False)
+    RESIDENCE = [(1, "Rural"), (2, "Urban")]
+    institution_residence = models.TextField()
+    contact_details = models.JSONField(null=True)
+    institution_statutory_numbers = models.JSONField(null=True)
     # Use Base currency or Other Currency?
-    currency = models.CharField()
-    # Sample data
-    # Bank 1
-    # Bank 2
-    # Bank 3
-    # Bank 4
-    # Mobile Money
-    # Pay Bill Number
-    # TILL Number
-    bank_details = models.JSONField()
+    currency = models.CharField(max_length=20, null=True)
+    bank_details = models.JSONField(null=True)
     # TODO: Nationalities & Currencies (List World Nationalities & their Currencies & provide capture of exchange rate against Base currency)
     logo = models.FileField(null=True)
+    objects = models.Manager()
+
 
 
 class CustomUser(AbstractUser):
@@ -186,16 +132,15 @@ class HOD(models.Model):
 class Teacher(models.Model):
     id = models.AutoField(primary_key=True)
     admin = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
-    phonenumber = models.CharField(max_length=12)
+    phonenumber = models.CharField(max_length=12, null=True)
+    secondary_phone_number = models.CharField(max_length=12, null=True)
     institution = models.ForeignKey(Institution, on_delete=models.DO_NOTHING, null=True)
-
     ## implement the student registration number field properly
-    # Statutory Numbers
-    # o PIN/Tax Number
-    # o National Health Insurance Number
-    # o Social Security Number
-    # o Industrial Training Number
-    statutory_numbers = models.JSONField()
+    pin_tax_number = models.CharField(max_length=12, null=True)
+    nhif = models.CharField(max_length=12, null=True)
+    social_security_number = models.CharField(max_length=12, null=True)
+    industrial_training_number = models.CharField(max_length=12, null=True)
+    statutory_numbers = models.JSONField(null=True)
 
     ## implement the student registration number field properly
     # o Bank 1
@@ -205,7 +150,10 @@ class Teacher(models.Model):
     # o Mobile Money
     #  Pay Bill Number
     #  TILL Number
-    bank_details = models.JSONField()
+
+    bank_account = models.CharField(max_length=12, null=True)
+    secondary_bank_account = models.CharField(max_length=12, null=True)
+    bank_details = models.JSONField(null=True)
     CONTRACT_TYPE = [
         (1, "Permanent"),
         (2, "Long Term"),
@@ -218,8 +166,8 @@ class Teacher(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     objects = models.Manager()
 
-    def __str__(self):
-        return self.user.name
+    # def __str__(self):
+    #     return self.admin
 
 
 class Staff(models.Model):
@@ -236,7 +184,7 @@ class Staff(models.Model):
         (5, "Probation"),
     ]
     contract_type = models.CharField(default=5, choices=CONTRACT_TYPE, max_length=50)
-    description = models.CharField(max_length=255)
+    description = models.CharField(max_length=255, null=True)
     contract_years = models.CharField(max_length=255, default="Parmanent")
     institution = models.ForeignKey(Institution, on_delete=models.DO_NOTHING, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -251,14 +199,14 @@ class Department(models.Model):
     id = models.AutoField(primary_key=True)
     institution_code = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     name = models.CharField(max_length=30)
-    description = models.CharField(max_length=255, default="institution")
+    description = models.CharField(max_length=255, default="institution", null=True)
     head = models.ForeignKey(HOD, on_delete=models.DO_NOTHING, null=True)
     deputy = models.ForeignKey(Staff, on_delete=models.DO_NOTHING, null=True)
 
 
 class Guardian(models.Model):
     id = models.AutoField(primary_key=True)
-    admin = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    admin = models.OneToOneField(CustomUser, on_delete=models.DO_NOTHING)
     phonenumber = models.CharField(max_length=12)
     bank = models.CharField(null=True, max_length=1000)
     gender = models.CharField(max_length=50)
@@ -271,15 +219,14 @@ class Students(models.Model):
     id = models.AutoField(primary_key=True)
     admin = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     # admission_number = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
-    name = models.JSONField()
-    registration_number = models.CharField(max_length=10, unique=True)
-    index_number = models.CharField(max_length=20, unique=True)
+    name = models.JSONField(null=True)
+    registration_number = models.CharField(max_length=10, unique=True, null=True)
+    index_number = models.CharField(max_length=20, unique=True, null=True)
     profile_pic = models.FileField(null=True)
     address = models.TextField(null=True)
     institution = models.ForeignKey(Institution, on_delete=models.DO_NOTHING, null=True)
-    course_id = models.ForeignKey(Courses, on_delete=models.DO_NOTHING, null=True)
     session_year_id = models.ForeignKey(
-        SessionYearModel, on_delete=models.DO_NOTHING, null=True
+        Session, on_delete=models.DO_NOTHING, null=True
     )
     grade = models.ForeignKey(Grade, on_delete=models.DO_NOTHING, null=True)
     require_entry_exams = models.BooleanField(default=True)
@@ -342,7 +289,7 @@ class Students(models.Model):
     special_needs = models.CharField(
         max_length=100, choices=STUDENT_SPECIAL_NEEDS_TYPE, default="1"
     )
-    relationships = models.JSONField()
+    relationships = models.JSONField(null=True)
     religion = models.CharField(max_length=20, null=True)
     require_transport = models.BooleanField(default=False)
 
@@ -360,14 +307,14 @@ class Students(models.Model):
     # - Physical Address (Current Residence/Work)
     # - Telephone
     # - Email
-    bio_data = models.JSONField()
+    bio_data = models.JSONField(null=True)
 
     # . Pupil/Student Contacts
     # - Telephone
     # - Email Address
     # - Postal Address
     # - Physical Address
-    student_contact = models.JSONField()
+    student_contact = models.JSONField(null=True)
 
     # - Name
     # - Relationship
@@ -377,11 +324,7 @@ class Students(models.Model):
     # - Postal Address
     # - Physical Address
     # - Passport Size Photo
-    sponsor_contact = models.JSONField()
-
-    extra_curricular = models.ManyToManyField(
-        ExtraCurricularActivities, on_delete=models.DO_NOTHING, null=True
-    )
+    sponsor_contact = models.JSONField(null=True)
     fee_balance = models.DecimalField(max_digits=20, decimal_places=2, default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -437,7 +380,7 @@ def create_user_profile(sender, instance, created, **kwargs):
             Students.objects.create(
                 admin=instance,
                 # course_id=Courses.objects.get(id=1),
-                # session_year_id=SessionYearModel.objects.get(id=1),
+                # session_year_id=Session.objects.get(id=1),
                 address="",
                 profile_pic="",
                 gender="",

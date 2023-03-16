@@ -60,8 +60,8 @@
                             <thead>
                                 <tr>
                                 <th>ID</th>
-                                <th>Session Start Year</th>
-                                <th>Session End Year</th>
+                                <th>Session Start Date</th>
+                                <th>Session End Date</th>
                                 <th>Action</th>
                                 </tr>
                             </thead>
@@ -69,8 +69,8 @@
                                 {% for session_year in session_years %}
                                 <tr>
                                 <td>{{ session_year.id }}</td>
-                                <td>{{ session_year.session_start_year }}</td>
-                                <td>{{ session_year.session_end_year }}</td>
+                                <td>{{ session_year.session_start_date }}</td>
+                                <td>{{ session_year.session_end_date }}</td>
                                 <td>
                                     <a href="{% url 'edit_session' session_year.id %}" class="btn btn-success">Edit</a> 
                                     <a href="{% url 'delete_session' session_year.id %}" class="btn btn-danger">Delete</a>

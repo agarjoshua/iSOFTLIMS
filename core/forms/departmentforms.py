@@ -11,7 +11,7 @@ class AddDepartmentForm(forms.Form):
         hods = []
         for hod in hod_obj:
             single_hod = hod.id, f"{str(hod.admin.first_name)} {str(hod.admin.last_name)}"
-            hods.append(single_hod)
+            hods.append(single_hod) 
 
     except Exception:
         hods = []
