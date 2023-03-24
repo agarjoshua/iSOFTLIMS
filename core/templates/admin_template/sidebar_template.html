@@ -268,24 +268,13 @@
                   <ul class="flex-column pl-2 nav">
                     
                     <li class="nav-item">
-                      {% url 'manage_course' as manage_course %}
+                      {% url 'manage_class' as manage_class %}
                       {% url 'edit_course' course_id=id as edit_course %}
-                      <a href="{{ manage_course }}"
-                        class="nav-link {% if request.path == manage_course %} active {% endif %} {% if request.path == edit_course %} active {% endif %}">
+                      <a href="{{ manage_class }}"
+                        class="nav-link {% if request.path == manage_class %} active {% endif %} {% if request.path == edit_course %} active {% endif %}">
                         <i class="nav-icon fas fa-chalkboard"></i>
                         <p>
                           Manage Class
-                        </p>
-                      </a>
-                    </li>      
-                    <li class="nav-item">
-                      {% url 'manage_subject' as manage_subject %}
-                      {% url 'edit_subject' subject_id=id as edit_subject %}
-                      <a href="{{ manage_subject }}"
-                        class="nav-link {% if request.path == manage_subject %} active {% endif %} {% if request.path == edit_subject %} active {% endif %}">
-                        <i class="nav-icon fas fa-book"></i>
-                        <p>
-                          Manage Subjects
                         </p>
                       </a>
                     </li>

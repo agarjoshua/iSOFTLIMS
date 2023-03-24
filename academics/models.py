@@ -2,6 +2,13 @@ from django.db import models
 # from ISOFTLIMS.core.models import Students
 
 # Create your models here.
+class Course(models.Model):
+    id = models.AutoField(primary_key=True)
+    course_name = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    objects = models.Manager()
+
 class Session(models.Model):
     id = models.AutoField(primary_key=True)
     session_start_date = models.DateField()
@@ -9,6 +16,8 @@ class Session(models.Model):
     is_current = models.BooleanField(default=False)
     objects = models.Manager()
 
+    def __str__(self):
+        return f'from - {self.session_start_date} to - {self.session_end_date}'
 
 class Enrollment(models.Model):
     enrollment_id = models.AutoField(primary_key=True)
@@ -30,6 +39,9 @@ class Class(models.Model):
     cost = models.IntegerField()
     objects = models.Manager()
 
+    def __str__(self):
+        return self.class_name
+
 
 class ClassEnrollment(models.Model):
     id = models.AutoField(primary_key=True)
@@ -47,6 +59,9 @@ class Grade(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     objects = models.Manager()
+
+    def __str__(self):
+        return self.grade_name
 
 class DiscplinaryCases(models.Model):
     id = models.AutoField(primary_key=True)

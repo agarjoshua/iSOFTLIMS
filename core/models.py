@@ -9,15 +9,11 @@ from django_countries.fields import CountryField
 from django.forms import MultipleChoiceField
 
 
-from academics.models import Grade, Session
-
-
+# from academics.models import Grade, Session
 """
 
 
 """
-
-
 # Create your models here.
 class Institution(models.Model):
     id = models.AutoField(primary_key=True)
@@ -132,6 +128,7 @@ class HOD(models.Model):
 class Teacher(models.Model):
     id = models.AutoField(primary_key=True)
     admin = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    name = models.CharField(max_length=100,default='Teacher')
     phonenumber = models.CharField(max_length=12, null=True)
     secondary_phone_number = models.CharField(max_length=12, null=True)
     institution = models.ForeignKey(Institution, on_delete=models.DO_NOTHING, null=True)
@@ -166,13 +163,14 @@ class Teacher(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     objects = models.Manager()
 
-    # def __str__(self):
-    #     return self.admin
+    def __str__(self):
+        return self.name
 
 
 class Staff(models.Model):
     id = models.AutoField(primary_key=True)
     admin = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    name = models.CharField(max_length=100,null=True)
     address = models.TextField()
     STAFF_TYPE = [(1, "Administration"), (2, "Support")]
     staff_type = models.CharField(default=1, choices=STAFF_TYPE, max_length=50)
@@ -219,16 +217,19 @@ class Students(models.Model):
     id = models.AutoField(primary_key=True)
     admin = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     # admission_number = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
-    name = models.JSONField(null=True)
+    name = models.CharField(max_length=100,null=True)
     registration_number = models.CharField(max_length=10, unique=True, null=True)
     index_number = models.CharField(max_length=20, unique=True, null=True)
     profile_pic = models.FileField(null=True)
     address = models.TextField(null=True)
     institution = models.ForeignKey(Institution, on_delete=models.DO_NOTHING, null=True)
+
+    # course = models.ForeignKey("academics.Course", on_delete=models.DO_NOTHING, default=1)
+
     session_year_id = models.ForeignKey(
-        Session, on_delete=models.DO_NOTHING, null=True
+        "academics.Session", on_delete=models.DO_NOTHING, null=True
     )
-    grade = models.ForeignKey(Grade, on_delete=models.DO_NOTHING, null=True)
+    grade = models.ForeignKey('academics.Grade', on_delete=models.DO_NOTHING, null=True)
     require_entry_exams = models.BooleanField(default=True)
     ENTRY_EXAM_TYPE = [(1, "Normal"), (2, "Special")]
     type_of_entry_exam = models.CharField(
@@ -358,12 +359,11 @@ class SpecialUser(models.Model):
 
 
 @receiver(post_save, sender=CustomUser)
-# Now Creating a Function which will automatically insert data in HOD, Staff or Student
 def create_user_profile(sender, instance, created, **kwargs):
     # if Created is true (Means Data Inserted)
     def generate_registration_number(school):
         # code to generate unique registration number
-        return f"SCHOOL-" + school[:5] + str(uuid.uuid4().int)[:10]
+        return f"SCHOOL-{school[:5]}{str(uuid.uuid4().int)[:10]}"
 
     if created:
         # Check the user_type and insert the data in respective tables

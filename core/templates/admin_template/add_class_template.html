@@ -1,7 +1,7 @@
 {% extends 'admin_template/base_template.html' %}
 
 {% block page_title %}
-    Add Class
+Add Class
 {% endblock page_title %}
 
 {% block main_content %}
@@ -9,173 +9,162 @@
 {% load static %}
 
 <section class="content">
-        <div class="container-fluid">
+  <div class="container-fluid">
 
-            <div class="row">
-                <div class="col-md-12">
-                    <!-- general form elements -->
-                    <div class="card card-primary">
-                    <div class="card-header">
-                        <h3 class="card-title">Add Class</h3>
-                    </div>
-                    <!-- /.card-header -->
-                    <!-- form start -->
-                    <form role="form" method="POST" action="{% url 'add_class_save' %}">
-                        {% csrf_token %}
+    <div class="row">
+      <div class="col-md-12">
+        <!-- general form elements -->
+        <div class="card card-primary">
+          <div class="card-header">
+            <h3 class="card-title">Add Class</h3>
+          </div>
+          <!-- /.card-header -->
+          <!-- form start -->
+          <form role="form" method="POST" action="{% url 'add_class_save' %}">
+            {% csrf_token %}
 
-                        
-                                {% comment %} Display Messages {% endcomment %}
-                                {% if messages %}
-                                <div class="form-group">
-                                <div class="col-12">
-                                    {% for message in messages %}
-                                    {% if message.tags == "error" %}
-                                        <div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin-top: 10px;">
-                                        {{ message }}
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                        </div>
-                                    {% elif message.tags == "success" %}
-                                        <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-top: 10px;">
-                                        {{ message }}
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                        </div>
-                                    {% endif %}
-                                    {% endfor %}
-                                </div>
-                                </div>
-                                {% endif %}
-                            
 
-                        <div class="card-body">
-                            <div class="form-group">
-                                <div class="col-md-12">
-                                    <!-- general form elements -->
-                                    <div class="card card-primary">
-                                    <div class="card-header">
-                                        <h3 class="card-title">Add Class</h3>
-                                    </div>
-                                    <form method="post" action="{% url 'add_class_save' %}" class="form-horizontal">
-                                        {% csrf_token %}
-                                        <div class="form-group">
-                                          <label class="control-label col-sm-3">Class Name:</label>
-                                          <div class="col-sm-9">
-                                            {{ form.class_name }}
-                                          </div>
-                                        </div>
-                                        <div class="form-group">
-                                          <label class="control-label col-sm-3">Class Code:</label>
-                                          <div class="col-sm-9">
-                                            {{ form.class_code }}
-                                          </div>
-                                        </div>
-                                        <div class="form-group">
-                                          <label class="control-label col-sm-3">Teacher:</label>
-                                          <div class="col-sm-9">
-                                            {{ form.teacher }}
-                                          </div>
-                                        </div>
-                                        <div class="form-group">
-                                          <label class="control-label col-sm-3">Grade:</label>
-                                          <div class="col-sm-9">
-                                            {{ form.grade }}
-                                          </div>
-                                        </div>
-                                        <div class="form-group">
-                                          <label class="control-label col-sm-3">Session ID:</label>
-                                          <div class="col-sm-9">
-                                            {{ form.session_id }}
-                                          </div>
-                                        </div>
-                                        <div class="form-group">
-                                          <label class="control-label col-sm-3">Is Elective:</label>
-                                          <div class="col-sm-9">
-                                            <div class="form-check">
-                                              {{ form.is_elective }}
-                                              <label class="form-check-label" for="{{ form.is_elective.id_for_label }}">Yes</label>
-                                            </div>
-                                          </div>
-                                        </div>
-                                        <div class="form-group">
-                                          <label class="control-label col-sm-3">Start Date:</label>
-                                          <div class="col-sm-9">
-                                            {{ form.start_date }}
-                                          </div>
-                                        </div>
-                                        <div class="form-group">
-                                          <label class="control-label col-sm-3">End Date:</label>
-                                          <div class="col-sm-9">
-                                            {{ form.end_date }}
-                                          </div>
-                                        </div>
-                                        <div class="form-group">
-                                          <label class="control-label col-sm-3">Cost:</label>
-                                          <div class="col-sm-9">
-                                            {{ form.cost }}
-                                          </div>
-                                        </div>
-                                        <div class="form-group">
-                                          <div class="col-sm-offset-3 col-sm-9">
-                                            <button type="submit" class="btn btn-primary">Submit</button>
-                                          </div>
-                                        </div>
-                                      </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                    </div>
-
+            {% comment %} Display Messages {% endcomment %}
+            {% if messages %}
+            <div class="form-group">
+              <div class="col-12">
+                {% for message in messages %}
+                {% if message.tags == "error" %}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                  {{ message }}
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
                 </div>
+                {% elif message.tags == "success" %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                  {{ message }}
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                {% endif %}
+                {% endfor %}
+              </div>
             </div>
+            {% endif %}
+
+
+            <div class="card-body">
+              <div class="form-group">
+                <label class="control-label col-sm-3">Class Name:</label>
+                <div class="col-sm-9">
+                  {{ form.class_name }}
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-sm-3">Class Code:</label>
+                <div class="col-sm-9">
+                  {{ form.class_code }}
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-sm-3">Teacher:</label>
+                <div class="col-sm-9">
+                  {{ form.teacher }}
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-sm-3">Grade:</label>
+                <div class="col-sm-9">
+                  {{ form.grade }}
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-sm-3">Session ID:</label>
+                <div class="col-sm-9">
+                  {{ form.session_id }}
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-sm-3">Is Elective:</label>
+                <div class="col-sm-9">
+                  <div class="form-check">
+                    {{ form.is_elective }}
+                    <label class="form-check-label" for="{{ form.is_elective.id_for_label }}">Yes</label>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-sm-3">Start Date:</label>
+                <div class="col-sm-9">
+                  {{ form.start_date }}
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-sm-3">End Date:</label>
+                <div class="col-sm-9">
+                  {{ form.end_date }}
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-sm-3">Cost:</label>
+                <div class="col-sm-9">
+                  {{ form.cost }}
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-sm-offset-3 col-sm-9">
+                  <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+              </div>
+          </form>
 
         </div>
-      </section>
+        </form>
+      </div>
 
-  {% endblock main_content %}
+    </div>
+  </div>
 
-  {% block custom_js %}
-    {% comment %} Checking if class name already exists or not using Ajax {% endcomment %}
+  </div>
+</section>
 
-    <script>
-        $(document).ready(function(){
-            // keyup event will be triggered when user leaves keyboard
-            $("#class_name").keyup(function(){
-                var class_name = $(this).val();
+{% endblock main_content %}
 
-                if(class_name!=""){
-                    $.ajax({
-                        url : '{% url 'check_class_exist' %}',
-                        type : 'POST',
-                        data : {class_name:class_name}
-                    })
-                    .done(function(response){
-                        //console.log(response);
+{% block custom_js %}
+{% comment %} Checking if class name already exists or not using Ajax {% endcomment %}
 
-                        if(response == "True"){
-                            $(".class_name_error").remove();
-                            $("<span class='email_error' style='color: red; padding: 5px; font-weight: bold;'> Email Not Available. </span>").insertAfter("#id_class_name")
-                        }
-                        else{
-                            $(".class_name_error").remove();
-                            $("<span class='email_error' style='color: green; padding: 5px; font-weight: bold;'> Email Available. </span>").insertAfter("#id_class_name")
-                        }
-                    })
+<script>
+  $(document).ready(function () {
+    // keyup event will be triggered when user leaves keyboard
+    $("#class_name").keyup(function () {
+      var class_name = $(this).val();
 
-                    .fail(function(){
-                        console.log("Failed");
-                    })
-                }
-                else{
-                    $(".email_error").remove();
-                }
-                
-            })
+      if (class_name != "") {
+        $.ajax({
+          url: '{% url 'check_class_exist' %}',
+          type: 'POST',
+          data: { class_name: class_name }
         })
-    </script>
+          .done(function (response) {
+            //console.log(response);
 
-  {% endblock custom_js %}
+            if (response == "True") {
+              $(".class_name_error").remove();
+              $("<span class='email_error' style='color: red; padding: 5px; font-weight: bold;'> Email Not Available. </span>").insertAfter("#id_class_name")
+            }
+            else {
+              $(".class_name_error").remove();
+              $("<span class='email_error' style='color: green; padding: 5px; font-weight: bold;'> Email Available. </span>").insertAfter("#id_class_name")
+            }
+          })
+
+          .fail(function () {
+            console.log("Failed");
+          })
+      }
+      else {
+        $(".email_error").remove();
+      }
+
+    })
+  })
+</script>
+
+{% endblock custom_js %}

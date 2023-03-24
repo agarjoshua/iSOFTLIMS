@@ -42,7 +42,7 @@
                     <!-- general form elements -->
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">Course Details</h3>
+                            <h3 class="card-title">Class Details</h3>
 
                             <div class="card-tools">
                             <div class="input-group input-group-sm" style="width: 150px;">
@@ -60,11 +60,15 @@
                             <thead>
                                 <tr>
                                 <th>ID</th>
-                                <th>Course Name</th>
-                                <th>Course Fee</th>
-                                <th>Created At</th>
-                                <th>Updated At</th>
-                                <th>Action</th>
+                                <th>Class Name</th>
+                                <th>Class Code</th>
+                                <th>Teacher</th>
+                                <th>Grade</th>
+                                <th>session</th>
+                                <th>Is Elective</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                                <th>Cost</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -72,9 +76,14 @@
                                 <tr>
                                 <td>{{ class.id }}</td>
                                 <td>{{ class.class_name }}</td>
-                                <td>{{ class.cost }}</td>
-                                <td>{{ class.created_at }}</td>
-                                <td>{{ class.updated_at }}</td>
+                                <td>{{ class.class_code }}</td>
+                                <th>{{ class.teacher}}</th>
+                                <td>{{ class.grade }}</td>
+                                <td>{{ class.session_id }}</td>
+                                <td>{{ class.is_elective }}</td>
+                                <td>{{ class.start_date }}</td>
+                                <td>{{ class.end_date }}</td>
+                                <th>{{ class.cost }}</th>
                                 <td>
                                     <a href="{% url 'edit_class' class.id %}" class="btn btn-success">Edit</a> 
                                     <a href="{% url 'delete_class' class.id %}" class="btn btn-danger">Delete</a>

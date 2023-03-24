@@ -9,7 +9,6 @@ from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.core import serializers
 import json
-from academics.forms.classforms import ClassForm
 from core.forms.departmentforms import AddDepartmentForm
 from core.forms.guardianforms import AddGuardianForm, EditGuardianForm
 from core.forms.hodforms import AddHodForm, EditHodForm

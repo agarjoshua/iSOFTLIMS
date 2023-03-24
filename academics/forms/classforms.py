@@ -1,9 +1,10 @@
 from django import forms
 from academics.models import Class, Grade, Session
 from core.models import Teacher
+from django_select2.forms import Select2Widget
+from django.core.exceptions import ValidationError
 
-
-class ClassForm(forms.ModelForm):
+class ClassCreateForm(forms.ModelForm):
     class Meta:
         model = Class
         fields = ['class_name', 'class_code', 'teacher', 'grade', 'session_id', 'is_elective', 'start_date', 'end_date', 'cost']
@@ -11,6 +12,44 @@ class ClassForm(forms.ModelForm):
             'start_date': forms.DateInput(attrs={'type': 'date'}),
             'end_date': forms.DateInput(attrs={'type': 'date'}),
         }
+
+class ClassEditForm(forms.ModelForm):
+
+    class Meta:
+        model = Class
+        fields = ['class_name', 'class_code', 'teacher', 'grade', 'session_id', 'is_elective', 'start_date', 'end_date', 'cost']
+        # Use widgets to add attributes to form fields
+        widgets = {
+            'start_date': forms.DateInput(attrs={'type': 'date'}),
+            'end_date': forms.DateInput(attrs={'type': 'date'}),
+            'teacher': Select2Widget(attrs={'class': 'form-control'}),
+            'grade': Select2Widget(attrs={'grade': 'form-control'}),
+            'session': Select2Widget(attrs={'session': 'form-control'}),
+        }
+        
+    # Override the default labels for the form fields
+    class_name = forms.CharField(label='Class Name')
+    class_code = forms.CharField(label='Class Code')
+    teacher = forms.ModelChoiceField(queryset=Teacher.objects.all())
+    grade = forms.ModelChoiceField(queryset=Grade.objects.all())
+    session_id = forms.ModelChoiceField(queryset=Session.objects.all())
+    is_elective = forms.BooleanField(label='Is Elective')
+    start_date = forms.DateField(label='Start Date')
+    end_date = forms.DateField(label='End Date')
+    cost = forms.DecimalField(label='Cost')
+
+    def clean(self):
+        cleaned_data = super().clean()
+        start_date = cleaned_data.get("start_date")
+        end_date = cleaned_data.get("end_date")
+        cost = cleaned_data.get("cost")
+
+        if start_date and end_date and start_date > end_date:
+            raise ValidationError("Start date cannot be after end date.")
+        
+        if cost and cost <= 0:
+            raise ValidationError("Cost must be a positive number.")
+
 
 
 class ClassSearchForm(forms.Form):

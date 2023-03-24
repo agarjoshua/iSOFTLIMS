@@ -39,7 +39,10 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "core",
     "academics",
-    "finance"
+    "finance",
+
+    # UTILITIES
+    'django_select2',
 ]
 
 MIDDLEWARE = [
