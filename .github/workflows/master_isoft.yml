@@ -60,4 +60,4 @@ jobs:
         with:
           app-name: 'iSOFT'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_0B1B63174FC243EEB63129F50FF385F2 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_3A1E358538C645E68092001F122018F2 }}
