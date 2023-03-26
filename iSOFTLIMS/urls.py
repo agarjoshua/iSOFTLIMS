@@ -22,4 +22,4 @@ urlpatterns = [
     path("academics/", include("academics.urls")),
     path("finance/", include("finance.urls")),
     
-]
+]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
