@@ -28,7 +28,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["*","isoft.azurewebsites.net","https://isoft.azurewebsites.net"]
 
-CSRF_TRUSTED_ORIGINS = ["https://isoft.azurewebsites.net/","https://*.127.0.0.1"]
+CSRF_TRUSTED_ORIGINS = ["*","https://isoft.azurewebsites.net/","https://*.127.0.0.1"]
 
 # Application definition
 
