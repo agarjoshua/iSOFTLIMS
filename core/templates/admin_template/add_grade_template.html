@@ -1,7 +1,7 @@
 {% extends 'admin_template/base_template.html' %}
 
 {% block page_title %}
-Add Class
+Add Grade
 {% endblock page_title %}
 
 {% block main_content %}
@@ -16,11 +16,11 @@ Add Class
         <!-- general form elements -->
         <div class="card card-primary">
           <div class="card-header">
-            <h3 class="card-title">Add Class</h3>
+            <h3 class="card-title">Add Grade</h3>
           </div>
           <!-- /.card-header -->
           <!-- form start -->
-          <form role="form" method="POST" action="{% url 'add_class_save' %}">
+          <form role="form" method="POST" action="{% url 'add_grade_save' %}">
             {% csrf_token %}
 
 
@@ -52,60 +52,21 @@ Add Class
 
             <div class="card-body">
               <div class="form-group">
-                <label class="control-label col-sm-3">Class Name:</label>
+                <label class="control-label col-sm-3">Grade Name:</label>
                 <div class="col-sm-9">
-                  {{ form.class_name }}
+                  {{ form.grade_name }}
                 </div>
               </div>
               <div class="form-group">
-                <label class="control-label col-sm-3">Class Code:</label>
-                <div class="col-sm-9">
-                  {{ form.class_code }}
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="control-label col-sm-3">Teacher:</label>
-                <div class="col-sm-9">
-                  {{ form.teacher }}
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="control-label col-sm-3">Grade:</label>
-                <div class="col-sm-9">
-                  {{ form.grade }}
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="control-label col-sm-3">Session:</label>
-                <div class="col-sm-9">
-                  {{ form.session_id }}
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="control-label col-sm-3">Is Elective:</label>
-                <div class="col-sm-9">
-                  <div class="form-check">
-                    {{ form.is_elective }}
-                    <label class="form-check-label" for="{{ form.is_elective.id_for_label }}">Yes</label>
-                  </div>
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="control-label col-sm-3">Start Date:</label>
-                <div class="col-sm-9">
-                  {{ form.start_date }}
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="control-label col-sm-3">End Date:</label>
-                <div class="col-sm-9">
-                  {{ form.end_date }}
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="control-label col-sm-3">Cost:</label>
+                <label class="control-label col-sm-3">Class Cost:</label>
                 <div class="col-sm-9">
                   {{ form.cost }}
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-sm-3">Compulsory Classes:</label>
+                <div class="col-sm-9">
+                  {{ form.compulsory_classes }}
                 </div>
               </div>
               <div class="form-group">

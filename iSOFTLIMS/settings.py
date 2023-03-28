@@ -28,7 +28,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["*","isoft.azurewebsites.net","https://isoft.azurewebsites.net"]
 
-CSRF_TRUSTED_ORIGINS = ["'https://'+ os.environ['WEBSITE_HOSTNAME']","*","https://isoft.azurewebsites.net/","https://*.127.0.0.1","https://*.azurewebsites.net/"]
+CSRF_TRUSTED_ORIGINS = ["'https://'+ os.environ['WEBSITE_HOSTNAME']","https://isoft.azurewebsites.net/","https://*.127.0.0.1","https://*.azurewebsites.net/"]
 
 # Application definition
 
@@ -131,15 +131,20 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = 'static/'
 
 # Extra places for collectstatic to find static files.
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
-)
+# STATICFILES_DIRS = (
+#     os.path.join(BASE_DIR, 'static'),
+# )
+# if not DEBUG:
+#         STATIC_ROOT = ''
+    
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, 'static/'),
+#     ]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
 
 #For Custom USER
 AUTH_USER_MODEL = "core.CustomUser"

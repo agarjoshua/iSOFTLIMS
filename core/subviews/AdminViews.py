@@ -444,12 +444,10 @@ def edit_student_save(request):
     if request.method != "POST":
         return HttpResponse("Invalid Method!")
     else:
-        student_id = request.session.get("student_id")
-        if student_id == None:
-            return redirect("/manage_student")
-
         form = EditStudentForm(request.POST, request.FILES)
         if form.is_valid():
+            print('-------------------------------------------')
+            print(form)
             email = form.cleaned_data["email"]
             username = form.cleaned_data["username"]
             first_name = form.cleaned_data["first_name"]
