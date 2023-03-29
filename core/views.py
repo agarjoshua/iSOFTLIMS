@@ -38,18 +38,18 @@ def doLogin(request):
         elif user_type == '3':
             # return HttpResponse("Student Login")
             return redirect('student_home')
-        elif user_type == '4':
-            # return HttpResponse("Staff Login")
-            return redirect('staff_home')
-        elif user_type == '5':
+        # elif user_type == '4':
+        #     # return HttpResponse("Staff Login")
+        #     return redirect('staff_home')
+        # elif user_type == '5':
+        #     # return HttpResponse("Student Login")
+        #     return redirect('student_home')
+        # elif user_type == '6':
+        #     # return HttpResponse("Staff Login")
+        #     return redirect('staff_home')
+        # elif user_type == '7':
             # return HttpResponse("Student Login")
-            return redirect('student_home')
-        elif user_type == '6':
-            # return HttpResponse("Staff Login")
-            return redirect('staff_home')
-        elif user_type == '7':
-            # return HttpResponse("Student Login")
-            return redirect('student_home')
+            # return redirect('student_home')
         else:
             messages.error(request, "Invalid Login!")
             return redirect('login')

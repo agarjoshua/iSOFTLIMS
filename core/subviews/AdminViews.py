@@ -365,7 +365,7 @@ def add_student_save(request):
             password = form.cleaned_data["password"]
             address = form.cleaned_data["address"]
             session_year_id = form.cleaned_data["session_year_id"]
-            class_id = form.cleaned_data["class_id"]
+            # class_id = form.cleaned_data["class_id"]
             gender = form.cleaned_data["gender"]
 
             # Getting Profile Pic first
@@ -388,10 +388,9 @@ def add_student_save(request):
                     last_name=last_name,
                     user_type=3,
                 )
-                print(user)
                 user.students.address = address
 
-                user.students.class_id = class_obj
+                # user.students.class_id = class_obj
 
                 session_year_obj = Session.objects.get(id=session_year_id)
                 user.students.session_year_id = session_year_obj
@@ -879,11 +878,16 @@ def add_session_save(request):
     else:
         session_start_date = request.POST.get("session_start_date")
         session_end_date = request.POST.get("session_end_date")
+        is_current = request.POST.get("is_current") == "on"
+
+        if is_current:
+            Session.objects.all().update(is_current=False)
 
         try:
             sessionyear = Session(
                 session_start_date=session_start_date, 
-                session_end_date=session_end_date
+                session_end_date=session_end_date,
+                is_current = is_current
             )
             sessionyear.save()
             messages.success(request, "Session Year added Successfully!")
@@ -913,11 +917,16 @@ def edit_session_save(request):
         session_id = request.POST.get("session_id")
         session_start_year = request.POST.get("session_start_year")
         session_end_year = request.POST.get("session_end_year")
+        is_current = request.POST.get("is_current") == "on"
+
+        if is_current:
+            Session.objects.all().update(is_current=False)
 
         try:
             session_year = Session.objects.get(id=session_id)
             session_year.session_start_year = session_start_year
             session_year.session_end_year = session_end_year
+            session_year.is_current = is_current
             session_year.save()
 
             messages.success(request, "Session Year Updated Successfully.")

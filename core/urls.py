@@ -1,6 +1,8 @@
 from django.urls import path, include
+
+from academics.subviews import studentView
 from . import views
-from core.subviews import AdminViews
+from core.subviews import AdminViews, StudentViews
 
 urlpatterns = [
 
@@ -59,12 +61,33 @@ urlpatterns = [
     # path('staff_leave_reject/<leave_id>/', AdminViews.staff_leave_reject, name="staff_leave_reject"),
 
     # STUDENT URLS
+    path('student_home/', StudentViews.student_home, name="student_home"),
+
+    path('student_profile/', StudentViews.student_profile, name="student_profile"),
+    path('student_sessions/', StudentViews.enroll_session, name="enroll_session"),
+    path('enroll_session_save/<enrollment_id>', StudentViews.enroll_session_save, name="enroll_session_save"),
+    # path('student_classes/', StudentViews.enroll_classes, name="enroll_classes"),
+
+    # path('edit_student/<student_id>', StudentViews.edit_student, name="edit_student"),
+    # path('edit_student_save/', StudentViews.edit_student_save, name="edit_student_save"),
+    # path('student_view_attendance/', StudentViews.student_view_attendance, name="student_view_attendance"),
+    # path('student_view_attendance_post/', StudentViews.student_view_attendance_post, name="student_view_attendance_post"),
+    path('student_apply_leave/', StudentViews.student_apply_leave, name="student_apply_leave"),
+    path('student_apply_leave_save/', StudentViews.student_apply_leave_save, name="student_apply_leave_save"),
+    path('student_feedback/', StudentViews.student_feedback, name="student_feedback"),
+    path('student_feedback_save/', StudentViews.student_feedback_save, name="student_feedback_save"),
+    path('student_profile/', StudentViews.student_profile, name="student_profile"),
+    path('student_profile_update/', StudentViews.student_profile_update, name="student_profile_update"),
+    path('student_view_result/', StudentViews.student_view_result, name="student_view_result"),
+    
+
     path('add_student/', AdminViews.add_student, name="add_student"),
     path('add_student_save/', AdminViews.add_student_save, name="add_student_save"),
     path('edit_student/<student_id>', AdminViews.edit_student, name="edit_student"),
     path('edit_student_save/', AdminViews.edit_student_save, name="edit_student_save"),
     path('manage_student/', AdminViews.manage_student, name="manage_student"),
     path('delete_student/<student_id>/', AdminViews.delete_student, name="delete_student"),
+
     # path('student_feedback_message/', AdminViews.student_feedback_message, name="student_feedback_message"),
     # path('student_feedback_message_reply/', AdminViews.student_feedback_message_reply, name="student_feedback_message_reply"),
     # path('student_leave_view/', AdminViews.student_leave_view, name="student_leave_view"),

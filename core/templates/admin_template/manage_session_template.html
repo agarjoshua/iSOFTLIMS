@@ -62,18 +62,31 @@
                                 <th>ID</th>
                                 <th>Session Start Date</th>
                                 <th>Session End Date</th>
+                                <th>Is Current session</th>
                                 <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {% for session_year in session_years %}
-                                <tr>
+                                <tr 
+                                {% if not session_year.is_current %}
+                                class="text-muted" 
+                                {% else %}
+                                class="text-bold" 
+                                {% endif %}
+                                >
                                 <td>{{ session_year.id }}</td>
                                 <td>{{ session_year.session_start_date }}</td>
                                 <td>{{ session_year.session_end_date }}</td>
+                                <td>{{ session_year.is_current }}</td>
                                 <td>
+                                    {% if session_year.is_current %}
                                     <a href="{% url 'edit_session' session_year.id %}" class="btn btn-success">Edit</a> 
                                     <a href="{% url 'delete_session' session_year.id %}" class="btn btn-danger">Delete</a>
+                                    {% else %}
+                                    <a href="{% url 'edit_session' session_year.id %}" class="btn btn-success disabled">Edit</a> 
+                                    <a href="{% url 'delete_session' session_year.id %}" class="btn btn-danger disabled">Delete</a>
+                                    {% endif %}
                                 </td>
                                 </tr>
                                 {% endfor %}

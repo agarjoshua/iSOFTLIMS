@@ -1,0 +1,140 @@
+{% extends 'student_template/base_template.html' %}
+
+{% block page_title %}
+Enroll to Sessions
+{% endblock page_title %}
+
+{% block main_content %}
+
+{% load static %}
+
+<section class="content">
+    <div class="container-fluid">
+
+
+
+        {% if messages %}
+        <div class="form-group">
+            <div class="col-12">
+                {% for message in messages %}
+                {% if message.tags == "error" %}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                {% elif message.tags == "success" %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="row">
+            <div class="col-md-12">
+                <!-- general form elements -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Enroll to session</h3>
+
+                        <div class="card-tools">
+                            <div class="input-group input-group-sm" style="width: 150px;">
+                                <input type="text" name="table_search" class="form-control float-right"
+                                    placeholder="Search">
+
+                                <div class="input-group-append">
+                                    <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">List of session</h3>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body table-responsive p-0">
+                            <table class="table table-hover text-nowrap">
+                                <thead>
+                                    <tr>
+                                        <th>Session Start Period</th>
+                                        <th>Session End date</th>
+                                        <th>Is Current session</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for enrollment in enrollments %}
+                                    <tr {% if enrollment.is_current %}>
+                                        <td hidden>{{enrollment.id}}</td>
+                                        <td>{{ enrollment.session_start_date }}</td>
+                                        <td>{{ enrollment.session_end_date }}</td>
+                                        <td class="color-primary">{{ enrollment.is_current }}</td>
+                                        <td>
+                                            {% if try%}
+                                            <a class="btn btn-primary" href="{% url 'enroll_session_save' enrollment.id %}" role="button">
+                                                Enroll Sessions</a><br />&nbsp;
+                                            {% else %} 
+                                            <button disabled class="btn btn-success" href="" >
+                                                Enrolled</button><br />&nbsp;
+                                            {% endif %}
+                                        </td>
+                                    </tr {% endif %}>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card-body -->
+                    {% comment %}
+                      
+                    
+                    <!-- /.card-header -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Enrolled session</h3>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body table-responsive p-0">
+                            <table class="table table-hover text-nowrap">
+                                <thead>
+                                    <tr>
+                                        <th>Session Start Period</th>
+                                        <th>Session End date</th>
+                                        <th>Is Current session</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for enrolled in enrolled_enrollments %}
+                                    <tr {% if not enrollment.is_current %}class="text-muted" {% endif %}>
+                                        <td>{{ enrolled.session_start_date }}</td>
+                                        <td>{{ enrolled.session_end_date }}</td>
+                                        <td class="color-primary">{{ enrolled.is_current }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card-body -->
+                    {% endcomment %}
+                </div>
+                <!-- /.card -->
+
+            </div>
+        </div>
+
+    </div><!-- /.container-fluid -->
+</section>
+
+{% endblock main_content %}

@@ -25,6 +25,9 @@ class Enrollment(models.Model):
     student = models.ForeignKey("core.Students", models.DO_NOTHING)
     enrollment_date = models.DateField(auto_now=True)
     objects = models.Manager()
+    
+    class Meta:
+        unique_together = ('session', 'student')
 
 class Class(models.Model):
     id = models.AutoField(primary_key=True)
