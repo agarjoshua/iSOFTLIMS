@@ -1,5 +1,5 @@
 from django import forms
-from academics.models import Grade
+from academics.models import GradeLevel
 from core.models import Teacher
 
 class ClassGradeForm(forms.ModelForm):
@@ -9,10 +9,10 @@ class ClassGradeForm(forms.ModelForm):
 
 
     class Meta: 
-        model = Grade
+        model = GradeLevel
         fields = '__all__'
 
 class GradeEditForm(forms.ModelForm):
     class Meta:
-        model = Grade
+        model = GradeLevel
         fields = ('grade_name', 'cost', 'compulsory_classes')

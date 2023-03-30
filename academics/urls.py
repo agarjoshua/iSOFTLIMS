@@ -12,10 +12,18 @@ urlpatterns = [
     path('edit_grade/<grade_id>/', classView.edit_grade, name="edit_grade"),
     path('delete_grade/<grade_id>/', classView.delete_grade, name="delete_grade"),
 
-    # COURSE URLS
+    # CLASS URLS
     path('add_class/', classView.add_class, name="add_class"),
-    path('add_class_save/', classView.add_class_save, name="add_class_save"),
+    # path('add_class_save/', classView.add_class_save, name="add_class_save"),
     path('manage_class/', classView.manage_class, name="manage_class"),
+
+    #class clusters
+    # path('manage_clusters/', classView.clusterclass_detail, name="manage_clusters"),
+    path('manage_clusters/', classView.clusterclass_list, name='clusterclass_list'),
+    path('<int:pk>/', classView.clusterclass_detail, name='clusterclass_detail'),
+    path('new/', classView.clusterclass_create, name='clusterclass_create'),
+    path('<int:pk>/edit/', classView.clusterclass_edit, name='clusterclass_edit'),
+
     path('edit_class/<class_id>/', classView.edit_class, name="edit_class"),
     # path('edit_class_save/', classView.edit_class_save, name="edit_class_save"),
     path('delete_class/<class_id>/', classView.delete_class, name="delete_class"),

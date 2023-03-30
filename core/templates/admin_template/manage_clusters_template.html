@@ -1,0 +1,21 @@
+{% extends 'admin_template/base_template.html' %}
+
+{% block page_title %}
+Manage Classes
+{% endblock page_title %}
+
+{% block main_content %}
+
+{% load static %}
+
+  <h1>Cluster Classes</h1>
+  <ul>
+    {% for clusterclass in clusters %}
+      <li><a href="{% url 'clusterclass_detail' pk=clusterclass.pk %}">{{ clusterclass.cluster_class_name }}</a></li>
+    {% empty %}
+      <li>No cluster classes yet.</li>
+    {% endfor %}
+  </ul>
+  <p><a href="{% url 'clusterclass_create' %}">Create a new cluster class</a></p>
+
+{% endblock %}

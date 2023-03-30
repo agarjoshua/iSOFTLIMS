@@ -20,7 +20,7 @@ Add Class
           </div>
           <!-- /.card-header -->
           <!-- form start -->
-          <form role="form" method="POST" action="{% url 'add_class_save' %}">
+          <form role="form" method="POST" >
             {% csrf_token %}
 
 
@@ -49,70 +49,90 @@ Add Class
             </div>
             {% endif %}
 
+            {% if errors %}
+              <div class="alert alert-danger" role="alert">
+                  <strong>Form errors:</strong>
+                  <ul>
+                  {% for field_name, errors in errors.items %}
+                      <li>{{ field_name }}: {{ errors|join:", " }}</li>
+                  {% endfor %}
+                  </ul>
+              </div>
+          {% endif %}
+
 
             <div class="card-body">
               <div class="form-group">
-                <label class="control-label col-sm-3">Class Name:</label>
+                <label class="control-label col-sm-3" for="{{ form.class_name.id_for_label }}">Class Name:</label>
                 <div class="col-sm-9">
                   {{ form.class_name }}
                 </div>
               </div>
               <div class="form-group">
-                <label class="control-label col-sm-3">Class Code:</label>
+                <label class="control-label col-sm-3" for="{{ form.class_code.id_for_label }}">Class Code:</label>
                 <div class="col-sm-9">
                   {{ form.class_code }}
                 </div>
               </div>
               <div class="form-group">
-                <label class="control-label col-sm-3">Teacher:</label>
+                <label class="control-label col-sm-3" for="{{ form.teacher.id_for_label }}">Teacher:</label>
                 <div class="col-sm-9">
                   {{ form.teacher }}
                 </div>
               </div>
               <div class="form-group">
-                <label class="control-label col-sm-3">Grade:</label>
+                <label class="control-label col-sm-3" for="{{ form.gradelevel.id_for_label }}">Grade Levels:</label>
                 <div class="col-sm-9">
-                  {{ form.grade }}
+                  {% for choice in form.gradelevel %}
+                    <div class="form-check">
+                      <label class="form-check-label">
+                        {{ choice.tag }}
+                        {{ choice.choice_label }}
+                      </label>
+                    </div>
+                  {% endfor %}
                 </div>
               </div>
               <div class="form-group">
-                <label class="control-label col-sm-3">Session:</label>
+                <label class="control-label col-sm-3" for="{{ form.session_id.id_for_label }}">Session ID:</label>
                 <div class="col-sm-9">
                   {{ form.session_id }}
                 </div>
               </div>
               <div class="form-group">
-                <label class="control-label col-sm-3">Is Elective:</label>
-                <div class="col-sm-9">
+                <div class="col-sm-offset-3 col-sm-9">
                   <div class="form-check">
-                    {{ form.is_elective }}
-                    <label class="form-check-label" for="{{ form.is_elective.id_for_label }}">Yes</label>
+                    <label class="form-check-label">
+                      {{ form.is_elective }}
+                      Is Elective?
+                    </label>
                   </div>
                 </div>
               </div>
               <div class="form-group">
-                <label class="control-label col-sm-3">Start Date:</label>
+                <label class="control-label col-sm-3" for="{{ form.start_date.id_for_label }}">Start Date:</label>
                 <div class="col-sm-9">
                   {{ form.start_date }}
                 </div>
               </div>
               <div class="form-group">
-                <label class="control-label col-sm-3">End Date:</label>
+                <label class="control-label col-sm-3" for="{{ form.end_date.id_for_label }}">End Date:</label>
                 <div class="col-sm-9">
                   {{ form.end_date }}
                 </div>
               </div>
               <div class="form-group">
-                <label class="control-label col-sm-3">Cost:</label>
+                <label class="control-label col-sm-3" for="{{ form.cost.id_for_label }}">Cost:</label>
                 <div class="col-sm-9">
                   {{ form.cost }}
                 </div>
               </div>
               <div class="form-group">
                 <div class="col-sm-offset-3 col-sm-9">
-                  <button type="submit" class="btn btn-primary">Submit</button>
+                  <button type="submit" class="btn btn-primary">Save</button>
                 </div>
               </div>
+            </div>
           </form>
 
         </div>

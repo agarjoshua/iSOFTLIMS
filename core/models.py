@@ -229,7 +229,7 @@ class Students(models.Model):
     session_year_id = models.ForeignKey(
         "academics.Session", on_delete=models.DO_NOTHING, null=True
     )
-    grade = models.ForeignKey('academics.Grade', on_delete=models.DO_NOTHING, null=True)
+    grade = models.ForeignKey('academics.Gradelevel', on_delete=models.DO_NOTHING, null=True)
     require_entry_exams = models.BooleanField(default=True)
     ENTRY_EXAM_TYPE = [(1, "Normal"), (2, "Special")]
     type_of_entry_exam = models.CharField(

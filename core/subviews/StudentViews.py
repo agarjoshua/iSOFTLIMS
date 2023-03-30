@@ -85,10 +85,12 @@ def enroll_session_save(request,enrollment_id):
     # return render(request, "student_template/student_enrollment_management.html", context)
 
 
-def enroll_classes():
-    pass
+def enroll_classes(request):
+    return render(request, "student_template/class_enrollment_management.html")
 
-       
+def enroll_class_save(request):
+    return render(request, "student_template/class_enrollment_management.html")
+    
 
 def student_apply_leave(request):
     student_obj = Students.objects.get(admin=request.user.id)

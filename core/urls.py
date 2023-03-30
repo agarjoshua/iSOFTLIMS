@@ -66,6 +66,8 @@ urlpatterns = [
     path('student_profile/', StudentViews.student_profile, name="student_profile"),
     path('student_sessions/', StudentViews.enroll_session, name="enroll_session"),
     path('enroll_session_save/<enrollment_id>', StudentViews.enroll_session_save, name="enroll_session_save"),
+    path('student_classes/', StudentViews.enroll_classes, name="enroll_classes"),
+    path('enroll_class_save/<class_id>', StudentViews.enroll_class_save, name="enroll_class_save"),
     # path('student_classes/', StudentViews.enroll_classes, name="enroll_classes"),
 
     # path('edit_student/<student_id>', StudentViews.edit_student, name="edit_student"),

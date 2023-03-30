@@ -34,7 +34,7 @@ class Class(models.Model):
     class_name = models.CharField(max_length=50, null=True)
     class_code = models.CharField(max_length=50, null=True)
     teacher = models.ForeignKey("core.Teacher", on_delete=models.DO_NOTHING, null=True)
-    grade = models.ForeignKey("Grade", on_delete=models.DO_NOTHING, null=True)
+    gradelevel = models.ManyToManyField("GradeLevel", blank=True)
     session_id = models.ForeignKey(Session, on_delete=models.DO_NOTHING, null=True)
     is_elective = models.BooleanField(default=False)
     start_date = models.DateField(null=True)
@@ -45,6 +45,11 @@ class Class(models.Model):
     def __str__(self):
         return self.class_name
 
+class ClusterClass(models.Model):
+    id = models.IntegerField(primary_key=True)
+    cluster_class_name = models.CharField(max_length=100)
+    classes = models.ManyToManyField("Class", blank=True)
+    objects = models.Manager()
 
 class ClassEnrollment(models.Model):
     id = models.AutoField(primary_key=True)
@@ -52,13 +57,11 @@ class ClassEnrollment(models.Model):
     student = models.ForeignKey('core.Students', on_delete=models.DO_NOTHING)
     objects = models.Manager()
 
-
-class Grade(models.Model):
+class GradeLevel(models.Model):
     id = models.AutoField(primary_key=True)
     grade_name = models.CharField(max_length=50)
     cost = models.IntegerField()
-    # TODO: There needs to be a proper way of handling the multiple foreign keys?
-    compulsory_classes = models.CharField(max_length=255)
+    compulsory_classes = models.ForeignKey(ClusterClass, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     objects = models.Manager()

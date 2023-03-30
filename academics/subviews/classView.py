@@ -1,33 +1,41 @@
-from django.shortcuts import render, redirect
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse, HttpResponseBadRequest
 from django.contrib import messages
 from academics.forms.classforms import ClassEditForm, ClassCreateForm
+from academics.forms.clusterforms import ClusterClassForm
 from academics.forms.gradeforms import ClassGradeForm, GradeEditForm
-from academics.models import Class, Grade
-
+from academics.models import Class, ClusterClass, GradeLevel
 from django.views.decorators.csrf import csrf_exempt
 
-#########################################MANAGE  COURSES#######################################################################
+
 
 def add_class(request):
     form = ClassCreateForm()
-    context = {"form": form}
-    return render(request, "admin_template/add_class_template.html", context)                
-
-
-def add_class_save(request):
     if request.method == 'POST':
         form = ClassCreateForm(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Class Succesfully Added")
+
+        try:
+            if form.is_valid():
+                form.save()
+                form = ClassCreateForm()
+                context = {
+                    'form': form
+                }
+                messages.success(request, "Class Succesfully Added")
+                render (request, "admin_template/add_class_template.html", context)
+            errors = None if form.is_valid() else form.errors.as_data()
+            context = {
+                'errors': errors,
+                'form': form
+                }
+            render (request, "admin_template/add_class_template.html", context)
+        except Exception as e:
+            messages.error(request, f"This class was NOT added -- {e}")
             return redirect("add_class")
     else:
-        messages.error(request, "Invalid Method!")
         form = ClassCreateForm()
-    render (request, "admin_template/manage_class_template.html", {'form': form})
-
-
+    return render (request, "admin_template/add_class_template.html", {'form': form})
+    
 
 def manage_class(request):
     classs = Class.objects.all()
@@ -76,7 +84,7 @@ def delete_class(request, class_id):
 
 
 def manage_grade(request):
-    grade = Grade.objects.all()
+    grade = GradeLevel.objects.all()
     context = {"grades": grade}
     return render(request, "admin_template/manage_grade_template.html", context)
 
@@ -98,7 +106,7 @@ def add_grade_save(request):
     render (request, "admin_template/manage_grade_template.html", {'form': form})
 
 def edit_grade(request, grade_id):
-    selected_grade = Grade.objects.get(id=grade_id)
+    selected_grade = GradeLevel.objects.get(id=grade_id)
     if request.method == 'POST':
         form = GradeEditForm(request.POST, instance=selected_grade)
         if form.is_valid():
@@ -125,7 +133,7 @@ def _edit_grade_helper(selected_grade, grade_id, request):
 
 
 def delete_grade(request, grade_id):
-    selected_grade = Grade.objects.get(id=grade_id)
+    selected_grade = GradeLevel.objects.get(id=grade_id)
     try:
         selected_grade.delete()
         messages.success(request, "Grade Deleted Successfully.")
@@ -133,6 +141,85 @@ def delete_grade(request, grade_id):
     except Exception as e:
         messages.error(request, f"Failed to Delete Grade, because {e}")
         return redirect("manage_grade")
+
+
+def clusterclass_list(request):
+    clusters = ClusterClass.objects.all()
+    classes = Class.objects.all()
+    context = {
+        "clusters": clusters,
+        "classes": classes
+        }
+    return render(request, "admin_template/manage_clusters_template.html", context)
+
+def clusterclass_detail(request, pk):
+    clusterclass = get_object_or_404(ClusterClass, pk=pk)
+    return render(request, 'admin_template/clusterclass_detail.html', {'clusterclass': clusterclass})
+
+def clusterclass_create(request):
+    if request.method == 'POST':
+        form = ClusterClassForm(request.POST)
+        if form.is_valid():
+            cluster_class_name = request.POST.get('cluster_class_name')
+            class_ids = request.POST.getlist('classes')
+
+            # Create a new ClusterClass instance and save it to the database
+            clusterclass, _ = ClusterClass.objects.get_or_create(cluster_class_name=cluster_class_name)
+            # clusterclass = clusterclass.classes.set(5)
+            print('----------------------------------')
+            print(f'the clusterclass name is - {clusterclass}')
+            print('----------------------------------')
+            print(class_ids)
+            # clusterclass.classes.set(class_ids)
+            try:
+                clusterclass.classes.set(class_ids)
+                messages.success(request,' I guess it works?')
+                return redirect('clusterclass_list')
+            except Exception as e:
+                messages.error(request,e)
+                return HttpResponseBadRequest(e)
+            # Add Class objects to the ClusterClass instance's many-to-many field
+            for class_id in class_ids:
+                try:
+                    class_instance = Class.objects.get(pk=int(class_id))
+                    print('----------------------------------')
+                    print(f'the class instance name is - {class_instance}')
+                    print('----------------------------------')
+
+                    # clusterclass.classes.add(class_instance)
+                    clusterclass.classes.set(class_instance)
+
+                    print('----------------------------------')
+                    # print(f'the clusterclass before updated - {clusterclass.classes.set(class_ids)}')
+                    print('----------------------------------')
+                
+
+                    print('----------------------------------')
+                    print(f'the clusterclass updated is is - {clusterclass}')
+                    print('----------------------------------')
+                except Exception as e:
+                    # Handle invalid class IDs
+                    # clusterclass.delete()
+                    print(e)
+                    return HttpResponseBadRequest(e)
+
+            return redirect('clusterclass_detail', pk=clusterclass.pk)
+    else:
+        form = ClusterClassForm()
+    return render(request, 'admin_template/add_clusterclass_template.html', {'form': form})
+
+def clusterclass_edit(request, pk):
+    clusterclass = get_object_or_404(ClusterClass, pk=pk)
+    if request.method == 'POST':
+        form = ClusterClassForm(request.POST, instance=clusterclass)
+        if form.is_valid():
+            clusterclass = form.save()
+            return redirect('clusterclass_detail', pk=clusterclass.pk)
+    else:
+        form = ClusterClassForm(instance=clusterclass)
+    return render(request, 'admin_template/edit_clusterclass_template.html', {'form': form})
+
+
 
 # TODO: Fix this disaster
 @csrf_exempt
