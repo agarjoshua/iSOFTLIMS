@@ -8,7 +8,7 @@ class ClusterClassForm(forms.ModelForm):
         model = ClusterClass
         fields = ['cluster_class_name', 'classes']
 
-    def save(self, commit=True):
+    def save(self, commit=True, force_insert=False):
         instance = super().save(commit=False)
         if commit:
             instance. super().save()

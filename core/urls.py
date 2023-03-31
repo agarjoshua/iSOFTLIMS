@@ -1,6 +1,6 @@
 from django.urls import path, include
 
-from academics.subviews import studentView
+from academics.subviews import classView, studentView
 from . import views
 from core.subviews import AdminViews, StudentViews
 
@@ -124,6 +124,6 @@ urlpatterns = [
 
     # UTILITY URLS
     path('check_email_exist/', AdminViews.check_email_exist, name="check_email_exist"),
-    path('check_username_exist/', AdminViews.check_username_exist, name="check_username_exist")
-
+    path('check_username_exist/', AdminViews.check_username_exist, name="check_username_exist"),
+    # path('check_cluster_class_exist/', classView.check_cluster_class_exist, name="check_cluster_class_exist")
 ]

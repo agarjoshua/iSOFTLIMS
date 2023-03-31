@@ -7,15 +7,57 @@ Add Cluster Class
 {% block main_content %}
 
 {% load static %}
+<section class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <!-- general form elements -->
+        <div class="card card-primary">
+          <div class="card-header">
+            <h3 class="card-title">Edit Session Year</h3>
+          </div>
+          <div class="mx-3 py-3">
+            <form method="post">
+              {% csrf_token %}
 
-  <h1>{{ clusterclass.cluster_class_name }}</h1>
-  <h2>Classes</h2>
-  <ul>
-    {% for cls in clusterclass.classes.all %}
-      <li>{{ cls.class_name }}</li>
-    {% empty %}
-      <li>No classes yet.</li>
-    {% endfor %}
-  </ul>
-  <p><a href="{% url 'clusterclass_edit' pk=clusterclass.pk %}">Edit this cluster class</a></p>
+              {% comment %} Display Messages {% endcomment %}
+              {% if messages %}
+              <div class="form-group">
+                <div class="col-12">
+                  {% for message in messages %}
+                  {% if message.tags == "error" %}
+                  <div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  {% elif message.tags == "success" %}
+                  <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  {% endif %}
+                  {% endfor %}
+                </div>
+              </div>
+              {% endif %}
+              <div>
+                {{ form.cluster_class_name.label_tag }}
+                {{ form.cluster_class_name }}
+              </div>
+              <div>
+                {{ form.classes.label_tag }}
+                {{ form.classes }}
+              </div>
+              <button type="submit" class="btn btn-primary">Update Clusterclass Year</button>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </div>
+</section>
 {% endblock %}

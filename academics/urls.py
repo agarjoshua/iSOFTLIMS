@@ -22,7 +22,7 @@ urlpatterns = [
     path('manage_clusters/', classView.clusterclass_list, name='clusterclass_list'),
     path('<int:pk>/', classView.clusterclass_detail, name='clusterclass_detail'),
     path('new/', classView.clusterclass_create, name='clusterclass_create'),
-    path('<int:pk>/edit/', classView.clusterclass_edit, name='clusterclass_edit'),
+    path('edit_clusterclass/<int:clusterclass_id>', classView.clusterclass_edit, name='clusterclass_edit'),
 
     path('edit_class/<class_id>/', classView.edit_class, name="edit_class"),
     # path('edit_class_save/', classView.edit_class_save, name="edit_class_save"),
@@ -37,5 +37,6 @@ urlpatterns = [
 
     # UTILITY URLS
     path('check_class_exist/', classView.check_class_exist, name="check_class_exist"),
+    path('check_cluster_class_exist/', classView.check_cluster_class_exist, name="check_cluster_class_exist")
 
 ]

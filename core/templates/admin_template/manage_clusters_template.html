@@ -1,21 +1,78 @@
 {% extends 'admin_template/base_template.html' %}
 
 {% block page_title %}
-Manage Classes
+Cluster class Detail
 {% endblock page_title %}
 
 {% block main_content %}
 
 {% load static %}
 
-  <h1>Cluster Classes</h1>
-  <ul>
-    {% for clusterclass in clusters %}
-      <li><a href="{% url 'clusterclass_detail' pk=clusterclass.pk %}">{{ clusterclass.cluster_class_name }}</a></li>
-    {% empty %}
-      <li>No cluster classes yet.</li>
-    {% endfor %}
-  </ul>
-  <p><a href="{% url 'clusterclass_create' %}">Create a new cluster class</a></p>
+<section class="content">
+  <div class="container-fluid">
+
+    <div class="row">
+      <div class="col-md-12">
+        <!-- general form elements -->
+        <div class="card card-primary">
+          <div class="card-header">
+            <h3 class="card-title">Cluster Classes</h3>
+          </div>
+          <!-- /.card-header -->
+          <!-- form start -->
+          {% csrf_token %}
+
+
+          {% comment %} Display Messages {% endcomment %}
+          {% if messages %}
+          <div class="form-group">
+            <div class="col-12">
+              {% for message in messages %}
+              {% if message.tags == "error" %}
+              <div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                {{ message }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              {% elif message.tags == "success" %}
+              <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                {{ message }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+          {% endif %}
+
+
+          <div class="card-body">
+
+            <ul>
+              {% for clusterclass in clusters %}
+              <li><a href="{% url 'clusterclass_detail' pk=clusterclass.pk %}">{{ clusterclass.cluster_class_name}}</a></li>
+              {% empty %}
+              <li class="text-bold">No cluster classes yet.</li>
+              {% endfor %}
+            </ul>
+
+            <div class="">
+              <div class="btn btn-primary text-white"><a class="text-white"
+                  href="{% url 'clusterclass_create' %}">Create a new cluster class</a></div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
 
 {% endblock %}
