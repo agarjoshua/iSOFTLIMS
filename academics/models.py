@@ -46,9 +46,9 @@ class Class(models.Model):
         return self.class_name
 
 class ClusterClass(models.Model):
-    id = models.IntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     cluster_class_name = models.CharField(max_length=100)
-    classes = models.ManyToManyField("Class", blank=True)
+    classes = models.ManyToManyField(Class)
     objects = models.Manager()
 
 class ClassEnrollment(models.Model):

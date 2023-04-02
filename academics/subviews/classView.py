@@ -157,8 +157,7 @@ def clusterclass_detail(request, pk):
     return render(request, 'admin_template/clusterclass_detail.html', {'clusterclass': clusterclass})
 
 
-def clusterclass_create(request):
-    # sourcery skip: extract-duplicate-method, extract-method
+def clusterclass_create(request):  # sourcery skip: extract-method
     if request.method == 'POST':
         form = ClusterClassForm(request.POST)
         if form.is_valid():
@@ -167,52 +166,17 @@ def clusterclass_create(request):
 
             # Create a new ClusterClass instance and save it to the database
             clusterclass, _ = ClusterClass.objects.get_or_create(cluster_class_name=cluster_class_name)
+            print('----------------------------------')
+            print(clusterclass)
             clusterclass.classes.set(class_ids)
             print('----------------------------------')
             print(f'the clusterclass name is - {clusterclass}')
             print('----------------------------------')
             print(class_ids)
-            # clusterclass.save()
-            try:
-                clusterclass.classes.set(class_ids)
-                messages.success(request,' I guess it works?')
-                return redirect('clusterclass_list')
-            except Exception as e:
-                messages.error(request,e)
-                print(e)
-                return redirect('clusterclass_list')
     else:
         form = ClusterClassForm()
     return render(request, 'admin_template/add_clusterclass_template.html', {'form': form})
 
-
-
- # Add Class objects to the ClusterClass instance's many-to-many field
-            # for class_id in class_ids:
-            #     try:
-            #         class_instance = Class.objects.get(pk=int(class_id))
-            #         print('----------------------------------')
-            #         print(f'the class instance name is - {class_instance}')
-            #         print('----------------------------------')
-
-            #         # clusterclass.classes.add(class_instance)
-            #         clusterclass.classes.set(class_instance)
-
-            #         print('----------------------------------')
-            #         # print(f'the clusterclass before updated - {clusterclass.classes.set(class_ids)}')
-            #         print('----------------------------------')
-                
-
-            #         print('----------------------------------')
-            #         print(f'the clusterclass updated is is - {clusterclass}')
-            #         print('----------------------------------')
-            #     except Exception as e:
-            #         # Handle invalid class IDs
-            #         # clusterclass.delete()
-            #         print(e)
-            #         return HttpResponseBadRequest(e)
-
-            # return redirect('clusterclass_detail', pk=clusterclass.pk)
 
 
 def clusterclass_edit(request,clusterclass_id):
