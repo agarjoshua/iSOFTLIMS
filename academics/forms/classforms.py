@@ -6,11 +6,7 @@ from django.core.exceptions import ValidationError
 
 class ClassCreateForm(forms.ModelForm):
 
-    gradelevel = forms.ModelMultipleChoiceField(
-        queryset=GradeLevel.objects.all(),
-        widget=forms.CheckboxSelectMultiple(attrs={'class': 'form-check-input'}),
-        required=False,
-    )
+    gradelevel = forms.ModelMultipleChoiceField(queryset=GradeLevel.objects.all(), required=False, widget=forms.CheckboxSelectMultiple)
     class Meta:
         model = Class
         fields = ['class_name', 'class_code', 'teacher', 'gradelevel', 'session_id', 'is_elective', 'start_date', 'end_date', 'cost']

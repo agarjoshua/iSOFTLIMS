@@ -261,7 +261,7 @@
 
         <li class="nav-item active">
           <a class="nav-link collapsed text-truncate" href="#submenu1" data-toggle="collapse" data-target="#submenuc"><i
-              class="nav-icon fas fa-tachometer-alt"></i> <span class="d-none d-sm-inline">Academics Module</span></a>
+              class="nav-icon fa fa-graduation-cap"></i> <span class="d-none d-sm-inline">Academics Module</span></a>
 
           <div class="collapse" id="submenuc" aria-expanded="false">
             <ul class="flex-column pl-2 nav">
@@ -273,7 +273,7 @@
                   class="nav-link {% if request.path == manage_grade %} active {% endif %} {% if request.path == edit_grade %} active {% endif %}">
                   <i class="nav-icon fas fa-chalkboard"></i>
                   <p>
-                    Manage Grade Year
+                    Manage Grade Level
                   </p>
                 </a>
               </li>
@@ -289,12 +289,36 @@
                   </p>
                 </a>
               </li>
+
+              <li class="nav-item">
+                {% url 'manage_session_registation' as manage_session_registation %}
+                {% url 'edit_session_registation' session_id=id as edit_session_registation %}
+                <a href="{{ manage_session_registation }}"
+                  class="nav-link {% if request.path == manage_session_registation %} active {% endif %} {% if request.path == edit_session_registation %} active {% endif %}">
+                  <i class="nav-icon fas fa-archway"></i>
+                  <p>
+                    Manage Sessions
+                  </p>
+                </a>
+              </li>
+
+              <li class="nav-item">
+                {% url 'manage_exams' as manage_exams %}
+                {% url 'edit_manage_exams' session_id=id as edit_manage_exams %}
+                <a href="{{ manage_exams }}"
+                  class="nav-link {% if request.path == manage_exams %} active {% endif %} {% if request.path == manage_exams %} active {% endif %}">
+                  <i class="nav-icon fa fa-th"></i>
+                  <p>
+                    Manage Exams
+                  </p>
+                </a>
+              </li>
             </ul>
         </li>
 
         <li class="nav-item">
           <a class="nav-link collapsed text-truncate" href="#submenu1" data-toggle="collapse" data-target="#submenu1"><i
-              class="nav-icon fas fa-tachometer-alt"></i> <span class="d-none d-sm-inline">Finance Module</span></a>
+              class="nav-icon fas fa-hand-holding-usd"></i> <span class="d-none d-sm-inline">Finance Module</span></a>
 
           <div class="collapse" id="submenu1" aria-expanded="false">
             <ul class="flex-column pl-2 nav">

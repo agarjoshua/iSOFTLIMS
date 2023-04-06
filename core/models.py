@@ -331,6 +331,9 @@ class Students(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     objects = models.Manager()
 
+    def __str__(self):
+        return str(self.admin.name)
+
 
 #: TODO
 ## implement the student registration number field properly

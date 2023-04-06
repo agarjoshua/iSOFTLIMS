@@ -51,7 +51,7 @@ def enroll_session(request):
     }
     return render(request, "student_template/student_enrollment_management.html", context)
 
-
+#TODO: FIX THIS FREAKING DISASTER
 def enroll_session_save(request,enrollment_id):
     enrollment = Session.objects.get(id=enrollment_id)
     enrollments = Session.objects.all()
@@ -73,7 +73,6 @@ def enroll_session_save(request,enrollment_id):
             return render(request, "student_template/student_enrollment_management.html", context)
 
         elif created := Enrollment.objects.get_or_create(student=student, session=enrollment):
-            print(created)
             messages.success(request, "Succesfully enrolled")
         else:
             messages.info(request, "You are already Succesfully enrolled")

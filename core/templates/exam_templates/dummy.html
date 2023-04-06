@@ -1,0 +1,903 @@
+<div>
+    <div class="row mx-3">
+        <div class="col-lg-6">
+            <!-- PIE CHART -->
+            <div class="card card-warning">
+                <div class="card-header" data-toggle="collapse" data-target="#collapseRegister">
+                    <h3 class="card-title">Register Student to Exam</h3>
+
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="my-custom-collapse">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                </div>
+                <div id="collapseRegister" class="card-body collapse">
+                    <div class="">
+                        <h2>Exam Registration</h2>
+                        <form id="exam-registration-form">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="exams">Exams</label>
+                                <select name="exams" class="form-control">
+                                    {% for exam in exams %}
+                                    <option value="{{ exam.id }}">{{ exam.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="student">Student</label>
+                                <select name="student" class="form-control">
+                                    {% for student in students %}
+                                    <option value="{{ student.id }}">{{ student.first_name }} {{
+                                        student.last_name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="approved"
+                                        value="true">
+                                    <label class="form-check-label" for="approved">
+                                        Approved
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+
+                            <a class="btn btn-primary" href="{% url 'enroll_student' %}" role="button">Mass
+                                Register/ Deregister Students For Exams</a> <br />&nbsp;
+
+                        </form>
+                    </div>
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+        </div>
+
+        <div class="col-lg-3">
+            <!-- DONUT CHART -->
+            <div class="card card-warning">
+                <div class="card-header" data-toggle="collapse" data-target="#collapseExample">
+                    <h3 class="card-title">Add Exam</h3>
+
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="my-custom-collapse">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                </div>
+                <div id="collapseExample" class="card-body collapse">
+                    <div class="">
+                        <h2>Add Exam</h2>
+                        <form id="exam-form">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="name">Name</label>
+                                <input type="text" class="form-control" id="name" name="name">
+                            </div>
+                            <div class="form-group">
+                                <label for="exam_type">Exam Type</label>
+                                <select class="form-control" id="exam_type" name="exam_type">
+                                    {% for exam_type in exam_types %}
+                                    <option value="{{ exam_type.id }}">{{ exam_type.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="exam_date">Exam Date</label>
+                                <input type="datetime-local" class="form-control" id="exam_date"
+                                    name="exam_date">
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="is_compulsory"
+                                    name="is_compulsory">
+                                <label class="form-check-label" for="is_compulsory">Is
+                                    Compulsory</label>
+                            </div>
+                            <div class="form-group">
+                                <label for="exam_class">Exam Class</label>
+                                <select class="form-control" id="exam_class" name="exam_class">
+                                    {% for exam_class in exam_classes %}
+                                    <option value="{{ exam_class.id }}">{{ exam_class.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
+                    </div>
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+
+        </div>
+
+        <div class="col-lg-3">
+            <!-- DONUT CHART -->
+            <div class="card card-warning">
+                <div class="card-header" data-toggle="collapse" data-target="#collapseExamType">
+                    <h3 class="card-title">Add Exam Type</h3>
+
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="my-custom-collapse">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                </div>
+                <div id="collapseExamType" class="card-body collapse">
+                    <div class="">
+                        <h2>Add Exam Type</h2>
+                        <div class="">
+                            <div class="d-flex justify-content-between">
+                                <form id="exam-type-form">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        <label for="name">Exam Type Name:</label>
+                                        <input type="text" class="form-control" id="exam_type_name" name="name">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="description">Exam Type Description:</label>
+                                        <textarea class="form-control" id="exam_type_description"
+                                            name="description"></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                </form>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="row mx-3">
+        <div class="col-lg-6">
+            <!-- PIE CHART -->
+            <div class="card card-warning">
+                <div class="card-header" data-toggle="collapse" data-target="#collapseGradeRange">
+                    <h3 class="card-title">Add Exam Grade Range</h3>
+
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="my-custom-collapse">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                </div>
+                <div id="collapseGradeRange" class="collapseGradeRange-card-body collapse">
+                    <div class="col-md-6">
+                        <h2>Grade Range Form</h2>
+                        <hr>
+                        <form id="grade-range-form">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="exam">Exam:</label>
+                                <select class="form-control" id="exam" name="exam" required>
+                                    <option value="" disabled selected>Select Exam</option>
+                                    {% for exam in exams %}
+                                    <option value="{{ exam.id }}">{{ exam.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="grade">Grade:</label>
+                                <select class="form-control" id="grade" name="grade" required>
+                                    <option value="" disabled selected>Select Grade</option>
+                                    <option value="A">A</option>
+                                    <option value="B">B</option>
+                                    <option value="C">C</option>
+                                    <option value="D">D</option>
+                                    <option value="F">F</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="min_score">Minimum Score:</label>
+                                <input type="number" class="form-control" id="min_score" name="min_score"
+                                    required>
+                            </div>
+                            <div class="form-group">
+                                <label for="max_score">Maximum Score:</label>
+                                <input type="number" class="form-control" id="max_score" name="max_score"
+                                    required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
+                    </div>
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+        </div>
+
+        <div class="col-lg-6">
+            <!-- PIE CHART -->
+            <div class="card card-warning">
+                <div class="card-header" data-toggle="collapse" data-target="#collapseGradeStudent">
+                    <h3 class="card-title">Grade Student</h3>
+
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="my-custom-collapse">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                </div>
+                <div id="collapseGradeStudent" class="collapseGradeStudent-card-body collapse">
+                    <div class="col-md-6">
+                        <h2>Exam Result Form</h2>
+                        <form id="exam-result-form">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="student">Student</label>
+                                <select name="student" class="form-control">
+                                    {% for student in students %}
+                                    <option value="{{ student.id }}">{{ student.first_name }} {{
+                                        student.last_name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="exam">Exam</label>
+                                <select name="exam" class="form-control">
+                                    {% for exam in exams %}
+                                    <option value="{{ exam.id }}">{{ exam.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="session">Session</label>
+                                <select name="session" class="form-control">
+                                    {% for session in sessions %}
+                                    <option value="{{ session.id }}">{{ session.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="grade">Grade</label>
+                                <select name="grade" class="form-control">
+                                    {% for grade in grades %}
+                                    <option value="{{ grade.0 }}">{{ grade.1 }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="score">Score</label>
+                                <input type="text" name="score" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+        </div>
+
+    </div>
+
+    <hr>
+
+    <div class="row mx-3">
+        <div class="col-lg-6">
+            <!-- PIE CHART -->
+            <div class="card card-warning">
+                <div class="card-header" data-toggle="collapse" data-target="#collapseExamsRegister">
+                    <h3 class="card-title">Exams Results</h3>
+
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="my-custom-collapse">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                </div>
+                <div id="collapseExamsRegister" class="card-body collapse">
+                    <div class="col-md-6">
+                        <h2>Exam Result Form</h2>
+                        <form id="exam-result-form">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="student">Student</label>
+                                <select name="student" class="form-control">
+                                    {% for student in students %}
+                                    <option value="{{ student.id }}">{{ student.first_name }} {{
+                                        student.last_name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="exam">Exam</label>
+                                <select name="exam" class="form-control">
+                                    {% for exam in exams %}
+                                    <option value="{{ exam.id }}">{{ exam.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="session">Session</label>
+                                <select name="session" class="form-control">
+                                    {% for session in sessions %}
+                                    <option value="{{ session.id }}">{{ session.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="grade">Grade</label>
+                                <select name="grade" class="form-control">
+                                    {% for grade in grades %}
+                                    <option value="{{ grade.0 }}">{{ grade.1 }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="score">Score</label>
+                                <input type="text" name="score" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+        </div>
+
+        <div class="col-lg-6">
+            <!-- PIE CHART -->
+            <div class="card card-warning">
+                <div class="card-header" data-toggle="collapse" data-target="#GenerateTranscripts">
+                    <h3 class="card-title">Generate</h3>
+
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="my-custom-collapse">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                </div>
+                <div id="GenerateTranscripts" class="card-body collapse">
+                    <div class="col-md-6">
+                        <h2>Transcripts Form</h2>
+                        <form id="transcripts-form">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="student">Student</label>
+                                <select name="student" class="form-control">
+                                    {% for student in students %}
+                                    {% endfor %}
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+        </div>
+
+    </div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% extends 'admin_template/base_template.html' %}
+
+{% block page_title %}
+Manage Examinations
+{% endblock page_title %}
+
+{% block main_content %}
+
+{% load static %}
+
+<section class="content">
+    <div class="">
+        <a class="btn btn-primary" href="{% url 'enroll_student' %}" role="button">Add an examination</a> <br />&nbsp;
+        {% if messages %}
+        <div class="form-group">
+            <div class="col-12">
+                {% for message in messages %}
+                {% if message.tags == "error" %}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                {% elif message.tags == "success" %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                {% elif message.tags == "warning" %}
+                <div class="alert alert-warning alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+        <div>
+
+            <div class="card-header">
+                <h3 class="card-title">Manage Exams Portal</h3>
+            </div>
+            <div class="card-body table-responsive p-0">
+                <div class="">
+                    <div class="" style="">
+                        <div class="mx-3 my-3">
+                            <div class="d-flex justify-content-between">
+                                <div class="col-md-6">
+                                    <h2>Exam Registration Form</h2>
+                                    <form id="exam-registration-form">
+                                        {% csrf_token %}
+                                        <div class="form-group">
+                                            <label for="exams">Exams</label>
+                                            <select name="exams" class="form-control">
+                                                {% for exam in exams %}
+                                                <option value="{{ exam.id }}">{{ exam.name }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="student">Student</label>
+                                            <select name="student" class="form-control">
+                                                {% for student in students %}
+                                                <option value="{{ student.id }}">{{ student.first_name }} {{
+                                                    student.last_name }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="approved"
+                                                    value="true">
+                                                <label class="form-check-label" for="approved">
+                                                    Approved
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-primary">Submit</button>
+                                        </div>
+
+                                        <a class="btn btn-primary" href="{% url 'enroll_student' %}" role="button">Mass
+                                            Register/ Deregister Students For Exams</a> <br />&nbsp;
+
+                                    </form>
+                                </div>
+                                <div class="col-md-3">
+                                    <h2>Add Exam</h2>
+                                    <form id="exam-form">
+                                        {% csrf_token %}
+                                        <div class="form-group">
+                                            <label for="name">Name</label>
+                                            <input type="text" class="form-control" id="name" name="name">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exam_type">Exam Type</label>
+                                            <select class="form-control" id="exam_type" name="exam_type">
+                                                {% for exam_type in exam_types %}
+                                                <option value="{{ exam_type.id }}">{{ exam_type.name }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exam_date">Exam Date</label>
+                                            <input type="datetime-local" class="form-control" id="exam_date"
+                                                name="exam_date">
+                                        </div>
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" id="is_compulsory"
+                                                name="is_compulsory">
+                                            <label class="form-check-label" for="is_compulsory">Is
+                                                Compulsory</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exam_class">Exam Class</label>
+                                            <select class="form-control" id="exam_class" name="exam_class">
+                                                {% for exam_class in exam_classes %}
+                                                <option value="{{ exam_class.id }}">{{ exam_class.name }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                    </form>
+                                </div>
+                                <div class="col-md-3">
+                                    <h2>Add Exam Type</h2>
+                                    <form id="exam-type-form">
+                                        {% csrf_token %}
+                                        <div class="form-group">
+                                            <label for="name">Exam Type Name:</label>
+                                            <input type="text" class="form-control" id="exam_type_name" name="name">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="description">Exam Type Description:</label>
+                                            <textarea class="form-control" id="exam_type_description"
+                                                name="description"></textarea>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mx-3 my-3">
+                            <div class="d-flex justify-content-between">
+                                <div class="col-md-6">
+                                    <h2>Grade Range Form</h2>
+                                    <hr>
+                                    <form id="grade-range-form">
+                                        {% csrf_token %}
+                                        <div class="form-group">
+                                            <label for="exam">Exam:</label>
+                                            <select class="form-control" id="exam" name="exam" required>
+                                                <option value="" disabled selected>Select Exam</option>
+                                                {% for exam in exams %}
+                                                <option value="{{ exam.id }}">{{ exam.name }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="grade">Grade:</label>
+                                            <select class="form-control" id="grade" name="grade" required>
+                                                <option value="" disabled selected>Select Grade</option>
+                                                <option value="A">A</option>
+                                                <option value="B">B</option>
+                                                <option value="C">C</option>
+                                                <option value="D">D</option>
+                                                <option value="F">F</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="min_score">Minimum Score:</label>
+                                            <input type="number" class="form-control" id="min_score" name="min_score"
+                                                required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="max_score">Maximum Score:</label>
+                                            <input type="number" class="form-control" id="max_score" name="max_score"
+                                                required>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                    </form>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <h2>Exam Registration Form</h2>
+                                    <form id="exam-registration-form">
+                                        {% csrf_token %}
+                                        <div class="form-group">
+                                            <label for="exams">Exams</label>
+                                            <select name="exams" class="form-control">
+                                                {% for exam in exams %}
+                                                <option value="{{ exam.id }}">{{ exam.name }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="student">Student</label>
+                                            <select name="student" class="form-control">
+                                                {% for student in students %}
+                                                <option value="{{ student.id }}">{{ student.first_name }} {{
+                                                    student.last_name }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="approved"
+                                                    value="true">
+                                                <label class="form-check-label" for="approved">
+                                                    Approved
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-primary">Submit</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mx-3 my-3">
+                            <div class="d-flex justify-content-between">
+                                <div class="col-md-6">
+                                    <h2>Exam Result Form</h2>
+                                    <form id="exam-result-form">
+                                        {% csrf_token %}
+                                        <div class="form-group">
+                                            <label for="student">Student</label>
+                                            <select name="student" class="form-control">
+                                                {% for student in students %}
+                                                <option value="{{ student.id }}">{{ student.first_name }} {{
+                                                    student.last_name }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exam">Exam</label>
+                                            <select name="exam" class="form-control">
+                                                {% for exam in exams %}
+                                                <option value="{{ exam.id }}">{{ exam.name }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="session">Session</label>
+                                            <select name="session" class="form-control">
+                                                {% for session in sessions %}
+                                                <option value="{{ session.id }}">{{ session.name }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="grade">Grade</label>
+                                            <select name="grade" class="form-control">
+                                                {% for grade in grades %}
+                                                <option value="{{ grade.0 }}">{{ grade.1 }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="score">Score</label>
+                                            <input type="text" name="score" class="form-control">
+                                        </div>
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-primary">Submit</button>
+                                        </div>
+                                    </form>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <h2>Transcripts Form</h2>
+                                    <form id="transcripts-form">
+                                        {% csrf_token %}
+                                        <div class="form-group">
+                                            <label for="student">Student</label>
+                                            <select name="student" class="form-control">
+                                                {% for student in students %}
+                                                {% endfor %}
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</section>
+
+{% endblock main_content %}
+
+{% block custom_js %}
+
+{% comment %}
+With these changes, the "Select All" button will check all checkboxes in the table, and only unchecked checkboxes will
+be included in the mass edit action.
+{% endcomment %}
+
+<script>
+    //const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+    const massEditBtn = document.querySelector('#mass-edit-btn');
+    const selectAllBtn = document.querySelector('#select-all-btn');
+    const enrolledIdsCheckboxes = document.querySelectorAll('input[name="enrolled_ids[]"]');
+
+    const enrolledIds = [];
+
+    enrolledIdsCheckboxes.forEach((checkbox) => {
+        if (checkbox.checked) {
+            enrolledIds.push(checkbox.value);
+        }
+    });
+
+    selectAllBtn.addEventListener('click', () => {
+        Array.from(enrolledIdsCheckboxes).forEach((checkbox) => {
+            checkbox.checked = true;
+        });
+    });
+
+    massEditBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const enrolledIds = Array.from(enrolledIdsCheckboxes)
+            .filter((checkbox) => checkbox.checked)
+            .map((checkbox) => checkbox.value);
+
+        console.log('enrolled ids is ' + enrolledIds)
+
+        if (enrolledIds.length > 0) {
+            //const formData = new FormData();
+            //formData.append('enrolled_ids', enrolledIds.join(','));
+            //formData.append('is_active', 'true');
+
+            const formData = new FormData();
+            enrolledIds.forEach((id) => {
+                formData.append('enrolled_ids[]', id);
+            });
+
+            console.log(formData)
+
+            fetch('{% url 'mass_edit_enrolled' %}', {
+                method: 'POST',
+                body: formData,
+                //headers: {
+                //    'X-CSRFToken': csrfToken
+                //}
+            }).then((response) => {
+                if (response.ok) {
+                    location.reload();
+                }
+            });
+        }
+    });
+
+    $(document).ready(function () {
+        // Submit Exam form with AJAX
+        $("#exam-form").submit(function (event) {
+            event.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: "/exam-submit/",
+                data: $(this).serialize(),
+                success: function (response) {
+                    alert(response);
+                    location.reload();
+                },
+                error: function (response) {
+                    alert(response);
+                }
+            });
+        });
+
+        // Submit ExamType form with AJAX
+        $("#exam-type-form").submit(function (event) {
+            event.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: "/exam-type-submit/",
+                data: $(this).serialize(),
+                success: function (response) {
+                    alert(response);
+                    location.reload();
+                },
+                error: function (response) {
+                    alert(response);
+                }
+            });
+        });
+
+        // Submit GradeRange form with AJAX
+        $("#grade-range-form").submit(function (event) {
+            event.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: "/grade-range-submit/",
+                data: $(this).serialize(),
+                success: function (response) {
+                    alert(response);
+                    location.reload();
+                },
+                error: function (response) {
+                    alert(response);
+                }
+            });
+        });
+
+        // Submit ExamRegistration form with AJAX
+        $("#exam-registration-form").submit(function (event) {
+            event.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: "/exam-registration-submit/",
+                data: $(this).serialize(),
+                success: function (response) {
+                    alert(response);
+                    location.reload();
+                },
+                error: function (response) {
+                    alert(response);
+                }
+            });
+        });
+
+        // Submit ExamResult form with AJAX
+        $("#exam-result-form").submit(function (event) {
+            event.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: "/exam-result-submit/",
+                data: $(this).serialize(),
+                success: function (response) {
+                    alert(response);
+                    location.reload();
+                },
+                error: function (response) {
+                    alert(response);
+                }
+            });
+        });
+
+        // Submit Transcripts form with AJAX
+        $("#transcripts-form").submit(function (event) {
+            event.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: "/transcripts-submit/",
+                data: $(this).serialize(),
+                success: function (response) {
+                    alert(response);
+                    location.reload();
+                },
+                error: function (response) {
+                    alert(response);
+                }
+            });
+        });
+</script>
+
+{% endblock custom_js %}

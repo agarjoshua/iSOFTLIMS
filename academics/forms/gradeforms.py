@@ -1,12 +1,10 @@
 from django import forms
-from academics.models import GradeLevel
+from academics.models import ClusterClass, GradeLevel
 from core.models import Teacher
 
 class ClassGradeForm(forms.ModelForm):
 
-    # teacher = forms.ModelChoiceField(queryset=Teacher.objects.all())
-    # created_at = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
-
+    compulsory_classes = forms.ModelChoiceField(queryset=ClusterClass.objects.all(), label='Compulsory Cluster')
 
     class Meta: 
         model = GradeLevel

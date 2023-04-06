@@ -1,0 +1,475 @@
+{% extends 'admin_template/base_template.html' %}
+
+{% block page_title %}
+<h1 class="ml-3">Manage Examinations</h1>
+{% endblock page_title %}
+
+{% block main_content %}
+
+{% load static %}
+
+
+<section class="content">
+    <div class="">
+
+        {% if messages %}
+        <div class="form-group">
+            <div class="col-12">
+                {% for message in messages %}
+                {% if message.tags == "error" %}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                {% elif message.tags == "success" %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                {% elif message.tags == "warning" %}
+                <div class="alert alert-warning alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="mx-4">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Exam Type</th>
+                        <th>Exam Date</th>
+                        <th>Compulsory</th>
+                        <th>Exam Class</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <tr class="bg-light">
+                            <td contenteditable="true">{{ exam.name }}</td>
+                            <td contenteditable="true">{{ exam.exam_type.name }}</td>
+                            <td contenteditable="true">{{ exam.exam_date }}</td>
+                            <td contenteditable="true">{{ exam.is_compulsory }}</td>
+                            <td contenteditable="true">{{ exam.exam_class }}</td>
+                            <td>
+                                <button class="btn btn-primary save-row">Save</button>
+                            </td>
+                        </tr>
+
+
+                        <td contenteditable="true">Row 1 Header 1</td>
+                        <td contenteditable="true">Row 1 Header 2</td>
+                        <td contenteditable="true">Row 1 Header 3</td>
+                        <td contenteditable="true">Row 1 Header 4</td>
+                        <td contenteditable="true">Row 1 Header 5</td>
+                        
+                        <td>
+                            <button class="btn btn-primary" data-toggle="collapse" data-target="#form1">Add Details</button>
+                            <button class="btn btn-button btn-success">Save</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="8">
+                            <div id="form1" class="form-row collapse">
+                                <div>
+
+                                    
+                                </div>
+
+                                <div class="card col-md-6 my-3">
+                                    <div class="container my-3">
+                                        <h3 class="text-bold">Grading for the Examinations</h3>
+                                        <div class="">
+                                          <div class=" ">
+                                            <table class="table table-striped">
+                                              <thead>
+                                                <tr>
+                                                  <th></th>
+                                                  <th>Grade</th>
+                                                  <th>Min Score</th>
+                                                  <th>Max Score</th>
+                                                  <th>Action</th>
+                                                </tr>
+                                              </thead>
+                                              <tbody>
+                                                <tr>
+                                                  <td></td>
+                                                  <td contenteditable="true"></td>
+                                                  <td contenteditable="true"></td>
+                                                  <td contenteditable="true"></td>
+                                                  <td>
+                                                    <button class="btn btn-success save-row">Save</button>
+                                                  </td>
+                                                </tr>
+                                                <tr>
+                                                  <td>1</td>
+                                                  <td contenteditable="true">A</td>
+                                                  <td contenteditable="true">90</td>
+                                                  <td contenteditable="true">100</td>
+                                                  <td>
+                                                    <button class="btn btn-success edit-row">Save</button>
+                                                    <button class="btn btn-danger delete-row">Delete</button>
+                                                  </td>
+                                                </tr>
+                                                <tr>
+                                                  <td>2</td>
+                                                  <td contenteditable="true">B</td>
+                                                  <td contenteditable="true">80</td>
+                                                  <td contenteditable="true">89</td>
+                                                  <td>
+                                                    <button class="btn btn-success edit-row">Save</button>
+                                                    <button class="btn btn-danger delete-row">Delete</button>
+                                                  </td>
+                                                </tr>
+                                                <tr>
+                                                  <td>3</td>
+                                                  <td contenteditable="true">C</td>
+                                                  <td contenteditable="true">70</td>
+                                                  <td contenteditable="true">79</td>
+                                                  <td>
+                                                    <button class="btn btn-success edit-row">Save</button>
+                                                    <button class="btn btn-danger delete-row">Delete</button>
+                                                  </td>
+                                                </tr>
+                                              </tbody>
+                                            </table>
+                                          </div>
+                                        </div>
+                                      </div>
+                                  </div>
+                                  
+                                <div class="col-md-6 my-3">
+                                    <div class="card rowss">
+                                        <h3 class="mx-3 my-3 text-bold">Add Exam Type</h3>
+                                        
+                                            <div class="mx-3">
+                                                <div class=" my-3">
+                                                    <div class="">
+                                                        <form id="exam-type-form">
+                                                            {% csrf_token %}
+                                                            <div class="form-group">
+                                                                <label for="name">Exam Type Name:</label>
+                                                                <input type="text" class="form-control" id="exam_type_name" name="name">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="description">Exam Type Description:</label>
+                                                                <textarea class="form-control" id="exam_type_description"
+                                                                    name="description"></textarea>
+                                                            </div>
+                                                            <button type="submit" class="btn btn-primary">Submit</button>
+                                                        </form>
+
+                                                       <div  class="">
+
+                                                        <table class="table table-striped">
+                                                            <thead>
+                                                              <tr>
+                                                                <th>Exam Type Name</th>
+                                                                <th>Exam Type Description</th>
+                                                                <th></th>
+                                                              </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                              <tr>
+                                                                <td contenteditable="true">Midterm Exam</td>
+                                                                <td contenteditable="true">A midterm exam for the current semester.</td>
+                                                                <td>
+                                                                  <button type="button" class="btn btn-sm btn-primary mr-2">Edit</button>
+                                                                  <button type="button" class="btn btn-sm btn-success mr-2">Save</button>
+                                                                  <button type="button" class="btn btn-sm btn-danger">Delete</button>
+                                                                </td>
+                                                              </tr>
+                                                              <tr>
+                                                                <td contenteditable="true">Final Exam</td>
+                                                                <td contenteditable="true">A final exam for the current semester.</td>
+                                                                <td>
+                                                                  <button type="button" class="btn btn-sm btn-primary mr-2">Edit</button>
+                                                                  <button type="button" class="btn btn-sm btn-success mr-2">Save</button>
+                                                                  <button type="button" class="btn btn-sm btn-danger">Delete</button>
+                                                                </td>
+                                                              </tr>
+                                                              <tr>
+                                                                <td contenteditable="true">Entrance Exam</td>
+                                                                <td contenteditable="true">An entrance exam for new students.</td>
+                                                                <td>
+                                                                  <button type="button" class="btn btn-sm btn-primary mr-2">Edit</button>
+                                                                  <button type="button" class="btn btn-sm btn-success mr-2">Save</button>
+                                                                  <button type="button" class="btn btn-sm btn-danger">Delete</button>
+                                                                </td>
+                                                              </tr>
+                                                              <tr>
+                                                                <td contenteditable="true">Certification Exam</td>
+                                                                <td contenteditable="true">A certification exam for professional accreditation.</td>
+                                                                <td>
+                                                                  <button type="button" class="btn btn-sm btn-primary mr-2">Edit</button>
+                                                                  <button type="button" class="btn btn-sm btn-success mr-2">Save</button>
+                                                                  <button type="button" class="btn btn-sm btn-danger">Delete</button>
+                                                                </td>
+                                                              </tr>
+                                                              <tr>
+                                                                <td contenteditable="true">Placement Exam</td>
+                                                                <td contenteditable="true">A placement exam for determining course placement.</td>
+                                                                <td>
+                                                                  <button type="button" class="btn btn-sm btn-primary mr-2">Edit</button>
+                                                                  <button type="button" class="btn btn-sm btn-success mr-2">Save</button>
+                                                                  <button type="button" class="btn btn-sm btn-danger">Delete</button>
+                                                                </td>
+                                                              </tr>
+                                                              <tr>
+                                                                <td contenteditable="true">Progress Test</td>
+                                                                <td contenteditable="true">A progress test to evaluate student performance.</td>
+                                                                <td>
+                                                                  <button type="button" class="btn btn-sm btn-primary mr-2">Edit</button>
+                                                                  <button type="button" class="btn btn-sm btn-success mr-2">Save</button>
+                                                                  <button type="button" class="btn btn-sm btn-danger">Delete</button>
+                                                                </td>
+                                                              </tr>
+                                                            </tbody>
+                                                          </table>
+                                                       </div>
+
+                                                    </div>
+                                                </div>
+                
+                                            </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+
+</section>
+
+{% endblock main_content %}
+
+{% block custom_js %}
+
+{% comment %}
+With these changes, the "Select All" button will check all checkboxes in the table, and only unchecked checkboxes will
+be included in the mass edit action.
+{% endcomment %}
+
+<script>
+    $(document).ready(function () {
+        $('.card').removeClass('collapsed');
+
+        $('[data-card-widget="my-custom-collapse"]').on('click', function () {
+            // Toggle the card body collapse state
+            $(this).closest('.card').find('.card-body').toggleClass('collapsed');
+            // Toggle the button icon
+            $(this).find('i').toggleClass('fas fa-minus fas fa-minus');
+        });
+        $('[data-card-widget="collapseRegister"]').on('click', function () {
+            // Toggle the card body collapse state
+            $(this).closest('.card').find('.register-card-body').toggleClass('collapsed');
+            // Toggle the button icon
+            $(this).find('i').toggleClass('fas fa-minus fas fa-minus');
+        });
+        $('[data-card-widget="collapseGradeRange"]').on('click', function () {
+            // Toggle the card body collapse state
+            $(this).closest('.card').find('.collapseGradeRange-card-body').toggleClass('collapsed');
+            // Toggle the button icon
+            $(this).find('i').toggleClass('fas fa-minus fas fa-minus');
+        });
+        $('[data-card-widget="collapseExamType"]').on('click', function () {
+            // Toggle the card body collapse state
+            $(this).closest('.card').find('.collapseExamType-card-body').toggleClass('collapsed');
+            // Toggle the button icon
+            $(this).find('i').toggleClass('fas fa-minus fas fa-minus');
+        });
+        $('[data-card-widget="collapseExamType"]').on('click', function () {
+            // Toggle the card body collapse state
+            $(this).closest('.card').find('.collapseExamType-card-body').toggleClass('collapsed');
+            // Toggle the button icon
+            $(this).find('i').toggleClass('fas fa-minus fas fa-minus');
+        });
+        $('[data-card-widget="collapseExamType"]').on('click', function () {
+            // Toggle the card body collapse state
+            $(this).closest('.card').find('.collapseExamType-card-body').toggleClass('collapsed');
+            // Toggle the button icon
+            $(this).find('i').toggleClass('fas fa-minus fas fa-minus');
+        });
+        $('[data-card-widget="collapseExamType"]').on('click', function () {
+            // Toggle the card body collapse state
+            $(this).closest('.card').find('.collapseExamType-card-body').toggleClass('collapsed');
+            // Toggle the button icon
+            $(this).find('i').toggleClass('fas fa-minus fas fa-minus');
+        });
+
+    });
+
+    $(document).ready(function () {
+        $('.btn').click(function () {
+            $(this).siblings('.form-row').toggle();
+        });
+    });
+
+    // Add event listener to the "Add Row" button
+    var addRowBtn = document.querySelector('#add-row-btn');
+    addRowBtn.addEventListener('click', addRow);
+
+    const tableBody = document.querySelector('table tbody');
+
+    // Get the add row button
+    const addRowBtn = document.getElementById('add-row-btn');
+
+    // Add an event listener to the add row button
+    addRowBtn.addEventListener('click', function () {
+        // Create a new row
+        const newRow = document.createElement('tr');
+
+        // Add cells to the new row
+        const cell1 = document.createElement('td');
+        cell1.contentEditable = true;
+        newRow.appendChild(cell1);
+
+        const cell2 = document.createElement('td');
+        cell2.contentEditable = true;
+        newRow.appendChild(cell2);
+
+        const cell3 = document.createElement('td');
+        cell3.contentEditable = true;
+        newRow.appendChild(cell3);
+
+        const cell4 = document.createElement('td');
+        cell4.contentEditable = true;
+        newRow.appendChild(cell4);
+
+        const cell5 = document.createElement('td');
+        const saveBtn = document.createElement('button');
+        saveBtn.classList.add('btn', 'btn-primary');
+        saveBtn.innerText = 'Save';
+        saveBtn.addEventListener('click', function () {
+            // Save the data
+            console.log('Data saved!');
+        });
+        cell5.appendChild(saveBtn);
+        newRow.appendChild(cell5);
+
+        // Append the new row to the table body
+        tableBody.insertBefore(newRow, tableBody.firstChild);
+    });
+
+    $(document).ready(function () {
+        // Submit Exam form with AJAX
+        $("#exam-form").submit(function (event) {
+            event.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: "/exam-submit/",
+                data: $(this).serialize(),
+                success: function (response) {
+                    alert(response);
+                    location.reload();
+                },
+                error: function (response) {
+                    alert(response);
+                }
+            });
+        });
+
+        // Submit ExamType form with AJAX
+        $("#exam-type-form").submit(function (event) {
+            event.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: "/exam-type-submit/",
+                data: $(this).serialize(),
+                success: function (response) {
+                    alert(response);
+                    location.reload();
+                },
+                error: function (response) {
+                    alert(response);
+                }
+            });
+        });
+
+        // Submit GradeRange form with AJAX
+        $("#grade-range-form").submit(function (event) {
+            event.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: "/grade-range-submit/",
+                data: $(this).serialize(),
+                success: function (response) {
+                    alert(response);
+                    location.reload();
+                },
+                error: function (response) {
+                    alert(response);
+                }
+            });
+        });
+
+        // Submit ExamRegistration form with AJAX
+        $("#exam-registration-form").submit(function (event) {
+            event.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: "/exam-registration-submit/",
+                data: $(this).serialize(),
+                success: function (response) {
+                    alert(response);
+                    location.reload();
+                },
+                error: function (response) {
+                    alert(response);
+                }
+            });
+        });
+
+        // Submit ExamResult form with AJAX
+        $("#exam-result-form").submit(function (event) {
+            event.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: "/exam-result-submit/",
+                data: $(this).serialize(),
+                success: function (response) {
+                    alert(response);
+                    location.reload();
+                },
+                error: function (response) {
+                    alert(response);
+                }
+            });
+        });
+
+        // Submit Transcripts form with AJAX
+        $("#transcripts-form").submit(function (event) {
+            event.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: "/transcripts-submit/",
+                data: $(this).serialize(),
+                success: function (response) {
+                    alert(response);
+                    location.reload();
+                },
+                error: function (response) {
+                    alert(response);
+                }
+            });
+        });
+</script>
+
+{% endblock custom_js %}

@@ -6,23 +6,26 @@ from academics.forms.clusterforms import ClusterClassForm
 from academics.forms.gradeforms import ClassGradeForm, GradeEditForm
 from academics.models import Class, ClusterClass, GradeLevel
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.admin.views.decorators import user_passes_test
 
 
+def is_admin(user):
+    return user.is_superuser
 
+@user_passes_test(is_admin)
 def add_class(request):
-    form = ClassCreateForm()
+    # form = ClassCreateForm()
     if request.method == 'POST':
         form = ClassCreateForm(request.POST)
-
         try:
             if form.is_valid():
-                form.save()
-                form = ClassCreateForm()
-                context = {
-                    'form': form
-                }
-                messages.success(request, "Class Succesfully Added")
-                render (request, "admin_template/add_class_template.html", context)
+                class_name = request.POST.get('class_name')
+                if Class.objects.filter(class_name=class_name).exists():
+                    messages.error(request, 'A class with this name already exists')
+                else:
+                    form.save()
+                    messages.success(request, "Class Succesfully Added")
+                    return redirect('manage_class')
             errors = None if form.is_valid() else form.errors.as_data()
             context = {
                 'errors': errors,
@@ -36,13 +39,13 @@ def add_class(request):
         form = ClassCreateForm()
     return render (request, "admin_template/add_class_template.html", {'form': form})
     
-
+@user_passes_test(is_admin)
 def manage_class(request):
     classs = Class.objects.all()
     context = {"classs": classs}
     return render(request, "admin_template/manage_class_template.html", context)
 
-
+@user_passes_test(is_admin)
 def edit_class(request, class_id):
     selected_class = Class.objects.get(id=class_id)
     if request.method == 'POST':
@@ -70,7 +73,7 @@ def _edit_class_helper(selected_class, class_id, request):
     return render(request, "admin_template/edit_class_template.html", context)
 
 
-
+@user_passes_test(is_admin)
 def delete_class(request, class_id):
     selected_class = Class.objects.get(id=class_id)
     try:
@@ -82,29 +85,32 @@ def delete_class(request, class_id):
         return redirect("manage_class")
     
 
-
+@user_passes_test(is_admin)
 def manage_grade(request):
     grade = GradeLevel.objects.all()
     context = {"grades": grade}
     return render(request, "admin_template/manage_grade_template.html", context)
 
+@user_passes_test(is_admin)
 def add_grade(request):
     form = ClassGradeForm()
     context = {"form": form}
-    return render(request, "admin_template/add_grade_template.html", context)               
-
+    return render(request, "admin_template/add_grade_template.html", context)  
+             
+@user_passes_test(is_admin)
 def add_grade_save(request):
     if request.method == 'POST':
         form = ClassGradeForm(request.POST)
         if form.is_valid():
             form.save()
             messages.success(request, "Grade Succesfully Added")
-            return redirect("add_grade")
+            return redirect("manage_grade")
     else:
         messages.error(request, "Invalid Method!")
         form = ClassGradeForm()
     render (request, "admin_template/manage_grade_template.html", {'form': form})
 
+@user_passes_test(is_admin)
 def edit_grade(request, grade_id):
     selected_grade = GradeLevel.objects.get(id=grade_id)
     if request.method == 'POST':
@@ -131,7 +137,7 @@ def _edit_grade_helper(selected_grade, grade_id, request):
     context = {'form': form, 'selected_grade': selected_grade, "id": grade_id}
     return render(request, "admin_template/edit_grade_template.html", context)
 
-
+@user_passes_test(is_admin)
 def delete_grade(request, grade_id):
     selected_grade = GradeLevel.objects.get(id=grade_id)
     try:
@@ -142,7 +148,7 @@ def delete_grade(request, grade_id):
         messages.error(request, f"Failed to Delete Grade, because {e}")
         return redirect("manage_grade")
 
-
+@user_passes_test(is_admin)
 def clusterclass_list(request):
     clusters = ClusterClass.objects.all()
     classes = Class.objects.all()
@@ -152,33 +158,28 @@ def clusterclass_list(request):
         }
     return render(request, "admin_template/manage_clusters_template.html", context)
 
+@user_passes_test(is_admin)
 def clusterclass_detail(request, pk):
     clusterclass = get_object_or_404(ClusterClass, pk=pk)
     return render(request, 'admin_template/clusterclass_detail.html', {'clusterclass': clusterclass})
 
-
+@user_passes_test(is_admin)
 def clusterclass_create(request):  # sourcery skip: extract-method
     if request.method == 'POST':
         form = ClusterClassForm(request.POST)
         if form.is_valid():
             cluster_class_name = request.POST.get('cluster_class_name')
             class_ids = request.POST.getlist('classes')
-
             # Create a new ClusterClass instance and save it to the database
             clusterclass, _ = ClusterClass.objects.get_or_create(cluster_class_name=cluster_class_name)
-            print('----------------------------------')
-            print(clusterclass)
             clusterclass.classes.set(class_ids)
-            print('----------------------------------')
-            print(f'the clusterclass name is - {clusterclass}')
-            print('----------------------------------')
-            print(class_ids)
+            messages.success(request,'Cluster Class Added Succesfully')
+            return render(request, 'admin_template/add_clusterclass_template.html', {'form': form})
     else:
         form = ClusterClassForm()
     return render(request, 'admin_template/add_clusterclass_template.html', {'form': form})
 
-
-
+@user_passes_test(is_admin)
 def clusterclass_edit(request,clusterclass_id):
     clusterclass = get_object_or_404(ClusterClass, id=clusterclass_id)
     if request.method == 'POST':

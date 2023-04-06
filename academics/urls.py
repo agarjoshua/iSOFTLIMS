@@ -1,10 +1,17 @@
 from django.urls import path, include
 
-from academics.subviews import classView
+from academics.subviews import classView, sessionRegistrationView, examinationViews
 from . import views
 # from . import subviews.classView
 
 urlpatterns = [
+    # MANAGE SESSION REGISTATION URLS
+    path('manage_session_registation/', sessionRegistrationView.manage_session_registation, name="manage_session_registation"), 
+    path('enroll_student/',sessionRegistrationView.enroll_student, name='enroll_student'),
+    path('mass_edit_enrolled',sessionRegistrationView.mass_edit_enrolled, name='mass_edit_enrolled'),
+    path('confirm_enrollment/<enrolled_id>/', sessionRegistrationView.confirm_enrollment, name='confirm_enrollment'),
+    path('revoke_enrollment/<enrolled_id>/', sessionRegistrationView.revoke_enrollment, name="revoke_enrollment"),
+
     # Grade Year URLS
     path('add_grade/', classView.add_grade, name="add_grade"),
     path('add_class_grade/', classView.add_grade_save, name="add_grade_save"),
@@ -34,6 +41,9 @@ urlpatterns = [
     path('manage_grade/', classView.manage_grade, name="manage_grade"),
     path('edit_grade/<grade_id>/', classView.edit_grade, name="edit_grade"),
     path('delete_grade/<grade_id>/', classView.delete_grade, name="delete_grade"),
+
+    # MANAGE EXAMINATIONS
+    path('manage_exams/', examinationViews.manage_examinations, name="manage_exams"),
 
     # UTILITY URLS
     path('check_class_exist/', classView.check_class_exist, name="check_class_exist"),
