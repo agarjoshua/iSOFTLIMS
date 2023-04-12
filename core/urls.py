@@ -59,7 +59,8 @@ urlpatterns = [
     # path('staff_leave_view/', AdminViews.staff_leave_view, name="staff_leave_view"),
     # path('staff_leave_approve/<leave_id>/', AdminViews.staff_leave_approve, name="staff_leave_approve"),
     # path('staff_leave_reject/<leave_id>/', AdminViews.staff_leave_reject, name="staff_leave_reject"),
-
+    
+    path('student_home', StudentViews.student_home, name="student_home"),
     path('student_profile/', StudentViews.student_profile, name="student_profile"),
     path('student_sessions/', StudentViews.enroll_session, name="enroll_session"),
     path('enroll_session_save/<enrollment_id>', StudentViews.enroll_session_save, name="enroll_session_save"),

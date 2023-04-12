@@ -66,9 +66,10 @@ def enroll_session_save(request,enrollment_id):
     try:
         if created := Enrollment.objects.get(student=student, session=enrollment):
             messages.info(request, "You are already Succesfully enrolled")
+            print(created)
             context = {
                 "enrollments":enrollments,
-                "try": True
+                "try": created
             }
             return render(request, "student_template/student_enrollment_management.html", context)
 

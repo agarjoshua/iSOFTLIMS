@@ -79,13 +79,13 @@ Enroll to Sessions
                                         <td>{{ enrollment.session_end_date }}</td>
                                         <td class="color-primary">{{ enrollment.is_current }}</td>
                                         <td>
-                                            {% if try%}
+                                            {% for i in try %}
                                             <a class="btn btn-primary" href="{% url 'enroll_session_save' enrollment.id %}" role="button">
                                                 Enroll Sessions</a><br />&nbsp;
-                                            {% else %} 
+                                                {{i}}
                                             <button disabled class="btn btn-success" href="" >
                                                 Enrolled</button><br />&nbsp;
-                                            {% endif %}
+                                            {% endfor %}
                                         </td>
                                     </tr {% endif %}>
                                     {% endfor %}
