@@ -1,0 +1,320 @@
+<div class="mx-4">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Exam Type</th>
+                <th>Exam Date</th>
+                <th>Compulsory</th>
+                <th>Exam Class</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for exam in exam%}
+            <tr>
+                <td contenteditable="true">{{ exam.name }}</td>
+                <td contenteditable="true">{{ exam.exam_type.name }}</td>
+                <td contenteditable="true">{{ exam.exam_date }}</td>
+                <td contenteditable="true">{{ exam.is_compulsory }}</td>
+                <td contenteditable="true">{{ exam.exam_class }}</td>
+                <td>
+                    <button class="btn btn-primary" data-toggle="collapse" data-target="#form{{ exam.id }}">Add
+                        Details</button>
+                    <button class="btn btn-button btn-success">Save</button>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="8">
+                    <div id="form{{ exam.id }}" class="form-row collapse">
+                        <div>
+                        </div>
+                        <div class="card col-md-6 my-3">
+                            <div class="container my-3">
+                                <h3 class="text-bold">Grading for the Examinations</h3>
+                                <div class="">
+                                    <div class=" ">
+                                        <table class="table table-striped">
+                                            <thead>
+                                                {% for i in grade_range_list%}
+                                                {% if i.exam.id == exam.id %}
+                                                <tr>
+                                                    <th></th>
+                                                    <th>Grade</th>
+                                                    <th>Min Score</th>
+                                                    <th>Max Score</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td></td>
+                                                    <td contenteditable="true">{{i.grade}}</td>
+                                                    <td contenteditable="true">{{i.max_score}}</td>
+                                                    <td contenteditable="true">{{i.min_score}}</td>
+                                                    <td>
+                                                        <button class="btn btn-success save-row">Add</button>
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td>1</td>
+                                                    <td contenteditable="true">A</td>
+                                                    <td contenteditable="true">90</td>
+                                                    <td contenteditable="true">100</td>
+                                                    <td>
+                                                        <button class="btn btn-success edit-row">Save</button>
+                                                        <button
+                                                            class="btn btn-danger delete-row">Delete</button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                            {% endif %}
+                                            {% elif grade_range_list.length == 0%}
+
+                                            <h3>No data</h3>
+
+                                            {% endif %}
+                                            {% endfor %}
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 my-3">
+                            <div class="card rowss">
+                                <h3 class="mx-3 my-3 text-bold">Add Exam Type (if not existing)</h3>
+
+                                <div class="mx-3">
+                                    <div class=" my-3">
+                                        <div class="">
+
+                                            <form id="exam-type-form" method="POST"
+                                                action="{% url 'add_exam_type' %}">
+                                                {% csrf_token %}
+
+                                                <div class="form-group">
+                                                    <label class="control-label col-sm-3">Exam Type
+                                                        Name:</label>
+                                                    <div class="col-sm-9">
+                                                        {{ exam_type_form.name }}
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="control-label col-sm-3">Exam Type
+                                                        Description:</label>
+                                                    <div class="col-sm-9">
+                                                        {{ exam_type_form.description }}
+                                                    </div>
+                                                </div>
+
+                                                <button type="submit" class="btn btn-primary">Submit</button>
+                                            </form>
+
+
+                                            <div class="">
+
+                                                <table class="table table-striped">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Exam Type Name</th>
+                                                            <th>Exam Type Description</th>
+                                                            <th></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {% for i in exam_type_list%}
+                                                        <tr>
+                                                            <td contenteditable="true">{{i.name}}</td>
+                                                            <td contenteditable="true">{{i.description}}</td>
+                                                            <td>
+                                                                <button type="button"
+                                                                    class="btn btn-sm btn-primary mr-2">Edit</button>
+                                                                <button type="button"
+                                                                    class="btn btn-sm btn-success mr-2">Save</button>
+                                                                <button type="button"
+                                                                    class="btn btn-sm btn-danger">Delete</button>
+                                                            </td>
+                                                        </tr>
+                                                        {% endfor %}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            {% endfor%}
+        </tbody>
+    </table>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        $('.card').removeClass('collapsed');
+
+        $('[data-card-widget="my-custom-collapse"]').on('click', function () {
+            // Toggle the card body collapse state
+            $(this).closest('.card').find('.card-body').toggleClass('collapsed');
+            // Toggle the button icon
+            $(this).find('i').toggleClass('fas fa-minus fas fa-minus');
+        });
+        $('[data-card-widget="collapseRegister"]').on('click', function () {
+            // Toggle the card body collapse state
+            $(this).closest('.card').find('.register-card-body').toggleClass('collapsed');
+            // Toggle the button icon
+            $(this).find('i').toggleClass('fas fa-minus fas fa-minus');
+        });
+        $('[data-card-widget="collapseGradeRange"]').on('click', function () {
+            // Toggle the card body collapse state
+            $(this).closest('.card').find('.collapseGradeRange-card-body').toggleClass('collapsed');
+            // Toggle the button icon
+            $(this).find('i').toggleClass('fas fa-minus fas fa-minus');
+        });
+        $('[data-card-widget="collapseExamType"]').on('click', function () {
+            // Toggle the card body collapse state
+            $(this).closest('.card').find('.collapseExamType-card-body').toggleClass('collapsed');
+            // Toggle the button icon
+            $(this).find('i').toggleClass('fas fa-minus fas fa-minus');
+        });
+        $('[data-card-widget="collapseExamType"]').on('click', function () {
+            // Toggle the card body collapse state
+            $(this).closest('.card').find('.collapseExamType-card-body').toggleClass('collapsed');
+            // Toggle the button icon
+            $(this).find('i').toggleClass('fas fa-minus fas fa-minus');
+        });
+        $('[data-card-widget="collapseExamType"]').on('click', function () {
+            // Toggle the card body collapse state
+            $(this).closest('.card').find('.collapseExamType-card-body').toggleClass('collapsed');
+            // Toggle the button icon
+            $(this).find('i').toggleClass('fas fa-minus fas fa-minus');
+        });
+        $('[data-card-widget="collapseExamType"]').on('click', function () {
+            // Toggle the card body collapse state
+            $(this).closest('.card').find('.collapseExamType-card-body').toggleClass('collapsed');
+            // Toggle the button icon
+            $(this).find('i').toggleClass('fas fa-minus fas fa-minus');
+        });
+
+    });
+
+    $(document).ready(function () {
+        $('.btn').click(function () {
+            $(this).siblings('.form-row').toggle();
+        });
+    });
+
+    $(document).ready(function () {
+        // Submit Exam form with AJAX
+        $("#exam-form").submit(function (event) {
+            event.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: "/exam-submit/",
+                data: $(this).serialize(),
+                success: function (response) {
+                    alert(response);
+                    location.reload();
+                },
+                error: function (response) {
+                    alert(response);
+                }
+            });
+        });
+
+        // Submit ExamType form with AJAX
+        $("#exam-type-form").submit(function (event) {
+            event.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: "/exam-type-submit/",
+                data: $(this).serialize(),
+                success: function (response) {
+                    alert(response);
+                    location.reload();
+                },
+                error: function (response) {
+                    alert(response);
+                }
+            });
+        });
+
+        // Submit GradeRange form with AJAX
+        $("#grade-range-form").submit(function (event) {
+            event.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: "/grade-range-submit/",
+                data: $(this).serialize(),
+                success: function (response) {
+                    alert(response);
+                    location.reload();
+                },
+                error: function (response) {
+                    alert(response);
+                }
+            });
+        });
+
+        // Submit ExamRegistration form with AJAX
+        $("#exam-registration-form").submit(function (event) {
+            event.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: "/exam-registration-submit/",
+                data: $(this).serialize(),
+                success: function (response) {
+                    alert(response);
+                    location.reload();
+                },
+                error: function (response) {
+                    alert(response);
+                }
+            });
+        });
+
+        // Submit ExamResult form with AJAX
+        $("#exam-result-form").submit(function (event) {
+            event.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: "/exam-result-submit/",
+                data: $(this).serialize(),
+                success: function (response) {
+                    alert(response);
+                    location.reload();
+                },
+                error: function (response) {
+                    alert(response);
+                }
+            });
+        });
+
+        // Submit Transcripts form with AJAX
+        $("#transcripts-form").submit(function (event) {
+            event.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: "/transcripts-submit/",
+                data: $(this).serialize(),
+                success: function (response) {
+                    alert(response);
+                    location.reload();
+                },
+                error: function (response) {
+                    alert(response);
+                }
+            });
+        });
+</script>
+
+{% endblock custom_js %}

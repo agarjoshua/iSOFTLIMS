@@ -45,6 +45,8 @@ urlpatterns = [
     # MANAGE EXAMINATIONS
     path('manage_exams/', examinationViews.manage_examinations, name="manage_exams"),
     path('add_exam_type/', examinationViews.add_exam_type, name="add_exam_type"),
+    path('add_grade_exam/', examinationViews.add_grade, name="add_grade_exam"),
+    path('add_new_grade_exam/', examinationViews.add_new_grade, name="add_new_grade_exam"),
 
     # UTILITY URLS
     path('check_class_exist/', classView.check_class_exist, name="check_class_exist"),

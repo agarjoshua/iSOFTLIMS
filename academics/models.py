@@ -97,10 +97,16 @@ class Exam(models.Model):
     is_compulsory = models.BooleanField(default=True)
     exam_class = models.ForeignKey('Class', on_delete=models.CASCADE)
 
+    def __str__(self) -> str:
+        return self.name
+
 class ExamType(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255)
     description = models.CharField(max_length=255)
+
+    def __str__(self) -> str:
+        return self.name
 
 class GradeRange(models.Model):
     id = models.AutoField(primary_key=True)
@@ -126,6 +132,9 @@ class ExamResult(models.Model):
     session = models.ForeignKey(Session, on_delete=models.CASCADE)
     grade = models.CharField(max_length=1)
     score = models.IntegerField()
+
+    def __str__(self) -> str:
+        return f'Name - {self.student} exam - {self.exam} grade - {self.grade}'
 
 class Transcripts(models.Model):
     student = models.ForeignKey(Students, on_delete=models.CASCADE)
