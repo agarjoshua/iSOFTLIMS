@@ -8,9 +8,9 @@ class Transaction(models.Model):
     # Time, student, Parents(Guardian), Form of payment(Bank, M-pesa), Ammount paid
 
     TRANSACTION_TYPES = [
-        ("payment", "fee_payment"),
+        ("payyment", "fee_payment"),
         ("charge", "fee_charge"),
-        ("other", "other"),
+        ("otherr", "other"),
     ]
     PAYMENT_TYPES = [
         ("mobile_money", "mobile_money"),
