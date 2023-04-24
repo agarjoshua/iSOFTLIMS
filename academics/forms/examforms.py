@@ -1,5 +1,6 @@
 from django import forms
-from academics.models import Exam, ExamType, GradeRange, Class
+from academics.models import Exam, ExamRegistration, ExamType, GradeRange, Class
+from core.models import Students
 
 class ExamForm(forms.ModelForm):
     exam_type = forms.ModelChoiceField(queryset=ExamType.objects.all(), widget=forms.Select(attrs={'class': 'selectpicker', 'data-live-search': 'true'}))
@@ -32,3 +33,19 @@ class GradeRangeForm(forms.ModelForm):
         model = GradeRange
         fields = ['exam','grade','min_score','max_score']
 
+
+# class ClusterClassForm(forms.ModelForm):
+#     if test := Students.objects.get(admin=request.user.id).grade.compulsory_classes:
+#         list_of_classes = ClusterClass.objects.get(id=test.id)
+#         list_of_classes = list_of_classes.classes.all()
+#     classes = forms.ModelMultipleChoiceField(queryset=Class.objects.all(), required=False, widget=forms.CheckboxSelectMultiple)
+
+#     class Meta:
+#         model = ExamRegistration
+#         fields = ['cluster_class_name', 'classes']
+
+
+#     exams = models.ForeignKey('Exam', on_delete=models.CASCADE)
+#     student = models.ManyToManyField(Students)
+#     date_registered = models.DateTimeField(auto_now=True)
+#     approved = models.BooleanField(default=False)

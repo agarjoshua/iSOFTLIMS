@@ -86,6 +86,7 @@ Manage Enrolled Students
                                 </tr>
                             </thead>
                             <tbody>
+                                {% csrf_token %}
                                 {% for enrolled in currently_enrolled %}
                                 <tr>
                                     <td>{{ enrolled.session}}</td>
@@ -135,7 +136,7 @@ With these changes, the "Select All" button will check all checkboxes in the tab
 {% endcomment %}
 
 <script>
-    //const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
     const massEditBtn = document.querySelector('#mass-edit-btn');
     const selectAllBtn = document.querySelector('#select-all-btn');
@@ -178,9 +179,9 @@ With these changes, the "Select All" button will check all checkboxes in the tab
             fetch('{% url 'mass_edit_enrolled' %}', {
                 method: 'POST',
                 body: formData,
-                //headers: {
-                //    'X-CSRFToken': csrfToken
-                //}
+                headers: {
+                    'X-CSRFToken': csrfToken
+                }
             }).then((response) => {
                 if (response.ok) {
                     location.reload();

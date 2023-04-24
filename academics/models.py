@@ -67,6 +67,17 @@ class ClassEnrollment(models.Model):
     student = models.ForeignKey('core.Students', on_delete=models.DO_NOTHING)
     objects = models.Manager()
 
+class ClassAttendance(models.Model):
+    id = models.AutoField(primary_key=True)
+    datetime = models.DateTimeField()
+    present = models.ManyToManyField('core.Students', blank=True)
+    absent = models.ManyToManyField('core.Students', blank=True, related_name='absentees')
+    classroom = models.ForeignKey('Class', on_delete=models.CASCADE)
+    objects = models.Manager()
+
+    def __str__(self):
+        return f'{self.classroom} attendance for {self.datetime.date()}'
+
 
 class ClusterClass(models.Model):
     id = models.AutoField(primary_key=True)
@@ -120,9 +131,10 @@ class GradeRange(models.Model):
     
 class ExamRegistration(models.Model):
     id = models.AutoField(primary_key=True)
-    exams = models.ForeignKey('Exam', on_delete=models.CASCADE)
-    student = models.ManyToManyField(Students)
+    exams = models.ForeignKey('Exam', on_delete=models.CASCADE, null=True)
+    student = models.ForeignKey('core.Students',on_delete=models.CASCADE,null=True)
     date_registered = models.DateTimeField(auto_now=True)
+    registered = models.BooleanField(default=False)
     approved = models.BooleanField(default=False)
 
 class ExamResult(models.Model):

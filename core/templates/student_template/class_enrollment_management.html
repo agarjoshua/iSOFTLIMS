@@ -40,7 +40,7 @@ Enroll to Classes
         <div class="row">
             <div class="col-md-12">
                 <!-- general form elements -->
-                <div class="card">
+                <div class="">
                     <!-- /.card-header -->
                     <div class="card px-3 pt-3">
                         <div class="container-fluid">
@@ -50,161 +50,53 @@ Enroll to Classes
                                 <div class="col-md-6">
                                     <h2>Search and Register for Classes</h2>
                                     <form>
+                                        {% csrf_token %}
                                         <div class="form-group">
                                             <label for="class-search">Class Search:</label>
-                                            <input type="text" class="form-control" id="class-search">
+                                            <input type="text" list="classes" placeholder="Classes" class="form-control" id="class-search">
+                                            <datalist id="classes">
+                                                {% for i in classes %}
+                                                    <option value="{{ i.id }}">{{ i.class_name }}</option>
+                                                {% endfor%}
+                                            </datalist>
                                         </div>
-                                        <button type="submit" class="btn btn-primary">Search</button>
+                                        <button type="submit" id="register-for-class-btn" class="btn btn-primary">Register</button>
                                     </form>
 
-                                    <hr>
-
-                                    <form>
-                                        <div class="form-group">
-                                            <label for="class-name">Class Name:</label>
-                                            <input type="text" class="form-control" id="class-name">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="class-time">Class Time:</label>
-                                            <input type="text" class="form-control" id="class-time">
-                                        </div>
-                                        <button type="submit" class="btn btn-primary">Register</button>
-                                    </form>
                                 </div>
 
                                 <!-- Registered Classes Table -->
                                 <div class="col-md-6">
                                     <h2>Registered Compulsory Classes</h2>
-                                    <table class="table">
-                                        <thead>
+                                    <table id="register-class-table" class="table table-striped">
+                                        <thead class="thead-dark">
                                             <tr>
                                                 <th>Class Name</th>
-                                                <th>Class Time</th>
+                                                <th>Start Date</th>
+                                                <th>Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            <div id="register-message"></div>
+                                            {% for i in compulsory_classes%}
                                             <tr>
-                                                <td>Class A</td>
-                                                <td>Monday 10am-12pm</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Class B</td>
-                                                <td>Wednesday 2pm-4pm</td>
-                                            </tr>
-                                            <!-- Add more rows dynamically with JavaScript -->
-                                        </tbody>
-                                    </table>
-
-                                    <h2>Registered Optional Classes</h2>
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th>Class Name</th>
-                                                <th>Class Time</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>Class A</td>
-                                                <td>Monday 10am-12pm</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Class B</td>
-                                                <td>Wednesday 2pm-4pm</td>
-                                            </tr>
-                                            <!-- Add more rows dynamically with JavaScript -->
-                                        </tbody>
-                                    </table>
-
-
-                                </div>
-
-                            </div>
-                        </div>
-                        <div class="row">
-
-                            <div class="col-md-6">
-                                <!-- /.card-header -->
-                                <div class="card-body table-responsive p-0">
-                                    <table class="table table-hover text-nowrap">
-                                        <thead>
-                                            <tr>
-                                                <th>Session Start Period</th>
-                                                <th>Session End date</th>
-                                                <th>Is Current session</th>
-                                                <th>Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {% for enrollment in enrollments %}
-                                            <tr {% if enrollment.is_current %}>
-                                                <td hidden>{{enrollment.id}}</td>
-                                                <td>{{ enrollment.session_start_date }}</td>
-                                                <td>{{ enrollment.session_end_date }}</td>
-                                                <td class="color-primary">{{ enrollment.is_current }}</td>
+                                                <td>{{i.class_name}}</td>
+                                                <td>{{i.start_date}}</td>
                                                 <td>
-                                                    {% if try%}
-                                                    <a class="btn btn-primary"
-                                                        href="{% url 'enroll_session_save' enrollment.id %}"
-                                                        role="button">
-                                                        Enroll Sessions</a><br />&nbsp;
-                                                    {% else %}
-                                                    <button disabled class="btn btn-success" href="">
-                                                        Enrolled</button><br />&nbsp;
+                                                    {% if i.is_elective == True%}
+                                                    <button disabled class="btn btn-success">Elective Class</button>
+                                                    {% elif i.is_elective == False %}
+                                                    <button disabled class="btn btn-primary">Compulsory Class</button>
                                                     {% endif %}
-                                                </td>
-                                            </tr {% endif %}>
+                                                    </td>
+                                            </tr>
                                             {% endfor %}
                                         </tbody>
                                     </table>
                                 </div>
-                                <!-- /.card-body -->
-                            </div>
-
-                            <br>
-
-                            <div class="col-md-6">
-                                <!-- /.card-header -->
-                                <div class="card-body table-responsive p-0">
-                                    <table class="table table-hover text-nowrap">
-                                        <thead>
-                                            <tr>
-                                                <th>Session Start Period</th>
-                                                <th>Session End date</th>
-                                                <th>Is Current session</th>
-                                                <th>Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {% for enrollment in enrollments %}
-                                            <tr {% if enrollment.is_current %}>
-                                                <td hidden>{{enrollment.id}}</td>
-                                                <td>{{ enrollment.session_start_date }}</td>
-                                                <td>{{ enrollment.session_end_date }}</td>
-                                                <td class="color-primary">{{ enrollment.is_current }}</td>
-                                                <td>
-                                                    {% if try%}
-                                                    <a class="btn btn-primary"
-                                                        href="{% url 'enroll_session_save' enrollment.id %}"
-                                                        role="button">
-                                                        Enroll Sessions</a><br />&nbsp;
-                                                    {% else %}
-                                                    <button disabled class="btn btn-success" href="">
-                                                        Enrolled</button><br />&nbsp;
-                                                    {% endif %}
-                                                </td>
-                                            </tr {% endif %}>
-                                            {% endfor %}
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <!-- /.card-body -->
                             </div>
                         </div>
-
                     </div>
-                    <!-- /.card -->
-
                 </div>
             </div>
 
@@ -212,3 +104,42 @@ Enroll to Classes
 </section>
 
 {% endblock main_content %}
+
+
+{% block custom_js %}
+
+{% comment %}
+With these changes, the "Select All" button will check all checkboxes in the table, and only unchecked checkboxes will
+be included in the mass edit action.
+{% endcomment %}
+
+<script>
+    $(function () {
+        $('#register-for-class-btn').click(function () {
+          event.preventDefault();
+    
+            // Retrieve the selected class ID from the input field
+          const selectedClassId = document.getElementById('class-search').value;
+    
+          $.ajax({
+            type: 'POST',
+            url: '{% url "enroll_class_save" %}',
+            data: {
+              'class_id': selectedClassId,
+              'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val(),
+            },
+            success: function(response) {
+                //$('#register-table').html(response.table_html);
+                $('#class-search').val('');
+                $('#register-class-table tbody').html(response.tbody_html);
+                $('#register-message').html('<div class="alert alert-success" role="alert">Registration successful!</div>');
+            },
+            error: function(xhr, status, error) {
+                $('#register-message').html('<div class="alert alert-danger" role="alert">Registration failed. Please try again ' +error+ '.</div>');
+            }
+          });
+        });
+      });
+</script>
+
+{% endblock custom_js %}
