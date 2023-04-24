@@ -55,7 +55,7 @@ def confirm_enrollment(request,enrolled_id):
 
 
 @require_POST
-@csrf_exempt
+# @csrf_exempt
 def mass_edit_enrolled(request):
     enrolled_ids = request.POST.getlist('enrolled_ids[]')
     

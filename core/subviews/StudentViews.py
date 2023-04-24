@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.contrib import messages
 from django.core.files.storage import FileSystemStorage #To upload Profile Picture
 from django.urls import reverse
 import datetime
-from academics.models import Enrollment, Session # To Parse input DateTime into Python Date Time Object
+from academics.models import Class, ClassEnrollment, ClusterClass, Enrollment, Session # To Parse input DateTime into Python Date Time Object
 
 from core.models import Students,CustomUser
 # Staffs, Courses, Subjects,  Attendance, AttendanceReport, LeaveReportStudent, FeedBackStudent, StudentResult
@@ -86,10 +86,36 @@ def enroll_session_save(request,enrollment_id):
 
 
 def enroll_classes(request):
-    return render(request, "student_template/class_enrollment_management.html")
+    classes_all = Class.objects.all()
+    student = Students.objects.get(admin=request.user.id)
+    list_of_classes = ClassEnrollment.objects.filter(student_id=student.id)
+    print(list_of_classes)
+    compulsory_classes = [i.selected_class for i in list_of_classes]
+    classes = [i for i in classes_all if i not in compulsory_classes]
+    context = {
+        'classes':classes,
+        'compulsory_classes':compulsory_classes
+    }
+    return render(request, "student_template/class_enrollment_management.html", context)
 
 def enroll_class_save(request):
-    return render(request, "student_template/class_enrollment_management.html")
+    if request.method == 'POST':
+        class_id = request.POST.get('class_id')
+        class_id = Class.objects.get(id=class_id)
+        print(class_id)
+        student = Students.objects.get(admin=request.user.id)
+        enroll = ClassEnrollment(student=student,selected_class=class_id)
+        try:
+            
+            enroll.save()
+            print(enroll)
+            # return JsonResponse({'success': True}, status=200)
+            return redirect('enroll_classes')
+        except Exception as e:
+            return JsonResponse({'success': False, 'error': str(e)}, status=405)
+        
+    return JsonResponse({'success': False}, status=405)
+        # return render(request, "student_template/class_enrollment_management.html")
     
 
 def student_apply_leave(request):

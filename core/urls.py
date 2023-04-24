@@ -65,7 +65,7 @@ urlpatterns = [
     path('student_sessions/', StudentViews.enroll_session, name="enroll_session"),
     path('enroll_session_save/<enrollment_id>', StudentViews.enroll_session_save, name="enroll_session_save"),
     path('student_classes/', StudentViews.enroll_classes, name="enroll_classes"),
-    path('enroll_class_save/<class_id>', StudentViews.enroll_class_save, name="enroll_class_save"),
+    path('enroll_class_save/', StudentViews.enroll_class_save, name="enroll_class_save"),
     # path('student_classes/', StudentViews.enroll_classes, name="enroll_classes"),
 
     # path('edit_student/<student_id>', StudentViews.edit_student, name="edit_student"),
@@ -88,6 +88,7 @@ urlpatterns = [
     path('manage_student/', AdminViews.manage_student, name="manage_student"),
     path('delete_student/<student_id>/', AdminViews.delete_student, name="delete_student"),
 
+    
     # path('student_feedback_message/', AdminViews.student_feedback_message, name="student_feedback_message"),
     # path('student_feedback_message_reply/', AdminViews.student_feedback_message_reply, name="student_feedback_message_reply"),
     # path('student_leave_view/', AdminViews.student_leave_view, name="student_leave_view"),
