@@ -1,0 +1,236 @@
+{% extends 'finance/base_template.html' %}
+
+{% block page_title %}
+Approve Applicants
+{% endblock page_title %}
+
+{% block main_content %}
+
+
+{% load static %}
+
+<section class="content">
+    <div class="container-fluid">
+
+        <div class="row">
+            <div class="col-md-12">
+                <!-- general form elements -->
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Approve Applicants</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <!-- form start -->
+                        {% comment %} Display Messages {% endcomment %}
+                        {% if messages %}
+                        <div class="form-group">
+                            <div class="col-12">
+                                {% for message in messages %}
+                                {% if message.tags == "error" %}
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert"
+                                    style="margin-top: 10px;">
+                                    {{ message }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                {% elif message.tags == "success" %}
+                                <div class="alert alert-success alert-dismissible fade show" role="alert"
+                                    style="margin-top: 10px;">
+                                    {{ message }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endif %}
+
+                        {% if errors %}
+                            <div class="alert alert-danger" role="alert">
+                                <strong>Form errors:</strong>
+                                <ul>
+                                {% for field_name, errors in errors.items %}
+                                    <li>{{ field_name }}: {{ errors|join:", " }}</li>
+                                {% endfor %}
+                                </ul>
+                            </div>
+                        {% endif %}
+
+
+                        <table id="test" class="table table-striped">
+                            <div class="register-message"></div>
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Exam Type</th>
+                                    <th>Exam Date</th>
+                                    <th>Compulsory</th>
+                                    <th>Exam Class</th>
+                                    <th>Ammount Paid</th>
+                                    <th>Status</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% csrf_token %}
+                                {% for i in all_application_payments%}
+                                <tr>
+                                    <td contenteditable="true">{{ i.surname }}</td>
+                                    <td contenteditable="true">{{ i.other_names }}</td>
+                                    <td contenteditable="true">{{ i.id_or_passport_number }}</td>
+                                    <td contenteditable="true">{{ i.telephone }}</td>
+                                    <td contenteditable="true">{{ i.faculty }}</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>
+                                        <button class="btn btn-primary" data-toggle="collapse" data-target="#form{{ i.id }}">Applicant Details</button>
+                                        {% if i not in approved_applicants %}
+                                        <button id="approve-btn" class="btn btn-button btn-success approve-btn" value="{{i.applicant.id}}">Approve</button>
+                                        {% else %}
+                                        <button id="approve-btn" class="btn btn-button btn-success approve-btn" value="{{i.applicant.id}}" disabled>APPROVED</button>
+                                        {% endif %}
+                                        
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="8">
+                                        <div id="form{{ i.id }}" class="form-row collapse">
+                                            <div>
+                                            </div>
+                                            <div class="card col-md-6 my-3">
+                                                <div class="container my-3">
+                                                    <h3 class="text-bold">Transaction Details</h3>
+                                                    <div class="">
+                                                        <div class=" ">
+                                                            <table class="table table-striped">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Transaction Code</th>
+                                                                        <th>Name</th>
+                                                                        <th>Date</th>
+                                                                        <th>Ammount</th>
+                                                                        <th>Action</th>
+                                                                    </tr>
+                                                                </thead> 
+                                                                <tbody>
+                                                                    {% for j in all_application_transactions%}
+                                                                    {% if i.applicant.id == j.associated_user.id %}
+                                                                    <tr>
+                                                                        <td contenteditable="true">{{j.transaction_code}}</td>
+                                                                        <td contenteditable="true">{{j.associated_user.first_name}} {{j.associated_user.last_name}}</td>
+                                                                        <td contenteditable="true">{{j.date}}</td>
+                                                                        <td>{{j.ammount_paid}}</td>
+                                                                        <td>
+                                                                            <button class="btn btn-success edit-row ">Approve</button>
+                                                                            <button
+                                                                                class="btn btn-danger delete-row">Disapprove</button>
+                                                                        </td>
+                                                                    </tr>
+                                                                    {% endif %}
+                                                                    {% endfor %}
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                    
+                                            <div class="col-md-6 my-3">
+                                                <div class="card rowss">
+                                                    <h3 class="mx-3 my-3 text-bold">Confirm Transaction</h3>
+                    
+                                                    <div class="mx-3">
+                                                        <div class=" my-3">
+                                                            <div class="">
+                    
+                                                                <form id="exam-type-form" method="POST"
+                                                                    action="{% url 'add_exam_type' %}">
+                    
+                                                                    <button type="submit" class="btn btn-primary">Confirm</button>
+                                                                </form>
+                
+                                                            </div>
+                                                        </div>
+                    
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor%}
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+                <!-- /.card -->
+
+            </div>
+        </div>
+
+    </div><!-- /.container-fluid -->
+</section>
+
+{% endblock main_content %}
+{% block custom_js %}
+
+{% comment %} Checking if student already exists or not usin Ajax {% endcomment %}
+
+<script>
+
+    $(document).ready(function () {
+        $('.card').removeClass('collapsed');
+
+        $('[data-card-widget="my-custom-collapse"]').on('click', function () {
+            // Toggle the card body collapse state
+            $(this).closest('.card').find('.card-body').toggleClass('collapsed');
+            // Toggle the button icon
+            $(this).find('i').toggleClass('fas fa-minus fas fa-minus');
+        });
+
+    });
+
+    $(document).ready(function () {
+        $('.btn').click(function () {
+            $(this).siblings('.form-row').toggle();
+        });
+    });
+
+    $(function () {
+        $('#approve-btn').click(function () {
+          event.preventDefault();
+
+          console.log('I have been clicked')
+    
+            // Retrieve the selected class ID from the input field
+          const selectedId = document.getElementById('approve-btn').value;
+
+          console.log('hello0ooo '+selectedId)
+    
+          $.ajax({
+            type: 'POST',
+            url: '{% url "finance:approve" %}',
+            data: {
+              'selected_id': selectedId,
+              'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val(),
+            },
+            success: function(response) {
+                //$('#register-table').html(response.table_html);
+                //$('#class-search').val('');
+                //$('#table table-striped tbody').html(response.tbody_html);
+                //$('#register-message').html('<div class="alert alert-success" role="alert">Registration successful!</div>');
+                $("#test").load(window.location + " #test");
+            },
+            error: function(xhr, status, error) {
+                $('#register-message').html('<div class="alert alert-danger" role="alert">Registration failed. Please try again ' +error+ '.</div>');
+            }
+          });
+        });
+      });
+
+</script>
+
+{% endblock custom_js %}

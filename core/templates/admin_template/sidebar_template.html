@@ -61,6 +61,18 @@
               </li>
 
               <li class="nav-item">
+                {% url 'admissions' as admissions %}
+                {% url 'admissions' admissions_id=id as edit_admissions %}
+                <a href="{{ admissions }}"
+                  class="nav-link {% if request.path == admissions  %} active {% endif %} {% if request.path == edit_admissions %} active {% endif %}">
+                  <i class="nav-icon fas fa fa-building"></i>
+                  <p>
+                    Admissions
+                  </p>
+                </a>
+              </li>
+
+              <li class="nav-item">
                 {% url 'manage_departments' as manage_departments %}
                 {% url 'edit_department' department_id=id as edit_department %}
                 <a href="{{ manage_departments }}"

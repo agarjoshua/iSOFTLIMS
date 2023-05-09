@@ -1,0 +1,287 @@
+{% extends 'admin_template/base_template.html' %}
+
+{% block page_title %}
+Add Student
+{% endblock page_title %}
+
+{% block main_content %}
+
+{% load static %}
+
+<section class="content">
+    <div class="container-fluid">
+
+        <div class="row">
+            <div class="col-md-12">
+                <!-- general form elements -->
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Add Student</h3>
+                    </div>
+
+                    {% comment %} Display Messages {% endcomment %}
+                                {% if messages %}
+                                <div class="form-group">
+                                <div class="col-12">
+                                    {% for message in messages %}
+                                    {% if message.tags == "error" %}
+                                        <div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                                        {{ message }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        </div>
+                                    {% elif message.tags == "success" %}
+                                        <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                                        {{ message }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        </div>
+                                    {% endif %}
+                                    {% endfor %}
+                                </div>
+                                </div>
+                                {% endif %}
+                    <!-- /.card-header -->
+                    <!-- form start -->
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="admission_number">Admission Number</label>
+                            <input type="text" class="form-control" id="admission_number" name="admission_number"
+                                value="{{ student.admission_number }}" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" class="form-control" id="name" name="name" value="{{ student.name }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="registration_number">Registration Number</label>
+                            <input type="text" class="form-control" id="registration_number" name="registration_number"
+                                value="{{ student.registration_number }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="index_number">Index Number</label>
+                            <input type="text" class="form-control" id="index_number" name="index_number"
+                                value="{{ student.index_number }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="profile_pic">Profile Picture</label>
+                            <input type="file" class="form-control-file" id="profile_pic" name="profile_pic">
+                        </div>
+                        <div class="form-group">
+                            <label for="address">Address</label>
+                            <textarea class="form-control" id="address" name="address">{{ student.address }}</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="course">Course</label>
+                            <select class="form-control" id="course" name="course">
+                                {% for course in courses %}
+                                <option value="{{ course.id }}">{{ course.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="grade">Grade</label>
+                            <select class="form-control" id="grade" name="grade">
+                                {% for grade in grades %}
+                                <option value="{{ grade.id }}">
+                                    {{ grade.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="student_type">Student Type</label>
+                            <select class="form-control" id="student_type" name="student_type">
+                                {% for option in student_types %}
+                                <option value="{{ option.0 }}">{{ option.1 }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="gender">Gender</label>
+                            <select class="form-control" id="gender" name="gender">
+                                {% for option in genders %}
+                                <option value="{{ option.0 }}"></option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="{{ form.account_status.id_for_label }}">Account Status:</label>
+                            <select class="form-control" id="{{ form.account_status.id_for_label }}"
+                                name="{{ form.account_status.name }}">
+                                {% for choice in form.account_status.choices %}
+                                <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="{{ form.study_type.id_for_label }}">Study Type:</label>
+                            <select class="form-control" id="{{ form.study_type.id_for_label }}"
+                                name="{{ form.study_type.name }}">
+                                {% for choice in form.study_type.choices %}
+                                <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="{{ form.boarding_type.id_for_label }}">Boarding Type:</label>
+                            <select class="form-control" id="{{ form.boarding_type.id_for_label }}"
+                                name="{{ form.boarding_type.name }}">
+                                {% for choice in form.boarding_type.choices %}
+                                <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="{{ form.sponsorship_type.id_for_label }}">Sponsorship Type:</label>
+                            <select class="form-control" id="{{ form.sponsorship_type.id_for_label }}"
+                                name="{{ form.sponsorship_type.name }}">
+                                {% for choice in form.sponsorship_type.choices %}
+                                <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="{{ form.sponsor_type.id_for_label }}">Sponsor Type:</label>
+                            <select class="form-control" id="{{ form.sponsor_type.id_for_label }}"
+                                name="{{ form.sponsor_type.name }}">
+                                {% for choice in form.sponsor_type.choices %}
+                                <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="{{ form.special_needs.id_for_label }}">Special Needs:</label>
+                            <select class="form-control" id="{{ form.special_needs.id_for_label }}"
+                                name="{{ form.special_needs.name }}">
+                                {% for choice in form.special_needs.choices %}
+                                <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="{{ form.require_transport.id_for_label }}">Require Transport:</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox"
+                                    id="{{ form.require_transport.id_for_label }}"
+                                    name="{{ form.require_transport.name }}" {% if form.require_transport.value %}
+                                    checked {% endif %}>
+                                <label class="form-check-label"
+                                    for="{{ form.require_transport.id_for_label }}">Yes</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="{{ form.student_contact.id_for_label }}">Student Contact:</label>
+                            <textarea class="form-control" id="{{ form.student_contact.id_for_label }}"
+                                name="{{ form.student_contact.name }}">{{ form.student_contact.value }}</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="{{ form.sponsor_contact.id_for_label }}">Sponsor Contact:</label>
+                            <textarea class="form-control" id="{{ form.sponsor_contact.id_for_label }}"
+                                name="{{ form.sponsor_contact.name }}">{{ form.sponsor_contact.value }}</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="{{ form.created_at.id_for_label }}">Created At:</label>
+                            <input class="form-control" type="text" id="{{ form.created_at.id_for_label }}"
+                                name="{{ form.created_at.name }}" value="{{ form.created_at.value|date:'Y-m-d H:i:s' }}"
+                                readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="{{ form.updated_at.id_for_label }}">Updated At:</label>
+                            <input class="form-control" type="text" id="{{ form.updated_at.id_for_label }}"
+                                name="{{ form.updated_at.name }}" value="{{ form.updated_at.value|date:'Y-m-d H:i:s' }}"
+                                readonly>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+
+                    </form>
+
+
+
+                </div>
+                <!-- /.card -->
+
+            </div>
+        </div>
+
+    </div><!-- /.container-fluid -->
+</section>
+
+{% endblock main_content %}
+
+{% block custom_js %}
+{% comment %} Checking if email and username already exists or not usin Ajax {% endcomment %}
+
+<script>
+    $(document).ready(function () {
+        // keyup event will be triggered when user leaves keyboard
+        $("#id_email").keyup(function () {
+            var email = $(this).val();
+
+            if (email != "") {
+                $.ajax({
+                    url: '{% url 'check_email_exist' %}',
+                    type: 'POST',
+                    data: { email: email }
+                })
+                    .done(function (response) {
+                        //console.log(response);
+
+                        if (response == "True") {
+                            $(".email_error").remove();
+                            $("<span class='email_error' style='color: red; padding: 5px; font-weight: bold;'> Email Not Available. </span>").insertAfter("#id_email")
+                        }
+                        else {
+                            $(".email_error").remove();
+                            $("<span class='email_error' style='color: green; padding: 5px; font-weight: bold;'> Email Available. </span>").insertAfter("#id_email")
+                        }
+                    })
+
+                    .fail(function () {
+                        console.log("Failed");
+                    })
+            }
+            else {
+                $(".email_error").remove();
+            }
+
+        })
+
+        $("#id_username").keyup(function () {
+            var username = $(this).val();
+
+            if (username != "") {
+                $.ajax({
+                    url: '{% url 'check_username_exist' %}',
+                    type: 'POST',
+                    data: { username: username }
+                })
+                    .done(function (response) {
+                        //console.log(response);
+
+                        if (response == "True") {
+                            $(".username_error").remove();
+                            $("<span class='username_error' style='color: red; padding: 5px; font-weight: bold;'> Username Not Available. </span>").insertAfter("#id_username")
+                        }
+                        else {
+                            $(".username_error").remove();
+                            $("<span class='username_error' style='color: green; padding: 5px; font-weight: bold;'> Username Available. </span>").insertAfter("#id_username")
+                        }
+                    })
+
+                    .fail(function () {
+                        console.log("Failed");
+                    })
+            }
+            else {
+                $(".username_error").remove();
+            }
+
+        })
+    })
+</script>
+
+{% endblock custom_js %}

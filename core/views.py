@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 
-from core.models import CustomUser
+from core.models import HOD, CustomUser, Institution, Staff
 from .utils.mail import EmailBackEnd
 from django.contrib.auth import login, logout
 from django.shortcuts import render, redirect
@@ -17,10 +17,11 @@ from django.contrib import messages
 def home(request):
     return render(request, 'index.html')
 
-
 def loginPage(request):
     return render(request, 'login.html')
 
+def applicantloginPage(request):
+    return render(request, 'applicantsignup.html')
 
 def doLogin(request):
     if request.method != "POST":
@@ -33,22 +34,32 @@ def doLogin(request):
         if user_type == '1':
             return redirect('admin_home')
         elif user_type == '2':
-            # return HttpResponse("Staff Login")
+            specified_staff = Staff.objects.get(admin=user)
+            staff_dept = specified_staff.associated_department # type: ignore
+            if staff_dept.name == 'Finance': # type: ignore
+                return redirect('finance:finance_home')
+            if staff_dept.name == 'Admissions': # type: ignore
+                return redirect('admissions')
             return redirect('staff_home')
         elif user_type == '3':
-            # return HttpResponse("Student Login")
             return redirect('student_home')
-        # elif user_type == '4':
-        #     # return HttpResponse("Staff Login")
-        #     return redirect('staff_home')
+        elif user_type == '4':
+            specified_staff = HOD.objects.get(admin=user)
+            hod_dept = specified_staff.associated_department # type: ignore
+            print(hod_dept)
+            if hod_dept!=None and hod_dept.name == 'Finance': # type: ignore
+                return redirect('finance:finance_home')
+            if hod_dept!=None and hod_dept.name == 'Admissions': # type: ignore
+                return redirect('admissions')
+            return redirect('admin_home')
         # elif user_type == '5':
         #     # return HttpResponse("Student Login")
         #     return redirect('student_home')
         # elif user_type == '6':
         #     # return HttpResponse("Staff Login")
         #     return redirect('staff_home')
-        # elif user_type == '7':
-            # return HttpResponse("Student Login")
+        elif user_type == '8':
+            return redirect('applicant_home')
             # return redirect('student_home')
         else:
             messages.error(request, "Invalid Login!")

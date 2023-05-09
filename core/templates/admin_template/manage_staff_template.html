@@ -11,7 +11,18 @@ Manage Staff
 <section class="content">
     <div class="container-fluid">
 
-        <a class="btn btn-primary" href="{% url 'add_staff' %}" role="button">+ Add Staff</a> <br />&nbsp;
+        <div class="mx-auto row">
+            
+            <div class="mr-1">
+                <a class="btn btn-primary" href="{% url 'add_staff' %}" role="button">+ Add Staff</a> <br />&nbsp;
+            </div>
+            <div class="ml-1">
+                <a class="btn btn-primary" href="{% url 'manage_staff_type' %}" role="button">+ Manage User Types</a>
+            <br />&nbsp;
+            </div>
+        </div>
+
+        
 
         {% if messages %}
         <div class="form-group">
@@ -97,7 +108,7 @@ Manage Staff
                                                 <td>{{ staff.admin.last_login }}</td>
                                                 <td>{{ staff.admin.date_joined }}</td>
                                                 <td>
-                                                    <a href="{% url 'edit_staff' staff.admin.id %}" class="btn btn-success">Edit</a>
+                                                    <a href="{% url 'edit_staff' staff.admin.id%}" class="btn btn-success">Edit</a>
                                                     <a href="{% url 'delete_staff' staff.admin.id %}"
                                                         class="btn btn-danger">Delete</a>
                                                 </td>

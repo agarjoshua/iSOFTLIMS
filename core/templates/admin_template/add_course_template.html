@@ -1,0 +1,109 @@
+{% extends 'admin_template/base_template.html' %}
+
+{% block page_title %}
+Add Course
+{% endblock page_title %}
+
+{% block main_content %}
+
+{% load static %}
+
+<section class="content">
+    <div class="container-fluid">
+
+        <div class="row">
+            <div class="col-md-12">
+                <!-- general form elements -->
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Add Course</h3>
+                    </div>
+                    {% comment %} Display Messages {% endcomment %}
+                    {% if messages %}
+                    <div class="form-group">
+                        <div class="col-12">
+                        {% for message in messages %}
+                        {% if message.tags == "error" %}
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                            {{ message }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        {% elif message.tags == "success" %}
+                        <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                            {{ message }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% csrf_token %}
+
+                    {% url 'add_course_save' as action_path %}
+
+                    <form method="post" action="{% url 'add_course_save'%}">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button type="submit">Submit</button>
+                    </form>
+
+                </div>
+                <!-- /.card -->
+
+            </div>
+        </div>
+
+    </div><!-- /.container-fluid -->
+</section>
+
+{% endblock main_content %}
+
+
+{% block custom_js %}
+{% comment %} Checking if email and username already exists or not usin Ajax {% endcomment %}
+
+<script>
+    $(document).ready(function () {
+        // keyup event will be triggered when user leaves keyboard
+        
+        $("#id_course_name").keyup(function () {
+            var course = $(this).val();
+            console.log('hi hello hi again')
+            if (course != "") {
+                $.ajax({
+                    url: '{% url 'check_if_course_exists' %}',
+                    type: 'POST',
+                    data: { course: course }
+                })
+                    .done(function (response) {
+                        //console.log(response);
+
+                        if (response == "True") {
+                            $(".email_error").remove();
+                            $("<span class='email_error' style='color: red; padding: 5px; font-weight: bold;'> Course Name Not Available. </span>").insertAfter("#id_course_name")
+                        }
+                        else {
+                            $(".email_error").remove();
+                            $("<span class='email_error' style='color: green; padding: 5px; font-weight: bold;'> Course Name Available. </span>").insertAfter("#id_course_name")
+                        }
+                    })
+
+                    .fail(function () {
+                        console.log("Failed");
+                    })
+            }
+            else {
+                $(".email_error").remove();
+            }
+
+        })
+    })
+</script>
+
+{% endblock custom_js %}

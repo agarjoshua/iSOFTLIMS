@@ -82,6 +82,25 @@
                             </div>
 
                             <div class="form-group">
+                                <label>Staff Type</label>
+                                <select name="staff_type">
+                                    {% for i in staff_type  %}
+                                    <option value="{{ i.id }}">{{ i.name }}</option>
+                                    {% endfor %}
+                                  </select>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label>Staff Department</label>
+                                <select name="department">
+                                    {% for i in departments %}
+                                    <option value="{{ i.id }}">{{ i.name }}</option>
+                                    {% endfor %}
+                                  </select>
+                            </div>
+
+                            <div class="form-group">
                                 <label>Is Teacher</label>
                                 <input type="checkbox" name="check" {% if form.is_published.value %}checked{% endif %}>
                             </div>
@@ -160,7 +179,7 @@
                         }
                         else{
                             $(".username_error").remove();
-                            $("<span class='username_error' style='color: green; padding: 5px; font-weight: bold;'> Username Available. </span>").insertAfter("#id_username")
+                            $("<span class='username_error' style='color: green; padding: 5px; font-weight: bold;'> Username Available var two. </span>").insertAfter("#id_username")
                         }
                     })
 

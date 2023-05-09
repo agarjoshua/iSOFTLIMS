@@ -1,0 +1,455 @@
+{% extends 'applicant_templates/base_template.html' %}
+
+{% block page_title %}
+
+<h2>Application Form</h2>
+{% endblock page_title %}
+
+{% block main_content %}
+
+{% load static %}
+
+<section class="content">
+    <div class="container-fluid">
+        {% if messages %}
+        <div class="form-group">
+            <div class="col-12">
+                {% for message in messages %}
+                {% if message.tags == "error" %}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                {% elif message.tags == "success" %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                {% elif message.tags == "warning" %}
+                <div class="alert alert-warning alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        {% if has_applied == True %}
+        <div>
+            <h3>
+                You've already applied, your application is being worked on
+            </h3>
+        </div>
+        {% else %}
+
+        <form method="post">
+            {% csrf_token %}
+            <h3>Personal Details</h3>
+            <hr>
+            <div class="row">
+                <div class="col-md-6">
+
+                    <div class="form-group">
+                        <label for="admin">Admin:</label>
+                        <input type="text" class="form-control" id="admin" name="admin">
+                    </div>
+                    <div class="form-group">
+                        <label for="surname">Surname:</label>
+                        <input type="text" class="form-control" id="surname" name="surname">
+                    </div>
+                    <div class="form-group">
+                        <label for="other_names">Other Names:</label>
+                        <input type="text" class="form-control" id="other_names" name="other_names">
+                    </div>
+                    <div class="form-group">
+                        <label for="gender">Gender:</label>
+                        <select class="form-control" id="gender" name="gender">
+                            <option value="">--Select Gender--</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="nationality">Nationality:</label>
+                        <input type="text" class="form-control" id="nationality" name="nationality">
+                    </div>
+                    <div class="form-group">
+                        <label for="id_or_passport_number">ID or Passport Number:</label>
+                        <input type="text" class="form-control" id="id_or_passport_number" name="id_or_passport_number">
+                    </div>
+                    <div class="form-group">
+                        <label for="date_of_birth">Date of Birth:</label>
+                        <input type="date" class="form-control" id="date_of_birth" name="date_of_birth">
+                    </div>
+
+
+                </div>
+                <hr>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="county">County:</label>
+                        <input type="text" class="form-control" id="county" name="county">
+                    </div>
+                    <div class="form-group">
+                        <label for="telephone">Telephone:</label>
+                        <input type="text" class="form-control" id="telephone" name="telephone">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" class="form-control" id="email" name="email">
+                    </div>
+                    <div class="form-group">
+                        <label for="current_address">Current Address:</label>
+                        <input type="text" class="form-control" id="current_address" name="current_address">
+                    </div>
+                    <div class="form-group">
+                        <label for="permanent_address">Permanent Address:</label>
+                        <input type="text" class="form-control" id="permanent_address" name="permanent_address">
+                    </div>
+                    <div class="form-group">
+                        <label for="special_needs">Special Needs:</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="special_needs" id="special_needs_yes"
+                                value="Yes">
+                            <label class="form-check-label" for="special_needs_yes">
+                                Yes
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="special_needs" id="special_needs_no"
+                                value="No">
+                            <label class="form-check-label" for="special_needs_no">
+                                No
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="special_needs_description">Special Needs Description:</label>
+                        <textarea class="form-control" id="special_needs_description" name="special_needs_description"
+                            rows="3"></textarea>
+                    </div>
+
+                </div>
+            </div>
+
+            <hr class="text-bold">
+
+            <h3>Program Information</h3>
+            <div class="row">
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="programme_level">Programme Level:</label>
+                        <select class="form-control" id="programme_level" name="programme_level" required>
+                            <option value="">Select</option>
+                            <option value="Undergraduate">Undergraduate</option>
+                            <option value="Postgraduate">Postgraduate</option>
+                            <option value="Doctorate">Doctorate</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="degree_name">Degree Name:</label>
+                        <input type="text" class="form-control" id="degree_name" name="degree_name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="field_of_study">Field of Study:</label>
+                        <input type="text" class="form-control" id="field_of_study" name="field_of_study" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="faculty">Faculty:</label>
+                        <input type="text" class="form-control" id="faculty" name="faculty" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="department">Department:</label>
+                        <input type="text" class="form-control" id="department" name="department" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="concept_paper">Concept Paper:</label>
+                        <input type="file" class="form-control-file" id="concept_paper" name="concept_paper"
+                            accept="application/pdf">
+                    </div>
+                    <div class="form-group">
+                        <label for="masters_degree_type">Master's Degree Type:</label>
+                        <input type="text" class="form-control" id="masters_degree_type" name="masters_degree_type">
+                    </div>
+                    <div class="form-group">
+                        <label for="masters_degree_title">Master's Degree Title:</label>
+                        <input type="text" class="form-control" id="masters_degree_title" name="masters_degree_title">
+                    </div>
+                    <div class="form-group">
+                        <label for="start_date">Start Date:</label>
+                        <input type="date" class="form-control" id="start_date" name="start_date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="expected_completion_date">Expected Completion Date:</label>
+                        <input type="date" class="form-control" id="expected_completion_date"
+                            name="expected_completion_date" required>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+
+                    <div class="form-group">
+                        <label for="mode_of_study">Mode of Study:</label>
+                        <select class="form-control" id="mode_of_study" name="mode_of_study" required>
+                            <option value="">Select</option>
+                            <option value="Full-Time">Full-Time</option>
+                            <option value="Part-Time">Part-Time</option>
+                            <option value="Online">Online</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="photo_1">Photo 1:</label>
+                        <input type="file" class="form-control-file" id="photo_1">
+                    </div>
+                    <div class="form-group">
+                        <label for="photo_2">Photo 2:</label>
+                        <input type="file" class="form-control-file" id="photo_2">
+                    </div>
+                    <div class="form-group">
+                        <label for="secondary_schools_attended">Secondary Schools Attended:</label>
+                        <textarea class="form-control" id="secondary_schools_attended" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="university_education">University Education:</label>
+                        <textarea class="form-control" id="university_education" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="other_degrees_or_diploma">Other Degrees or Diploma:</label>
+                        <textarea class="form-control" id="other_degrees_or_diploma" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="research_experience">Research Experience:</label>
+                        <textarea class="form-control" id="research_experience" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="employment_work_experience">Employment/Work Experience:</label>
+                        <textarea class="form-control" id="employment_work_experience" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="languages_spoken">Languages Spoken:</label>
+                        <input type="text" class="form-control" id="languages_spoken">
+                    </div>
+
+                </div>
+
+            </div>
+
+            <hr class="text-bold">
+
+            <h3>Additional details</h3>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="photo_1">Photo 1:</label>
+                        <input type="file" name="photo_1" id="photo_1" class="form-control-file">
+                    </div>
+                    <div class="form-group">
+                        <label for="photo_2">Photo 2:</label>
+                        <input type="file" name="photo_2" id="photo_2" class="form-control-file">
+                    </div>
+                    <div class="form-group">
+                        <label for="secondary_schools_attended">Secondary Schools Attended:</label>
+                        <input type="text" name="secondary_schools_attended" id="secondary_schools_attended"
+                            class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="university_education">University Education:</label>
+                        <input type="text" name="university_education" id="university_education" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="other_degrees_or_diploma">Other Degrees or Diploma:</label>
+                        <input type="text" name="other_degrees_or_diploma" id="other_degrees_or_diploma"
+                            class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="research_experience">Research Experience:</label>
+                        <textarea name="research_experience" id="research_experience" class="form-control"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="employment_work_experience">Employment/Work Experience:</label>
+                        <textarea name="employment_work_experience" id="employment_work_experience"
+                            class="form-control"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="languages_spoken">Languages Spoken:</label>
+                        <input type="text" name="languages_spoken" id="languages_spoken" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="referee1_name">Referee 1 Name</label>
+                        <input type="text" class="form-control" id="referee1_name" name="referee1_name"
+                            placeholder="Enter Referee 1 Name">
+                    </div>
+
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <div class="form-group">
+                        <label for="referee1_designation">Referee 1 Designation</label>
+                        <input type="text" class="form-control" id="referee1_designation" name="referee1_designation"
+                            placeholder="Enter Referee 1 Designation">
+                    </div>
+                    <div class="form-group">
+                        <label for="referee1_address">Referee 1 Address</label>
+                        <textarea class="form-control" id="referee1_address" name="referee1_address"
+                            placeholder="Enter Referee 1 Address"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="referee1_telephone">Referee 1 Telephone</label>
+                        <input type="tel" class="form-control" id="referee1_telephone" name="referee1_telephone"
+                            placeholder="Enter Referee 1 Telephone">
+                    </div>
+                    <div class="form-group">
+                        <label for="referee1_email">Referee 1 Email</label>
+                        <input type="email" class="form-control" id="referee1_email" name="referee1_email"
+                            placeholder="Enter Referee 1 Email">
+                    </div>
+                    <div class="form-group">
+                        <label for="referee2_name">Referee 2 Name</label>
+                        <input type="text" class="form-control" id="referee2_name" name="referee2_name"
+                            placeholder="Enter Referee 2 Name">
+                    </div>
+                    <div class="form-group">
+                        <label for="referee2_designation">Referee 2 Designation</label>
+                        <input type="text" class="form-control" id="referee2_designation" name="referee2_designation"
+                            placeholder="Enter Referee 2 Designation">
+                    </div>
+                    <div class="form-group">
+                        <label for="referee2_address">Referee 2 Address</label>
+                        <textarea class="form-control" id="referee2_address" name="referee2_address"
+                            placeholder="Enter Referee 2 Address"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="referee2_telephone">Referee 2 Telephone</label>
+                        <input type="tel" class="form-control" id="referee2_telephone" name="referee2_telephone"
+                            placeholder="Enter Referee 2 Telephone">
+                    </div>
+                    <div class="form-group">
+                        <label for="referee2_email">Referee 2 Email</label>
+                        <input type="email" class="form-control" id="referee2_email" name="referee2_email"
+                            placeholder="Enter Referee 2 Email">
+                    </div>
+                    <div class="form-group">
+                        <label for="how_did_you_know_about_us">How did you hear about us?</label>
+                        <select class="form-control" id="how_did_you_know_about_us" name="how_did_you_know_about_us"
+                            required>
+                            <option value="">Please select</option>
+                            <option value="Friend or colleague">Friend or colleague</option>
+                            <option value="Search engine">Search engine</option>
+                            <option value="Social media">Social media</option>
+                            <option value="Advertisement">Advertisement</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                </div>
+
+
+            </div>
+
+            <button type="submit" class="btn btn-primary mb-5">Submit</button>
+        </form>
+        {% endif %}
+
+    </div><!-- /.container-fluid -->
+</section>
+
+{% endblock main_content %}
+
+{% block custom_js %}
+<script>
+    $(document).ready(function () {
+        //Code for Pie Chart
+        var pieData = {
+            labels: [
+                'ABSENT',
+                'PRESENT',
+            ],
+            datasets: [
+                {
+                    data: [{{ attendance_absent }}, {{ attendance_present }}],
+            backgroundColor: ['#f56954', '#00a65a'],
+    }
+            ]
+            }
+           //Code for Pie Chart
+            var pieChartCanvas = $('#pieChart').get(0).getContext('2d')
+    var pieData = pieData;
+    var pieOptions = {
+        maintainAspectRatio: false,
+        responsive: true,
+    }
+    //Create pie or douhnut chart
+    // You can switch between pie and douhnut using the method below.
+    var pieChart = new Chart(pieChartCanvas, {
+        type: 'pie',
+        data: pieData,
+        options: pieOptions
+    })
+
+    //Code for Bar Chart
+    var subjects = {{ subject_name| safe }}
+    var data_present = {{ data_present }}
+    var data_absent = {{ data_absent }}
+
+    //Dataset for Bar Chart
+    var areaChartData = {
+        labels: subjects,
+        datasets: [
+            {
+                label: 'Present in Class',
+                backgroundColor: 'rgba(60,141,188,0.9)',
+                borderColor: 'rgba(60,141,188,0.8)',
+                pointRadius: false,
+                pointColor: '#3b8bba',
+                pointStrokeColor: 'rgba(60,141,188,1)',
+                pointHighlightFill: '#fff',
+                pointHighlightStroke: 'rgba(60,141,188,1)',
+                data: data_present
+            },
+            {
+                label: 'Absent in Class',
+                backgroundColor: 'rgba(210, 214, 222, 1)',
+                borderColor: 'rgba(210, 214, 222, 1)',
+                pointRadius: false,
+                pointColor: 'rgba(210, 214, 222, 1)',
+                pointStrokeColor: '#c1c7d1',
+                pointHighlightFill: '#fff',
+                pointHighlightStroke: 'rgba(220,220,220,1)',
+                data: data_absent
+            },
+        ]
+    }
+
+
+    var barChartCanvas = $('#barChart').get(0).getContext('2d')
+    var barChartData = jQuery.extend(true, {}, areaChartData)
+    var temp1 = areaChartData.datasets[0]
+    barChartData.datasets[0] = temp1
+
+    var barChartOptions = {
+        responsive: true,
+        maintainAspectRatio: false,
+        datasetFill: false
+    }
+
+    var barChart = new Chart(barChartCanvas, {
+        type: 'bar',
+        data: barChartData,
+        options: barChartOptions
+    })
+
+
+       })
+</script>
+{% endblock custom_js %}

@@ -1,0 +1,626 @@
+{% extends 'finance/base_template.html' %}
+
+{% block page_title %}
+Manage Finance
+{% endblock page_title %}
+
+{% block main_content %}
+
+
+{% load static %}
+
+<section class="content">
+        <div class="container-fluid">
+          <!-- Small boxes (Stat box) -->
+          <div class="row">
+            <div class="col-lg-3 col-6">
+              <!-- small box -->
+              <div class="small-box bg-info">
+                <div class="inner">
+                    <h5>Pending approvals</h5> <h3> {{ all_applications_count }}</h3>
+
+                  <p>Approve Applicant Payments</p>
+                </div>
+                <div class="icon">
+                  <i class="ion ion-stats-bars"></i>
+                </div>
+                <a href="{% url 'finance:approve_applications' %}" class="small-box-footer">Approve <i class="fas fa-arrow-circle-right"></i></a>
+              </div>
+            </div>
+            <!-- ./col -->
+            <div class="col-lg-3 col-6">
+              <!-- small box -->
+              <div class="small-box bg-danger">
+                <div class="inner">
+                  <h3>{{ staff_count }}</h3>
+
+                  <p>Total Staff</p>
+                </div>
+                <div class="icon">
+                  <i class="ion ion-stats-bars"></i>
+                </div>
+                <a href="{% url 'manage_staff' %}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              </div>
+            </div>
+            <!-- ./col -->
+               
+             
+            <div class="col-lg-3 col-6">
+              <!-- small box -->
+              <div class="small-box bg-warning">
+                <div class="inner">
+                  <h3>{{ class_count }}</h3>
+
+                  <p>Total Courses</p>
+                </div>
+                <div class="icon">
+                  <i class="ion ion-stats-bars"></i>
+                </div>
+                <a href="{% url 'manage_class' %}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              
+              </div>
+
+            </div>
+            {% comment %}
+            <!-- ./col -->
+            <div class="col-lg-3 col-6">
+              <!-- small box -->
+              <div class="small-box bg-success">
+                <div class="inner">
+                  <h3>{{ subject_count }}</h3>
+
+                  <p>Total Subjects</p>
+                </div>
+                <div class="icon">
+                  <i class="ion ion-stats-bars"></i>
+                </div>
+                <a href="{% url 'manage_subject' %}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+               
+              </div>
+            </div>
+              
+            {% endcomment %}
+              
+            <!-- ./col -->
+            
+          </div>
+          <!-- /.row -->
+          <div class="row">
+            <div class="col-lg-6">
+              <!-- PIE CHART -->
+              <div class="card card-danger">
+                <div class="card-header">
+                  <h3 class="card-title">Student and Staff Chart</h3>
+          
+                  <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i></button>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <canvas id="pieChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                </div>
+                <!-- /.card-body -->
+              </div>
+              <!-- /.card -->
+            </div>
+
+            <div class="col-lg-6">
+              <!-- DONUT CHART -->
+              <div class="card card-danger">
+                <div class="card-header">
+                  <h3 class="card-title">Total Subjects in Each Course</h3>
+
+                  <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i></button>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <canvas id="donutChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                </div>
+                <!-- /.card-body -->
+              </div>
+              <!-- /.card -->
+              
+            </div>
+          </div>
+
+          <div class="row">
+
+            <div class="col-lg-6">
+              <!-- PIE CHART -->
+              <div class="card card-info">
+                <div class="card-header">
+                  <h3 class="card-title">Total Student in Each Course</h3>
+
+                  <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i></button>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <canvas id="pieChart2" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                </div>
+                <!-- /.card-body -->
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+              <!-- PIE CHART -->
+              <div class="card card-info">
+                <div class="card-header">
+                  <h3 class="card-title">Total Students in Each Subject</h3>
+
+                  <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i></button>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <canvas id="pieChart3" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                </div>
+                <!-- /.card-body -->
+            </div>
+            </div>
+          </div>
+
+          
+        <div class="row">
+          <div class="col-lg-12">
+            <!-- BAR CHART -->
+            <div class="card card-success">
+              <div class="card-header">
+                <h3 class="card-title">Staff Attendance vs Leave</h3>
+
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                  </button>
+                  <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i></button>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="chart">
+                  <canvas id="barChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                </div>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+
+
+          <div class="col-lg-6">
+            
+          </div>
+        
+        </div>
+
+        <div class="row">
+          <div class="col-lg-12">
+            <!-- BAR CHART -->
+            <div class="card card-success">
+              <div class="card-header">
+                <h3 class="card-title">Student Attendance vs Leave</h3>
+
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                  </button>
+                  <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i></button>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="chart">
+                  <canvas id="barChart2" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                </div>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+
+
+          <div class="col-lg-6">
+            
+          </div>
+        
+        </div>
+
+        </div><!-- /.container-fluid -->
+      </section>
+
+<section class="content">
+    <div class="container-fluid">
+        <div>
+            <div class="row mx-3">
+                <div class="col-lg-6">
+                    <!-- PIE CHART -->
+                    <div class="card card-warning">
+                        <div class="card-header" data-toggle="collapse" data-target="#collapseRegister">
+                            <h3 class="card-title">Register Student to Exam</h3>
+
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="my-custom-collapse">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div id="collapseRegister" class="card-body collapse">
+                            <div class="">
+                                <h2>Exam Registration</h2>
+                                <form id="exam-registration-form">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        <label for="exams">Exams</label>
+                                        <select name="exams" class="form-control">
+                                            {% for exam in exams %}
+                                            <option value="{{ exam.id }}">{{ exam.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="student">Student</label>
+                                        <select name="student" class="form-control">
+                                            {% for student in students %}
+                                            <option value="{{ student.id }}">{{ student.first_name }} {{
+                                                student.last_name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="approved"
+                                                value="true">
+                                            <label class="form-check-label" for="approved">
+                                                Approved
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                    </div>
+
+                                    <a class="btn btn-primary" href="{% url 'enroll_student' %}" role="button">Mass
+                                        Register/ Deregister Students For Exams</a> <br />&nbsp;
+
+                                </form>
+                            </div>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                </div>
+
+                <div class="col-lg-3">
+                    <!-- DONUT CHART -->
+                    <div class="card card-warning">
+                        <div class="card-header" data-toggle="collapse" data-target="#collapseExample">
+                            <h3 class="card-title">Add Exam</h3>
+
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="my-custom-collapse">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div id="collapseExample" class="card-body collapse">
+                            <div class="">
+                                <h2>Add Exam</h2>
+                                <form id="exam-form">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        <label for="name">Name</label>
+                                        <input type="text" class="form-control" id="name" name="name">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="exam_type">Exam Type</label>
+                                        <select class="form-control" id="exam_type" name="exam_type">
+                                            {% for exam_type in exam_types %}
+                                            <option value="{{ exam_type.id }}">{{ exam_type.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="exam_date">Exam Date</label>
+                                        <input type="datetime-local" class="form-control" id="exam_date"
+                                            name="exam_date">
+                                    </div>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" id="is_compulsory"
+                                            name="is_compulsory">
+                                        <label class="form-check-label" for="is_compulsory">Is
+                                            Compulsory</label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="exam_class">Exam Class</label>
+                                        <select class="form-control" id="exam_class" name="exam_class">
+                                            {% for exam_class in exam_classes %}
+                                            <option value="{{ exam_class.id }}">{{ exam_class.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                </form>
+                            </div>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+
+                </div>
+
+                <div class="col-lg-3">
+                    <!-- DONUT CHART -->
+                    <div class="card card-warning">
+                        <div class="card-header" data-toggle="collapse" data-target="#collapseExamType">
+                            <h3 class="card-title">Add Exam Type</h3>
+
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="my-custom-collapse">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div id="collapseExamType" class="card-body collapse">
+                            <div class="">
+                                <h2>Add Exam Type</h2>
+                                <div class="">
+                                    <div class="d-flex justify-content-between">
+                                        <form id="exam-type-form">
+                                            {% csrf_token %}
+                                            <div class="form-group">
+                                                <label for="name">Exam Type Name:</label>
+                                                <input type="text" class="form-control" id="exam_type_name" name="name">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="description">Exam Type Description:</label>
+                                                <textarea class="form-control" id="exam_type_description"
+                                                    name="description"></textarea>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary">Submit</button>
+                                        </form>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <hr>
+
+            <div class="row mx-3">
+                <div class="col-lg-6">
+                    <!-- PIE CHART -->
+                    <div class="card card-warning">
+                        <div class="card-header" data-toggle="collapse" data-target="#collapseGradeRange">
+                            <h3 class="card-title">Add Exam Grade Range</h3>
+
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="my-custom-collapse">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div id="collapseGradeRange" class="collapseGradeRange-card-body collapse">
+                            <div class="col-md-6">
+                                <h2>Grade Range Form</h2>
+                                <hr>
+                                <form id="grade-range-form">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        <label for="exam">Exam:</label>
+                                        <select class="form-control" id="exam" name="exam" required>
+                                            <option value="" disabled selected>Select Exam</option>
+                                            {% for exam in exams %}
+                                            <option value="{{ exam.id }}">{{ exam.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="grade">Grade:</label>
+                                        <select class="form-control" id="grade" name="grade" required>
+                                            <option value="" disabled selected>Select Grade</option>
+                                            <option value="A">A</option>
+                                            <option value="B">B</option>
+                                            <option value="C">C</option>
+                                            <option value="D">D</option>
+                                            <option value="F">F</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="min_score">Minimum Score:</label>
+                                        <input type="number" class="form-control" id="min_score" name="min_score"
+                                            required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="max_score">Maximum Score:</label>
+                                        <input type="number" class="form-control" id="max_score" name="max_score"
+                                            required>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                </form>
+                            </div>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                </div>
+
+                <div class="col-lg-6">
+                    <!-- PIE CHART -->
+                    <div class="card card-warning">
+                        <div class="card-header" data-toggle="collapse" data-target="#collapseGradeStudent">
+                            <h3 class="card-title">Grade Student</h3>
+
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="my-custom-collapse">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div id="collapseGradeStudent" class="collapseGradeStudent-card-body collapse">
+                            <div class="col-md-6">
+                                <h2>Exam Result Form</h2>
+                                <form id="exam-result-form">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        <label for="student">Student</label>
+                                        <select name="student" class="form-control">
+                                            {% for student in students %}
+                                            <option value="{{ student.id }}">{{ student.first_name }} {{
+                                                student.last_name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="exam">Exam</label>
+                                        <select name="exam" class="form-control">
+                                            {% for exam in exams %}
+                                            <option value="{{ exam.id }}">{{ exam.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="session">Session</label>
+                                        <select name="session" class="form-control">
+                                            {% for session in sessions %}
+                                            <option value="{{ session.id }}">{{ session.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="grade">Grade</label>
+                                        <select name="grade" class="form-control">
+                                            {% for grade in grades %}
+                                            <option value="{{ grade.0 }}">{{ grade.1 }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="score">Score</label>
+                                        <input type="text" name="score" class="form-control">
+                                    </div>
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                </div>
+
+            </div>
+
+            <hr>
+
+            <div class="row mx-3">
+                <div class="col-lg-6">
+                    <!-- PIE CHART -->
+                    <div class="card card-warning">
+                        <div class="card-header" data-toggle="collapse" data-target="#collapseExamsRegister">
+                            <h3 class="card-title">Exams Results</h3>
+
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="my-custom-collapse">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div id="collapseExamsRegister" class="card-body collapse">
+                            <div class="col-md-6">
+                                <h2>Exam Result Form</h2>
+                                <form id="exam-result-form">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        <label for="student">Student</label>
+                                        <select name="student" class="form-control">
+                                            {% for student in students %}
+                                            <option value="{{ student.id }}">{{ student.first_name }} {{
+                                                student.last_name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="exam">Exam</label>
+                                        <select name="exam" class="form-control">
+                                            {% for exam in exams %}
+                                            <option value="{{ exam.id }}">{{ exam.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="session">Session</label>
+                                        <select name="session" class="form-control">
+                                            {% for session in sessions %}
+                                            <option value="{{ session.id }}">{{ session.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="grade">Grade</label>
+                                        <select name="grade" class="form-control">
+                                            {% for grade in grades %}
+                                            <option value="{{ grade.0 }}">{{ grade.1 }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="score">Score</label>
+                                        <input type="text" name="score" class="form-control">
+                                    </div>
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                </div>
+
+                <div class="col-lg-6">
+                    <!-- PIE CHART -->
+                    <div class="card card-warning">
+                        <div class="card-header" data-toggle="collapse" data-target="#GenerateTranscripts">
+                            <h3 class="card-title">Generate</h3>
+
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="my-custom-collapse">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div id="GenerateTranscripts" class="card-body collapse">
+                            <div class="col-md-6">
+                                <h2>Transcripts Form</h2>
+                                <form id="transcripts-form">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        <label for="student">Student</label>
+                                        <select name="student" class="form-control">
+                                            {% for student in students %}
+                                            {% endfor %}
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                </div>
+
+            </div>
+
+
+        </div>
+
+        {% endblock main_content %}

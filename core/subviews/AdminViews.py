@@ -9,20 +9,25 @@ from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.core import serializers
 import json
+from core import models
+from core.forms.courseforms import AddCourseForm
 from core.forms.departmentforms import AddDepartmentForm
 from core.forms.guardianforms import AddGuardianForm, EditGuardianForm
-from core.forms.hodforms import AddHodForm, EditHodForm
+from core.forms.hodforms import AddHodForm, AddStaffTypeForm, EditHodForm
 from core.forms.institutionform import InstitutionForm
 from core.forms.studentforms import EditStudentForm, AddStudentForm
-from django.contrib.admin.views.decorators import user_passes_test
+from django.contrib.admin.views.decorators import user_passes_test # type: ignore
 
 from core.models import (
     HOD,
+    Applicant,
+    ApplicantApprovalWorklow,
     CustomUser,
     Admin,
     Department,
     Guardian,
     Staff,
+    StaffType,
     Students,
     Teacher,
     Institution,
@@ -36,6 +41,7 @@ from core.models import (
 )
 from academics.models import (
     Class,
+    Course,
     Session,
 )
 # from core.forms import AddStudentForm, EditStudentForm
@@ -244,7 +250,14 @@ def admin_school_update(request):
 
 @user_passes_test(is_admin)
 def add_staff(request):
-    return render(request, "admin_template/add_staff_template.html")
+    staff_type = StaffType.objects.all()
+    departments = Department.objects.all()
+    print(departments)
+    context = {
+        "staff_type":staff_type,
+        "departments":departments
+    }
+    return render(request, "admin_template/add_staff_template.html", context)
 
 @user_passes_test(is_admin)
 def add_staff_save(request):
@@ -258,6 +271,16 @@ def add_staff_save(request):
         email = request.POST.get("email")
         password = request.POST.get("password")
         address = request.POST.get("address")
+        staff_type = request.POST.get("staff_type")
+        department = request.POST.get("department")
+
+        staff_type = StaffType.objects.get(id=staff_type)
+
+        
+
+        name = f'{first_name} {last_name}'
+
+        department = Department.objects.get(id=department)
 
         is_check = request.POST.get("check", False)
 
@@ -265,39 +288,50 @@ def add_staff_save(request):
 
         try:
             user = CustomUser.objects.create_user(
+                
                 username=username,
                 password=password,
                 email=email,
                 first_name=first_name,
                 last_name=last_name,
                 user_type=user_type,
+                
             )
-            institution = Admin.objects.get(admin=request.user).institution
+            # institution = Admin.objects.get(admin=request.user).institution
             if user_type == 2:
+                user.staff.name=name
                 user.staff.address = address
-                user.staff.institution = institution
-            elif user_type == 6:
-                user.teacher.institution = institution
+                user.staff.staff_type = staff_type
+                user.staff.associated_department = department
+            # elif user_type == 6:
+            #     user.teacher.institution = institution
             user.save()
             messages.success(request, "Staff Added Successfully!")
-            return redirect("add_staff")
+            return redirect("manage_staff")
         except Exception as e:
             # messages.error(request, "Failed to Add Staff!")
             print(e)
+            messages.error(request, f"Failed to Add Staff - {e}!")
             return redirect("add_staff")
 
 @user_passes_test(is_admin)
 def manage_staff(request):
     staff = Staff.objects.all()
     teachers = Students.objects.all()
-    context = {"staffs": staff, "teachers": teachers}
+    
+    
+    context = {
+        "staffs": staff, 
+        "teachers": teachers,
+        # "departments": departments
+        }
     return render(request, "admin_template/manage_staff_template.html", context)
 
 @user_passes_test(is_admin)
 def edit_staff(request, staff_id):
     staff = Staff.objects.get(admin=staff_id)
-
-    context = {"staff": staff, "id": staff_id}
+    departments = Department.objects.all()
+    context = {"staff": staff, "id": staff_id, "departments": departments}
     return render(request, "admin_template/edit_staff_template.html", context)
 
 @user_passes_test(is_admin)
@@ -311,6 +345,9 @@ def edit_staff_save(request):
         first_name = request.POST.get("first_name")
         last_name = request.POST.get("last_name")
         address = request.POST.get("address")
+        department = request.POST.get("department")
+
+        department = Department.objects.get(id=department)
 
         try:
             # INSERTING into Customuser Model
@@ -324,6 +361,7 @@ def edit_staff_save(request):
             # INSERTING into Staff Model
             staff_model = Staff.objects.get(admin=staff_id)
             staff_model.address = address
+            staff_model.associated_department = department
             staff_model.save()
 
             messages.success(request, "Staff Updated Successfully.")
@@ -345,12 +383,51 @@ def delete_staff(request, staff_id):
         return redirect("manage_staff")
 
 
+@user_passes_test(is_admin)
+def manage_staff_type(request):
+    staff_types = StaffType.objects.all()
+    staff_type_form = AddStaffTypeForm()
+    context = {
+        "staff_types": staff_types,
+        "staff_type_form": staff_type_form
+        }
+    return render(request, "admin_template/manage_stafftype_template.html", context)
+
+def create_staff_type(request):
+
+    if request.method != "POST":
+        messages.error(request, "Invalid Method!")
+        return redirect("manage_staff_type")
+    else:
+        form = AddStaffTypeForm(request.POST)
+        if form.is_valid():
+            try:
+                form.save() # type: ignore
+                messages.success(request, 'Staff Type added succesfully')
+                redirect('manage_staff_type')
+            except Exception as e:
+                messages.error(request, f'Staff not added. Error - {e}')
+                redirect('manage_staff_type')
+        else: 
+            messages.error(request, 'Form is Invalid')
+            redirect('manage_staff_type')
+    return redirect('manage_staff_type')
+
+
+
+
+
+
 #########################################MANAGE STUDENTS#######################################################################
 
 @user_passes_test(is_admin)
 def add_student(request):
     form = AddStudentForm()
-    context = {"form": form}
+    courses = Course.objects.all()
+    context = {
+        "form": form,
+        "courses": courses,
+        }
     return render(request, "admin_template/add_student_template.html", context)
 
 @user_passes_test(is_admin)
@@ -376,6 +453,7 @@ def add_student_save(request):
             # Getting Profile Pic first
             # First Check whether the file is selected or not
             # Upload only if file is selected
+            print("-------------------------------------")
             if len(request.FILES) != 0:
                 profile_pic = request.FILES["profile_pic"]
                 fs = FileSystemStorage()
@@ -385,6 +463,7 @@ def add_student_save(request):
                 profile_pic_url = None
 
             try:
+                print("-----------------IN TRY CATCH--------------------")
                 user = CustomUser.objects.create_user(
                     username=username,
                     password=password,
@@ -411,10 +490,15 @@ def add_student_save(request):
                 return redirect("add_student")
 
             except Exception as e:
-                messages.error(request, "Failed to Add Student!")
+                messages.error(request, f"Failed to Add Student! -{e}")
                 print(e)
                 return redirect("add_student")
         else:
+            error_list = []
+            for field, errors in form.errors.items():
+                error_list.append(f"{field}: {', '.join(errors)}")
+            print(error_list)
+            messages.error(request, f"Form is not valid because {error_list}")
             return redirect("add_student")
 
 @user_passes_test(is_admin)
@@ -732,6 +816,10 @@ def edit_hod_save(request):
             username = form.cleaned_data["username"]
             email = form.cleaned_data["email"]
             phonenumber = form.cleaned_data["phonenumber"]
+            hod_type = form.cleaned_data["hod_type"]
+            associated_department = form.cleaned_data["associated_department"]
+
+            associated_department = Department.objects.get(id=associated_department.id)
 
             try:
                 # First Update into Custom User Model
@@ -745,14 +833,16 @@ def edit_hod_save(request):
                 # Then Update Hod Table
                 hod_model = HOD.objects.get(admin=hod_id)
                 hod_model.phonenumber = phonenumber
+                hod_model.hod_type = hod_type 
+                hod_model.associated_department = associated_department
                 hod_model.save()
                 # Delete student_id SESSION after the data is updated
                 del request.session["hod_id"]
 
-                messages.success(request, "Student Updated Successfully!")
+                messages.success(request, "Head of Departnment Updated Successfully!")
                 return redirect("/edit_hod/" + hod_id)
-            except:
-                messages.success(request, "Failed to Update Hod.")
+            except Exception as e:
+                messages.error(request, f"Failed to Update Hod. - {e}")
                 return redirect("/edit_hod/" + hod_id)
         else:
             return redirect("/edit_hod/" + hod_id)
@@ -769,7 +859,68 @@ def delete_hod(request, hod_id):
         return redirect("manage_hod")
 
 
-#########################################MANAGE DEPARTMENTS#######################################################################
+
+#########################################MANAGE ADMISSIONS#######################################################################
+def admissions(request):
+    approved_applicants = Applicant.objects.filter(applicantapprovalworklow__finance_approved=True)
+    applicant_approval_workflow_admissions = Applicant.objects.filter(applicantapprovalworklow__department_approved=True)
+    applicant_approval_workflow_dvc = Applicant.objects.filter(applicantapprovalworklow__dvc_approved=True)
+
+    dvc_level = False
+
+    try:
+        dvc_level = Admin.objects.get(admin=request.user.id)
+        if dvc_level:
+            dvc_level = True
+    
+    except Exception as e:
+        show_hod_div = False
+    
+    try:
+        specified_hod = HOD.objects.get(admin=request.user.id)
+        hod_dept = specified_hod.associated_department # type: ignore
+        show_hod_div = hod_dept.name == 'Admissions'
+    except Exception as e:
+        show_hod_div = False
+    context = {
+        "approved_applicants":approved_applicants,
+        "applicant_approval_workflow":applicant_approval_workflow_admissions,
+        "applicant_approval_workflow_dvc":applicant_approval_workflow_dvc,
+        "hod_level":show_hod_div,
+        "dvc_level": dvc_level
+    }
+    return render(request, "admin_template/manage_admissions_template.html", context)
+
+def admissions_approve(request):
+    applicant_id = request.POST.get("selected_id")
+    applicant = Applicant.objects.get(applicant_id=applicant_id)
+    selected_applicant = ApplicantApprovalWorklow.objects.get(applicant=applicant)
+
+    try:
+        selected_applicant = ApplicantApprovalWorklow.objects.get(applicant=applicant)
+        selected_applicant.department_approved = True
+        selected_applicant.save()
+        return redirect('admissions')
+    except Exception as e:
+        return HttpResponse(e)
+
+
+
+def dvc_approve(request):
+    applicant_id = request.POST.get("selected_id")
+    applicant = Applicant.objects.get(applicant_id=applicant_id)
+    selected_applicant = ApplicantApprovalWorklow.objects.get(applicant=applicant)
+
+    try:
+        selected_applicant = ApplicantApprovalWorklow.objects.get(applicant=applicant)
+        selected_applicant.dvc_approved = True
+        selected_applicant.save()
+
+        applicant = Applicant.objects.get(applicant_id=applicant_id)
+        return redirect('admissions')
+    except Exception as e:
+        return HttpResponse(e)
+
 
 @user_passes_test(is_admin)
 def manage_departments(request):
@@ -788,26 +939,26 @@ def add_department(request):
 def add_department_save(request):
     if request.method != "POST":
         messages.error(request, "Invalid Method ")
-        return redirect("add_staff")
+        return redirect("manage_department")
     else:
         name = request.POST.get("name")
-        desc = request.POST.get("desc")
+        description = request.POST.get("description")
         head = request.POST.get("head")
         deputy = request.POST.get("deputy")
 
-        dep_head = HOD.objects.get(admin=head)
-        dep_deputy = Staff.objects.get(admin=deputy)
+        # dep_head = HOD.objects.get(admin=head)
+        # dep_deputy = Staff.objects.get(admin=deputy)
 
         try:
             department = Department.objects.create(
                 name=name,
-                desc=desc,
-                head=dep_head,
-                deputy=dep_deputy,
+                description=description,
+                # head=dep_head,
+                # deputy=dep_deputy,
             )
             department.save()
             messages.success(request, "Department Added Successfully!")
-            return redirect("add_department")
+            return redirect("manage_departments")
         except Exception as e:
             messages.error(request, "Failed to Add Department!")
             print(e)
@@ -861,9 +1012,68 @@ def edit_department_save(request):
 def delete_department(request, department_id):
     pass
 
+#########################################MANAGE COURSES#######################################################################
+
+def manage_courses(request):
+    form = AddCourseForm()
+    courses = Course.objects.all()
+    context = {
+        "form":form,
+        "courses":courses
+    }
+    return render(request,'admin_template/manage_courses_template.html',context)
 
 
+def add_course(request):
+    form = AddCourseForm()
+    context = {
+        "form":form
+    }
 
+    return render(request,'admin_template/add_course_template.html', context)
+
+
+def add_course_save(request):
+    print('helloooo')
+    if request.method != "POST":
+        messages.error(request, "Invalid Method")
+        return redirect("manage_courses")
+    else:
+        form = AddCourseForm(request.POST, request.FILES)
+        if form.is_valid():
+            try:
+                form.save()
+                messages.success(request, "Course Added Successfully!")
+                return redirect("manage_courses")
+            except Exception as e:
+                messages.error(request, f"Failed to Add Course - {e}!")
+                return redirect("add_course")
+        messages.error(request, "Form is not valid!")
+        return redirect("add_course")
+        
+
+# def check_if_course_exists(request):
+#     pass
+
+@csrf_exempt
+def check_if_course_exists(request):
+    name = request.POST.get("course_name")
+    """
+    Checks if a course with the given name already exists, regardless of the case of the input string.
+    Returns True if a course with the same name exists, False otherwise.
+    """
+    test = Course.objects.filter(course_name__iexact=name).exists()
+    if test:
+        return HttpResponse(True)
+    else:
+        return HttpResponse(False)
+
+
+def edit_course(request):
+    pass
+
+def delete_course(request):
+    pass
 
 #########################################MANAGE SESSIONS#######################################################################
 

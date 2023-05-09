@@ -1,4 +1,4 @@
-{% extends 'hod_template/base_template.html' %}
+{% extends 'admin_template/base_template.html' %}
 
 {% block page_title %}
     Edit Staff | Username: {{ staff.admin.username }} | #ID : {{ staff.admin.id }}
@@ -80,6 +80,15 @@
                             <div class="form-group">
                                 <label>Address</label>
                                 <textarea class="form-control" name="address">{{ staff.address }}</textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Staff Department</label>
+                                <select name="department">
+                                    {% for i in departments %}
+                                    <option value="{{ i.id }}">{{ i.name }}</option>
+                                    {% endfor %}
+                                  </select>
                             </div>
 
                             

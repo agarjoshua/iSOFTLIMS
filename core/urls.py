@@ -2,19 +2,24 @@ from django.urls import path, include
 
 from academics.subviews import classView, studentView
 from . import views
-from core.subviews import AdminViews, StudentViews
+from core.subviews import AdminViews, StudentViews, ApplicantViews
 
 urlpatterns = [
 
     #HOMEPAGE URL
     path('', views.loginPage, name="login"),
     path("login", views.loginPage, name="login"),
+    path("register/", views.applicantloginPage, name="register"),
+    path("doSignUp/", ApplicantViews.applicantsignup, name="doSignUp"), # type: ignore
+    path('applicant_home/', ApplicantViews.applicant_home, name="applicant_home"), # type: ignore
+    
 
     #USER CRUD URLS
     # path('accounts/', include('django.contrib.auth.urls')),
     path("doLogin/", views.doLogin, name="doLogin"),
     path("get_user_details/", views.get_user_details, name="get_user_details"),
     path("logout_user/", views.logout_user, name="logout_user"),
+
 
     # ADMIN URLS
     path('doLogin/', views.doLogin, name="doLogin"),
@@ -31,6 +36,13 @@ urlpatterns = [
     path('school_profile/', AdminViews.school_profile, name="school_profile"),
     path('admin_school_update/', AdminViews.admin_school_update, name="admin_school_update"),
 
+    # ADMISSIONS
+    path('admissions/', AdminViews.admissions, name="admissions"),
+    path('admissions_approve/', AdminViews.admissions_approve, name="admissions_approve"),
+    path('dvc_approve/', AdminViews.dvc_approve, name="dvc_approve"),
+    
+    
+
     # DEPARTMENT MANAGEMENT URLS      
     path('manage_department/', AdminViews.manage_departments, name="manage_departments"),
     path('add_department/', AdminViews.add_department, name="add_department"),
@@ -38,6 +50,11 @@ urlpatterns = [
     path('edit_department/<department_id>/', AdminViews.edit_department, name="edit_department"),
     path('edit_department_save/', AdminViews.edit_department_save, name="edit_department_save"),
     path('delete_department/<department_id>/', AdminViews.delete_department, name="delete_department"),
+
+    path('manage_staff_type/', AdminViews.manage_staff_type, name="manage_staff_type"),
+    # path('add_stafftype/', AdminViews.manage_staff_type, name="add_stafftype"),
+    path("create_staff_type/", AdminViews.create_staff_type, name="create_staff_type"),
+    
 
     # HOD URLS      
     path('manage_hod/', AdminViews.manage_hods, name="manage_hod"),
@@ -120,6 +137,14 @@ urlpatterns = [
     path('edit_session/<session_id>', AdminViews.edit_session, name="edit_session"),
     path('edit_session_save/', AdminViews.edit_session_save, name="edit_session_save"),
     path('delete_session/<session_id>/', AdminViews.delete_session, name="delete_session"),
+
+    # COURSES URLS
+    path('manage_courses/', AdminViews.manage_courses, name="manage_courses"),
+    path('add_course/', AdminViews.add_course, name="add_course"),
+    path('add_course_save/',AdminViews.add_course_save, name='add_course_save'),
+    path('check_if_course_exists/',AdminViews.check_if_course_exists, name='check_if_course_exists'),
+    path('edit_course/<course_id>',AdminViews.edit_course, name='edit_course'),
+    path('delete_course/<course_id>',AdminViews.delete_course, name='delete_course'),
 
     # UTILITY URLS
     path('check_email_exist/', AdminViews.check_email_exist, name="check_email_exist"),

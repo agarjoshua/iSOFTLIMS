@@ -10,31 +10,47 @@ School Profile
 
 <section class="content">
     <div class="container-fluid">
+        <div class="mx-auto row ">
+            
+            <div class="mr-1">
+                <a class="btn btn-primary" href="{% url 'manage_courses' %}" role="button"> Manage Courses</a><br/>&nbsp;
+            </div>
+            <div class="ml-1">
+                <a class="btn btn-primary" href="{% url 'clusterclass_list' %}" role="button"> Manage Class Clusters</a><br/>&nbsp;
+            </div>
+        </div>
 
         <div class="row">
             <div class="col-md-12">
                 <!-- general form elements -->
                 <div class="card card-primary">
-                    <div class="card-header">
-                        <h3 class="card-title">Update School Profile</h3>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <!-- general form elements -->
-                            <div class="card card-primary">
-                            <div class="card-header">
-                                <h3 class="card-title">Add School</h3>
+
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i></button>
+                      </div>
+
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <!-- general form elements -->
+                                <div class="card card-primary">
+                                <div class="card-header">
+                                    <h3 class="card-title">Add School</h3>
+                                </div>
+                                <!-- /.card-header -->
+                                <!-- form start -->
+                                {% url 'admin_school_update' as action_path %}
+                                {% include 'admin_template/form_template.html' with messages=messages form=form action_path=action_path button_text="Update School Details" %}
+            
+                                </div>
+                                <!-- /.card -->
+            
                             </div>
-                            <!-- /.card-header -->
-                            <!-- form start -->
-                            {% url 'admin_school_update' as action_path %}
-                            {% include 'admin_template/form_template.html' with messages=messages form=form action_path=action_path button_text="Update School Details" %}
-        
-                            </div>
-                            <!-- /.card -->
-        
                         </div>
                     </div>
+                   
                 </div>
                 <!-- /.card -->
 

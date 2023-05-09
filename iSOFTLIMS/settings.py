@@ -45,6 +45,9 @@ INSTALLED_APPS = [
 
     # UTILITIES
     'django_select2',
+    # ...
+    "debug_toolbar",
+    # ...
 ]
 
 MIDDLEWARE = [
@@ -55,6 +58,9 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    # ...
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
+    # ...
 ]
 
 ROOT_URLCONF = "iSOFTLIMS.urls"
@@ -151,3 +157,10 @@ AUTH_USER_MODEL = "core.CustomUser"
 
 # Registering Custom Backend "EmailBackEnd"
 AUTHENTICATION_BACKENDS = ['core.utils.mail.EmailBackEnd']
+
+
+INTERNAL_IPS = [
+    # ...
+    "127.0.0.1",
+    # ...
+]

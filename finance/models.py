@@ -4,30 +4,22 @@ from django.db import models
 # from core.models import Students,Guardian, Admin, Session
 
 # Create your models here.
+
+class Transactiontype(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=255)
+
 class Transaction(models.Model):
     # Time, student, Parents(Guardian), Form of payment(Bank, M-pesa), Ammount paid
-
-    TRANSACTION_TYPES = [
-        ("payment", "fee_payment"),
-        ("charge", "fee_charge"),
-        ("other", "other"),
-    ]
-    PAYMENT_TYPES = [
-        ("mobile_money", "mobile_money"),
-        ("bank", "bank"),
-        ("other", "other"),
-    ]
-
     id = models.AutoField(primary_key=True)
+    transaction_code = models.CharField(max_length=255)
     time = models.DateTimeField(auto_now_add=True)
-    student = models.ForeignKey(
-        'core.Students', on_delete=models.CASCADE, null=True
-    )
-    type = models.CharField(max_length=255, choices=TRANSACTION_TYPES, default="other")
-    form_of_payment = models.CharField(
-        max_length=255, choices=PAYMENT_TYPES, default="other"
-    )
-    ammount_paid = models.DecimalField(max_digits=10, decimal_places=2)
+    associated_user = models.ForeignKey('core.CustomUser', on_delete=models.CASCADE, null=True)
+    transaction_type = models.ForeignKey(Transactiontype, on_delete=models.DO_NOTHING)
+    form_of_payment = models.CharField(max_length=255)
+    ammount_paid = models.DecimalField(max_digits=20, decimal_places=2)
+    date = models.DateTimeField(auto_now=True)
+    confirmed = models.BooleanField(default=False)
 
     def __str__(self):
         return self.id
@@ -46,3 +38,4 @@ class Fee(models.Model):
 
     def __str__(self):
         return self.name
+ 

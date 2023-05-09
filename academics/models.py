@@ -5,9 +5,12 @@ from core.models import Students
 class Course(models.Model):
     id = models.AutoField(primary_key=True)
     course_name = models.CharField(max_length=255)
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True)    
     updated_at = models.DateTimeField(auto_now=True)
     objects = models.Manager()
+
+    def __str__(self):
+        return self.course_name
 
 class Session(models.Model):
     id = models.AutoField(primary_key=True)

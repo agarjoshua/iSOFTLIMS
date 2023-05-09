@@ -5,17 +5,60 @@ from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
 from django.shortcuts import render, redirect
 
-from finance.models import Fee, Transaction
+from finance.models import Fee, Transaction, Transactiontype
 from .forms.finance import FeeCreationForm, TransactionForm
 from django.contrib import messages
-from core.models import Admin, Guardian, Students
+from core.models import Admin, Applicant, ApplicantApprovalWorklow, Guardian, Students
 
 # from .models import Fee, Transaction
 
 # TODO: Global prefetched objects
-def finance(request):
-    return render(request, "finance/finance.html")
+def finance_home(request):
+    all_application_payments = Applicant.objects.all()
+    all_applications_count = Applicant.objects.all().count()
+    
 
+    context = {
+        "all_application_payments" : all_application_payments,
+        "all_applications_count": all_applications_count,
+    }
+    return render(request, "finance/finance_home.html", context)
+
+
+
+def approve_applications(request):
+    all_application_payments = Applicant.objects.all()
+    transaction_type = Transactiontype.objects.get(name__icontains='Application Fees')
+    all_application_transactions = Transaction.objects.filter(transaction_type=transaction_type)
+
+    applicant_approval_workflow = ApplicantApprovalWorklow.objects.all()
+
+    approved_applicants = Applicant.objects.filter(applicantapprovalworklow__finance_approved=True)
+
+    context = {
+        "all_application_payments" : all_application_payments,
+        "all_application_transactions": all_application_transactions,
+        "applicant_approval_workflow":applicant_approval_workflow,
+        "approved_applicants":approved_applicants
+    }
+    return render(request, "finance/applicant_finance.html", context)
+
+
+def approve(request):
+    
+    applicant_id = request.POST.get("selected_id")
+    print(applicant_id)
+    applicant = Applicant.objects.get(applicant_id=applicant_id)
+    print(applicant)
+    selected_applicant = ApplicantApprovalWorklow.objects.get(applicant=applicant)
+
+    try:
+        selected_applicant = ApplicantApprovalWorklow.objects.get(applicant=applicant)
+        selected_applicant.finance_approved = True
+        selected_applicant.save()
+        return HttpResponse("OK")
+    except Exception as e:
+        return HttpResponse(e)
 
 def create_fee_template(request):
     if request.method == "POST":

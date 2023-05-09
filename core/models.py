@@ -65,10 +65,10 @@ class Institution(models.Model):
     ]
     institution_accomodation_type = models.TextField()
     STATUS = [(1, "Public"), (2, "Private")]
-    institution_status = models.CharField(max_length=100, choices=STATUS, default="1")
+    institution_status = models.CharField(max_length=255, choices=STATUS, default="1")
     TYPE = [(1, "Formal"), (2, "Informal")]
     institution_type = models.CharField(
-        max_length=100, choices=TYPE, default="1", null=False
+        max_length=255, choices=TYPE, default="1", null=False
     )
     institution_in_ASAL_area = models.BooleanField(null=False, default=False)
     RESIDENCE = [(1, "Rural"), (2, "Urban")]
@@ -93,6 +93,7 @@ class CustomUser(AbstractUser):
         (5, "Guardian"),
         (6, "Teacher"),
         (7, "Specialuser"),
+        (8, "Applicant")
     )
     user_type = models.CharField(default=1, choices=user_type_data, max_length=10)
 
@@ -100,15 +101,25 @@ class CustomUser(AbstractUser):
 class Admin(models.Model):
     id = models.AutoField(primary_key=True)
     admin = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    admin_type = models.ForeignKey('AdminType', on_delete=models.DO_NOTHING, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     institution = models.ForeignKey(Institution, on_delete=models.DO_NOTHING, null=True)
     objects = models.Manager()
 
+    def __str__(self):
+        return f"{self.admin.first_name}  {self.admin.last_name}"
+
+class AdminType(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=12, null=True, unique=True)
+    objects = models.Manager()
 
 class HOD(models.Model):
     id = models.AutoField(primary_key=True)
     admin = models.OneToOneField(CustomUser, on_delete=models.DO_NOTHING)
+    hod_type = models.ForeignKey('HODType', on_delete=models.DO_NOTHING, null=True)
+    associated_department = models.ForeignKey('Department', on_delete=models.DO_NOTHING, null=True)
     CONTRACT_TYPE = [
         (1, "Permanent"),
         (2, "Long Term"),
@@ -123,31 +134,28 @@ class HOD(models.Model):
 
     def __str__(self):
         return f"{self.admin.first_name}  {self.admin.last_name}"
+    
+class HODType(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=12, null=True, unique=True)
+    objects = models.Manager()
+
+    def __str__(self):
+        return self.name
 
 
 class Teacher(models.Model):
     id = models.AutoField(primary_key=True)
     admin = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
-    name = models.CharField(max_length=100,default='Teacher')
+    name = models.CharField(max_length=255,default='Teacher')
     phonenumber = models.CharField(max_length=12, null=True)
     secondary_phone_number = models.CharField(max_length=12, null=True)
     institution = models.ForeignKey(Institution, on_delete=models.DO_NOTHING, null=True)
-    ## implement the student registration number field properly
     pin_tax_number = models.CharField(max_length=12, null=True)
     nhif = models.CharField(max_length=12, null=True)
     social_security_number = models.CharField(max_length=12, null=True)
     industrial_training_number = models.CharField(max_length=12, null=True)
     statutory_numbers = models.JSONField(null=True)
-
-    ## implement the student registration number field properly
-    # o Bank 1
-    # o Bank 2
-    # o Bank 3
-    # o Bank 4
-    # o Mobile Money
-    #  Pay Bill Number
-    #  TILL Number
-
     bank_account = models.CharField(max_length=12, null=True)
     secondary_bank_account = models.CharField(max_length=12, null=True)
     bank_details = models.JSONField(null=True)
@@ -166,14 +174,19 @@ class Teacher(models.Model):
     def __str__(self):
         return self.name
 
+class StaffType(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=255,null=True)
 
 class Staff(models.Model):
     id = models.AutoField(primary_key=True)
     admin = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
-    name = models.CharField(max_length=100,null=True)
+    associated_department = models.ForeignKey('Department', on_delete=models.DO_NOTHING, null=True)
+    name = models.CharField(max_length=255,null=True)
     address = models.TextField()
-    STAFF_TYPE = [(1, "Administration"), (2, "Support")]
-    staff_type = models.CharField(default=1, choices=STAFF_TYPE, max_length=50)
+    telephone = models.CharField(max_length=255,null=True)
+    email = models.EmailField(null=True)
+    staff_type = models.ForeignKey(StaffType, blank=True, null=True, on_delete=models.DO_NOTHING) # type: ignore
     CONTRACT_TYPE = [
         (1, "Permanent"),
         (2, "Long Term"),
@@ -181,16 +194,16 @@ class Staff(models.Model):
         (4, "Contracted Labour"),
         (5, "Probation"),
     ]
-    contract_type = models.CharField(default=5, choices=CONTRACT_TYPE, max_length=50)
+    contract_type = models.CharField(default=5, choices=CONTRACT_TYPE, max_length=50) # type: ignore
     description = models.CharField(max_length=255, null=True)
     contract_years = models.CharField(max_length=255, default="Parmanent")
-    institution = models.ForeignKey(Institution, on_delete=models.DO_NOTHING, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     objects = models.Manager()
 
     def __str__(self):
         return f"{self.admin.first_name}  {self.admin.last_name}"
+
 
 
 class Department(models.Model):
@@ -201,12 +214,15 @@ class Department(models.Model):
     head = models.ForeignKey(HOD, on_delete=models.DO_NOTHING, null=True)
     deputy = models.ForeignKey(Staff, on_delete=models.DO_NOTHING, null=True)
 
+    def __str__(self):
+        return self.name
+
 
 class Guardian(models.Model):
     id = models.AutoField(primary_key=True)
     admin = models.OneToOneField(CustomUser, on_delete=models.DO_NOTHING)
     phonenumber = models.CharField(max_length=12)
-    bank = models.CharField(null=True, max_length=1000)
+    bank = models.CharField(null=True, max_length=2550)
     gender = models.CharField(max_length=50)
 
     def __str__(self):
@@ -216,117 +232,82 @@ class Guardian(models.Model):
 class Students(models.Model):
     id = models.AutoField(primary_key=True)
     admin = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
-    # admission_number = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
-    name = models.CharField(max_length=100,null=True)
+    admission_number = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
+    name = models.CharField(max_length=255,null=True)
     registration_number = models.CharField(max_length=10, unique=True, null=True)
     index_number = models.CharField(max_length=20, unique=True, null=True)
     profile_pic = models.FileField(null=True)
     address = models.TextField(null=True)
-    institution = models.ForeignKey(Institution, on_delete=models.DO_NOTHING, null=True)
-
-    # course = models.ForeignKey("academics.Course", on_delete=models.DO_NOTHING, default=1)
-
-    session_year_id = models.ForeignKey(
-        "academics.Session", on_delete=models.DO_NOTHING, null=True
-    )
-    grade = models.ForeignKey('academics.Gradelevel', on_delete=models.DO_NOTHING, null=True)
-    require_entry_exams = models.BooleanField(default=True)
-    ENTRY_EXAM_TYPE = [(1, "Normal"), (2, "Special")]
-    type_of_entry_exam = models.CharField(
-        max_length=10, choices=ENTRY_EXAM_TYPE, default="1"
-    )
-    REGISTRATION_TYPE = [(1, "New"), (2, "Continuing")]
-    registration_type = models.CharField(
-        max_length=10, choices=REGISTRATION_TYPE, default="1"
-    )
-    STUDENT_TYPE = [(1, "Local"), (2, "International")]
+    course = models.ForeignKey("academics.Course", on_delete=models.DO_NOTHING)
+    # grade = models.ForeignKey('academics.Gradelevel', on_delete=models.DO_NOTHING, null=True)
+    STUDENT_TYPE = [
+        ("1", "Local"), 
+        ("2", "International")]
     student_type = models.CharField(max_length=10, choices=STUDENT_TYPE, default="1")
-    GENDER = [("1", "Male"), ("2", "Female")]
+    GENDER = [
+        ("1", "Male"), 
+        ("2", "Female")]
     gender = models.CharField(max_length=10, choices=GENDER, default="1")
     ACCOUNT_STATUS = [
-        (1, "Active"),
-        (2, "Inactive"),
-        (3, "On-Hold"),
-        (4, "Suspended"),
-        (5, "Terminated"),
+        ("1", "Active"),
+        ("2", "Inactive"),
+        ("3", "On-Hold"),
+        ("4", "Suspended"),
+        ("5", "Terminated"),
     ]
     account_status = models.CharField(
         max_length=10, choices=ACCOUNT_STATUS, default="1"
     )
     ACADEMIC_STATUS = [
-        (1, "Active"),
-        (2, "Inactive"),
-        (3, "On-Hold"),
-        (4, "Suspended"),
-        (5, "Repeat"),
+        ("1", "Active"),
+        ("2", "Inactive"),
+        ("3", "On-Hold"),
+        ("4", "Suspended"),
+        ("5", "Repeat"),
     ]
     academic_status = models.CharField(
         max_length=10, choices=ACCOUNT_STATUS, default="1"
     )
-    STUDENT_STUDY_TYPE = [(1, "Full Time"), (2, "Part Time"), (3, "Online")]
+    STUDENT_STUDY_TYPE = [
+        ("1", "Full Time"), 
+        ("2", "Part Time"), 
+        ("3", "Online")]
     study_type = models.CharField(
         max_length=10, choices=STUDENT_STUDY_TYPE, default="1"
     )
-    STUDENT_BOARDING_TYPE = [(1, "Boarder"), (2, "Day-Scholer")]
+    STUDENT_BOARDING_TYPE = [
+        ("1", "Boarder"), 
+        ("2", "Day-Scholer")]
     boarding_type = models.CharField(
         max_length=10, choices=STUDENT_BOARDING_TYPE, default="1"
     )
-    STUDENT_SPONSORSHIP_TYPE = [(1, "Self-Sponsored"), (2, "Sponsored")]
+    STUDENT_SPONSORSHIP_TYPE = [
+        ("1", "Self-Sponsored"), 
+        ("2", "Sponsored")]
     sponsorship_type = models.CharField(
         max_length=10, choices=STUDENT_SPONSORSHIP_TYPE, default="1"
     )
-    STUDENT_SPONSOR_TYPE = [(1, "Government"), (2, "Organizations"), (3, "Sponsor")]
+    STUDENT_SPONSOR_TYPE = [
+        ("1", "Government"), 
+        ("2", "Organizations"), 
+        ("3", "Sponsor")]
     sponsor_type = models.CharField(
         max_length=10, choices=STUDENT_SPONSOR_TYPE, default="1"
     )
     STUDENT_SPECIAL_NEEDS_TYPE = [
-        (1, "Physically Impaired"),
-        (2, "Visually Impaired"),
-        (3, "Hearing Impaired"),
-        (4, "Intellectually Impaired"),
-        (5, "Multiple Disabilities"),
-        (6, "Other Impairment"),
+        ("1", "Physically Impaired"),
+        ("2", "Visually Impaired"),
+        ("3", "Hearing Impaired"),
+        ("4", "Intellectually Impaired"),
+        ("5", "Multiple Disabilities"),
+        ("6", "Other Impairment"),
     ]
     special_needs = models.CharField(
-        max_length=100, choices=STUDENT_SPECIAL_NEEDS_TYPE, default="1"
+        max_length=255, choices=STUDENT_SPECIAL_NEEDS_TYPE, default="1"
     )
-    relationships = models.JSONField(null=True)
-    religion = models.CharField(max_length=20, null=True)
     require_transport = models.BooleanField(default=False)
-
-    # sample data
-    # a. Blood Group
-    # b. Height
-    # c. Allergies
-    # d. Special Conditions
-    # e. Special Needs Leaner (Type of Special Needs)
-    # f. Other Medical Details
-    # g. Emergency Contact
-    # - Name
-    # - Relationship
-    # - Postal Address
-    # - Physical Address (Current Residence/Work)
-    # - Telephone
-    # - Email
-    bio_data = models.JSONField(null=True)
-
-    # . Pupil/Student Contacts
-    # - Telephone
-    # - Email Address
-    # - Postal Address
-    # - Physical Address
-    student_contact = models.JSONField(null=True)
-
-    # - Name
-    # - Relationship
-    # - Telephone
-    # - Email Address
-    # - Country
-    # - Postal Address
-    # - Physical Address
-    # - Passport Size Photo
-    sponsor_contact = models.JSONField(null=True)
-    fee_balance = models.DecimalField(max_digits=20, decimal_places=2, default=0)
+    student_contact = models.CharField(max_length=255, unique=True, null=True)
+    sponsor_contact = models.CharField(max_length=255, unique=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     objects = models.Manager()
@@ -345,6 +326,88 @@ class Students(models.Model):
 def generate_registration_number():
     # code to generate unique registration number
     return "SCHOOL-" + str(uuid.uuid4().int)[:10]
+
+
+class Applicant(models.Model):
+    PROGRAMME_CHOICES = (
+        ('PGD', 'Postgraduate Diploma'),
+        ('MSc', 'Masters'),
+        ('PhD', 'Doctorate'),
+    )
+
+    GENDER_CHOICES = (
+        ('M', 'Male'),
+        ('F', 'Female'),
+        ('O', 'Other'),
+    )
+
+    SPECIAL_NEEDS_CHOICES = (
+        ('Y', 'Yes'),
+        ('N', 'No'),
+    )
+
+    MODE_OF_STUDY_CHOICES = (
+        ('FT', 'Full-time'),
+        ('PT', 'Part-time'),
+        ('EL', 'eLearning'),
+    )
+    applicant = models.OneToOneField(CustomUser, on_delete=models.DO_NOTHING)
+    surname = models.CharField(max_length=255,null=True)
+    other_names = models.CharField(max_length=255,null=True)
+    gender = models.CharField(max_length=1, choices=GENDER_CHOICES,null=True)
+    nationality = models.CharField(max_length=255,null=True)
+    id_or_passport_number = models.CharField(max_length=255,null=True)
+    date_of_birth = models.DateField(null=True)
+    county = models.CharField(max_length=255,null=True)
+    telephone = models.CharField(max_length=255,null=True)
+    email = models.EmailField(null=True)
+    current_address = models.TextField(null=True)
+    permanent_address = models.TextField(blank=True,null=True)
+    special_needs = models.CharField(max_length=1, choices=SPECIAL_NEEDS_CHOICES,null=True)
+    special_needs_description = models.TextField(blank=True)
+    programme_level = models.CharField(max_length=3, choices=PROGRAMME_CHOICES,null=True)
+    degree_name = models.CharField(max_length=255)
+    field_of_study = models.CharField(max_length=255)
+    faculty = models.CharField(max_length=255)
+    department = models.CharField(max_length=255)
+    concept_paper = models.FileField(upload_to='concept_papers', blank=True)
+    masters_degree_type = models.CharField(max_length=255, blank=True)
+    masters_degree_title = models.CharField(max_length=255, blank=True)
+    start_date = models.DateField(null=True)
+    expected_completion_date = models.DateField(null=True)
+    mode_of_study = models.CharField(max_length=2, choices=MODE_OF_STUDY_CHOICES,blank=True)
+    photo_1 = models.ImageField(upload_to='applicant_photos',null=True)
+    photo_2 = models.ImageField(upload_to='applicant_photos',null=True)
+    secondary_schools_attended = models.TextField(blank=True)
+    university_education = models.TextField(blank=True)
+    other_degrees_or_diploma = models.TextField(blank=True)
+    research_experience = models.TextField(blank=True)
+    employment_work_experience = models.TextField(blank=True)
+    languages_spoken = models.TextField(blank=True)
+    referee1_name = models.CharField(max_length=255, blank=True)
+    referee1_designation = models.CharField(max_length=255, blank=True)
+    referee1_address = models.TextField(blank=True)
+    referee1_telephone = models.CharField(max_length=255, blank=True)
+    referee1_email = models.EmailField(blank=True)
+    referee2_name = models.CharField(max_length=255, blank=True)
+    referee2_designation = models.CharField(max_length=255, blank=True)
+    referee2_address = models.TextField(blank=True)
+    referee2_telephone = models.CharField(max_length=255, blank=True)
+    referee2_email = models.EmailField(blank=True)
+    how_did_you_know_about_us = models.CharField(max_length=255, blank=True)
+    require_entry_exams = models.BooleanField(default=True)
+    application_status = models.BooleanField(default=False)
+
+    # finance_approval = models.BooleanField(default=False)
+    # finance_approval = models.BooleanField(default=False)
+    # finance_approval = models.BooleanField(default=False)
+
+class ApplicantApprovalWorklow(models.Model):
+    id = models.AutoField(primary_key=True)
+    applicant = models.ForeignKey(Applicant, on_delete=models.CASCADE)
+    finance_approved = models.BooleanField(default=False)
+    department_approved = models.BooleanField(default=False)
+    dvc_approved = models.BooleanField(default=False)
 
 
 class SpecialUser(models.Model):
@@ -397,6 +460,8 @@ def create_user_profile(sender, instance, created, **kwargs):
             Teacher.objects.create(admin=instance)
         if instance.user_type == 7:
             Guardian.objects.create(admin=instance)
+        if instance.user_type == 8:
+            Applicant.objects.create(applicant=instance)
 
 
 @receiver(post_save, sender=CustomUser)
@@ -413,3 +478,7 @@ def save_user_profile(sender, instance, **kwargs):
         instance.guardian.save()
     if instance.user_type == 6:
         instance.teacher.save()
+    if instance.user_type == 7:
+        instance.guardian.save()
+    if instance.user_type == 8:
+        instance.applicant.save()

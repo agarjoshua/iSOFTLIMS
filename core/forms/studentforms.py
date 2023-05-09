@@ -1,13 +1,50 @@
 from django import forms
 from django.forms import Form
-from academics.models import Session
-
+from academics.models import GradeLevel, Session
+from core.models import Applicant, Students
+from django.forms import ClearableFileInput
+from django.utils.translation import gettext_lazy as _
 
 class DateInput(forms.DateInput):
     input_type = "date"
 
+class AddStudentForm(forms.ModelForm):
 
-class AddStudentForm(forms.Form):
+    email = forms.EmailField(max_length=200, help_text='Required')
+    first_name = forms.CharField(max_length=100)
+    last_name = forms.CharField(max_length=100)
+    password1 = forms.PasswordInput()
+    password2 = forms.PasswordInput()
+
+    class Meta:
+
+        model = Students
+        
+        fields = ['email', 'first_name', 'last_name', 'password1', 'password2','name', 'registration_number', 'index_number', 'profile_pic', 'address', 'course', 'student_type', 'gender', 'account_status', 'academic_status', 'study_type', 'boarding_type', 'sponsorship_type', 'sponsor_type', 'special_needs', 'require_transport', 'student_contact', 'sponsor_contact'] # type: ignore
+
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'registration_number': forms.TextInput(attrs={'class': 'form-control'}),
+            'index_number': forms.TextInput(attrs={'class': 'form-control'}),
+            'profile_pic': forms.ClearableFileInput(attrs={'class': 'form-control-file'}),
+            'address': forms.Textarea(attrs={'class': 'form-control'}),
+            'course': forms.Select(attrs={'class': 'form-control'}),
+            
+            'student_type': forms.Select(attrs={'class': 'form-control'}),
+            'gender': forms.Select(attrs={'class': 'form-control'}),
+            'account_status': forms.Select(attrs={'class': 'form-control'}),
+            'academic_status': forms.Select(attrs={'class': 'form-control'}),
+            'study_type': forms.Select(attrs={'class': 'form-control'}),
+            'boarding_type': forms.Select(attrs={'class': 'form-control'}),
+            'sponsorship_type': forms.Select(attrs={'class': 'form-control'}),
+            'sponsor_type': forms.Select(attrs={'class': 'form-control'}),
+            'special_needs': forms.Select(attrs={'class': 'form-control'}),
+            'require_transport': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+            # 'student_contact': forms.JSONInput(attrs={'class': 'form-control'}),
+            # 'sponsor_contact': forms.JSONInput(attrs={'class': 'form-control'}), 
+        }
+
+class AddedStudentForm(forms.Form):
     email = forms.EmailField(
         label="Email",
         max_length=50,

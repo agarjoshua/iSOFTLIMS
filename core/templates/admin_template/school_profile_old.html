@@ -19,230 +19,241 @@ School Profile
                     <div class="card-header">
                         <h3 class="card-title">Update School Profile</h3>
                     </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <!-- general form elements -->
-                            <div class="card card-primary">
-                                <div class="card-header">
-                                    <h3 class="card-title">Add School</h3>
-                                </div>
-                                <!-- /.card-header -->
-                                <!-- form start -->
-                                {% url 'admin_school_update' as action_path %}
-                                <form role="form" method="POST" action="{{ action_path }}"
-                                    enctype="multipart/form-data">
-                                    {% csrf_token %}
 
-
-                                    {% comment %} Display Messages {% endcomment %}
-                                    {% if messages %}
-                                    <div class="form-group">
-                                        <div class="col-12">
-                                            {% for message in messages %}
-                                            {% if message.tags == "error" %}
-                                            <div class="alert alert-danger alert-dismissible fade show" role="alert"
-                                                style="margin-top: 10px;">
-                                                {{ message }}
-                                                <button type="button" class="close" data-dismiss="alert"
-                                                    aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            {% elif message.tags == "success" %}
-                                            <div class="alert alert-success alert-dismissible fade show" role="alert"
-                                                style="margin-top: 10px;">
-                                                {{ message }}
-                                                <button type="button" class="close" data-dismiss="alert"
-                                                    aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            {% endif %}
-                                            {% endfor %}
-                                        </div>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i></button>
+                      </div>
+                    <div class="">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <!-- general form elements -->
+                                <div class="card card-primary">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Add School</h3>
                                     </div>
-                                    {% endif %}
-
-                                    <div class="card-body">
-
-                                        {% comment %} Adding Form with All inputs Here {% endcomment %}
-
+    
+                                    
+                                    <!-- /.card-header -->
+                                    <!-- form start -->
+                                    {% url 'admin_school_update' as action_path %}
+                                    <form role="form" method="POST" action="{{ action_path }}"
+                                        enctype="multipart/form-data">
                                         {% csrf_token %}
-
-                                        <!-- Name -->
+    
+    
+                                        {% comment %} Display Messages {% endcomment %}
+                                        {% if messages %}
                                         <div class="form-group">
-                                            <label for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
-                                            {{ form.name }}
-                                        </div>
-
-                                        <!-- Country -->
-                                        <div class="form-group">
-                                            <label for="{{ form.country.id_for_label }}">{{ form.country.label
-                                                }}</label>
-                                            {{ form.country }}
-                                        </div>
-
-                                        <!-- Institution Order -->
-                                        <div class="form-group">
-                                            <label>{{ form.institution_order.label }}</label>
-                                            {% for choice in form.institution_order %}
-                                            <div class="form-check">
-                                                {{ choice }}
-                                                <label class="form-check-label">{{ choice.choice_label }}</label>
-                                            </div>
-                                            {% endfor %}
-                                        </div>
-
-                                        <!-- Institution Location Hierarchy -->
-                                        <div class="form-group">
-                                            <label for="{{ form.institution_location_hierarchy.id_for_label }}">{{
-                                                form.institution_location_hierarchy.label }}</label>
-                                            {{ form.institution_location_hierarchy }}
-                                        </div>
-
-                                        <!-- Institution Cluster -->
-                                        <div class="form-group">
-                                            <label>{{ form.institution_cluster.label }}</label>
-                                            {% for choice in form.institution_cluster %}
-                                            <div class="form-check">
-                                                {{ choice }}
-                                                <label class="form-check-label">{{ choice.choice_label }}</label>
-                                            </div>
-                                            {% endfor %}
-                                        </div>
-
-                                        <!-- Institution Category -->
-                                        <div class="form-group">
-                                            <label>{{ form.institution_category.label }}</label>
-                                            {% for choice in form.institution_category %}
-                                            <div class="form-check">
-                                                {{ choice }}
-                                                <label class="form-check-label">{{ choice.choice_label }}</label>
-                                            </div>
-                                            {% endfor %}
-                                        </div>
-
-                                        <!-- Institution Gender Category -->
-                                        <div class="form-group">
-                                            <label>{{ form.institution_gender_category.label }}</label>
-                                            {% for choice in form.institution_gender_category %}
-                                            <div class="form-check">
-                                                {{ choice }}
-                                                <label class="form-check-label">{{ choice.choice_label }}</label>
-                                            </div>
-                                            {% endfor %}
-                                        </div>
-
-                                        <!-- Institution Accommodation Type -->
-                                        <div class="form-group">
-                                            <label>{{ form.institution_accomodation_type.label }}</label>
-                                            {% for choice in form.institution_accomodation_type %}
-                                            <div class="form-check">
-                                                {{ choice }}
-                                                <label class="form-check-label">{{ choice.choice_label }}</label>
-                                            </div>
-                                            {% endfor %}
-                                        </div>
-
-                                        <!-- Institution Status -->
-                                        <div class="form-group">
-                                            <label for="{{ form.institution_status.id_for_label }}">{{
-                                                form.institution_status.label }}</label>
-                                            {{ form.institution_status }}
-                                        </div>
-
-                                        <!-- Institution Type -->
-                                        <div class="form-group">
-                                            <label for="{{ form.institution_type.id_for_label }}">{{
-                                                form.institution_type.label }}</label>
-                                            {{ form.institution_type }}
-                                        </div>
-
-                                        <!-- Institution in ASAL area -->
-                                        <div class="form-group">
-                                            <div class="form-check">
-                                                {{ form.institution_in_ASAL_area }}
-                                                <label class="form-check-label">{{ form.institution_in_ASAL_area.label
-                                                    }}</label>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label>{{ form.institution_residence.label }}</label>
-                                            <div class="form-check">
-                                                {% for choice in form.institution_residence %}
-                                                    <input class="form-check-input" type="checkbox" name="{{ form.institution_residence.name }}" id="{{ form.institution_residence.id_for_label }}_{{ forloop.counter0 }}"
-                                                        value="{{ choice.0 }}" {% if choice.0 in form.institution_residence.value %}checked{% endif %}>
-                                                    <label class="form-check-label" for="{{ form.institution_residence.id_for_label }}_{{ forloop.counter0 }}">
-                                                        {{ choice.1 }}
-                                                    </label>
+                                            <div class="col-12">
+                                                {% for message in messages %}
+                                                {% if message.tags == "error" %}
+                                                <div class="alert alert-danger alert-dismissible fade show" role="alert"
+                                                    style="margin-top: 10px;">
+                                                    {{ message }}
+                                                    <button type="button" class="close" data-dismiss="alert"
+                                                        aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                {% elif message.tags == "success" %}
+                                                <div class="alert alert-success alert-dismissible fade show" role="alert"
+                                                    style="margin-top: 10px;">
+                                                    {{ message }}
+                                                    <button type="button" class="close" data-dismiss="alert"
+                                                        aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                {% endif %}
                                                 {% endfor %}
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label>{{ form.telephone1.label }}</label>
-                                            <input type="text" name="{{ form.telephone1.name }}" value="{{ form.telephone1.value }}" class="form-control">
+                                        {% endif %}
+    
+                                        <div class="card-body">
+    
+                                            {% comment %} Adding Form with All inputs Here {% endcomment %}
+    
+                                            {% csrf_token %}
+    
+                                            <!-- Name -->
+                                            <div class="form-group">
+                                                <label for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
+                                                {{ form.name }}
+                                            </div>
+    
+                                            <!-- Country -->
+                                            <div class="form-group">
+                                                <label for="{{ form.country.id_for_label }}">{{ form.country.label
+                                                    }}</label>
+                                                {{ form.country }}
+                                            </div>
+    
+                                            <!-- Institution Order -->
+                                            <div class="form-group">
+                                                <label>{{ form.institution_order.label }}</label>
+                                                {% for choice in form.institution_order %}
+                                                <div class="form-check">
+                                                    {{ choice }}
+                                                    <label class="form-check-label">{{ choice.choice_label }}</label>
+                                                </div>
+                                                {% endfor %}
+                                            </div>
+    
+                                            <!-- Institution Location Hierarchy -->
+                                            <div class="form-group">
+                                                <label for="{{ form.institution_location_hierarchy.id_for_label }}">{{
+                                                    form.institution_location_hierarchy.label }}</label>
+                                                {{ form.institution_location_hierarchy }}
+                                            </div>
+    
+                                            <!-- Institution Cluster -->
+                                            <div class="form-group">
+                                                <label>{{ form.institution_cluster.label }}</label>
+                                                {% for choice in form.institution_cluster %}
+                                                <div class="form-check">
+                                                    {{ choice }}
+                                                    <label class="form-check-label">{{ choice.choice_label }}</label>
+                                                </div>
+                                                {% endfor %}
+                                            </div>
+    
+                                            <!-- Institution Category -->
+                                            <div class="form-group">
+                                                <label>{{ form.institution_category.label }}</label>
+                                                {% for choice in form.institution_category %}
+                                                <div class="form-check">
+                                                    {{ choice }}
+                                                    <label class="form-check-label">{{ choice.choice_label }}</label>
+                                                </div>
+                                                {% endfor %}
+                                            </div>
+    
+                                            <!-- Institution Gender Category -->
+                                            <div class="form-group">
+                                                <label>{{ form.institution_gender_category.label }}</label>
+                                                {% for choice in form.institution_gender_category %}
+                                                <div class="form-check">
+                                                    {{ choice }}
+                                                    <label class="form-check-label">{{ choice.choice_label }}</label>
+                                                </div>
+                                                {% endfor %}
+                                            </div>
+    
+                                            <!-- Institution Accommodation Type -->
+                                            <div class="form-group">
+                                                <label>{{ form.institution_accomodation_type.label }}</label>
+                                                {% for choice in form.institution_accomodation_type %}
+                                                <div class="form-check">
+                                                    {{ choice }}
+                                                    <label class="form-check-label">{{ choice.choice_label }}</label>
+                                                </div>
+                                                {% endfor %}
+                                            </div>
+    
+                                            <!-- Institution Status -->
+                                            <div class="form-group">
+                                                <label for="{{ form.institution_status.id_for_label }}">{{
+                                                    form.institution_status.label }}</label>
+                                                {{ form.institution_status }}
+                                            </div>
+    
+                                            <!-- Institution Type -->
+                                            <div class="form-group">
+                                                <label for="{{ form.institution_type.id_for_label }}">{{
+                                                    form.institution_type.label }}</label>
+                                                {{ form.institution_type }}
+                                            </div>
+    
+                                            <!-- Institution in ASAL area -->
+                                            <div class="form-group">
+                                                <div class="form-check">
+                                                    {{ form.institution_in_ASAL_area }}
+                                                    <label class="form-check-label">{{ form.institution_in_ASAL_area.label
+                                                        }}</label>
+                                                </div>
+                                            </div>
+    
+                                            <div class="form-group">
+                                                <label>{{ form.institution_residence.label }}</label>
+                                                <div class="form-check">
+                                                    {% for choice in form.institution_residence %}
+                                                        <input class="form-check-input" type="checkbox" name="{{ form.institution_residence.name }}" id="{{ form.institution_residence.id_for_label }}_{{ forloop.counter0 }}"
+                                                            value="{{ choice.0 }}" {% if choice.0 in form.institution_residence.value %}checked{% endif %}>
+                                                        <label class="form-check-label" for="{{ form.institution_residence.id_for_label }}_{{ forloop.counter0 }}">
+                                                            {{ choice.1 }}
+                                                        </label>
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>{{ form.telephone1.label }}</label>
+                                                <input type="text" name="{{ form.telephone1.name }}" value="{{ form.telephone1.value }}" class="form-control">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>{{ form.telephone2.label }}</label>
+                                                <input type="text" name="{{ form.telephone2.name }}" value="{{ form.telephone2.value }}" class="form-control">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>{{ form.fax_number.label }}</label>
+                                                <input type="text" name="{{ form.fax_number.name }}" value="{{ form.fax_number.value }}" class="form-control">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>{{ form.email_address.label }}</label>
+                                                <input type="email" name="{{ form.email_address.name }}" value="{{ form.email_address.value }}" class="form-control">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>{{ form.postal.label }}</label>
+                                                <input type="text" name="{{ form.postal.name }}" value="{{ form.postal.value }}" class="form-control">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>{{ form.physical_address1.label }}</label>
+                                                <input type="text" name="{{ form.physical_address1.name }}" value="{{ form.physical_address1.value }}" class="form-control">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>{{ form.physical_address2.label }}</label>
+                                                <input type="text" name="{{ form.physical_address2.name }}" value="{{ form.physical_address2.value }}" class="form-control">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>{{ form.physical_address3.label }}</label>
+                                                <input type="text" name="{{ form.physical_address3.name }}" value="{{ form.physical_address3.value }}" class="form-control">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>{{ form.bank1.label }}</label>
+                                                <input type="text" name="{{ form.bank1.name }}" value="{{ form.bank1.value }}" class="form-control">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>{{ form.bank2.label }}</label>
+                                                <input type="text" name="{{ form.bank2.name }}" value="{{ form.bank2.value }}" class="form-control">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>{{ form.bank3.label }}</label>
+                                                <input type="text" name="{{ form.bank3.name }}" value="{{ form.bank3.value }}" class="form-control">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>{{ form.bank4.label }}</label>
+                                                <input type="text" name="{{ form.bank4.name }}" value="{{ form.bank4.value }}" class="form-control">
+                                            </div>
+    
+    
+    
+    
                                         </div>
-                                        <div class="form-group">
-                                            <label>{{ form.telephone2.label }}</label>
-                                            <input type="text" name="{{ form.telephone2.name }}" value="{{ form.telephone2.value }}" class="form-control">
+                                        <!-- /.card-body -->
+    
+                                        <div class="card-footer">
+                                            <button type="submit" class="btn btn-primary">{{ button_text }}</button>
                                         </div>
-                                        <div class="form-group">
-                                            <label>{{ form.fax_number.label }}</label>
-                                            <input type="text" name="{{ form.fax_number.name }}" value="{{ form.fax_number.value }}" class="form-control">
-                                        </div>
-                                        <div class="form-group">
-                                            <label>{{ form.email_address.label }}</label>
-                                            <input type="email" name="{{ form.email_address.name }}" value="{{ form.email_address.value }}" class="form-control">
-                                        </div>
-                                        <div class="form-group">
-                                            <label>{{ form.postal.label }}</label>
-                                            <input type="text" name="{{ form.postal.name }}" value="{{ form.postal.value }}" class="form-control">
-                                        </div>
-                                        <div class="form-group">
-                                            <label>{{ form.physical_address1.label }}</label>
-                                            <input type="text" name="{{ form.physical_address1.name }}" value="{{ form.physical_address1.value }}" class="form-control">
-                                        </div>
-                                        <div class="form-group">
-                                            <label>{{ form.physical_address2.label }}</label>
-                                            <input type="text" name="{{ form.physical_address2.name }}" value="{{ form.physical_address2.value }}" class="form-control">
-                                        </div>
-                                        <div class="form-group">
-                                            <label>{{ form.physical_address3.label }}</label>
-                                            <input type="text" name="{{ form.physical_address3.name }}" value="{{ form.physical_address3.value }}" class="form-control">
-                                        </div>
-                                        <div class="form-group">
-                                            <label>{{ form.bank1.label }}</label>
-                                            <input type="text" name="{{ form.bank1.name }}" value="{{ form.bank1.value }}" class="form-control">
-                                        </div>
-                                        <div class="form-group">
-                                            <label>{{ form.bank2.label }}</label>
-                                            <input type="text" name="{{ form.bank2.name }}" value="{{ form.bank2.value }}" class="form-control">
-                                        </div>
-                                        <div class="form-group">
-                                            <label>{{ form.bank3.label }}</label>
-                                            <input type="text" name="{{ form.bank3.name }}" value="{{ form.bank3.value }}" class="form-control">
-                                        </div>
-                                        <div class="form-group">
-                                            <label>{{ form.bank4.label }}</label>
-                                            <input type="text" name="{{ form.bank4.name }}" value="{{ form.bank4.value }}" class="form-control">
-                                        </div>
-
-
-
-
-                                    </div>
-                                    <!-- /.card-body -->
-
-                                    <div class="card-footer">
-                                        <button type="submit" class="btn btn-primary">{{ button_text }}</button>
-                                    </div>
-                                </form>
-
+                                    </form>
+    
+                                </div>
+                                <!-- /.card -->
+    
                             </div>
-                            <!-- /.card -->
-
                         </div>
+
                     </div>
                 </div>
                 <!-- /.card -->

@@ -11,7 +11,19 @@ Manage Head of Departments
 <section class="content">
     <div class="container-fluid">
 
-        <a class="btn btn-primary" href="{% url 'add_hod' %}" role="button">+ Add HOD</a> <br />&nbsp;
+        <div class="mx-auto row">
+            
+            <div class="mr-1">
+                <a class="btn btn-primary" href="{% url 'add_hod' %}" role="button">+ Add HOD</a> <br />&nbsp;
+            </div>
+            <div class="ml-1">
+                <a class="btn btn-primary" href="{% url 'manage_staff_type' %}" role="button">+ Manage User Types</a>
+            <br />&nbsp;
+            </div>
+        </div>
+
+
+
 
         {% if messages %}
         <div class="form-group">

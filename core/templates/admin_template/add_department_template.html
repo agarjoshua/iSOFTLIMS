@@ -52,8 +52,8 @@
 
                         <div class="card-body">
                             <div class="form-group">
-                                <label>Institution Code</label>
-                                <input type="text" class="form-control" name="institution_code" placeholder="Institution Code" id="institution_code">
+                                <label>Department Code</label>
+                                <input type="text" class="form-control" name="institution_code" placeholder="Department Code" id="institution_code">
                             </div>
 
                             <div class="form-group">
@@ -63,25 +63,7 @@
 
                             <div class="form-group">
                                 <label>Description</label>
-                                <input type="text" class="form-control" name="desc" placeholder="Password" id="desc">
-                            </div>
-
-                            <div class="form-group">
-                                <label>Department Head</label>
-                                <select name="head">
-                                    {% for hod in hod %}
-                                    <option value="{{ hod.admin.id }}">{{ hod.admin.fist_name }}</option>
-                                    {% endfor %}
-                                  </select>
-                            </div>
-
-                            <div class="form-group">
-                                <label>Deputy Head</label>
-                                <select name="deputy">
-                                    {% for staff in staff %}
-                                    <option value="{{ staff.admin.id }}">{{ staff.admin.fist_name }}</option>
-                                    {% endfor %}
-                                </select>
+                                <input type="text" class="form-control" name="desc" placeholder="Description" id="desc">
                             </div>
 
                         </div>

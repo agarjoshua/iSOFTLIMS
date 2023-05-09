@@ -6,31 +6,32 @@ class DateInput(forms.DateInput):
 
 class AddDepartmentForm(forms.Form):
 
-    try:
-        hod_obj = HOD.objects.all()
-        hods = []
-        for hod in hod_obj:
-            single_hod = hod.id, f"{str(hod.admin.first_name)} {str(hod.admin.last_name)}"
-            hods.append(single_hod) 
+    # try:
+    #     hod_obj = HOD.objects.all()
+    #     hods = []
+    #     for hod in hod_obj:
+    #         single_hod = hod.id, f"{str(hod.admin.first_name)} {str(hod.admin.last_name)}"
+    #         hods.append(single_hod) 
 
-    except Exception:
-        hods = []
+    # except Exception:
+    #     hods = []
 
-    try:
-        staff_obj = Staff.objects.all()
-        staffs = []
-        for staff in staff_obj:
-            single_staff = staff.id, f"{str(staff.admin.first_name)} {str(staff.admin.last_name)}"
-            staffs.append(single_staff)
+    # try:
+    #     staff_obj = Staff.objects.all()
+    #     staffs = []
+    #     for staff in staff_obj:
+    #         single_staff = staff.id, f"{str(staff.admin.first_name)} {str(staff.admin.last_name)}"
+    #         staffs.append(single_staff)
 
-    except Exception:
-        staffs = []
+    # except Exception:
+    #     staffs = []
 
+    
     institution_code = forms.CharField(label="Institution Code", max_length=50, widget=forms.TextInput(attrs={"class":"form-control"}))
     name = forms.CharField(label="Name", max_length=50, widget=forms.TextInput(attrs={"class":"form-control"}))
-    desc = forms.EmailField(label="Description", max_length=50, widget=forms.TextInput(attrs={"class":"form-control"}))
-    head = forms.ChoiceField(label="Head of Department", choices=hods, widget=forms.Select(attrs={"class":"form-control"}))
-    deputy = forms.ChoiceField(label="Deputy Head of Department", choices=staffs, widget=forms.Select(attrs={"class":"form-control"}))
+    description = forms.EmailField(label="Description", max_length=50, widget=forms.TextInput(attrs={"class":"form-control"}))
+    head = forms.ModelChoiceField(queryset=HOD.objects.all(), label="Department Head", widget=forms.Select(attrs={"class":"form-control"}))
+    deputy = forms.ModelChoiceField(queryset=Staff.objects.all(), label="Department Deputy Head", widget=forms.Select(attrs={"class":"form-control"}))
 
 
 # class EditHodForm(forms.Form):
