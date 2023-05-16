@@ -1,0 +1,174 @@
+{% extends 'admin_template/base_template.html' %}
+
+{% block page_title %}
+Manage Approvals
+{% endblock page_title %}
+
+{% block main_content %}
+
+{% load static %}
+
+<section class="content">
+    <div class="container-fluid">
+
+        {% if messages %}
+        <div class="form-group">
+            <div class="col-12">
+                {% for message in messages %}
+                {% if message.tags == "error" %}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                {% elif message.tags == "success" %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="col-lg-12">
+            <!-- PIE CHART -->
+            <div class="card card-warning">
+                <div class="card-header">
+                    <h3 class="card-title text-bold">Manage Deferrals</h3>
+
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse"><i
+                                class="fas fa-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-tool" data-card-widget="remove"><i
+                                class="fas fa-times"></i></button>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="myModalLabel">Modal Title</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Modal body text goes here.</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary">Approve</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="myModalLabel">Modal Title</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Modal body text goes here.</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary">Decline</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="card-body">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Applicant</th>
+                                <th>Reason</th>
+
+                                <th>Admissions Approved</th>
+
+                                <th>Dean Approved</th>
+
+                                <th>Registrar Approved</th>
+
+                                <th>DVC Approved</th>
+
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for approval in approvals %}
+                            <tr>
+                                <td>{{ approval.id }}</td>
+                                <td>{{ approval.applicant }}</td>
+                                <td>{{ approval.reason }}</td>
+                                <td>
+                                    {{ approval.admissions_approved }}
+                                    <span class="d-block">
+                                        <p class="text-bold">comments :</p>{{ approval.admissions_comments }}
+                                    </span>
+                                </td>
+                                <td>
+                                    {{ approval.dean_approved }}
+                                    <span class="d-block">
+                                        <p class="text-bold">comments :</p>{{ approval.dean_comments }}
+                                    </span>
+                                </td>
+                                <td>
+                                    {{ approval.registrar_approved }}
+                                    <span class="d-block">
+                                        <p class="text-bold">comments :</p>{{ approval.registrar_comments }}
+                                    </span>
+                                </td>
+                                <td>
+                                    {{ approval.dvc_approved }}
+                                    <span class="d-block">
+                                        <p class="text-bold">comments :</p>{{ approval.dvc_comments }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-primary" data-toggle="modal"
+                                        data-target="#myModal">Approve Defferal</button>
+                                    {% if i in applicant_approval_workflow %}
+
+                                    <button id="approve-btn-{{i.applicant.id}}"
+                                        class="btn btn-button btn-success approve-btn" value="{{i.applicant.id}}"
+                                        disabled>APPROVED</button>
+
+                                    {% else %}
+
+                                    <button id="approve-btn-{{i.applicant.id}}"
+                                        class="btn btn-button btn-success approve-btn"
+                                        value="{{i.applicant.id}}">Approve</button>
+
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.card-body -->
+            </div>
+        </div>
+
+
+</section>
+
+{% endblock main_content %}

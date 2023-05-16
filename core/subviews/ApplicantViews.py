@@ -5,6 +5,10 @@ from core.models import Applicant, ApplicantApprovalWorklow, CustomUser
 from django.contrib import messages
 from django.contrib.admin.views.decorators import user_passes_test # type: ignore
 from django.contrib.auth import login, logout
+from django.core.exceptions import ObjectDoesNotExist
+from django.core.files.storage import FileSystemStorage
+from core.utils.mail import EmailBackEnd
+
 
 def is_applicant(user):
     return user.is_superuser or user.user_type==8
@@ -26,8 +30,11 @@ def applicantsignup(request):
                 last_name=last_name,
                 user_type=8,
             )
+            user.applicant.application_status = False
             user.save()
             messages.success(request, "You have been registered Successfully!")
+            user = EmailBackEnd.authenticate(request, username=request.POST.get('email'), password=request.POST.get('password'))
+            login(request, user)
             return redirect("applicant_home")
         except Exception as e:
             print(e)  # type: ignore
@@ -51,14 +58,21 @@ def applicant_home(request):
     # applicant_obj = CustomUser.objects.get(id=user)
     # user = Applicant.objects.get(applicant=request.user.id)
     # user = CustomUser.objects.get(applicant=request.user.id)
-    has_applied = Applicant.objects.get(applicant=request.user.id).application_status
-    print('--------------------------------------------------------------------------')
-    print(has_applied)
-    print('--------------------------------------------------------------------------')
+
+    applicant = Applicant.objects.get(applicant=request.user.id)
+    # has_paid = applicant.approval_workflow.finance_approved  # type: ignore
+
+    try:
+        has_applied = Applicant.objects.get(applicant=request.user.id).application_status
+    except ObjectDoesNotExist as e:
+        has_applied = False
+
     context = {
         "applicant_form": applicant_form,
-        "has_applied": has_applied
-        }
+        "has_applied": has_applied,
+        #"has_paid": has_paid
+    }
+
     if request.method == "POST":
         surname = request.POST.get("surname")
         other_names = request.POST.get("other_names")
@@ -138,8 +152,10 @@ def applicant_home(request):
             applicant.start_date=start_date
             applicant.expected_completion_date=expected_completion_date
             applicant.mode_of_study=mode_of_study
-            applicant.photo_1=photo_1
+            applicant.photo_1=photo_1 
             applicant.photo_2=photo_2
+
+
             applicant.secondary_schools_attended=secondary_schools_attended
             applicant.university_education=university_education
             applicant.other_degrees_or_diploma=other_degrees_or_diploma

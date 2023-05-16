@@ -59,6 +59,10 @@ Approve Applicants
                             </div>
                         {% endif %}
 
+                        <div id="register-message">
+
+                        </div>
+
 
                         <table id="test" class="table table-striped">
                             <div class="register-message"></div>
@@ -71,7 +75,7 @@ Approve Applicants
                                     <th>Exam Class</th>
                                     <th>Ammount Paid</th>
                                     <th>Status</th>
-                                    <th></th>
+                                    <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -88,9 +92,9 @@ Approve Applicants
                                     <td>
                                         <button class="btn btn-primary" data-toggle="collapse" data-target="#form{{ i.id }}">Applicant Details</button>
                                         {% if i not in approved_applicants %}
-                                        <button id="approve-btn" class="btn btn-button btn-success approve-btn" value="{{i.applicant.id}}">Approve</button>
+                                        <button id="approve-btn" class="btn btn-button btn-success" value="{{i.applicant.id}}">Approve</button>
                                         {% else %}
-                                        <button id="approve-btn" class="btn btn-button btn-success approve-btn" value="{{i.applicant.id}}" disabled>APPROVED</button>
+                                        <button class="btn btn-button btn-success" value="{{i.applicant.id}}" disabled>APPROVED</button>
                                         {% endif %}
                                         
                                     </td>
@@ -221,8 +225,10 @@ Approve Applicants
                 //$('#register-table').html(response.table_html);
                 //$('#class-search').val('');
                 //$('#table table-striped tbody').html(response.tbody_html);
-                //$('#register-message').html('<div class="alert alert-success" role="alert">Registration successful!</div>');
-                $("#test").load(window.location + " #test");
+                $('#register-message').html('<div class="alert alert-success" role="alert">Registration successful!</div>');
+                location.reload(); 
+                //$("#test").load(window.location + " #test");
+
             },
             error: function(xhr, status, error) {
                 $('#register-message').html('<div class="alert alert-danger" role="alert">Registration failed. Please try again ' +error+ '.</div>');

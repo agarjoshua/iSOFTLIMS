@@ -1,7 +1,7 @@
 from django import forms
 from django.forms import Form
 from academics.models import GradeLevel, Session
-from core.models import Applicant, Students
+from core.models import Applicant, DeferrmentApprovalWorklow, Students, TemporaryWithdrawalApprovalWorklow
 from django.forms import ClearableFileInput
 from django.utils.translation import gettext_lazy as _
 
@@ -13,14 +13,12 @@ class AddStudentForm(forms.ModelForm):
     email = forms.EmailField(max_length=200, help_text='Required')
     first_name = forms.CharField(max_length=100)
     last_name = forms.CharField(max_length=100)
-    password1 = forms.PasswordInput()
-    password2 = forms.PasswordInput()
 
     class Meta:
 
         model = Students
         
-        fields = ['email', 'first_name', 'last_name', 'password1', 'password2','name', 'registration_number', 'index_number', 'profile_pic', 'address', 'course', 'student_type', 'gender', 'account_status', 'academic_status', 'study_type', 'boarding_type', 'sponsorship_type', 'sponsor_type', 'special_needs', 'require_transport', 'student_contact', 'sponsor_contact'] # type: ignore
+        fields = ['email', 'first_name', 'last_name','name', 'registration_number', 'index_number', 'profile_pic', 'address', 'course', 'student_type', 'gender', 'account_status', 'academic_status', 'study_type', 'boarding_type', 'sponsorship_type', 'sponsor_type', 'special_needs', 'require_transport', 'student_contact', 'sponsor_contact'] # type: ignore
 
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control'}),
@@ -181,3 +179,18 @@ class EditStudentForm(forms.Form):
         required=False,
         widget=forms.FileInput(attrs={"class": "form-control"}),
     )
+
+
+class DefferementApprovalWorkflowForm(forms.ModelForm):
+
+    reason = forms.CharField(label="Reason for deferement", max_length=50, widget=forms.TextInput(attrs={"class":"form-control"}))
+    class Meta:
+        model = DeferrmentApprovalWorklow
+        fields = ['reason']
+
+class TemporaryWithdrawalApprovalWorklowForm(forms.ModelForm):
+
+    reason = forms.CharField(label="Reason for temporary withdrawal", max_length=50, widget=forms.TextInput(attrs={"class":"form-control"}))
+    class Meta:
+        model = TemporaryWithdrawalApprovalWorklow
+        fields = ['reason']

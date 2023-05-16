@@ -73,6 +73,18 @@
               </li>
 
               <li class="nav-item">
+                {% url 'student_affairs' as student_affairs %}
+                {% url 'student_affairs' student_affairs_id=id as edit_student_affairs %}
+                <a href="{{ student_affairs }}"
+                  class="nav-link {% if request.path == student_affairs  %} active {% endif %} {% if request.path == edit_student_affairs %} active {% endif %}">
+                  <i class="nav-icon fas fa fa-building"></i>
+                  <p>
+                    Manage Student Affairs
+                  </p>
+                </a>
+              </li>
+
+              <li class="nav-item">
                 {% url 'manage_departments' as manage_departments %}
                 {% url 'edit_department' department_id=id as edit_department %}
                 <a href="{{ manage_departments }}"

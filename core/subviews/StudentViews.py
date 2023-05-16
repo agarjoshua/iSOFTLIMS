@@ -4,9 +4,11 @@ from django.contrib import messages
 from django.core.files.storage import FileSystemStorage #To upload Profile Picture
 from django.urls import reverse
 import datetime
-from academics.models import Class, ClassEnrollment, ClusterClass, Enrollment, Session # To Parse input DateTime into Python Date Time Object
+from academics.models import Class, ClassEnrollment, ClusterClass, Enrollment, Session
+from core.forms.studentforms import DefferementApprovalWorkflowForm, TemporaryWithdrawalApprovalWorklowForm # To Parse input DateTime into Python Date Time Object
 
-from core.models import Students,CustomUser
+from core.models import DeferrmentApprovalWorklow, Students,CustomUser, TemporaryWithdrawalApprovalWorklow
+from core.subviews.utilities.StudentViewUtilities import check_student_is_defferred, check_student_is_temporarily_withdrawn
 # Staffs, Courses, Subjects,  Attendance, AttendanceReport, LeaveReportStudent, FeedBackStudent, StudentResult
 
 
@@ -222,6 +224,51 @@ def student_view_result(request):
     return render(request, "student_template/student_view_result.html", context)
 
 
+def students_sessions_management(request):
+    student = Students.objects.get(admin=request.user.id)
+    deferrement_approval_workflow_form = DefferementApprovalWorkflowForm()
+    temporary_withdrawal_workflow_form = TemporaryWithdrawalApprovalWorklowForm()
+    student_deffer_status = check_student_is_defferred(student)
+    student_temporary_withdrawal_status = check_student_is_temporarily_withdrawn(student)
+
+    context = {
+        "deferrement_approval_workflow_form": deferrement_approval_workflow_form,
+        "temporary_withdrawal_workflow_form":temporary_withdrawal_workflow_form,
+        "student_deffer_status":student_deffer_status,
+        "student_temporary_withdrawal_status":student_temporary_withdrawal_status
+
+    }
+    return render(request, "student_template/student_session_management.html", context)
 
 
+def defer_student(request):
+    reason = request.POST.get('reason')
+    student = Students.objects.get(admin=request.user.id)
 
+    try:
+        defer_obj = DeferrmentApprovalWorklow.objects.create(
+            applicant = student,
+            reason = reason
+        )
+        defer_obj.save()
+        messages.success(request,'Application for deferrment made')
+        return render(request, "student_template/student_session_management.html")
+    except Exception as e:
+        messages.error(request,f'{e}')
+        return render(request, "student_template/student_session_management.html")
+
+def withdraw_student(request):
+    reason = request.POST.get('reason')
+    student = Students.objects.get(admin=request.user.id)
+
+    try:
+        defer_obj = TemporaryWithdrawalApprovalWorklow.objects.create(
+            applicant = student,
+            reason = reason
+        )
+        defer_obj.save()
+        messages.success(request,'Application for deferrment made')
+        return render(request, "student_template/student_session_management.html")
+    except Exception as e:
+        messages.error(request,f'{e}')
+        return render(request, "student_template/student_session_management.html")

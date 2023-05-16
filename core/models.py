@@ -238,7 +238,7 @@ class Students(models.Model):
     index_number = models.CharField(max_length=20, unique=True, null=True)
     profile_pic = models.FileField(null=True)
     address = models.TextField(null=True)
-    course = models.ForeignKey("academics.Course", on_delete=models.DO_NOTHING)
+    course = models.ForeignKey("academics.Course", on_delete=models.DO_NOTHING, null=True)
     # grade = models.ForeignKey('academics.Gradelevel', on_delete=models.DO_NOTHING, null=True)
     STUDENT_TYPE = [
         ("1", "Local"), 
@@ -370,14 +370,14 @@ class Applicant(models.Model):
     field_of_study = models.CharField(max_length=255)
     faculty = models.CharField(max_length=255)
     department = models.CharField(max_length=255)
-    concept_paper = models.FileField(upload_to='concept_papers', blank=True)
+    concept_paper = models.FileField(blank=True)
     masters_degree_type = models.CharField(max_length=255, blank=True)
     masters_degree_title = models.CharField(max_length=255, blank=True)
     start_date = models.DateField(null=True)
     expected_completion_date = models.DateField(null=True)
     mode_of_study = models.CharField(max_length=2, choices=MODE_OF_STUDY_CHOICES,blank=True)
-    photo_1 = models.ImageField(upload_to='applicant_photos',null=True)
-    photo_2 = models.ImageField(upload_to='applicant_photos',null=True)
+    photo_1 = models.ImageField(null=True)
+    photo_2 = models.ImageField(null=True)
     secondary_schools_attended = models.TextField(blank=True)
     university_education = models.TextField(blank=True)
     other_degrees_or_diploma = models.TextField(blank=True)
@@ -397,7 +397,6 @@ class Applicant(models.Model):
     how_did_you_know_about_us = models.CharField(max_length=255, blank=True)
     require_entry_exams = models.BooleanField(default=True)
     application_status = models.BooleanField(default=False)
-
     # finance_approval = models.BooleanField(default=False)
     # finance_approval = models.BooleanField(default=False)
     # finance_approval = models.BooleanField(default=False)
@@ -409,6 +408,40 @@ class ApplicantApprovalWorklow(models.Model):
     department_approved = models.BooleanField(default=False)
     dvc_approved = models.BooleanField(default=False)
 
+class DeferrmentApprovalWorklow(models.Model):
+    id = models.AutoField(primary_key=True)
+    applicant = models.ForeignKey(Students, on_delete=models.CASCADE)
+    reason = models.CharField(max_length=255, blank=True)
+    admissions_approved = models.BooleanField(default=False)
+    admissions_comments = models.CharField(max_length=255, blank=True)
+    dean_approved = models.BooleanField(default=False)
+    dean_comments = models.CharField(max_length=255, blank=True)
+    registrar_approved = models.BooleanField(default=False)
+    registrar_comments = models.CharField(max_length=255, blank=True)
+    dvc_approved = models.BooleanField(default=False)
+    dvc_comments = models.CharField(max_length=255, blank=True)
+    objects = models.Manager()
+
+class TemporaryWithdrawalApprovalWorklow(models.Model):
+    id = models.AutoField(primary_key=True)
+    applicant = models.ForeignKey(Students, on_delete=models.CASCADE)
+    reason = models.CharField(max_length=255, blank=True)
+    admissions_approved = models.BooleanField(default=False)
+    admissions_comments = models.CharField(max_length=255, blank=True)
+    dean_approved = models.BooleanField(default=False)
+    dean_comments = models.CharField(max_length=255, blank=True)
+    registrar_approved = models.BooleanField(default=False)
+    registrar_comments = models.CharField(max_length=255, blank=True)
+    dvc_approved = models.BooleanField(default=False)
+    dvc_comments = models.CharField(max_length=255, blank=True)
+    objects = models.Manager()
+
+class InterFacultyTransferApprovalWorklow(models.Model):
+    id = models.AutoField(primary_key=True)
+    applicant = models.ForeignKey(Applicant, on_delete=models.CASCADE)
+    finance_approved = models.BooleanField(default=False)
+    department_approved = models.BooleanField(default=False)
+    dvc_approved = models.BooleanField(default=False)
 
 class SpecialUser(models.Model):
     id = models.AutoField(primary_key=True)

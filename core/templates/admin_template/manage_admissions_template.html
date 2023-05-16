@@ -99,29 +99,17 @@ Manage Approval of Applicants
                                                             <table class="table table-striped">
                                                                 <thead>
                                                                     <tr>
-                                                                        <th>Transaction Code</th>
+                                                                        <th>Document name</th>
                                                                         <th>Name</th>
                                                                         <th>Date</th>
-                                                                        <th>Ammount</th>
-                                                                        <th>Action</th>
                                                                     </tr>
                                                                 </thead> 
                                                                 <tbody>
-                                                                    {% for j in all_application_transactions%}
-                                                                    {% if i.applicant.id == j.associated_user.id %}
                                                                     <tr>
-                                                                        <td contenteditable="true">{{j.transaction_code}}</td>
-                                                                        <td contenteditable="true">{{j.associated_user.first_name}} {{j.associated_user.last_name}}</td>
-                                                                        <td contenteditable="true">{{j.date}}</td>
-                                                                        <td>{{j.ammount_paid}}</td>
-                                                                        <td>
-                                                                            <button class="btn btn-success edit-row ">Approve</button>
-                                                                            <button
-                                                                                class="btn btn-danger delete-row">Disapprove</button>
-                                                                        </td>
+                                                                        <td contenteditable="true">{{i.concept_paper}}</td>
+                                                                        <td contenteditable="true">{{i.photo_1}}</td>
+                                                                        <td contenteditable="true">{{i.photo_2}}</td>
                                                                     </tr>
-                                                                    {% endif %}
-                                                                    {% endfor %}
                                                                 </tbody>
                                                             </table>
                                                         </div>

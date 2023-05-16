@@ -1,4 +1,5 @@
 import ast
+import random
 import uuid
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
@@ -432,7 +433,6 @@ def add_student(request):
 
 @user_passes_test(is_admin)
 def add_student_save(request):
-    print("-------------------------------------")
     if request.method != "POST":
         messages.error(request, "Invalid Method")
         return redirect("add_student")
@@ -442,18 +442,13 @@ def add_student_save(request):
         if form.is_valid():
             first_name = form.cleaned_data["first_name"]
             last_name = form.cleaned_data["last_name"]
-            username = form.cleaned_data["username"]
             email = form.cleaned_data["email"]
-            password = form.cleaned_data["password"]
             address = form.cleaned_data["address"]
-            session_year_id = form.cleaned_data["session_year_id"]
-            # class_id = form.cleaned_data["class_id"]
             gender = form.cleaned_data["gender"]
-
+            course = form.cleaned_data["course"]
             # Getting Profile Pic first
             # First Check whether the file is selected or not
             # Upload only if file is selected
-            print("-------------------------------------")
             if len(request.FILES) != 0:
                 profile_pic = request.FILES["profile_pic"]
                 fs = FileSystemStorage()
@@ -461,38 +456,53 @@ def add_student_save(request):
                 profile_pic_url = fs.url(filename)
             else:
                 profile_pic_url = None
+            student_type = form.cleaned_data["student_type"]
+            account_status=form.cleaned_data["account_status"]
+            academic_status =form.cleaned_data["academic_status"]
+            study_type =form.cleaned_data["study_type"]
+            boarding_type =form.cleaned_data["boarding_type"]
+            sponsorship_type =form.cleaned_data["sponsorship_type"]
+            sponsor_type =form.cleaned_data["sponsor_type"]
+            special_needs =form.cleaned_data["special_needs"]
+            require_transport =form.cleaned_data["require_transport"]
+
 
             try:
-                print("-----------------IN TRY CATCH--------------------")
                 user = CustomUser.objects.create_user(
-                    username=username,
-                    password=password,
+                    username=first_name,
+                    password=first_name,
                     email=email,
                     first_name=first_name,
                     last_name=last_name,
                     user_type=3,
                 )
+                
+                user.students.name = f'{first_name} {last_name}'
+                user.students.registration_number = f'{study_type}/{first_name}/{last_name}'
+                user.students.index_number = lambda: ''.join(random.choices('0123456789', k=7))
+                user.students.profile_pic_url = profile_pic_url
                 user.students.address = address
-
-                # user.students.class_id = class_obj
-
-                session_year_obj = Session.objects.get(id=session_year_id)
-                user.students.session_year_id = session_year_obj
-
+                course = Course.objects.get(id=course.id)
+                user.students.course = course
+                user.students.student_type = student_type
                 user.students.gender = gender
-                user.students.profile_pic = profile_pic_url
-
-                institution = Admin.objects.get(admin=request.user).institution
-                user.students.institution = institution
+                user.students.account_status = account_status
+                user.students.academic_status = academic_status
+                user.students.study_type = study_type
+                user.students.boarding_type = boarding_type
+                user.students.sponsorship_type = sponsorship_type
+                user.students.sponsor_type = sponsor_type
+                user.students.special_needs = special_needs
+                user.students.require_transport = require_transport
 
                 user.save()
                 messages.success(request, "Student Added Successfully!")
-                return redirect("add_student")
+                return redirect("manage_students")
 
             except Exception as e:
                 messages.error(request, f"Failed to Add Student! -{e}")
                 print(e)
-                return redirect("add_student")
+                return redirect("manage_students")
         else:
             error_list = []
             for field, errors in form.errors.items():
@@ -502,7 +512,7 @@ def add_student_save(request):
             return redirect("add_student")
 
 @user_passes_test(is_admin)
-def manage_student(request):
+def manage_students(request):
     students = Students.objects.all()
     context = {"students": students}
     return render(request, "admin_template/manage_student_template.html", context)
@@ -593,10 +603,10 @@ def delete_student(request, student_id):
     try:
         student.delete()
         messages.success(request, "Student Deleted Successfully.")
-        return redirect("manage_student")
+        return redirect("manage_students")
     except:
         messages.error(request, "Failed to Delete Student.")
-        return redirect("manage_student")
+        return redirect("manage_students")
 
 
 #########################################MANAGE PARENTS#######################################################################
@@ -775,13 +785,13 @@ def add_hod_save(request):
                 user.hod.phonenumber = phonenumber
                 user.save()
                 messages.success(request, "HOD Added Successfully!")
-                return redirect("add_hod")
+                return redirect("manage_hod")
             except Exception as e:
                 messages.error(request, "Failed to Add HOD!")
                 print(e)
-                return redirect("add_hod")
+                return redirect("manage_hod")
         else:
-            return redirect("add_hod")
+            return redirect("manage_hod")
 
 @user_passes_test(is_admin)
 def edit_hod(request, hod_id):
@@ -882,6 +892,7 @@ def admissions(request):
         show_hod_div = hod_dept.name == 'Admissions'
     except Exception as e:
         show_hod_div = False
+        
     context = {
         "approved_applicants":approved_applicants,
         "applicant_approval_workflow":applicant_approval_workflow_admissions,
@@ -890,6 +901,7 @@ def admissions(request):
         "dvc_level": dvc_level
     }
     return render(request, "admin_template/manage_admissions_template.html", context)
+
 
 def admissions_approve(request):
     applicant_id = request.POST.get("selected_id")

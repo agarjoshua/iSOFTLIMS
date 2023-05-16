@@ -48,8 +48,12 @@
                 You've already applied, your application is being worked on
             </h3>
         </div>
-        {% else %}
+        {% elif has_paid == True %}
+        <div>
+            make payment to MPESA number etc
+        </div>
 
+        {% else %}
         <form method="post">
             {% csrf_token %}
             <h3>Personal Details</h3>

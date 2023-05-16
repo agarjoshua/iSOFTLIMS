@@ -2,7 +2,7 @@ from django.urls import path, include
 
 from academics.subviews import classView, studentView
 from . import views
-from core.subviews import AdminViews, StudentViews, ApplicantViews
+from core.subviews import AdminViews, StudentViews,StudentAdminAffairs, ApplicantViews
 
 urlpatterns = [
 
@@ -77,6 +77,8 @@ urlpatterns = [
     # path('staff_leave_approve/<leave_id>/', AdminViews.staff_leave_approve, name="staff_leave_approve"),
     # path('staff_leave_reject/<leave_id>/', AdminViews.staff_leave_reject, name="staff_leave_reject"),
     
+
+    # STUDENT URLS
     path('student_home', StudentViews.student_home, name="student_home"),
     path('student_profile/', StudentViews.student_profile, name="student_profile"),
     path('student_sessions/', StudentViews.enroll_session, name="enroll_session"),
@@ -102,9 +104,16 @@ urlpatterns = [
     path('add_student_save/', AdminViews.add_student_save, name="add_student_save"),
     path('edit_student/<student_id>', AdminViews.edit_student, name="edit_student"),
     path('edit_student_save/', AdminViews.edit_student_save, name="edit_student_save"),
-    path('manage_student/', AdminViews.manage_student, name="manage_student"),
+    path('manage_students/', AdminViews.manage_students, name="manage_students"),
     path('delete_student/<student_id>/', AdminViews.delete_student, name="delete_student"),
 
+    path('student_session_management/',StudentViews.students_sessions_management,name="students_sessions_management"),
+    path('defer_student/',StudentViews.defer_student,name="defer_student"),
+    path("withdraw_student/", StudentViews.withdraw_student, name="withdraw_student"),
+
+    path("student_affairs/", StudentAdminAffairs.student_affairs_home, name="student_affairs"),
+    path("manage_student_approvals/", StudentAdminAffairs.manage_student_approvals, name="manage_student_approvals"),
+    
     
     # path('student_feedback_message/', AdminViews.student_feedback_message, name="student_feedback_message"),
     # path('student_feedback_message_reply/', AdminViews.student_feedback_message_reply, name="student_feedback_message_reply"),

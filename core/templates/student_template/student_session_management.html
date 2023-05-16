@@ -1,0 +1,167 @@
+{% extends 'student_template/base_template.html' %}
+
+{% block page_title %}
+Defer/Temporarily withdraw from Semester
+{% endblock page_title %}
+
+{% block main_content %}
+
+{% load static %}
+
+<section class="content">
+    <div class="container-fluid">
+
+
+
+        {% if messages %}
+        <div class="form-group">
+            <div class="col-12">
+                {% for message in messages %}
+                {% if message.tags == "error" %}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                {% elif message.tags == "success" %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="row">
+            <div class="col-md-12">
+                <!-- general form elements -->
+                <div class="">
+                    <!-- /.card-header -->
+                    <div class="" id="register-message">
+
+                    </div>
+                    <div class="card px-3 pt-3">
+                        <div class="container-fluid">
+                            <div class="row">
+                                
+
+                                <!-- Search and Register Form -->
+                                <div class="col-md-6">
+                                    <h3 class="text-bold">Defer from Semester</h3>
+                                    <hr>
+                                    {% if not student_deffer_status %}
+                                    {% csrf_token %}
+                                    {{ deferrement_approval_workflow_form.as_p }}
+                                    <a href="{% url "defer_student" %}"><button type="submit" id="defer_student" class="btn btn-warning mb-3">Apply for Deferment</button></a>
+                                    {% else %}
+                                    <h3 class="text-warning">
+                                        you have already made an application
+                                    </h3>
+                                    {% endif%}
+                                </div>
+
+                                <!-- Registered Classes Table -->
+                                <div class="col-md-6">
+                                    <h3 class="text-bold">Temporary Withdrawal from Semester</h3>
+                                    <hr>
+                                    {% if not student_temporary_withdrawal_status %}
+                                    {% csrf_token %}
+                                    {{ temporary_withdrawal_workflow_form.as_p }}
+                                    <a href="{% url "withdraw_student" %}"><button type="submit" id="withdraw_student" class="btn btn-warning mb-3">Apply for Deferment</button></a>
+                                    {% else %}
+                                    <h3 class="text-warning">
+                                        you have already made an application
+                                    </h3>
+                                    {% endif%}
+                                </div>
+                            </div>
+
+                            
+                        </div>
+                       
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h2>InterFaculty Transfer</h2>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div><!-- /.container-fluid -->
+</section>
+
+{% endblock main_content %}
+
+
+{% block custom_js %}
+
+{% comment %}
+With these changes, the "Select All" button will check all checkboxes in the table, and only unchecked checkboxes will
+be included in the mass edit action.
+{% endcomment %}
+
+<script>
+    $(function () {
+        $('#defer_student').click(function () {
+          event.preventDefault();
+    
+            // Retrieve the selected class ID from the input field
+          const reason = document.getElementById('id_reason').value;
+    
+          $.ajax({
+            type: 'POST',
+            url: '{% url "defer_student" %}',
+            data: {
+              'reason': reason,
+              'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val(),
+            },
+            success: function(response) {
+                //$('#register-table').html(response.table_html);
+                $('#id_reason').val('');
+                $('#id_reason').prop('readonly', true);
+                $('#register-message').html('<div class="alert alert-success" role="alert">Application made successfully!</div>');
+            },
+            error: function(xhr, status, error) {
+                $('#register-message').html('<div class="alert alert-danger" role="alert">Registration failed. Please try again ' +error+ '.</div>');
+            }
+          });
+        });
+      });
+
+      $(function () {
+        $('#withdraw_student').click(function () {
+          event.preventDefault();
+    
+            // Retrieve the selected class ID from the input field
+          const reason = document.getElementById('id_reason').value;
+          console.log(reason)
+    
+          $.ajax({
+            type: 'POST',
+            url: '{% url "withdraw_student" %}',
+            data: {
+              'reason': reason,
+              'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val(),
+            },
+            success: function(response) {
+                //$('#register-table').html(response.table_html);
+                $('#id_reason').val('');
+                $('#id_reason').prop('readonly', true);
+                $('#register-message').html('<div class="alert alert-success" role="alert">Application made successfully!</div>');
+            },
+            error: function(xhr, status, error) {
+                $('#register-message').html('<div class="alert alert-danger" role="alert"> Application failed. Please try again ' +error+ '.</div>');
+            }
+          });
+        });
+      });
+</script>
+
+{% endblock custom_js %}

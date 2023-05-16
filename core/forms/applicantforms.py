@@ -35,9 +35,9 @@ class ApplicantForm(forms.ModelForm):
         model = Applicant
         fields = '__all__'
         widgets = {
-            'concept_paper': ClearableFileInput(attrs={'multiple': False}),
-            'photo_1': ClearableFileInput(attrs={'multiple': False}),
-            'photo_2': ClearableFileInput(attrs={'multiple': False}),
+            # 'concept_paper': ClearableFileInput(attrs={'multiple': False}),
+            # 'photo_1': ClearableFileInput(attrs={'multiple': False}),
+            # 'photo_2': ClearableFileInput(attrs={'multiple': False}),
             # 'start_date': forms.DateInput(attrs={'type': 'date'}),
             # 'expected_completion_date': forms.DateInput(attrs={'type': 'date'}),
             
@@ -49,39 +49,39 @@ class ApplicantForm(forms.ModelForm):
         self.fields['photo_1'].required = False
         self.fields['photo_2'].required = False
 
-    def clean_concept_paper(self):
-        concept_paper = self.cleaned_data['concept_paper']
-        if concept_paper:
-            # Check file size
-            if concept_paper.size > 2 * 1024 * 1024:
-                raise forms.ValidationError(_('File size must be under 2MB.'))
-            # Check file type
-            content_type = concept_paper.content_type.split('/')[0]
-            if content_type not in ['application/pdf']:
-                raise forms.ValidationError(_('Unsupported file type. Only PDF files are allowed.'))
-        return concept_paper
+    # def clean_concept_paper(self):
+    #     concept_paper = self.cleaned_data['concept_paper']
+    #     if concept_paper:
+    #         # Check file size
+    #         if concept_paper.size > 2 * 1024 * 1024:
+    #             raise forms.ValidationError(_('File size must be under 2MB.'))
+    #         # Check file type
+    #         content_type = concept_paper.content_type.split('/')[0]
+    #         if content_type not in ['application/pdf']:
+    #             raise forms.ValidationError(_('Unsupported file type. Only PDF files are allowed.'))
+    #     return concept_paper
 
-    def clean_photo_1(self):
-        photo_1 = self.cleaned_data['photo_1']
-        if photo_1:
-            # Check file size
-            if photo_1.size > 2 * 1024 * 1024:
-                raise forms.ValidationError(_('File size must be under 2MB.'))
-            # Check file type
-            content_type = photo_1.content_type.split('/')[0]
-            if content_type not in ['image']:
-                raise forms.ValidationError(_('Unsupported file type. Only image files are allowed.'))
-        return photo_1
+    # def clean_photo_1(self):
+    #     photo_1 = self.cleaned_data['photo_1']
+    #     if photo_1:
+    #         # Check file size
+    #         if photo_1.size > 2 * 1024 * 1024:
+    #             raise forms.ValidationError(_('File size must be under 2MB.'))
+    #         # Check file type
+    #         content_type = photo_1.content_type.split('/')[0]
+    #         if content_type not in ['image']:
+    #             raise forms.ValidationError(_('Unsupported file type. Only image files are allowed.'))
+    #     return photo_1
 
-    def clean_photo_2(self):
-        photo_2 = self.cleaned_data['photo_2']
-        if photo_2:
-            # Check file size
-            if photo_2.size > 2 * 1024 * 1024:
-                raise forms.ValidationError(_('File size must be under 2MB.'))
-            # Check file type
-            content_type = photo_2.content_type.split('/')[0]
-            if content_type not in ['image']:
-                raise forms.ValidationError(_('Unsupported file type. Only image files are allowed.'))
-        return photo_2
+    # def clean_photo_2(self):
+    #     photo_2 = self.cleaned_data['photo_2']
+    #     if photo_2:
+    #         # Check file size
+    #         if photo_2.size > 2 * 1024 * 1024:
+    #             raise forms.ValidationError(_('File size must be under 2MB.'))
+    #         # Check file type
+    #         content_type = photo_2.content_type.split('/')[0]
+    #         if content_type not in ['image']:
+    #             raise forms.ValidationError(_('Unsupported file type. Only image files are allowed.'))
+    #     return photo_2
 
