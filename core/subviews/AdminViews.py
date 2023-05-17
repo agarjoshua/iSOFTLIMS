@@ -52,7 +52,7 @@ def is_admin(user):
     return user.is_superuser
 
 
-@user_passes_test(is_admin)
+# @user_passes_test(is_admin)
 def admin_home(request):
     all_teachers_cvount = Teacher.objects.all().count()
     all_student_count = Students.objects.all().count()
@@ -769,6 +769,10 @@ def add_hod_save(request):
             email = form.cleaned_data["email"]
             password = form.cleaned_data["password"]
             phonenumber = form.cleaned_data["phonenumber"]
+            hod_type = form.cleaned_data["hod_type"]
+            associated_department = form.cleaned_data["associated_department"]
+
+            associated_department = Department.objects.get(id=associated_department.id)
 
             try:
                 user = CustomUser.objects.create_user(
@@ -783,6 +787,8 @@ def add_hod_save(request):
                 # institution = Admin.objects.get(admin=request.user).institution
                 # user.guardian.institution = institution
                 user.hod.phonenumber = phonenumber
+                user.hod.hod_type = hod_type
+                user.hod.associated_department = associated_department
                 user.save()
                 messages.success(request, "HOD Added Successfully!")
                 return redirect("manage_hod")
@@ -806,6 +812,8 @@ def edit_hod(request, hod_id):
     form.fields["first_name"].initial = hod.admin.first_name
     form.fields["last_name"].initial = hod.admin.last_name
     form.fields["phonenumber"].initial = hod.phonenumber
+    form.fields["hod_type"].initial = hod.hod_type
+    form.fields["associated_department"].initial =  hod.associated_department
 
     context = {"id": hod_id, "username": hod.admin.username, "form": form}
     return render(request, "admin_template/edit_hod_template.html", context)

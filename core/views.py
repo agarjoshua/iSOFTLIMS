@@ -40,6 +40,8 @@ def doLogin(request):
                 return redirect('finance:finance_home')
             if staff_dept.name == 'Admissions': # type: ignore
                 return redirect('admissions')
+            if staff_dept.name == 'Management': # type: ignore
+                return redirect('admin_home')
             return redirect('staff_home')
         elif user_type == '3':
             return redirect('student_home')

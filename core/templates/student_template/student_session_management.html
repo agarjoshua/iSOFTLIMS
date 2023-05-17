@@ -48,7 +48,7 @@ Defer/Temporarily withdraw from Semester
                     <div class="card px-3 pt-3">
                         <div class="container-fluid">
                             <div class="row">
-                                
+
 
                                 <!-- Search and Register Form -->
                                 <div class="col-md-6">
@@ -57,7 +57,8 @@ Defer/Temporarily withdraw from Semester
                                     {% if not student_deffer_status %}
                                     {% csrf_token %}
                                     {{ deferrement_approval_workflow_form.as_p }}
-                                    <a href="{% url "defer_student" %}"><button type="submit" id="defer_student" class="btn btn-warning mb-3">Apply for Deferment</button></a>
+                                    <a href="{% url " defer_student" %}"><button type="submit" id="defer_student"
+                                            class="btn btn-warning mb-3">Apply for Deferment</button></a>
                                     {% else %}
                                     <h3 class="text-warning">
                                         you have already made an application
@@ -72,7 +73,8 @@ Defer/Temporarily withdraw from Semester
                                     {% if not student_temporary_withdrawal_status %}
                                     {% csrf_token %}
                                     {{ temporary_withdrawal_workflow_form.as_p }}
-                                    <a href="{% url "withdraw_student" %}"><button type="submit" id="withdraw_student" class="btn btn-warning mb-3">Apply for Deferment</button></a>
+                                    <a href="{% url " withdraw_student" %}"><button type="submit" id="withdraw_student"
+                                            class="btn btn-warning mb-3">Apply for Deferment</button></a>
                                     {% else %}
                                     <h3 class="text-warning">
                                         you have already made an application
@@ -81,9 +83,9 @@ Defer/Temporarily withdraw from Semester
                                 </div>
                             </div>
 
-                            
+
                         </div>
-                       
+
                     </div>
                     <div class="row">
                         <div class="col-md-6">
@@ -110,58 +112,58 @@ be included in the mass edit action.
 <script>
     $(function () {
         $('#defer_student').click(function () {
-          event.preventDefault();
-    
-            // Retrieve the selected class ID from the input field
-          const reason = document.getElementById('id_reason').value;
-    
-          $.ajax({
-            type: 'POST',
-            url: '{% url "defer_student" %}',
-            data: {
-              'reason': reason,
-              'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val(),
-            },
-            success: function(response) {
-                //$('#register-table').html(response.table_html);
-                $('#id_reason').val('');
-                $('#id_reason').prop('readonly', true);
-                $('#register-message').html('<div class="alert alert-success" role="alert">Application made successfully!</div>');
-            },
-            error: function(xhr, status, error) {
-                $('#register-message').html('<div class="alert alert-danger" role="alert">Registration failed. Please try again ' +error+ '.</div>');
-            }
-          });
-        });
-      });
+            event.preventDefault();
 
-      $(function () {
-        $('#withdraw_student').click(function () {
-          event.preventDefault();
-    
             // Retrieve the selected class ID from the input field
-          const reason = document.getElementById('id_reason').value;
-          console.log(reason)
-    
-          $.ajax({
-            type: 'POST',
-            url: '{% url "withdraw_student" %}',
-            data: {
-              'reason': reason,
-              'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val(),
-            },
-            success: function(response) {
-                //$('#register-table').html(response.table_html);
-                $('#id_reason').val('');
-                $('#id_reason').prop('readonly', true);
-                $('#register-message').html('<div class="alert alert-success" role="alert">Application made successfully!</div>');
-            },
-            error: function(xhr, status, error) {
-                $('#register-message').html('<div class="alert alert-danger" role="alert"> Application failed. Please try again ' +error+ '.</div>');
-            }
-          });
+            const reason = document.getElementById('id_reason').value;
+
+            $.ajax({
+                type: 'POST',
+                url: '{% url "defer_student" %}',
+                data: {
+                    'reason': reason,
+                    'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val(),
+                },
+                success: function (response) {
+                    //$('#register-table').html(response.table_html);
+                    $('#id_reason').val('');
+                    $('#id_reason').prop('readonly', true);
+                    $('#register-message').html('<div class="alert alert-success" role="alert">Application made successfully!</div>');
+                },
+                error: function (xhr, status, error) {
+                    $('#register-message').html('<div class="alert alert-danger" role="alert">Registration failed. Please try again ' + error + '.</div>');
+                }
+            });
         });
-      });
+    });
+
+    $(function () {
+        $('#withdraw_student').click(function () {
+            event.preventDefault();
+
+            // Retrieve the selected class ID from the input field
+            const reason = document.getElementById('id_reason').value;
+            console.log(reason)
+
+            $.ajax({
+                type: 'POST',
+                url: '{% url "withdraw_student" %}',
+                data: {
+                    'reason': reason,
+                    'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val(),
+                },
+                success: function (response) {
+                    //$('#register-table').html(response.table_html);
+                    $('#id_reason').val('');
+                    $('#id_reason').prop('readonly', true);
+                    $('#register-message').html('<div class="alert alert-success" role="alert">Application made successfully!</div>');
+                },
+                error: function (xhr, status, error) {
+                    $('#register-message').html('<div class="alert alert-danger" role="alert"> Application failed. Please try again ' + error + '.</div>');
+                }
+            });
+        });
+    });
 </script>
 
 {% endblock custom_js %}

@@ -113,6 +113,7 @@ urlpatterns = [
 
     path("student_affairs/", StudentAdminAffairs.student_affairs_home, name="student_affairs"),
     path("manage_student_approvals/", StudentAdminAffairs.manage_student_approvals, name="manage_student_approvals"),
+    path('confirm_defer_student/', StudentAdminAffairs.confirm_defer_student, name='confirm_defer_student'),
     
     
     # path('student_feedback_message/', AdminViews.student_feedback_message, name="student_feedback_message"),
