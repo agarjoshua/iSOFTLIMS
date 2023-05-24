@@ -47,9 +47,16 @@ School Management Details
                                 </div>
                                 <!-- /.card-header -->
                                 <!-- form start -->
+                                <form method="post" action="{% url 'add_course_save'%}">
+                                    {% csrf_token %}
+                                    {{ form.as_p }}
+                                    <button type="submit">Submit</button>
+                                </form>
+
+                                {% comment %}
                                 {% url 'admin_school_update' as action_path %}
                                 {% include 'admin_template/form_template.html' with messages=messages form=form action_path=action_path button_text="Update School Details" %}
-            
+                                {% endcomment %}
                                 </div>
                                 <!-- /.card -->
             

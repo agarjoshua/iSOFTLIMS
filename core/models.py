@@ -96,6 +96,7 @@ class CustomUser(AbstractUser):
         (8, "Applicant")
     )
     user_type = models.CharField(default=1, choices=user_type_data, max_length=10)
+    institution = models.ForeignKey(Institution, on_delete=models.DO_NOTHING, null=True)
 
 
 class Admin(models.Model):
@@ -104,7 +105,7 @@ class Admin(models.Model):
     admin_type = models.ForeignKey('AdminType', on_delete=models.DO_NOTHING, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    institution = models.ForeignKey(Institution, on_delete=models.DO_NOTHING, null=True)
+    # institution = models.ForeignKey(Institution, on_delete=models.DO_NOTHING, null=True)
     objects = models.Manager()
 
     def __str__(self):
@@ -129,7 +130,7 @@ class HOD(models.Model):
     ]
     contract_type = models.CharField(default=5, choices=CONTRACT_TYPE, max_length=50)
     phonenumber = models.CharField(max_length=12)
-    institution = models.ForeignKey(Institution, on_delete=models.DO_NOTHING, null=True)
+    # institution = models.ForeignKey(Institution, on_delete=models.DO_NOTHING, null=True)
     objects = models.Manager()
 
     def __str__(self):

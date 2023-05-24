@@ -1,7 +1,7 @@
 import ast
 import random
 import uuid
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.contrib import messages
 from django.core.files.storage import FileSystemStorage  # To upload Profile Picture
@@ -177,10 +177,45 @@ def admin_profile_update(request):
 
 def school_profile(request):
     user = CustomUser.objects.get(id=request.user.id)
-    school_id = Admin.objects.get(admin=request.user.id).institution
+    school_id = user.institution
+    print('check one')
+    
     form = InstitutionForm()
 
-    context = {"user": user, "form": form}
+    try:
+        # Retrieve the institution associated with the logged-in user
+        print('check one')
+        institution = user.institution
+        print(f'hello {institution}')
+
+        form.fields["institution_code"].initial = institution.institution_code 
+        form.fields["name "].initial = institution.name 
+        form.fields["country"].initial = institution.country 
+        form.fields["institution_order"].initial = institution.institution_order 
+        form.fields["registration_date"].initial = institution.registration_date 
+        form.fields["examination_centre_number"].initial = institution.examination_centre_number 
+        form.fields["institution_location_hierarchy"].initial = institution.institution_location_hierarchy 
+        form.fields["institution_cluster"].initial = institution.institution_cluster
+        form.fields["institution_category"].initial = institution.institution_category 
+        form.fields["institution_gender_category "].initial = institution.institution_gender_category 
+        form.fields["institution_accomodation_type "].initial = institution.institution_accomodation_type 
+        form.fields["institution_status"].initial = institution.institution_status 
+        form.fields["institution_type"].initial = institution.institution_type 
+        form.fields["institution_in_ASAL_area"].initial = institution.institution_in_ASAL_area 
+        form.fields["institution_residence "].initial = institution.institution_residence 
+        form.fields["contact_details "].initial = institution.contact_details 
+        form.fields["institution_statutory_numbers"].initial = institution.institution_statutory_numbers 
+        form.fields["currency"].initial = institution.currency 
+        form.fields["bank_details"].initial = institution.bank_details 
+        form.fields["logo"].initial = institution.logo 
+
+    except Exception as e:
+        # If institution doesn't exist, set it as None
+        print(e)
+        institution = None
+    
+
+    context = {"user": user, "institution": institution, "form":form}
     return render(request, "admin_template/school_profile.html", context)
 
 
