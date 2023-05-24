@@ -259,11 +259,11 @@ class Students(models.Model):
         max_length=10, choices=ACCOUNT_STATUS, default="1"
     )
     ACADEMIC_STATUS = [
-        ("1", "Active"),
-        ("2", "Inactive"),
-        ("3", "On-Hold"),
-        ("4", "Suspended"),
-        ("5", "Repeat"),
+        (1, "Active"),
+        (2, "Inactive"),
+        (3, "On-Hold"),
+        (4, "Suspended"),
+        (5, "Repeat"),
     ]
     academic_status = models.CharField(
         max_length=10, choices=ACCOUNT_STATUS, default="1"
@@ -438,10 +438,19 @@ class TemporaryWithdrawalApprovalWorklow(models.Model):
 
 class InterFacultyTransferApprovalWorklow(models.Model):
     id = models.AutoField(primary_key=True)
-    applicant = models.ForeignKey(Applicant, on_delete=models.CASCADE)
-    finance_approved = models.BooleanField(default=False)
-    department_approved = models.BooleanField(default=False)
+    applicant = models.ForeignKey(Students, on_delete=models.CASCADE)
+    reason = models.CharField(max_length=255, blank=True)
+    current_course = models.ForeignKey("academics.Course", on_delete=models.DO_NOTHING, null=True, related_name='current_course_approvals')
+    desired_course = models.ForeignKey("academics.Course", on_delete=models.DO_NOTHING, null=True, related_name='desired_course_approvals')
+    admissions_approved = models.BooleanField(default=False)
+    admissions_comments = models.CharField(max_length=255, blank=True)
+    dean_approved = models.BooleanField(default=False)
+    dean_comments = models.CharField(max_length=255, blank=True)
+    registrar_approved = models.BooleanField(default=False)
+    registrar_comments = models.CharField(max_length=255, blank=True)
     dvc_approved = models.BooleanField(default=False)
+    dvc_comments = models.CharField(max_length=255, blank=True)
+    objects = models.Manager()
 
 class SpecialUser(models.Model):
     id = models.AutoField(primary_key=True)

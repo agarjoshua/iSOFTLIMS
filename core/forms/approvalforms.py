@@ -1,46 +1,38 @@
 from django import forms
-from core.models import DeferrmentApprovalWorklow
+from academics.models import Course
+from core.models import DeferrmentApprovalWorklow, TemporaryWithdrawalApprovalWorklow
 
 class AdminDefferementApprovalWorkflowForm(forms.ModelForm):
 
     admissions_comments = forms.CharField(label="Comments", max_length=50, widget=forms.TextInput(attrs={"class":"form-control"}))
-    # admisions_approved = forms.BooleanField(label='Approve the Defer')
+    
     class Meta:
         model = DeferrmentApprovalWorklow
         fields = [
             'admissions_comments',
-            # 'admissions_approved'
             ]
 
-class DeanDefferementApprovalWorkflowForm(forms.ModelForm):
 
-    dean_comments = forms.CharField(label="Comments", max_length=50, widget=forms.TextInput(attrs={"class":"form-control"}))
-    # dean_approved = forms.BooleanField(label='Approve the Defer')
+class TemporaryDefferementApprovalWorkflowForm(forms.ModelForm):
+
+    admissions_comments = forms.CharField(label="Comments", max_length=50, widget=forms.TextInput(attrs={"class":"form-control"}))
+    
     class Meta:
-        model = DeferrmentApprovalWorklow
+        model = TemporaryWithdrawalApprovalWorklow
         fields = [
-            'dean_comments',
-            # 'dean_approved'
+            'admissions_comments',
             ]
 
-class RegistrarDefferementApprovalWorkflowForm(forms.ModelForm):
 
-    registrar_comments = forms.CharField(label="Comments", max_length=50, widget=forms.TextInput(attrs={"class":"form-control"}))
-    # registrar_approved = forms.BooleanField(label='Approve the Defer')
+class InterFacultyTransferWorkflowForm(forms.ModelForm):
+
+    reason = forms.CharField(label="Comments", max_length=50, widget=forms.TextInput(attrs={"class":"form-control"}))
+    current_course = forms.ModelChoiceField(queryset=Course.objects.all(), label="Current Course", widget=forms.Select(attrs={"class":"form-control"}))
+    desired_course = forms.ModelChoiceField(queryset=Course.objects.all(), label="Desired Course", widget=forms.Select(attrs={"class":"form-control"}))
     class Meta:
-        model = DeferrmentApprovalWorklow
+        model = TemporaryWithdrawalApprovalWorklow
         fields = [
-            'registrar_comments', 
-            # 'registrar_approved'
-            ]
-
-class DVCDefferementApprovalWorkflowForm(forms.ModelForm):
-
-    dvc_comments = forms.CharField(label="Comments", max_length=50, widget=forms.TextInput(attrs={"class":"form-control"}))
-    # dvc_approved = forms.BooleanField(label='Approve the Defer')
-    class Meta:
-        model = DeferrmentApprovalWorklow
-        fields = [
-            'dvc_comments',
-            # 'dvc_approved'
+            'admissions_comments',
+            # 'current_course',
+            # 'desired_course'
             ]

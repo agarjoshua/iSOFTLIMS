@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# Check if venv is activated
+if [ -z "$VENV" ]; then
+    echo "Virtual environment is not activated. Activating..."
+    source venv/bin/activate
+fi
+
+# Run the server
+python manage.py runserver 127.0.0.1:8080

@@ -100,6 +100,7 @@ def enroll_classes(request):
     }
     return render(request, "student_template/class_enrollment_management.html", context)
 
+
 def enroll_class_save(request):
     if request.method == 'POST':
         class_id = request.POST.get('class_id')

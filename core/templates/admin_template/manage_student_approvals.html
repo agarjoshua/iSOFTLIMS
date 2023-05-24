@@ -1,7 +1,7 @@
 {% extends 'admin_template/base_template.html' %}
 
 {% block page_title %}
-Manage Approvals
+<p class="mx-2">Manage Defers</p>
 {% endblock page_title %}
 
 {% block main_content %}
@@ -42,7 +42,7 @@ Manage Approvals
             </div>
 
 
-            <div class="card card-warning">
+            <div class="card card-primary">
                 <div class="card-header">
                     <h3 class="card-title text-bold">Manage Deferrals</h3>
 
@@ -88,64 +88,125 @@ Manage Approvals
                                 <td>{{ approval.reason }}</td>
                                 {% if role.name == 'Admissions' %}
                                 <td>
-                                    {{ approval.admissions_approved }}
+                                    {% if approval.admissions %}
+                                    <button type="button" class="btn btn-success" data-toggle="modal"
+                                        data-target="#myModal" disabled>Approved</button>
+                                    {% else %}
+                                    <button type="button" class="btn btn-danger" data-toggle="modal"
+                                        data-target="#myModal" disabled>Not Approved</button>
+                                    {% endif %}
                                     <span class="d-block">
                                         <p class="text-bold">comments :</p>{{ approval.admissions_comments }}
                                     </span>
                                 </td>
                                 {% elif role.name == 'Dean' %}
                                 <td>
-                                    {{ approval.admissions_approved }}
+                                    {% if approval.admissions %}
+                                    <button type="button" class="btn btn-success" data-toggle="modal"
+                                        data-target="#myModal" disabled>Approved</button>
+                                    {% else %}
+                                    <button type="button" class="btn btn-danger" data-toggle="modal"
+                                        data-target="#myModal" disabled>Not Approved</button>
+                                    {% endif %}
+                                    
                                     <span class="d-block">
                                         <p class="text-bold">comments :</p>{{ approval.admissions_comments }}
                                     </span>
                                 </td>
                                 <td>
-                                    {{ approval.dean_approved }}
+                                    {% if approval.dean_approved %}
+                                    <button type="button" class="btn btn-success" data-toggle="modal"
+                                        data-target="#myModal" disabled>Approved</button>
+                                    {% else %}
+                                    <button type="button" class="btn btn-danger" data-toggle="modal"
+                                        data-target="#myModal" disabled>Not Approved</button>
+                                    {% endif %}
                                     <span class="d-block">
                                         <p class="text-bold">comments :</p>{{ approval.dean_comments }}
                                     </span>
                                 </td>
                                 {% elif role.name == 'Registrar' %}
                                 <td>
-                                    {{ approval.admissions_approved }}
+                                    {% if approval.admissions %}
+                                    <button type="button" class="btn btn-success" data-toggle="modal"
+                                        data-target="#myModal" disabled>Approved</button>
+                                    {% else %}
+                                    <button type="button" class="btn btn-danger" data-toggle="modal"
+                                        data-target="#myModal" disabled>Not Approved</button>
+                                    {% endif %}
                                     <span class="d-block">
                                         <p class="text-bold">comments :</p>{{ approval.admissions_comments }}
                                     </span>
                                 </td>
                                 <td>
-                                    {{ approval.dean_approved }}
+                                    {% if approval.dean_approved %}
+                                    <button type="button" class="btn btn-success" data-toggle="modal"
+                                        data-target="#myModal" disabled>Approved</button>
+                                    {% else %}
+                                    <button type="button" class="btn btn-danger" data-toggle="modal"
+                                        data-target="#myModal" disabled>Not Approved</button>
+                                    {% endif %}
                                     <span class="d-block">
                                         <p class="text-bold">comments :</p>{{ approval.dean_comments }}
                                     </span>
                                 </td>
                                 <td>
-                                    {{ approval.registrar_approved }}
+                                    {% if approval.registrar_approved %}
+                                    <button type="button" class="btn btn-success" data-toggle="modal"
+                                        data-target="#myModal" disabled>Approved</button>
+                                    {% else %}
+                                    <button type="button" class="btn btn-danger" data-toggle="modal"
+                                        data-target="#myModal" disabled>Not Approved</button>
+                                    {% endif %}
                                     <span class="d-block">
                                         <p class="text-bold">comments :</p>{{ approval.registrar_comments }}
                                     </span>
                                 </td>
                                 {% elif role.name == 'DVC' %}
                                 <td>
-                                    {{ approval.admissions_approved }}
+                                    {% if approval.admissions %}
+                                    <button type="button" class="btn btn-success" data-toggle="modal"
+                                        data-target="#myModal" disabled>Approved</button>
+                                    {% else %}
+                                    <button type="button" class="btn btn-danger" data-toggle="modal"
+                                        data-target="#myModal" disabled>Not Approved</button>
+                                    {% endif %}
                                     <span class="d-block">
                                         <p class="text-bold">comments :</p>{{ approval.admissions_comments }}
                                     </span>
                                 </td>
                                 <td>
-                                    {{ approval.dean_approved }}
+                                    {% if approval.dean_approved %}
+                                    <button type="button" class="btn btn-success" data-toggle="modal"
+                                        data-target="#myModal" disabled>Approved</button>
+                                    {% else %}
+                                    <button type="button" class="btn btn-danger" data-toggle="modal"
+                                        data-target="#myModal" disabled>Not Approved</button>
+                                    {% endif %}
                                     <span class="d-block">
                                         <p class="text-bold">comments :</p>{{ approval.dean_comments }}
                                     </span>
                                 </td>
                                 <td>
-                                    {{ approval.registrar_approved }}
+                                    {% if approval.registrar_approved %}
+                                    <button type="button" class="btn btn-success" data-toggle="modal"
+                                        data-target="#myModal" disabled>Approved</button>
+                                    {% else %}
+                                    <button type="button" class="btn btn-danger" data-toggle="modal"
+                                        data-target="#myModal" disabled>Not Approved</button>
+                                    {% endif %}
                                     <span class="d-block">
                                         <p class="text-bold">comments :</p>{{ approval.registrar_comments }}
                                     </span>
                                 </td>
                                 <td>
-                                    {{ approval.dvc_approved }}
+                                    {% if approval.dvc_approved %}
+                                    <button type="button" class="btn btn-success" data-toggle="modal"
+                                        data-target="#myModal" disabled>Approved</button>
+                                    {% else %}
+                                    <button type="button" class="btn btn-danger" data-toggle="modal"
+                                        data-target="#myModal" disabled>Not Approved</button>
+                                    {% endif %}
                                     <span class="d-block">
                                         <p class="text-bold">comments :</p>{{ approval.dvc_comments }}
                                     </span>
@@ -156,7 +217,7 @@ Manage Approvals
                                     <button type="button" class="btn btn-warning" data-toggle="modal"
                                         data-target="#myModal" disabled>Approve Defferal/Decline Defferal</button>
                                     {% else %}
-                                    <button type="button" class="btn btn-warning" data-toggle="modal"
+                                    <button type="button" class="btn btn-primary" data-toggle="modal"
                                         data-target="#myModal-{{approval.id}}" id="value_id"
                                         value="{{approval.id}}">Approve Defferal/Decline Defferal</button>
                                     {% endif %}
@@ -193,14 +254,14 @@ Manage Approvals
                                             <button id="approve-btn-{{approval.id}}" class="btn btn-button btn-success approve-btn"
                                                 value="{{approval.id}}">Approve</button>
 
-                                            <button id="disapprove-btn"
+                                            <button id="disapprove-btn-{{approval.id}}"
                                                 class="btn btn-button btn-danger"
                                                 value="{{approval.id}}">Decline</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
+                            <div id="register-message"></div>
                             {% endfor %}
                         </tbody>
                     </table>
@@ -229,17 +290,8 @@ be included in the mass edit action.
         $('button[id^="approve-btn-"]').click(function() {
             var id = $(this).attr('id').substring(12);
 
-            // Retrieve the selected class ID from the input field
-            //const id = document.getElementById('value_id').value;
-            //const comments = document.getElementById('comments').value;
-            //var comments = $('#comments-' + id).text();
             var comments = $('#comments-'+ id).val();
-            console.log(comments);
-            //const dean_comments = document.getElementById('id_admissions_comments').value;
-            //const registrar_comments = document.getElementById('id_admissions_comments').value;
-            //const dvc_comments = document.getElementById('id_admissions_comments').value;
-
-            console.log('I can access the js function ' + id + comments)
+            console.log('Disaprove vv ' + id + comments)
 
             $.ajax({
                 type: 'POST',
@@ -253,28 +305,29 @@ be included in the mass edit action.
                     //$('#register-table').html(response.table_html);
                     $('#id_reason').val('');
                     var modalContent = document.querySelector(".modal");
-                    var submitBtn = document.getElementById("approve-btn");
-                    var submitBtn = document.getElementById("disapprove-btn");
+                    var submitappBtn = document.getElementById("approve-btn-"+id);
+                    var submitdecBtn = document.getElementById("disapprove-btn-"+id);
 
                     modalContent.style.filter = "blur(3px)";
-                    submitBtn.disabled = true;
+                    submitappBtn.disabled = true;
+                    submitdecBtn.disabled = true;
                     $('#register-message').html('<div class="alert alert-success" role="alert">Deferral status updated made successfully!</div>');
                     
                     $('#myModal-'+ id).css('filter', 'blur(5px)');
                     // Wait for 3 seconds
                     setTimeout(function() {
                     // Animate the modal to fade out
-                    $('#myModal-'+ id).animate({ opacity: 0 }, 300, function() {
+                    $('#myModal-'+ id).animate({ opacity: 0.5 }, 0, function() {
                         // After the animation is complete, remove the modal from the DOM
                         $(this).remove();
                     });
-                    }, 3000);
+                    }, 1000);
                     
                     function reloadTable() {
                         // Option 1: Reload the page to refresh the table
                         location.reload()
                     }
-                    setTimeout(reloadTable, 5000);
+                    setTimeout(reloadTable, 1000);
                     
                 },
                 error: function (xhr, status, error) {
@@ -285,33 +338,50 @@ be included in the mass edit action.
     });
 
     $(function () {
-        $('#withdraw_student').click(function () {
-            event.preventDefault();
+        $('button[id^="disapprove-btn-"]').click(function() {
+            var id = $(this).attr('id').substring(15);
 
             // Retrieve the selected class ID from the input field
-            const reason = document.getElementById('id_reason').value;
-            console.log(reason)
+            var comments = $('#comments-'+ id).val();
 
             $.ajax({
                 type: 'POST',
-                url: '{% url "withdraw_student" %}',
+                url: '{% url "deny_defer_student" %}',
                 data: {
-                    'reason': reason,
+                    'id': id,
+                    'comments': comments,
                     'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val(),
                 },
                 success: function (response) {
                     //$('#register-table').html(response.table_html);
-                    $('#id_reason').val('');
-                    $('#id_reason').prop('readonly', true);
-                    var modalContent = document.querySelector(".modal-content");
-                    var submitBtn = document.getElementById("submitBtn");
+                    var modalContent = document.querySelector(".modal");
+                    var submitappBtn = document.getElementById("approve-btn-"+id);
+                    var submitdecBtn = document.getElementById("disapprove-btn-"+id);
 
-                    modalContent.style.filter = "blur(5px)";
-                    submitBtn.disabled = true;
-                    $('#register-message').html('<div class="alert alert-success" role="alert">Application made successfully!</div>');
+                    modalContent.style.filter = "blur(3px)";
+                    submitappBtn.disabled = true;
+                    submitdecBtn.disabled = true;
+                    $('#register-message').html('<div class="alert alert-warning" role="alert">Deferral denied!</div>');
+                    
+                    $('#myModal-'+ id).css('filter', 'blur(5px)');
+                    // Wait for 3 seconds
+                    setTimeout(function() {
+                    // Animate the modal to fade out
+                    $('#myModal-'+ id).animate({ opacity: 0.5 }, 0, function() {
+                        // After the animation is complete, remove the modal from the DOM
+                        $(this).remove();
+                    });
+                    }, 1000);
+                    
+                    function reloadTable() {
+                        // Option 1: Reload the page to refresh the table
+                        location.reload()
+                    }
+                    setTimeout(reloadTable, 1000);
+                    
                 },
                 error: function (xhr, status, error) {
-                    $('#register-message').html('<div class="alert alert-danger" role="alert"> Application failed. Please try again ' + error + '.</div>');
+                    $('#register-message').html('<div class="alert alert-danger" role="alert">Deferral status update failed. Please try again ' + error + '.</div>');
                 }
             });
         });

@@ -45,16 +45,22 @@ from academics.models import (
     Course,
     Session,
 )
+from core.subviews.utilities.accesscontrolutilities import allow_user
 # from core.forms import AddStudentForm, EditStudentForm
 
-# Creating restritive access wrappers
-def is_admin(user):
-    return user.is_superuser
+# USER NUMBER REFERENCE
+# 1 = ADMIN
+# 2 = STAFF
+# 3 = STUDENTS
+# 4 = HOD
+# 5 = GUARDIAN
+# 6 = TEACHER
+ 
 
 
-# @user_passes_test(is_admin)
+@allow_user('1','2','3','4','5','6') 
 def admin_home(request):
-    all_teachers_cvount = Teacher.objects.all().count()
+    all_teachers_count = Teacher.objects.all().count()
     all_student_count = Students.objects.all().count()
     # subject_count = Subjects.objects.all().count()
     staff_count = Staff.objects.all().count()
@@ -138,14 +144,14 @@ def admin_home(request):
     }
     return render(request, "admin_template/home_content.html", context)
 
-@user_passes_test(is_admin)
+
 def admin_profile(request):
     user = CustomUser.objects.get(id=request.user.id)
 
     context = {"user": user}
     return render(request, "admin_template/admin_profile.html", context)
 
-@user_passes_test(is_admin)
+
 def admin_profile_update(request):
     if request.method != "POST":
         messages.error(request, "Invalid Method!")
@@ -168,7 +174,7 @@ def admin_profile_update(request):
             messages.error(request, "Failed to Update Profile")
             return redirect("admin_profile")
 
-@user_passes_test(is_admin)
+
 def school_profile(request):
     user = CustomUser.objects.get(id=request.user.id)
     school_id = Admin.objects.get(admin=request.user.id).institution
@@ -177,7 +183,7 @@ def school_profile(request):
     context = {"user": user, "form": form}
     return render(request, "admin_template/school_profile.html", context)
 
-@user_passes_test(is_admin)
+
 def admin_school_update(request):
     if request.method != "POST":
         messages.error(request, "Invalid Method!")
@@ -249,7 +255,7 @@ def admin_school_update(request):
     #     print(e)
     #     return redirect("school_profile")
 
-@user_passes_test(is_admin)
+
 def add_staff(request):
     staff_type = StaffType.objects.all()
     departments = Department.objects.all()
@@ -260,7 +266,7 @@ def add_staff(request):
     }
     return render(request, "admin_template/add_staff_template.html", context)
 
-@user_passes_test(is_admin)
+
 def add_staff_save(request):
     if request.method != "POST":
         messages.error(request, "Invalid Method ")
@@ -315,7 +321,7 @@ def add_staff_save(request):
             messages.error(request, f"Failed to Add Staff - {e}!")
             return redirect("add_staff")
 
-@user_passes_test(is_admin)
+
 def manage_staff(request):
     staff = Staff.objects.all()
     teachers = Students.objects.all()
@@ -328,14 +334,14 @@ def manage_staff(request):
         }
     return render(request, "admin_template/manage_staff_template.html", context)
 
-@user_passes_test(is_admin)
+
 def edit_staff(request, staff_id):
     staff = Staff.objects.get(admin=staff_id)
     departments = Department.objects.all()
     context = {"staff": staff, "id": staff_id, "departments": departments}
     return render(request, "admin_template/edit_staff_template.html", context)
 
-@user_passes_test(is_admin)
+
 def edit_staff_save(request):
     if request.method != "POST":
         return HttpResponse("<h2>Method Not Allowed</h2>")
@@ -372,7 +378,7 @@ def edit_staff_save(request):
             messages.error(request, "Failed to Update Staff.")
             return redirect("/edit_staff/" + staff_id)
 
-@user_passes_test(is_admin)
+
 def delete_staff(request, staff_id):
     staff = Staff.objects.get(admin=staff_id)
     try:
@@ -384,7 +390,7 @@ def delete_staff(request, staff_id):
         return redirect("manage_staff")
 
 
-@user_passes_test(is_admin)
+
 def manage_staff_type(request):
     staff_types = StaffType.objects.all()
     staff_type_form = AddStaffTypeForm()
@@ -421,7 +427,7 @@ def create_staff_type(request):
 
 #########################################MANAGE STUDENTS#######################################################################
 
-@user_passes_test(is_admin)
+
 def add_student(request):
     form = AddStudentForm()
     courses = Course.objects.all()
@@ -431,7 +437,7 @@ def add_student(request):
         }
     return render(request, "admin_template/add_student_template.html", context)
 
-@user_passes_test(is_admin)
+
 def add_student_save(request):
     if request.method != "POST":
         messages.error(request, "Invalid Method")
@@ -511,13 +517,13 @@ def add_student_save(request):
             messages.error(request, f"Form is not valid because {error_list}")
             return redirect("add_student")
 
-@user_passes_test(is_admin)
+
 def manage_students(request):
     students = Students.objects.all()
     context = {"students": students}
     return render(request, "admin_template/manage_student_template.html", context)
 
-@user_passes_test(is_admin)
+
 def edit_student(request, student_id):
     # Adding Student ID into Session Variable
     request.session["student_id"] = student_id
@@ -537,7 +543,7 @@ def edit_student(request, student_id):
     context = {"id": student_id, "username": student.admin.username, "form": form}
     return render(request, "admin_template/edit_student_template.html", context)
 
-@user_passes_test(is_admin)
+
 def edit_student_save(request):
     if request.method != "POST":
         return HttpResponse("Invalid Method!")
@@ -597,7 +603,7 @@ def edit_student_save(request):
         else:
             return redirect("/edit_student/" + student_id)
 
-@user_passes_test(is_admin)
+
 def delete_student(request, student_id):
     student = Students.objects.get(admin=student_id)
     try:
@@ -610,7 +616,7 @@ def delete_student(request, student_id):
 
 
 #########################################MANAGE PARENTS#######################################################################
-@user_passes_test(is_admin)
+
 def manage_guardians(request):
     guardians = Guardian.objects.all()
     context = {"guardians": guardians}
@@ -665,7 +671,7 @@ def add_guardian_save(request):
         else:
             return redirect("add_guardian")
 
-@user_passes_test(is_admin)
+
 def edit_guardian(request, guardian_id):
     # Adding Guardian ID into Session Variable
     request.session["guardian_id"] = guardian_id
@@ -729,7 +735,7 @@ def edit_guardian_save(request):
         else:
             return redirect("/edit_guardian/" + guardian_id)
 
-@user_passes_test(is_admin)
+
 def delete_student(request, guardian_id):
     guardian = Guardian.objects.get(admin=guardian_id)
     try:
@@ -742,19 +748,19 @@ def delete_student(request, guardian_id):
 
 
 #########################################MANAGE HOD#######################################################################
-@user_passes_test(is_admin)
+
 def manage_hods(request):
     hod = HOD.objects.all()
     context = {"hod": hod}
     return render(request, "admin_template/manage_hod_template.html", context)
 
-@user_passes_test(is_admin)
+
 def add_hod(request):
     form = AddHodForm()
     context = {"form": form}
     return render(request, "admin_template/add_hod_template.html", context)
 
-@user_passes_test(is_admin)
+
 def add_hod_save(request):
     if request.method != "POST":
         messages.error(request, "Invalid Method")
@@ -799,7 +805,7 @@ def add_hod_save(request):
         else:
             return redirect("manage_hod")
 
-@user_passes_test(is_admin)
+
 def edit_hod(request, hod_id):
     # Adding Guardian ID into Session Variable
     request.session["hod_id"] = hod_id
@@ -818,7 +824,7 @@ def edit_hod(request, hod_id):
     context = {"id": hod_id, "username": hod.admin.username, "form": form}
     return render(request, "admin_template/edit_hod_template.html", context)
 
-@user_passes_test(is_admin)
+
 def edit_hod_save(request):
     if request.method != "POST":
         return HttpResponse("Invalid Method!")
@@ -865,7 +871,7 @@ def edit_hod_save(request):
         else:
             return redirect("/edit_hod/" + hod_id)
 
-@user_passes_test(is_admin)
+
 def delete_hod(request, hod_id):
     hod = HOD.objects.get(admin=hod_id)
     try:
@@ -942,20 +948,20 @@ def dvc_approve(request):
         return HttpResponse(e)
 
 
-@user_passes_test(is_admin)
+
 def manage_departments(request):
     department = Department.objects.all()
     context = {"department": department}
     return render(request, "admin_template/manage_department_template.html", context)
 
-@user_passes_test(is_admin)
+
 def add_department(request):
     staff = Staff.objects.all()
     hod = HOD.objects.all()
     context = {"staff": staff, "hod": hod}
     return render(request, "admin_template/add_department_template.html", context)
 
-@user_passes_test(is_admin)
+
 def add_department_save(request):
     if request.method != "POST":
         messages.error(request, "Invalid Method ")
@@ -966,15 +972,10 @@ def add_department_save(request):
         head = request.POST.get("head")
         deputy = request.POST.get("deputy")
 
-        # dep_head = HOD.objects.get(admin=head)
-        # dep_deputy = Staff.objects.get(admin=deputy)
-
         try:
             department = Department.objects.create(
                 name=name,
                 description=description,
-                # head=dep_head,
-                # deputy=dep_deputy,
             )
             department.save()
             messages.success(request, "Department Added Successfully!")
@@ -984,7 +985,7 @@ def add_department_save(request):
             print(e)
             return redirect("add_department")
 
-@user_passes_test(is_admin)
+
 def edit_department(request, department_id):
     department = Department.objects.get(id=department_id)
     staff = Staff.objects.all()
@@ -997,7 +998,7 @@ def edit_department(request, department_id):
     }
     return render(request, "admin_template/edit_department_template.html", context)
 
-@user_passes_test(is_admin)
+
 def edit_department_save(request):
     if request.method != "POST":
         return HttpResponse("<h2>Method Not Allowed</h2>")
@@ -1007,6 +1008,7 @@ def edit_department_save(request):
         head = request.POST.get("head")
         deputy = request.POST.get("deputy")
         department_id = request.POST.get("department_id")
+        print(department_id)
 
         try:
             department = Department.objects.get(id=department_id)
@@ -1022,13 +1024,13 @@ def edit_department_save(request):
                 department.deputy = dep_deputy
 
             messages.success(request, "Department upated Successfully!")
-            return redirect("/edit_department/" + department_id)
+            return redirect("manage_departments")
         except Exception as e:
             messages.error(request, "Failed to upate Department!")
             print(e)
-            return redirect("/edit_department/" + department_id)
+            return redirect("manage_departments")
 
-@user_passes_test(is_admin)
+
 def delete_department(request, department_id):
     pass
 
@@ -1097,17 +1099,17 @@ def delete_course(request):
 
 #########################################MANAGE SESSIONS#######################################################################
 
-@user_passes_test(is_admin)
+
 def manage_session(request):
     session_years = Session.objects.all()
     context = {"session_years": session_years}
     return render(request, "admin_template/manage_session_template.html", context)
 
-@user_passes_test(is_admin)
+
 def add_session(request):
     return render(request, "admin_template/add_session_template.html")
 
-@user_passes_test(is_admin)
+
 def add_session_save(request):
     if request.method != "POST":
         messages.error(request, "Invalid Method")
@@ -1128,24 +1130,24 @@ def add_session_save(request):
             )
             sessionyear.save()
             messages.success(request, "Session Year added Successfully!")
-            return redirect("add_session")
+            return redirect("manage_session")
         except exceptions.ValidationError as e:
             messages.error(
                 request,
                 f"Failed to Add Session Year Due to incomplete or incorrect entry of fields (i.e {e})",
             )
-            return redirect("add_session")
+            return redirect("manage_session")
         except Exception as e:
             messages.error(request, f"Failed to Add Session Year (i.e {e})")
             return redirect("add_session")
 
-@user_passes_test(is_admin)
+
 def edit_session(request, session_id):
     session_year = Session.objects.get(id=session_id)
     context = {"session_year": session_year}
     return render(request, "admin_template/edit_session_template.html", context)
 
-@user_passes_test(is_admin)
+
 def edit_session_save(request):
     if request.method != "POST":
         messages.error(request, "Invalid Method!")
@@ -1161,18 +1163,19 @@ def edit_session_save(request):
 
         try:
             session_year = Session.objects.get(id=session_id)
-            session_year.session_start_year = session_start_year
-            session_year.session_end_year = session_end_year
+            session_year.session_start_date = session_start_year
+            session_year.session_end_date = session_end_year
             session_year.is_current = is_current
+            print(session_year)
             session_year.save()
 
             messages.success(request, "Session Year Updated Successfully.")
             return redirect("/edit_session/" + session_id)
-        except:
-            messages.error(request, "Failed to Update Session Year.")
+        except Exception as e:
+            messages.error(request, f"Failed to Update Session Year. -{e}")
             return redirect("/edit_session/" + session_id)
 
-@user_passes_test(is_admin)
+
 def delete_session(request, session_id):
     session = Session.objects.get(id=session_id)
     try:

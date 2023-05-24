@@ -11,6 +11,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 def manage_session_registation(request):
     currently_enrolled = Enrollment.objects.filter(Q(session__is_current=True))
+    print(currently_enrolled)
     # currently_enrolled = Enrollment.objects.all()
     context = {
         "currently_enrolled" : currently_enrolled
@@ -30,15 +31,14 @@ def enroll_student(request):
             start_index = li_message.find('<li>') + len('<li>')
             end_index = li_message.find('</li>', start_index)
             message = li_message[start_index:end_index]
-            print(message)
-            messages.warning(request, f'Cannot enroll because {message}')
-            redirect('enroll_student')
+            messages.warning(request, f'Cannot enroll because - {message}')
+            redirect('academics:enroll_student')
         if form.is_valid():
             print(form.errors)
             try:
                 form.save()
                 messages.success(request, 'Student Succesfully Enrolled')
-                return redirect('manage_session_registation')
+                return redirect('academics:manage_session_registation')
             except Exception as e:
                 print(e)
                 messages.error(request, f'an error occurred {e}')
@@ -65,11 +65,11 @@ def mass_edit_enrolled(request):
         currently_enrolled.update(is_active=True)
         print(currently_enrolled)
 
-    return redirect('manage_session_registation')
+    return redirect('academics:manage_session_registation')
 
 def revoke_enrollment(request, enrolled_id):
     revoked_enrollment = Enrollment.objects.get(id=enrolled_id)
     revoked_enrollment.is_active = False
     revoked_enrollment.save()
     messages.warning(request, 'Student succesfully deregistered from semester')
-    return redirect('manage_session_registation')
+    return redirect('academics:manage_session_registation')

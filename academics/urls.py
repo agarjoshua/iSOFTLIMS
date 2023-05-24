@@ -4,6 +4,8 @@ from academics.subviews import classView, sessionRegistrationView, examinationVi
 from . import views
 # from . import subviews.classView
 
+app_name = 'academics'
+
 urlpatterns = [
     # MANAGE SESSION REGISTATION URLS
     path('manage_session_registation/', sessionRegistrationView.manage_session_registation, name="manage_session_registation"), 

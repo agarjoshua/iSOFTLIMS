@@ -112,9 +112,18 @@ urlpatterns = [
     path("withdraw_student/", StudentViews.withdraw_student, name="withdraw_student"),
 
     path("student_affairs/", StudentAdminAffairs.student_affairs_home, name="student_affairs"),
+
     path("manage_student_approvals/", StudentAdminAffairs.manage_student_approvals, name="manage_student_approvals"),
     path('confirm_defer_student/', StudentAdminAffairs.confirm_defer_student, name='confirm_defer_student'),
-    
+    path('deny_defer_student/', StudentAdminAffairs.deny_defer_student, name='deny_defer_student'),
+
+    path("manage_temporary_approvals/", StudentAdminAffairs.manage_temporary_approvals, name="manage_temporary_approvals"),
+    path('confirm_temporary_defer/', StudentAdminAffairs.confirm_temporary_defer, name='confirm_temporary_defer'),
+    path('deny_temporary_defer/', StudentAdminAffairs.deny_temporary_defer, name='deny_temporary_defer'),
+
+    path("manage_interfaculty_transfer/", StudentAdminAffairs.manage_interfaculty_transfer, name="manage_interfaculty_transfer"),
+    path('confirm_interfaculty_transfer/', StudentAdminAffairs.confirm_interfaculty_transfer, name='confirm_interfaculty_transfer'),
+    path('deny_interfaculty_transfer/', StudentAdminAffairs.deny_interfaculty_transfer, name='deny_interfaculty_transfer'),
     
     # path('student_feedback_message/', AdminViews.student_feedback_message, name="student_feedback_message"),
     # path('student_feedback_message_reply/', AdminViews.student_feedback_message_reply, name="student_feedback_message_reply"),

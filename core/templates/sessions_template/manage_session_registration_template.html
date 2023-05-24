@@ -11,7 +11,7 @@ Manage Enrolled Students
 <section class="content">
     <div class="container-fluid">
 
-        <a class="btn btn-primary" href="{% url 'enroll_student' %}" role="button">Enroll a student</a> <br />&nbsp;
+        <a class="btn btn-primary" href="{% url 'academics:enroll_student' %}" role="button">Enroll a student</a> <br />&nbsp;
 
         {% if messages %}
         <div class="form-group">
@@ -97,16 +97,16 @@ Manage Enrolled Students
                                         <input type="checkbox" name="enrolled_ids[]" value="{{ enrolled.id }}">
                                         {% endif %}
                                         {% if enrolled.is_active %}
-                                        <button disabled href="{% url 'confirm_enrollment' enrolled.id %}"
+                                        <button disabled href="{% url 'academics:confirm_enrollment' enrolled.id %}"
                                             class="btn btn-success">Student Enrolled</button>
                                         {% endif %}
                                     </td>
                                     <td>
                                         {% if not enrolled.is_active %}
-                                        <a href="{% url 'revoke_enrollment' enrolled.id %}"
+                                        <a href="{% url 'academics:revoke_enrollment' enrolled.id %}"
                                             class="btn btn-danger disabled">Revoke Enrollment</a>
                                         {% else %}
-                                        <a href="{% url 'revoke_enrollment' enrolled.id %}"
+                                        <a href="{% url 'academics:revoke_enrollment' enrolled.id %}"
                                             class="btn btn-danger">Revoke Enrollment</a>
                                         {% endif %}
 
@@ -176,7 +176,7 @@ With these changes, the "Select All" button will check all checkboxes in the tab
 
             console.log(formData)
 
-            fetch('{% url 'mass_edit_enrolled' %}', {
+            fetch('{% url 'academics:mass_edit_enrolled' %}', {
                 method: 'POST',
                 body: formData,
                 headers: {

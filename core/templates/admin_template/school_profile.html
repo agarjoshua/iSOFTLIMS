@@ -1,7 +1,7 @@
 {% extends 'admin_template/base_template.html' %}
 
 {% block page_title %}
-School Profile
+School Management Details
 {% endblock page_title %}
 
 {% block main_content %}
@@ -10,13 +10,19 @@ School Profile
 
 <section class="content">
     <div class="container-fluid">
+        <div class="ml-1">
+            <a class="btn btn-warning" href="{% url 'manage_session' %}" role="button"> Manage Sessions</a><br/>&nbsp;
+        </div>
         <div class="mx-auto row ">
-            
-            <div class="mr-1">
-                <a class="btn btn-primary" href="{% url 'manage_courses' %}" role="button"> Manage Courses</a><br/>&nbsp;
+            <div class="">
+                <a class="btn btn-primary" href="{% url 'manage_departments' %}" role="button"> Manage Departments</a><br/>&nbsp;
             </div>
             <div class="ml-1">
-                <a class="btn btn-primary" href="{% url 'clusterclass_list' %}" role="button"> Manage Class Clusters</a><br/>&nbsp;
+                <a class="btn btn-primary" href="{% url 'manage_courses' %}" role="button"> Manage Courses</a><br/>&nbsp;
+            </div>
+            
+            <div class="ml-1">
+                <a class="btn btn-primary" href="{% url 'academics:clusterclass_list' %}" role="button"> Manage Class Clusters</a><br/>&nbsp;
             </div>
         </div>
 
@@ -37,7 +43,7 @@ School Profile
                                 <!-- general form elements -->
                                 <div class="card card-primary">
                                 <div class="card-header">
-                                    <h3 class="card-title">Add School</h3>
+                                    <h3 class="card-title">Edit School details</h3>
                                 </div>
                                 <!-- /.card-header -->
                                 <!-- form start -->

@@ -11,6 +11,10 @@ Manage Student Affairs
 <section class="content">
     <div class="container-fluid">
         <!-- Small boxes (Stat box) -->
+        <div class="">
+            <a class="btn btn-primary" href="{% url 'admissions' %}" role="button"> Manage New Student
+                Admissions</a><br />&nbsp;
+        </div>
         <div class="row">
             <div class="col-lg-3 col-6">
                 <!-- small box -->
@@ -18,12 +22,12 @@ Manage Student Affairs
                     <div class="inner">
                         <h3>{{ all_student_count }}</h3>
 
-                        <p>Manage session Approvals</p>
+                        <p>Manage Session Registration </p>
                     </div>
                     <div class="icon">
                         <i class="ion ion-stats-bars"></i>
                     </div>
-                    <a href="{% url 'manage_student_approvals' %}" class="small-box-footer">More info <i
+                    <a href="{% url 'academics:manage_session_registation' %}" class="small-box-footer">More info <i
                             class="fas fa-arrow-circle-right"></i></a>
                 </div>
             </div>
@@ -32,14 +36,14 @@ Manage Student Affairs
                 <!-- small box -->
                 <div class="small-box bg-danger">
                     <div class="inner">
-                        <h3>{{ staff_count }}</h3>
+                        <h3>{{ deffereals_count }}</h3>
 
                         <p>Manage Defferals</p>
                     </div>
                     <div class="icon">
                         <i class="ion ion-stats-bars"></i>
                     </div>
-                    <a href="{% url 'manage_staff' %}" class="small-box-footer">More info <i
+                    <a href="{% url 'manage_student_approvals' %}" class="small-box-footer">More info <i
                             class="fas fa-arrow-circle-right"></i></a>
                 </div>
             </div>
@@ -50,14 +54,14 @@ Manage Student Affairs
                 <!-- small box -->
                 <div class="small-box bg-warning">
                     <div class="inner">
-                        <h3>{{ class_count }}</h3>
+                        <h3>{{ temp_defer_count }}</h3>
 
                         <p>Manage Temporary Withdrawals</p>
                     </div>
                     <div class="icon">
                         <i class="ion ion-stats-bars"></i>
                     </div>
-                    <a href="{% url 'manage_class' %}" class="small-box-footer">More info <i
+                    <a href="{% url 'manage_student_approvals' %}" class="small-box-footer">More info <i
                             class="fas fa-arrow-circle-right"></i>
                     </a>
                 </div>
@@ -68,14 +72,14 @@ Manage Student Affairs
                 <!-- small box -->
                 <div class="small-box bg-success">
                     <div class="inner">
-                        <h3>{{ subject_count }}</h3>
+                        <h3>{{ interfacultytransfer_count }}</h3>
 
                         <p>Manage InterFaculty Transfers</p>
                     </div>
                     <div class="icon">
                         <i class="ion ion-stats-bars"></i>
                     </div>
-                    <a href="" class="small-box-footer">More info <i
+                    <a href="{% url 'manage_interfaculty_transfer' %}" class="small-box-footer">More info <i
                             class="fas fa-arrow-circle-right"></i></a>
 
                 </div>
@@ -85,54 +89,137 @@ Manage Student Affairs
             <!-- ./col -->
 
         </div>
-        <!-- /.row -->
-        <div class="row">
-            <div class="col-lg-6">
+
+            <div class="col-lg-12">
                 <!-- PIE CHART -->
-                <div class="card card-danger">
+                <div class="card card-dark">
                     <div class="card-header">
-                        <h3 class="card-title">Student and Staff Chart</h3>
+                        <h3 class="card-title">All Student List</h3>
 
                         <div class="card-tools">
                             <button type="button" class="btn btn-tool" data-card-widget="collapse"><i
                                     class="fas fa-minus"></i>
                             </button>
-                            <button type="button" class="btn btn-tool" data-card-widget="remove"><i
-                                    class="fas fa-times"></i></button>
                         </div>
                     </div>
                     <div class="card-body">
-                        <canvas id="pieChart"
-                            style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+
+                        <section class="content">
+                            <div class="container-fluid">
+
+                                <a class="btn btn-primary" href="{% url 'add_student' %}" role="button">+ Add
+                                    Student</a> <br />&nbsp;
+
+                                {% if messages %}
+                                <div class="form-group">
+                                    <div class="col-12">
+                                        {% for message in messages %}
+                                        {% if message.tags == "error" %}
+                                        <div class="alert alert-danger alert-dismissible fade show" role="alert"
+                                            style="margin-top: 10px;">
+                                            {{ message }}
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        {% elif message.tags == "success" %}
+                                        <div class="alert alert-success alert-dismissible fade show" role="alert"
+                                            style="margin-top: 10px;">
+                                            {{ message }}
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                {% endif %}
+
+                                <div class="">
+
+                                    <div class="col-md-12">
+                                        <!-- general form elements -->
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h3 class="card-title">Student Details</h3>
+
+                                                <div class="card-tools">
+                                                    <div class="input-group input-group-sm" style="width: 150px;">
+                                                        <input type="text" name="table_search"
+                                                            class="form-control float-right" placeholder="Search">
+
+                                                        <div class="input-group-append">
+                                                            <button type="submit" class="btn btn-default"><i
+                                                                    class="fas fa-search"></i></button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- /.card-header -->
+                                            <div class="card-body table-responsive p-0">
+                                                <table class="table table-hover text-nowrap">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Admission Number</th>
+                                                            <th>First Name</th>
+                                                            <th>Last Name</th>
+                                                            <th>Username</th>
+                                                            <th>Email</th>
+                                                            <th>Address</th>
+                                                            <th>Gender</th>
+                                                            <th>Profile Pic</th>
+                                                            <th>Start Year</th>
+                                                            <th>End Year</th>
+                                                            <th>Course</th>
+                                                            <th>Last Login</th>
+                                                            <th>Date Joined</th>
+                                                            <th>Action</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {% for student in students %}
+                                                        <tr>
+                                                            <td>{{ student.admission_number }}</td>
+                                                            <td>{{ student.admin.first_name }}</td>
+                                                            <td>{{ student.admin.last_name }}</td>
+                                                            <td>{{ student.admin.username }}</td>
+                                                            <td>{{ student.admin.email }}</td>
+                                                            <td>{{ student.address }}</td>
+                                                            <td>{{ student.gender }}</td>
+                                                            <td> <img src="{{ student.profile_pic }}"
+                                                                    style="width: 100px;" /> </td>
+                                                            <td>{{ student.session_year_id.session_start_year }}</td>
+                                                            <td>{{ student.session_year_id.session_end_year }}</td>
+                                                            <td>{{ student.course_id.course_name }}</td>
+                                                            <td>{{ student.admin.last_login }}</td>
+                                                            <td>{{ student.admin.date_joined }}</td>
+                                                            <td>
+                                                                <a href="{% url 'edit_student' student.admin.id %}"
+                                                                    class="btn btn-success">Edit</a>
+                                                                <a href="{% url 'delete_student' student.admin.id %}"
+                                                                    class="btn btn-danger">Delete</a>
+                                                            </td>
+                                                        </tr>
+                                                        {% endfor %}
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <!-- /.card-body -->
+                                        </div>
+                                        <!-- /.card -->
+
+                                    </div>
+                                </div>
+
+                            </div><!-- /.container-fluid -->
+                        </section>
                     </div>
                     <!-- /.card-body -->
                 </div>
                 <!-- /.card -->
             </div>
-
-            <div class="col-lg-6">
-                <!-- DONUT CHART -->
-                <div class="card card-danger">
-                    <div class="card-header">
-                        <h3 class="card-title">Total Subjects in Each Course</h3>
-
-                        <div class="card-tools">
-                            <button type="button" class="btn btn-tool" data-card-widget="collapse"><i
-                                    class="fas fa-minus"></i>
-                            </button>
-                            <button type="button" class="btn btn-tool" data-card-widget="remove"><i
-                                    class="fas fa-times"></i></button>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <canvas id="donutChart"
-                            style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
-                    </div>
-                    <!-- /.card-body -->
-                </div>
-                <!-- /.card -->
-            </div>
-        </div>
 
         <div class="row">
             <div class="col-lg-6">
