@@ -1,28 +1,29 @@
-{% extends 'admin_template/base_template.html' %}
-
-{% block page_title %}
-School Management Details
-{% endblock page_title %}
-
+{% extends 'admin_template/base_template.html' %} 
+{% block page_title %} 
+School Management Details 
+{% endblock page_title %} 
 {% block main_content %}
-
 {% load static %}
 
 <section class="content">
     <div class="container-fluid">
         <div class="ml-1">
-            <a class="btn btn-warning" href="{% url 'manage_session' %}" role="button"> Manage Sessions</a><br/>&nbsp;
+            <a class="btn btn-warning" href="{% url 'manage_session' %}" role="button">
+                Manage Sessions</a><br />&nbsp;
         </div>
-        <div class="mx-auto row ">
+        <div class="mx-auto row">
             <div class="">
-                <a class="btn btn-primary" href="{% url 'manage_departments' %}" role="button"> Manage Departments</a><br/>&nbsp;
+                <a class="btn btn-primary" href="{% url 'manage_departments' %}" role="button">
+                    Manage Departments</a><br />&nbsp;
             </div>
             <div class="ml-1">
-                <a class="btn btn-primary" href="{% url 'manage_courses' %}" role="button"> Manage Courses</a><br/>&nbsp;
+                <a class="btn btn-primary" href="{% url 'manage_courses' %}" role="button">
+                    Manage Courses</a><br />&nbsp;
             </div>
-            
+
             <div class="ml-1">
-                <a class="btn btn-primary" href="{% url 'academics:clusterclass_list' %}" role="button"> Manage Class Clusters</a><br/>&nbsp;
+                <a class="btn btn-primary" href="{% url 'academics:clusterclass_list' %}" role="button">
+                    Manage Class Clusters</a><br />&nbsp;
             </div>
         </div>
 
@@ -30,47 +31,71 @@ School Management Details
             <div class="col-md-12">
                 <!-- general form elements -->
                 <div class="card card-primary">
-
                     <div class="card-tools">
-                        <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
                         </button>
-                        <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i></button>
-                      </div>
+                        <button type="button" class="btn btn-tool" data-card-widget="remove">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
 
                     <div class="card-body">
+                        {% if messages %}
+                        <div class="form-group">
+                            <div class="col-12">
+                                {% for message in messages %} {% if message.tags == "error" %}
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert"
+                                    style="margin-top: 10px">
+                                    {{ message }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                {% elif message.tags == "success" %}
+                                <div class="alert alert-success alert-dismissible fade show" role="alert"
+                                    style="margin-top: 10px">
+                                    {{ message }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                {% endif %} {% endfor %}
+                            </div>
+                        </div>
+                        {% endif %}
                         <div class="row">
                             <div class="col-md-12">
                                 <!-- general form elements -->
                                 <div class="card card-primary">
-                                <div class="card-header">
-                                    <h3 class="card-title">Edit School details</h3>
-                                </div>
-                                <!-- /.card-header -->
-                                <!-- form start -->
-                                <form method="post" action="{% url 'add_course_save'%}">
-                                    {% csrf_token %}
-                                    {{ form.as_p }}
-                                    <button type="submit">Submit</button>
-                                </form>
+                                    <div class="card-header">
+                                        <h3 class="card-title">Edit School details</h3>
+                                    </div>
+                                    <!-- /.card-header -->
+                                    <!-- form start -->
+                                    <div class="card-body">
+                                        <form method="post" action="{% url 'admin_school_update'%}">
+                                            {% csrf_token %} {{ form.as_p }}
+                                            <div class="ml-1">
+                                                <button class="btn btn-primary" type="submit">Submit</button>
+                                                <br/>&nbsp;
+                                            </div>
+                                            
+                                        </form>
 
-                                {% comment %}
-                                {% url 'admin_school_update' as action_path %}
-                                {% include 'admin_template/form_template.html' with messages=messages form=form action_path=action_path button_text="Update School Details" %}
-                                {% endcomment %}
+
+                                    </div>
                                 </div>
                                 <!-- /.card -->
-            
                             </div>
                         </div>
                     </div>
-                   
                 </div>
                 <!-- /.card -->
-
             </div>
         </div>
-
-    </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.container-fluid -->
 </section>
 
 {% endblock main_content %}

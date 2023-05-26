@@ -192,8 +192,8 @@ Manage Staff
                                                 <td>{{ teachers.admin.last_login }}</td>
                                                 <td>{{ teachers.admin.date_joined }}</td>
                                                 <td>
-                                                    <a href="" class="btn btn-success">Edit</a>
-                                                    <a href=""
+                                                    <a href="{% url 'edit_teacher' teachers.admin.id%}" class="btn btn-success">Edit</a>
+                                                    <a href="{% url 'delete_teacher' teachers.admin.id %}"
                                                         class="btn btn-danger">Delete</a>
                                                 </td>
                                             </tr>

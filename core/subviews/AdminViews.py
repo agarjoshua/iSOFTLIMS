@@ -23,7 +23,7 @@ from core.models import (
     HOD,
     Applicant,
     ApplicantApprovalWorklow,
-    CustomUser,
+    CustomUser, 
     Admin,
     Department,
     Guardian,
@@ -182,37 +182,40 @@ def school_profile(request):
     
     form = InstitutionForm()
 
-    try:
+    # try:
         # Retrieve the institution associated with the logged-in user
-        print('check one')
-        institution = user.institution
-        print(f'hello {institution}')
+    print('check one')
+    institution = user.institution
+    print(f'hello {institution}')
 
-        form.fields["institution_code"].initial = institution.institution_code 
-        form.fields["name "].initial = institution.name 
-        form.fields["country"].initial = institution.country 
-        form.fields["institution_order"].initial = institution.institution_order 
-        form.fields["registration_date"].initial = institution.registration_date 
-        form.fields["examination_centre_number"].initial = institution.examination_centre_number 
-        form.fields["institution_location_hierarchy"].initial = institution.institution_location_hierarchy 
-        form.fields["institution_cluster"].initial = institution.institution_cluster
-        form.fields["institution_category"].initial = institution.institution_category 
-        form.fields["institution_gender_category "].initial = institution.institution_gender_category 
-        form.fields["institution_accomodation_type "].initial = institution.institution_accomodation_type 
-        form.fields["institution_status"].initial = institution.institution_status 
-        form.fields["institution_type"].initial = institution.institution_type 
-        form.fields["institution_in_ASAL_area"].initial = institution.institution_in_ASAL_area 
-        form.fields["institution_residence "].initial = institution.institution_residence 
-        form.fields["contact_details "].initial = institution.contact_details 
-        form.fields["institution_statutory_numbers"].initial = institution.institution_statutory_numbers 
-        form.fields["currency"].initial = institution.currency 
-        form.fields["bank_details"].initial = institution.bank_details 
-        form.fields["logo"].initial = institution.logo 
+    form.fields["name"].initial = institution.name 
+    form.fields["country"].initial = institution.country 
+    form.fields["institution_order"].initial = institution.institution_order 
+    # form.fields["examination_centre_number"].initial = institution.examination_centre_number 
+    form.fields["institution_location_hierarchy"].initial = institution.institution_location_hierarchy 
+    form.fields["institution_cluster"].initial = institution.institution_cluster
+    form.fields["institution_category"].initial = institution.institution_category 
+    # form.fields["institution_gender_category "].initial = institution.institution_gender_category 
+    # form.fields["institution_accomodation_type "].initial = institution.institution_accomodation_type 
+    form.fields["institution_status"].initial = institution.institution_status 
+    form.fields["institution_type"].initial = institution.institution_type 
+    form.fields["institution_in_ASAL_area"].initial = institution.institution_in_ASAL_area 
+    # form.fields["institution_residence "].initial = institution.institution_residence 
+    # form.fields["contact_details "].initial = institution.contact_details 
+    # form.fields["institution_statutory_numbers"].initial = institution.institution_statutory_numbers 
+    form.fields["currency"].initial = institution.currency 
+    # form.fields["bank_details"].initial = institution.bank_details 
+    # form.fields["logo"].initial = institution.logo 
 
-    except Exception as e:
-        # If institution doesn't exist, set it as None
-        print(e)
-        institution = None
+    print(form)
+
+    context = {"user": user, "institution": institution, "form":form}
+    return render(request, "admin_template/school_profile.html", context)
+
+    # except Exception as e:
+    #     # If institution doesn't exist, set it as None
+    #     print(e)
+    #     institution = None
     
 
     context = {"user": user, "institution": institution, "form":form}
@@ -225,63 +228,169 @@ def admin_school_update(request):
         return redirect("school_profile")
     else:
         form = InstitutionForm(request.POST)
-        if form.is_valid():
-            name = form.cleaned_data["name"]
-            country = form.cleaned_data["country"]
-            institution_order = form.cleaned_data["institution_order"]
-            #:TODO: build the tool needed for this data processing
-            institution_location_hierarchy = form.cleaned_data[
-                "institution_location_hierarchy"
-            ]
-            institution_cluster = form.cleaned_data["institution_cluster"]
-            institution_category = form.cleaned_data["institution_category"]
-            institution_gender_category = form.cleaned_data[
-                "institution_gender_category"
-            ]
-            institution_accomodation_type = form.cleaned_data[
-                "institution_accomodation_type"
-            ]
-            institution_status = form.cleaned_data["institution_status"]
-            institution_type = form.cleaned_data["institution_type"]
-            institution_in_ASAL_area = form.cleaned_data["institution_in_ASAL_area"]
-            institution_residence = form.cleaned_data["institution_residence"]
-            contact_details = form.contact_details()
-            institution_statutory_numbers = form.other_statutory_details()
-            currency = form.cleaned_data["currency"]
-            bank_details = form.financial_details()
+        # print(form)
+        # if form.is_valid():
+        name = form["name"].value()
+        country = form["country"].value()
+        institution_order = form["institution_order"].value()
+        #:TODO: build the tool needed for this data processing
+        institution_location_hierarchy = form[
+            "institution_location_hierarchy"
+        ].value()
+        institution_cluster = form["institution_cluster"].value()
+        institution_category = form["institution_category"].value()
+        institution_gender_category = form[
+            "institution_gender_category"
+        ].value()
+        institution_accomodation_type = form[
+            "institution_accomodation_type"
+        ].value()
+        institution_status = form["institution_status"].value()
+        institution_type = form["institution_type"].value()
+        institution_in_ASAL_area = form["institution_in_ASAL_area"].value()
+        institution_residence = form["institution_residence"].value()
 
-            try:
-                specific_institution = Admin.objects.get(admin=request.user).institution
-                specific_institution.specific_institution_id = Admin.objects.get(
-                    admin=request.user
-                ).institution
-                specific_institution.name = name
-                specific_institution.country = country
-                specific_institution.institution_order = institution_order
-                specific_institution.institution_location_hierarchy = (
-                    institution_location_hierarchy
-                )
-                specific_institution.institution_cluster = institution_cluster
-                specific_institution.institution_category = institution_category
-                specific_institution.institution_gender_category = (
-                    institution_gender_category
-                )
-                specific_institution.institution_in_ASAL_area = institution_in_ASAL_area
-                specific_institution.institution_residence = institution_residence
-                specific_institution.contact_details = contact_details
-                specific_institution.institution_statutory_numbers = (
-                    institution_statutory_numbers
-                )
-                specific_institution.currency = currency
-                specific_institution.bank_details = bank_details
-                specific_institution.save()
-            except Exception as e:
-                print(e)
-                return e
-        else:
-            school_id = Admin.objects.get(admin=request.user.id).institution.id
-            school = Institution.objects.get(id=school_id)
-            form = InstitutionForm(initial=school)
+
+        def contact_details_json(form): # type: ignore
+            field_names = [
+                "telephone1",
+                "telephone2",
+                "fax_number",
+                "email_address",
+                "postal",
+                "physical_address1",
+                "physical_address2",
+                "physical_address3",
+            ]
+
+            data = {}
+
+            for field_name in field_names:
+                data[field_name] = form[field_name].value()
+
+            json_data = json.dumps(data)
+            print(json_data)
+
+            return json_data
+
+        # Bulk Fields
+        telephone1 = form["telephone1"].value()
+        telephone2 = form["telephone2"].value()
+        fax_number = form["fax_number"].value()
+        email_address = form["email_address"].value()
+        postal = form["postal"].value()
+        physical_address1 = form["physical_address1"].value()
+        physical_address2 = form["physical_address2"].value()
+        physical_address3 = form["physical_address3"].value()
+
+        def contact_details(form):
+            field_names = [
+                "telephone1",
+                "telephone2",
+                "fax_number",
+                "email_address",
+                "postal",
+                "physical_address1",
+                "physical_address2",
+                "physical_address3",
+            ]
+
+            data = {}
+
+            for field_name in field_names:
+                data[field_name] = form[field_name].value()
+
+            json_data = json.dumps(data)
+            print(json_data)
+
+            return json_data
+        contact_details_var = contact_details(form)
+
+        bank1 = form["bank1"].value()
+        bank2 = form["bank2"].value()
+        bank3 = form["bank3"].value()
+        bank4 = form["bank4"].value()
+        mobile_money = form["mobile_money"].value()
+        pay_bill_number = form["pay_bill_number"].value()
+        till_number = form["till_number"].value()
+        pin_number = form["pin_number"].value()
+        currency = form["currency"].value()
+
+        def financial_details(form):
+            field_names = [
+                "bank1",
+                "bank2",
+                "bank3",
+                "bank4",
+                "mobile_money",
+                "pay_bill_number",
+                "till_number",
+                "pin_number",
+                "currency",
+            ]
+
+            data = {}
+
+            for field_name in field_names:
+                data[field_name] = form[field_name].value()
+
+            json_data = json.dumps(data)
+
+            return json_data
+        bank_details_var = financial_details(form)
+
+        nhif = form["nhif"].value()
+        social_security_number = form["social_security_number"].value()
+        industrial_training_number = form["industrial_training_number"].value()
+
+        def other_statutory_details(form):
+            field_names = [
+                "nhif",
+                "social_security_number",
+                "industrial_training_number"
+            ]
+
+            data = {}
+
+            for field_name in field_names:
+                data[field_name] = form[field_name].value()
+
+            json_data = json.dumps(data)
+
+            return json_data
+        
+        other_statutory_details_var = other_statutory_details(form)
+
+        try:
+            specific_institution = CustomUser.objects.get(id=request.user.id).institution
+            # specific_institution.specific_institution_id = Admin.objects.get(
+            #     admin=request.user
+            # ).institution
+            specific_institution.name = name
+            specific_institution.country = country
+            specific_institution.institution_order = institution_order
+            specific_institution.institution_location_hierarchy = (
+                institution_location_hierarchy
+            )
+            specific_institution.institution_cluster = institution_cluster
+            specific_institution.institution_category = institution_category
+            specific_institution.institution_gender_category = (
+                institution_gender_category
+            )
+            specific_institution.institution_in_ASAL_area = institution_in_ASAL_area
+            specific_institution.institution_residence = institution_residence
+            specific_institution.contact_details = contact_details_var
+            specific_institution.institution_statutory_numbers = other_statutory_details_var
+            specific_institution.currency = currency
+            specific_institution.bank_details = bank_details_var
+            print('heloooooooooooooooooooooooooooo')
+            specific_institution.save()
+        except Exception as e:
+            print(e)
+            return e
+        # else:
+        #     messages.error(request, "Form not valid")
+        #     return redirect("school_profile")
 
     messages.success(request, "Profile Updated Successfully")
     return redirect("school_profile")
@@ -318,8 +427,6 @@ def add_staff_save(request):
 
         staff_type = StaffType.objects.get(id=staff_type)
 
-        
-
         name = f'{first_name} {last_name}'
 
         department = Department.objects.get(id=department)
@@ -345,9 +452,11 @@ def add_staff_save(request):
                 user.staff.address = address
                 user.staff.staff_type = staff_type
                 user.staff.associated_department = department
-            # elif user_type == 6:
-            #     user.teacher.institution = institution
-            user.save()
+                user.save()
+            if user_type == 6:
+                user.teacher.address = address
+                user.save()
+            
             messages.success(request, "Staff Added Successfully!")
             return redirect("manage_staff")
         except Exception as e:
@@ -359,7 +468,7 @@ def add_staff_save(request):
 
 def manage_staff(request):
     staff = Staff.objects.all()
-    teachers = Students.objects.all()
+    teachers = Teacher.objects.all()
     
     
     context = {
@@ -375,6 +484,13 @@ def edit_staff(request, staff_id):
     departments = Department.objects.all()
     context = {"staff": staff, "id": staff_id, "departments": departments}
     return render(request, "admin_template/edit_staff_template.html", context)
+
+
+def edit_teacher(request, teacher_id):
+    teacher = Teacher.objects.get(admin=teacher_id)
+    departments = Department.objects.all()
+    context = {"teacher": teacher, "id": teacher_id, "departments": departments}
+    return render(request, "admin_template/edit_teacher_template.html", context)
 
 
 def edit_staff_save(request):
@@ -414,6 +530,43 @@ def edit_staff_save(request):
             return redirect("/edit_staff/" + staff_id)
 
 
+def edit_teacher_save(request):
+    if request.method != "POST":
+        return HttpResponse("<h2>Method Not Allowed</h2>")
+    else:
+        teacher_id = request.POST.get("teacher_id")
+        username = request.POST.get("username")
+        email = request.POST.get("email")
+        first_name = request.POST.get("first_name")
+        last_name = request.POST.get("last_name")
+        address = request.POST.get("address")
+        # department = request.POST.get("department")
+
+        # department = Department.objects.get(id=department)
+
+        try:
+            # INSERTING into Customuser Model
+            user = CustomUser.objects.get(id=teacher_id)
+            user.first_name = first_name
+            user.last_name = last_name
+            user.email = email
+            user.username = username
+            user.save()
+
+            # INSERTING into Staff Model
+            teacher_model = Teacher.objects.get(admin=teacher_id)
+            teacher_model.address = address
+            # teacher_model.associated_department = department
+            teacher_model.save()
+
+            messages.success(request, "Teacher Updated Successfully.")
+            return redirect("/edit_teacher/" + teacher_id)
+
+        except Exception as e:
+            messages.error(request, f"Failed to Update Teacher. {e}")
+            return redirect("/edit_teacher/" + teacher_id)
+
+
 def delete_staff(request, staff_id):
     staff = Staff.objects.get(admin=staff_id)
     try:
@@ -424,6 +577,16 @@ def delete_staff(request, staff_id):
         messages.error(request, "Failed to Delete Staff.")
         return redirect("manage_staff")
 
+def delete_teacher(request, teacher_id):
+    teacher = Teacher.objects.get(admin=teacher_id)
+    print(teacher)
+    try:
+        teacher.delete()
+        messages.success(request, "Teacher Deleted Successfully.")
+        return redirect("manage_staff")
+    except Exception as e:
+        messages.error(request, f"Failed to Delete Teacher. {e}")
+        return redirect("manage_staff")
 
 
 def manage_staff_type(request):
@@ -698,12 +861,13 @@ def add_guardian_save(request):
                 user.guardian.gender = gender
                 user.save()
                 messages.success(request, "Guardian Added Successfully!")
-                return redirect("add_guardian")
+                return redirect("manage_guardians")
             except Exception as e:
                 messages.error(request, "Failed to Add Guardian!")
                 print(e)
                 return redirect("add_guardian")
         else:
+            messages.error(request, "Invalid form!")
             return redirect("add_guardian")
 
 

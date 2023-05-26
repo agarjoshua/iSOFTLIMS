@@ -32,9 +32,7 @@ class Institution(models.Model):
     institution_order = models.TextField()
     registration_date = models.DateTimeField(auto_now=True, editable=False)
     examination_centre_number = models.CharField(max_length=12, null=True)
-    # TODO: Implement a counties list programme in python (january 25th projects)
-    # WRITE ABOUT THE ENTIRE THINKING PROCESS
-    institution_location_hierarchy = models.JSONField(null=True)
+    institution_location_hierarchy = models.TextField()
     CLUSTER = [
         (1, "International"),
         (2, "National"),
@@ -173,7 +171,7 @@ class Teacher(models.Model):
     objects = models.Manager()
 
     def __str__(self):
-        return self.name
+        return f"{self.admin.first_name}  {self.admin.last_name}"
 
 class StaffType(models.Model):
     id = models.AutoField(primary_key=True)

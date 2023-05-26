@@ -15,7 +15,7 @@ urlpatterns = [
     
 
     #USER CRUD URLS
-    # path('accounts/', include('django.contrib.auth.urls')),
+    # path('accounts/', include('django.contrib.auth.urls')), 
     path("doLogin/", views.doLogin, name="doLogin"),
     path("get_user_details/", views.get_user_details, name="get_user_details"),
     path("logout_user/", views.logout_user, name="logout_user"),
@@ -40,7 +40,6 @@ urlpatterns = [
     path('admissions/', AdminViews.admissions, name="admissions"),
     path('admissions_approve/', AdminViews.admissions_approve, name="admissions_approve"),
     path('dvc_approve/', AdminViews.dvc_approve, name="dvc_approve"),
-    
     
 
     # DEPARTMENT MANAGEMENT URLS      
@@ -69,13 +68,18 @@ urlpatterns = [
     path('add_staff_save/', AdminViews.add_staff_save, name="add_staff_save"),
     path('manage_staff/', AdminViews.manage_staff, name="manage_staff"),
     path('edit_staff/<staff_id>/', AdminViews.edit_staff, name="edit_staff"),
+    path('edit_teacher/<teacher_id>/', AdminViews.edit_teacher, name="edit_teacher"),
     path('edit_staff_save/', AdminViews.edit_staff_save, name="edit_staff_save"),
+    path('edit_teacher_save/', AdminViews.edit_teacher_save, name="edit_teacher_save"),
     path('delete_staff/<staff_id>/', AdminViews.delete_staff, name="delete_staff"),
+    path('delete_teacher/<teacher_id>/', AdminViews.delete_teacher, name="delete_teacher"),
     # path('staff_feedback_message/', AdminViews.staff_feedback_message, name="staff_feedback_message"),
     # path('staff_feedback_message_reply/', AdminViews.staff_feedback_message_reply, name="staff_feedback_message_reply"),
     # path('staff_leave_view/', AdminViews.staff_leave_view, name="staff_leave_view"),
     # path('staff_leave_approve/<leave_id>/', AdminViews.staff_leave_approve, name="staff_leave_approve"),
     # path('staff_leave_reject/<leave_id>/', AdminViews.staff_leave_reject, name="staff_leave_reject"),
+
+    
     
 
     # STUDENT URLS
