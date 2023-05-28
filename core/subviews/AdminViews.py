@@ -1124,6 +1124,9 @@ def admissions_approve(request):
     try:
         selected_applicant = ApplicantApprovalWorklow.objects.get(applicant=applicant)
         selected_applicant.department_approved = True
+
+
+
         selected_applicant.save()
         return redirect('admissions')
     except Exception as e:
@@ -1141,7 +1144,58 @@ def dvc_approve(request):
         selected_applicant.dvc_approved = True
         selected_applicant.save()
 
-        applicant = Applicant.objects.get(applicant_id=applicant_id)
+
+
+        # applicant = Applicant.objects.get(applicant_id=applicant_id)
+
+
+        try:
+            user = CustomUser.objects.get(id=applicant_id).id
+
+            test = Students.objects.create(
+                name = f'{applicant.surname} {applicant.other_names}',
+                registration_number = f'{applicant.surname}/{applicant.other_names}',
+                index_number = lambda: ''.join(random.choices('0123456789', k=7)),
+                # profile_pic_url = profile_pic_url
+                address = applicant.permanent_address,
+                # course = Course.objects.get(id=course.id)
+                # user.students.course = course
+                # user.students.student_type = student_type
+                gender = applicant.gender,
+                # user.students.account_status = account_status
+                # user.students.academic_status = academic_status
+                study_type = applicant.mode_of_study,
+                admin_id = user,
+
+            )
+            user.user_type = 3
+            user.save()
+            
+            # user.students.name = f'{applicant.surname} {applicant.other_names}'
+            # user.students.registration_number = f'{applicant.surname}/{applicant.other_names}'
+            # user.students.index_number = lambda: ''.join(random.choices('0123456789', k=7))
+            # user.students.profile_pic_url = profile_pic_url
+            # user.students.address = applicant.permanent_address
+            # course = Course.objects.get(id=course.id)
+            # user.students.course = course
+            # user.students.student_type = student_type
+            # user.students.gender = applicant.gender
+            # user.students.account_status = account_status
+            # user.students.academic_status = academic_status
+            # user.students.study_type = applicant.mode_of_study
+            # user.students.boarding_type = boarding_type
+            # user.students.sponsorship_type = sponsorship_type
+            # user.students.sponsor_type = sponsor_type
+            # user.students.special_needs = special_needs
+            # user.students.require_transport = require_transport
+            user.save()
+            messages.success(request, "Student Added Successfully!")
+            return redirect("manage_students")
+        except Exception as e:
+            messages.error(request, f"Failed to Add Student! -{e}")
+            print(e)
+            return redirect("manage_students")
+        print(applicant)
         return redirect('admissions')
     except Exception as e:
         return HttpResponse(e)

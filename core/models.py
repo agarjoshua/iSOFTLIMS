@@ -396,9 +396,7 @@ class Applicant(models.Model):
     how_did_you_know_about_us = models.CharField(max_length=255, blank=True)
     require_entry_exams = models.BooleanField(default=True)
     application_status = models.BooleanField(default=False)
-    # finance_approval = models.BooleanField(default=False)
-    # finance_approval = models.BooleanField(default=False)
-    # finance_approval = models.BooleanField(default=False)
+    
 
 class ApplicantApprovalWorklow(models.Model):
     id = models.AutoField(primary_key=True)
