@@ -16,7 +16,7 @@ def manage_session_registation(request):
     context = {
         "currently_enrolled" : currently_enrolled
         }
-    return render(request, "sessions_template/manage_session_registration_template.html", context)
+    return render(request, "session_templates/manage_session_registration_template.html", context)
 
 def enroll_student(request):
     if request.method == 'POST':
@@ -46,12 +46,12 @@ def enroll_student(request):
         else:
             form = EnrollmentCreateForm()
     form = EnrollmentCreateForm()
-    return render(request, 'sessions_template/enroll_student_template.html', {'form': form})
+    return render(request, 'session_templates/enroll_student_template.html', {'form': form})
 
 
 def confirm_enrollment(request,enrolled_id):
     selected_enrollment= Enrollment.objects.get(id=enrolled_id)
-    return render(request, 'sessions_template/enroll_student_template.html', {'form': form})
+    return render(request, 'session_templates/enroll_student_template.html', {'form': form})
 
 
 @require_POST

@@ -1,0 +1,127 @@
+{% load static %}
+
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+      <!-- Brand Logo -->
+      <a href="{% url 'admin_home' %}" class="brand-link">
+        <img src="{% static 'dist/img/AdminLTELogo.png' %}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+            style="opacity: .8">
+        <span class="brand-text font-weight-light">ISOFT LMS</span>
+      </a>
+
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <!-- Sidebar user panel (optional) -->
+        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+          <div class="image">
+            <img src="{% static 'dist/img/user2-160x160.jpg' %}" class="img-circle elevation-2" alt="User Image">
+          </div>
+          <div class="info">
+            <a href="" class="d-block">{{ user.first_name }} {{ user.last_name }}</a>
+          </div>
+        </div>
+
+        <!-- Sidebar Menu -->
+        <nav class="mt-2">
+          <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+            <!-- Add icons to the links using the .nav-icon class
+                with font-awesome or any other icon font library -->
+
+            <li class="nav-item">
+              {% url 'admin_home' as admin_home %}
+              <a href="{{ admin_home }}" class="nav-link {% if request.path == admin_home %} active {% endif %}">
+                <i class="nav-icon fas fa-tachometer-alt"></i>
+                <p>
+                  Core Modules
+                </p>
+              </a>
+            </li>
+            
+            <li class="nav-item">
+              {% url 'academics:academics_home' as home %}
+              <a href="{{ home }}" class="nav-link {% if request.path == home %} active {% endif %}">
+                <i class="nav-icon fa fa-graduation-cap"></i>
+                <p>
+                  Academics Home
+                  {% comment %} <span class="right badge badge-danger">New</span> {% endcomment %}
+                </p>
+              </a>
+            </li>
+
+            {% comment %}
+            {% url 'academics:academics_home' as admin_home %}
+            <li class="nav-link collapsed text-truncate {% if request.path == admin_home %} active {% endif %}">
+              <a class="nav-link collapsed text-truncate" href="#submenu1" data-toggle="collapse" data-target="#submenuc"><i
+                  class="nav-icon fa fa-graduation-cap"></i> <span class="d-none d-sm-inline">Academics Module</span></a>
+    
+              <div class="collapse" id="submenuc" aria-expanded="false">
+                <ul class="flex-column pl-2 nav">
+    
+                  <li class="nav-item">
+                    {% url 'manage_grade' as manage_grade %}
+                    {% url 'edit_grade' grade_id=id as edit_grade %}
+                    <a href="{{ manage_grade }}"
+                      class="nav-link {% if request.path == manage_grade %} active {% endif %} {% if request.path == edit_grade %} active {% endif %}">
+                      <i class="nav-icon fas fa-chalkboard"></i>
+                      <p>
+                        Manage Grade Level
+                      </p>
+                    </a>
+                  </li>
+    
+                  <li class="nav-item">
+                    {% url 'manage_class' as manage_class %}
+                    {% url 'edit_class' class_id=id as edit_class %}
+                    <a href="{{ manage_class }}"
+                      class="nav-link {% if request.path == manage_class %} active {% endif %} {% if request.path == edit_class %} active {% endif %}">
+                      <i class="nav-icon fas fa-chalkboard"></i>
+                      <p>
+                        Manage Class
+                      </p>
+                    </a>
+                  </li>
+    
+                  <li class="nav-item">
+                    {% url 'manage_session_registation' as manage_session_registation %}
+                    {% url 'edit_session_registation' session_id=id as edit_session_registation %}
+                    <a href="{{ manage_session_registation }}"
+                      class="nav-link {% if request.path == manage_session_registation %} active {% endif %} {% if request.path == edit_session_registation %} active {% endif %}">
+                      <i class="nav-icon fas fa-archway"></i>
+                      <p>
+                        Manage Sessions
+                      </p>
+                    </a>
+                  </li>
+    
+                  <li class="nav-item">
+                    {% url 'manage_exams' as manage_exams %}
+                    {% url 'edit_manage_exams' session_id=id as edit_manage_exams %}
+                    <a href="{{ manage_exams }}"
+                      class="nav-link {% if request.path == manage_exams %} active {% endif %} {% if request.path == manage_exams %} active {% endif %}">
+                      <i class="nav-icon fa fa-th"></i>
+                      <p>
+                        Manage Exams
+                      </p>
+                    </a>
+                  </li>
+                </ul>
+            </li>
+            {% endcomment %}
+
+            <li class="nav-item">
+              {% url 'finance:finance_home' as finance_home %}
+              <a href="{{ finance_home }}" class="nav-link {% if request.path == finance_home %} active {% endif %}">
+                <i class="nav-icon fas fa-hand-holding-usd"></i>
+                <p>
+                  Finance Module
+                </p>
+              </a>
+            </li>
+
+
+
+          </ul>
+        </nav>
+        <!-- /.sidebar-menu -->
+      </div>
+      <!-- /.sidebar -->
+    </aside>

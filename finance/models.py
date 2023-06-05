@@ -20,9 +20,14 @@ class Transaction(models.Model):
     ammount_paid = models.DecimalField(max_digits=20, decimal_places=2)
     date = models.DateTimeField(auto_now=True)
     confirmed = models.BooleanField(default=False)
+    Payee= models.CharField(max_length=255, null=True)
+    Payer= models.CharField(max_length=255, null=True)
+    comments = models.CharField(max_length=255, null=True)
+    other_resources = models.FileField(upload_to='media/account_files', blank=True)
+    receipt_image = models.ImageField(upload_to='media/transaction_images', blank=True)
 
     def __str__(self):
-        return self.id
+        return f"Transaction ID: {self.transaction_code}"
 
 
 class Fee(models.Model):

@@ -1,0 +1,120 @@
+{% extends 'base_template.html' %}
+
+{% block page_title %}
+Add Cluster Class
+{% endblock page_title %}
+
+{% block main_content %}
+
+{% load static %}
+
+<section class="content">
+  <div class="container-fluid">
+
+    <div class="row">
+      <div class="col-md-12">
+        <!-- general form elements -->
+        <div class="card card-primary">
+          <div class="card-header">
+            <h3 class="card-title">Add Cluster</h3>
+          </div>
+          <!-- /.card-header -->
+          {% csrf_token %}
+
+
+          {% comment %} Display Messages {% endcomment %}
+          {% if messages %}
+          <div class="form-group">
+            <div class="col-12">
+              {% for message in messages %}
+              {% if message.tags == "error" %}
+              <div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                {{ message }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              {% elif message.tags == "success" %}
+              <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                {{ message }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+          {% endif %}
+
+
+          <div class="card-body">
+            <h1>{{ clusterclass.cluster_class_name }}</h1>
+            <form method="post">
+              {% csrf_token %}
+              <div class="form-group">
+                {{ form.cluster_class_name.label_tag }}
+                {{ form.cluster_class_name }}
+                <div class="invalid-feedback">
+                  Please provide a valid cluster class name.
+                </div>
+              </div>
+              <div class="form-group">
+                {{ form.classes.label_tag }}
+                {{ form.classes }}
+              </div>
+              <div class="">
+                <button type="submit" class="btn btn-primary">Add Subject</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /.container-fluid -->
+</section>
+{% endblock main_content %}
+
+
+{% block custom_js %}
+{% comment %} Checking if clustername already exists or not usin Ajax {% endcomment %}
+
+<script>
+  $(document).ready(function () {
+    // keyup event will be triggered when user leaves keyboard
+    $("#id_cluster_class_name").keyup(function () {
+      var cluster_class_name = $(this).val();
+
+      if (cluster_class_name != "") {
+        $.ajax({
+          url: '{% url 'academics:check_cluster_class_exist' %}',
+          type: 'POST',
+          data: { cluster_class_name: cluster_class_name }
+        })
+          .done(function (response) {
+            //console.log(response);
+
+            if (response == "True") {
+              $(".cluster_class_name_error").remove();
+              $("<span class='cluster_class_name' style='color: red; padding: 5px; font-weight: bold;'> Cluster With Name Already Available. </span>").insertAfter("#id_cluster_class_name")
+            }
+            else {
+              $(".cluster_class_name").remove();
+              $("<span class='cluster_class_name' style='color: green; padding: 5px; font-weight: bold;'> Name Available. </span>").insertAfter("#id_cluster_class_name")
+            }
+          })
+
+          .fail(function () {
+            console.log("Failed");
+          })
+      }
+      else {
+        $(".cluster_class_name").remove();
+      }
+
+    })
+  })
+</script>
+
+{% endblock custom_js %}

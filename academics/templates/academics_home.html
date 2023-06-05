@@ -1,1 +1,146 @@
-<h1>Hello world</h1>
+{% extends 'base_template.html' %} 
+
+{% block page_title %}
+
+{% endblock page_title %} 
+{% block main_content %} 
+{% load static %}
+
+<div class="mx-1">
+  <div class="row mx-3">
+    <div class="col-lg-7 col-md-12">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card table-card review-card">
+            <div class="card-header">
+              <h5>Notices and Anouncements</h5>
+              <!---->
+            </div>
+            <div class="card-block">
+              <div class="review-block"></div>
+              <!---->
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card table-card latest-activity-card">
+            <div class="card-header border-0">
+              <h5 class="text-bold">Sessions List</h5>
+            </div>
+
+            <div class="mx-4 mb-3">
+              <a href="{% url 'academics:add_session'%}"><button class="btn btn-primary">Add
+                      Session</button></a>
+          </div>
+
+            <div class="card-block">
+              <table class="table table-hover text-nowrap">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Session Start Date</th>
+                        <th>Session End Date</th>
+                        <th>Is Current session</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for session_year in session_years %}
+                    <tr {% if not session_year.is_current %} class="text-muted" {% else %} class="text-bold"
+                        {% endif %}>
+                        <td>{{ session_year.id }}</td>
+                        <td>{{ session_year.session_start_date }}</td>
+                        <td>{{ session_year.session_end_date }}</td>
+                        <td>{{ session_year.is_current }}</td>
+                        <td>
+                            {% if session_year.is_current %}
+                            <a href="{% url 'academics:edit_session' session_year.id %}"
+                                class="btn btn-success">Edit</a>
+                            <a href="{% url 'academics:delete_session' session_year.id %}"
+                                class="btn btn-danger">Delete</a>
+                            {% else %}
+                            <a href="{% url 'academics:edit_session' session_year.id %}"
+                                class="btn btn-success ">Edit</a>
+                            <a href="{% url 'academics:delete_session' session_year.id %}"
+                                class="btn btn-danger ">Delete</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+
+                </tbody>
+            </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-5 col-md-12">
+      <div class="card bg-yellow text-white widget-visitor-card">
+        <div class="text-center"><!----></div>
+        <div class="card-block-small text-center">
+          <a
+            class="nav-link active h3"
+            href="{% url 'academics:manage_exams'%}"
+            role="tab"
+            aria-selected="true"
+            >
+            Manage Exams
+          </a>
+          <i class="fa fa-newspaper-o"></i>
+        </div>
+      </div>
+      <div class="card bg-blue text-white widget-visitor-card">
+        <div class="text-center"><!----></div>
+        <div class="card-block-small text-center">
+          <a
+            class="nav-link active h3"
+            href="{% url 'academics:manage_class'%}"
+            role="tab"
+            aria-selected="true"
+            >
+            Manage Class
+          </a>
+            <i class="fa fa-file-text"></i>
+          </h4>
+        </div>
+      </div>
+
+      <div class="card bg-green text-white widget-visitor-card">
+        <div class="text-center"><!----></div>
+        <div class="card-block-small text-center">
+          <a
+            class="nav-link active h3"
+            href="{% url 'academics:manage_grade'%}"
+            role="tab"
+            aria-selected="true"
+            >
+            Manage Grade
+          </a>
+            <i class="fa fa-file-text"></i>
+          </h4>
+        </div>
+      </div>
+
+      <div class="card bg-dark text-white widget-visitor-card">
+        <div class="text-center"><!----></div>
+        <div class="card-block-small text-center">
+          <a
+            class="nav-link active h3"
+            href="{% url 'academics:manage_session_registation'%}"
+            role="tab"
+            aria-selected="true"
+            >
+            Manage Sessions
+          </a>
+            <i class="fa fa-file-text"></i>
+          </h4>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock main_content %}

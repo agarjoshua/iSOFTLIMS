@@ -1,0 +1,34 @@
+{% extends 'finance/base_template.html' %}
+
+{% block page_title %}
+Add Transaction
+{% endblock page_title %}
+
+{% block main_content %}
+
+
+{% load static %}
+
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col-md-12">
+            <!-- general form elements -->
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h3 class="card-title">Add Transactions</h3>
+                </div>
+                <!-- /.card-header -->
+                <!-- form start -->
+                {% url 'finance:transaction_create' as action_path %}
+                {% include 'finance/form_template.html' with messages=messages form=form action_path=action_path button_text="Add Transaction" %}
+
+            </div>
+            <!-- /.card -->
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock main_content %}

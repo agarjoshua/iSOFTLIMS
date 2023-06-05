@@ -153,13 +153,7 @@ urlpatterns = [
     path('delete_guardian/<guardian_id>/', AdminViews.delete_student, name="delete_guardian"),
 
 
-    # SESSION URLS
-    path('manage_session/', AdminViews.manage_session, name="manage_session"),
-    path('add_session/', AdminViews.add_session, name="add_session"),
-    path('add_session_save/', AdminViews.add_session_save, name="add_session_save"),
-    path('edit_session/<session_id>', AdminViews.edit_session, name="edit_session"),
-    path('edit_session_save/', AdminViews.edit_session_save, name="edit_session_save"),
-    path('delete_session/<session_id>/', AdminViews.delete_session, name="delete_session"),
+    
 
     # COURSES URLS
     path('manage_courses/', AdminViews.manage_courses, name="manage_courses"),

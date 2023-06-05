@@ -1,0 +1,200 @@
+{% extends 'base_template.html' %}
+
+{% block page_title %}
+Manage Enrolled Students
+{% endblock page_title %}
+
+{% block main_content %}
+
+{% load static %}
+
+<section class="content">
+    <div class="container-fluid">
+
+        <a class="btn btn-primary" href="{% url 'academics:enroll_student' %}" role="button">Enroll a student</a> <br />&nbsp;
+
+        {% if messages %}
+        <div class="form-group">
+            <div class="col-12">
+                {% for message in messages %}
+                {% if message.tags == "error" %}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                {% elif message.tags == "success" %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                {% elif message.tags == "warning" %}
+                <div class="alert alert-warning alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="row">
+
+            <div class="col-md-12">
+                <!-- general form elements -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Current Session Registrants</h3>
+
+                        <div class="card-tools">
+                            <div class="input-group input-group-sm" style="width: 150px;">
+                                <input type="text" name="table_search" class="form-control float-right"
+                                    placeholder="Search">
+
+                                <div class="input-group-append">
+                                    <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body table-responsive p-0">
+                        <div class="row justify-content-between mx-2 my-2">
+                            <div> 
+                                <button id="select-all-btn" class="btn btn-primary">Select All</button>
+                            </div>
+                            <div>
+                                <button id="mass-edit-btn" class="btn btn-primary mx-2 my-2">Enroll Selected Students</button>
+                            </div>
+                        </div>
+                        <table class="table table-hover text-nowrap">
+                            
+                            <thead>
+                                <tr>
+                                    <th>Session</th>
+                                    <th>Student</th>
+                                    <th>Enrollment Date</th>
+                                    <th>Select to Enroll</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% csrf_token %}
+                                {% for enrolled in currently_enrolled %}
+                                <tr>
+                                    <td>{{ enrolled.session}}</td>
+                                    <td>{{ enrolled.student.name}}</td>
+                                    <td>{{ enrolled.enrollment_date }}</td>
+                                    <td>
+                                        {% if not enrolled.is_active %}
+                                        <input type="checkbox" name="enrolled_ids[]" value="{{ enrolled.id }}">
+                                        {% endif %}
+                                        {% if enrolled.is_active %}
+                                        <button disabled href="{% url 'academics:confirm_enrollment' enrolled.id %}"
+                                            class="btn btn-success">Student Enrolled</button>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if not enrolled.is_active %}
+                                        <a href="{% url 'academics:revoke_enrollment' enrolled.id %}"
+                                            class="btn btn-danger disabled">Revoke Enrollment</a>
+                                        {% else %}
+                                        <a href="{% url 'academics:revoke_enrollment' enrolled.id %}"
+                                            class="btn btn-danger">Revoke Enrollment</a>
+                                        {% endif %}
+
+                                    </td>
+                                </tr>
+                                {% endfor %}
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+
+            </div>
+        </div>
+
+    </div><!-- /.container-fluid -->
+</section>
+
+{% endblock main_content %}
+
+{% block custom_js %}
+
+{% comment %}
+With these changes, the "Select All" button will check all checkboxes in the table, and only unchecked checkboxes will be included in the mass edit action.
+{% endcomment %}
+
+<script>
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+    const massEditBtn = document.querySelector('#mass-edit-btn');
+    const selectAllBtn = document.querySelector('#select-all-btn');
+    const enrolledIdsCheckboxes = document.querySelectorAll('input[name="enrolled_ids[]"]');
+
+    const enrolledIds = [];
+
+    enrolledIdsCheckboxes.forEach((checkbox) => {
+        if (checkbox.checked) {
+            enrolledIds.push(checkbox.value);
+        }
+    });
+
+    selectAllBtn.addEventListener('click', () => {
+        Array.from(enrolledIdsCheckboxes).forEach((checkbox) => {
+            checkbox.checked = true;
+        });
+    });
+
+    massEditBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const enrolledIds = Array.from(enrolledIdsCheckboxes)
+            .filter((checkbox) => checkbox.checked)
+            .map((checkbox) => checkbox.value);
+
+        console.log('enrolled ids is ' + enrolledIds)
+
+        if (enrolledIds.length > 0) {
+            //const formData = new FormData();
+            //formData.append('enrolled_ids', enrolledIds.join(','));
+            //formData.append('is_active', 'true');
+
+            const formData = new FormData();
+            enrolledIds.forEach((id) => {
+                formData.append('enrolled_ids[]', id);
+            });
+
+            console.log(formData)
+
+            fetch('{% url 'academics:mass_edit_enrolled' %}', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': csrfToken
+                }
+            }).then((response) => {
+                if (response.ok) {
+                    location.reload();
+                }
+            });
+        }
+    });
+</script>
+
+{% endblock custom_js %}
+
+
+
+
+
+

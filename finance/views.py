@@ -4,6 +4,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
 from django.shortcuts import render, redirect
+from finance.forms.transactionForms import CreateTransactionForm
 
 from finance.models import Fee, Transaction, Transactiontype
 from .forms.finance import FeeCreationForm, TransactionForm
@@ -13,17 +14,56 @@ from core.models import Admin, Applicant, ApplicantApprovalWorklow, Guardian, St
 # from .models import Fee, Transaction
 
 # TODO: Global prefetched objects
+
 def finance_home(request):
     all_application_payments = Applicant.objects.all()
     all_applications_count = Applicant.objects.all().count()
+    transactions = Transaction.objects.all()
     
 
     context = {
         "all_application_payments" : all_application_payments,
         "all_applications_count": all_applications_count,
+        "transactions":transactions
     }
     return render(request, "finance/finance_home.html", context)
 
+
+def add_transaction(request):
+    context = {
+        "form": CreateTransactionForm
+    }
+    return render(request, "finance/add_transaction.html", context)
+
+
+
+def transaction_create(request):
+    if request.method == 'POST':
+        form = CreateTransactionForm(request.POST, request.FILES)
+        if form.is_valid():
+            try:
+                form.save()
+                messages.success(request,'Transactions added succesfully')
+            except Exception as e:
+                messages.error(request,f'Transactions Failed - {e}')
+        else:
+            errors = form.errors if form.errors else None
+            print('====================================================')
+            print(errors)
+            print('====================================================')
+            context = {
+                "errors":errors
+            }
+            messages.error(request,'Form is not valid', context) # type: ignore
+        return redirect('finance:add_transaction')
+    else:
+        form = CreateTransactionForm()
+
+    return redirect('finance:add_transaction')
+
+
+def delete_transaction(request):
+    pass
 
 
 def approve_applications(request):

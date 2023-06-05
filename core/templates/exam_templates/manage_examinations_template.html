@@ -1,4 +1,4 @@
-{% extends 'admin_template/base_template.html' %}
+{% extends 'base_template.html' %}
 
 {% block page_title %}
 <h1 class="ml-3">Manage Examinations</h1>
@@ -111,7 +111,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form id="exam-type-form" method="POST" action="{% url 'add_exam_type' %}">
+                        <form id="exam-type-form" method="POST" action="{% url 'academics:add_exam_type' %}">
                             {% csrf_token %}
 
                             <div class="form-group">
@@ -181,7 +181,7 @@
 
                                                 <h4 class="text-bold">Add grade for exam - {{exam.name}}</h4>
                                                 <form id="add-grade-form" method="POST"
-                                                    action="{% url 'add_grade_exam'%}">
+                                                    action="{% url 'academics:add_grade_exam'%}">
                                                     {% csrf_token %}
                                                     <div class="form-row">
                                                         <input type="hidden" name="exam_id" value="{{exam.id}}">
@@ -223,11 +223,11 @@
                                                     <tbody>
                                                         <tr>
                                                             <td>
-                                                            <td contenteditable="true">{{i.grade}}</td>
-                                                            <td contenteditable="true">{{i.max_score}}</td>
-                                                            <td contenteditable="true">{{i.min_score}}</td>
+                                                            <td>{{i.grade}}</td>
+                                                            <td>{{i.max_score}}</td>
+                                                            <td>{{i.min_score}}</td>
                                                             <td>
-                                                                <button class="btn btn-success save-row">Save</button>
+                                                                <button class="btn btn-warning save-row">Edit</button>
                                                             </td>
                                                         </tr>
                                                     </tbody>
@@ -298,7 +298,7 @@ be included in the mass edit action.
     $(document).ready(function () {
 
         // Submit ExamType form with AJAX
-        $("#exam-type-form").submit(function (event) {
+        $("").submit(function (event) {
             event.preventDefault();
             $.ajax({
                 type: "POST",

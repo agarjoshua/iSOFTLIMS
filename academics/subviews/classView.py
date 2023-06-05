@@ -25,25 +25,25 @@ def add_class(request):
                 else:
                     form.save()
                     messages.success(request, "Class Succesfully Added")
-                    return redirect('manage_class')
+                    return redirect('academics:manage_class')
             errors = None if form.is_valid() else form.errors.as_data()
             context = {
                 'errors': errors,
                 'form': form
                 }
-            render (request, "admin_template/add_class_template.html", context)
+            render (request, "class_templates/add_class_template.html", context)
         except Exception as e:
             messages.error(request, f"This class was NOT added -- {e}")
-            return redirect("add_class")
+            return redirect("academics:add_class")
     else:
         form = ClassCreateForm()
-    return render (request, "admin_template/add_class_template.html", {'form': form})
+    return render (request, "class_templates/add_class_template.html", {'form': form})
     
 @user_passes_test(is_admin)
 def manage_class(request):
     classs = Class.objects.all()
     context = {"classs": classs}
-    return render(request, "admin_template/manage_class_template.html", context)
+    return render(request, "class_templates/manage_class_template.html", context)
 
 @user_passes_test(is_admin)
 def edit_class(request, class_id):
@@ -70,7 +70,7 @@ def edit_class(request, class_id):
 def _edit_class_helper(selected_class, class_id, request):
     form = ClassEditForm(instance=selected_class)
     context = {'form': form, 'selected_class': selected_class, "id": class_id}
-    return render(request, "admin_template/edit_class_template.html", context)
+    return render(request, "class_templates/edit_class_template.html", context)
 
 
 @user_passes_test(is_admin)
@@ -79,23 +79,25 @@ def delete_class(request, class_id):
     try:
         selected_class.delete()
         messages.success(request, "Class Deleted Successfully.")
-        return redirect("manage_class")
+        return redirect("academics:manage_class")
     except:
         messages.error(request, "Failed to Delete Class.")
-        return redirect("manage_class")
+        return redirect("academics:manage_class")
     
+
+
 
 @user_passes_test(is_admin)
 def manage_grade(request):
     grade = GradeLevel.objects.all()
     context = {"grades": grade}
-    return render(request, "admin_template/manage_grade_template.html", context)
+    return render(request, "class_templates/manage_grade_template.html", context)
 
 @user_passes_test(is_admin)
 def add_grade(request):
     form = ClassGradeForm()
     context = {"form": form}
-    return render(request, "admin_template/add_grade_template.html", context)  
+    return render(request, "class_templates/add_grade_template.html", context)  
              
 @user_passes_test(is_admin)
 def add_grade_save(request):
@@ -104,11 +106,11 @@ def add_grade_save(request):
         if form.is_valid():
             form.save()
             messages.success(request, "Grade Succesfully Added")
-            return redirect("manage_grade")
+            return redirect("academics:manage_grade")
     else:
         messages.error(request, "Invalid Method!")
         form = ClassGradeForm()
-    render (request, "admin_template/manage_grade_template.html", {'form': form})
+    render (request, "class_templates/manage_grade_template.html", {'form': form})
 
 @user_passes_test(is_admin)
 def edit_grade(request, grade_id):
@@ -119,7 +121,7 @@ def edit_grade(request, grade_id):
             try: 
                 form.save()
                 messages.success(request, "Grade edited Successfully.")
-                return redirect('edit_grade', grade_id=grade_id)
+                return redirect("academics:manage_grade")
             except Exception as e:
                 messages.error(request, f"Failed to Edit Grade. bacause {e}")
                 form = GradeEditForm(instance=selected_grade)
@@ -135,7 +137,7 @@ def edit_grade(request, grade_id):
 def _edit_grade_helper(selected_grade, grade_id, request):
     form = ClassGradeForm(instance=selected_grade)
     context = {'form': form, 'selected_grade': selected_grade, "id": grade_id}
-    return render(request, "admin_template/edit_grade_template.html", context)
+    return render(request, "class_templates/edit_grade_template.html", context)
 
 @user_passes_test(is_admin)
 def delete_grade(request, grade_id):
@@ -143,10 +145,10 @@ def delete_grade(request, grade_id):
     try:
         selected_grade.delete()
         messages.success(request, "Grade Deleted Successfully.")
-        return redirect("manage_grade")
+        return redirect("academics:manage_grade")
     except Exception as e:
         messages.error(request, f"Failed to Delete Grade, because {e}")
-        return redirect("manage_grade")
+        return redirect("academics:manage_grade")
 
 @user_passes_test(is_admin)
 def clusterclass_list(request):
@@ -156,12 +158,12 @@ def clusterclass_list(request):
         "clusters": clusters,
         "classes": classes
         }
-    return render(request, "admin_template/manage_clusters_template.html", context)
+    return render(request, "class_templates/manage_clusters_template.html", context)
 
 @user_passes_test(is_admin)
 def clusterclass_detail(request, pk):
     clusterclass = get_object_or_404(ClusterClass, pk=pk)
-    return render(request, 'admin_template/clusterclass_detail.html', {'clusterclass': clusterclass})
+    return render(request, 'class_templates/clusterclass_detail.html', {'clusterclass': clusterclass})
 
 @user_passes_test(is_admin)
 def clusterclass_create(request):  # sourcery skip: extract-method
@@ -174,10 +176,11 @@ def clusterclass_create(request):  # sourcery skip: extract-method
             clusterclass, _ = ClusterClass.objects.get_or_create(cluster_class_name=cluster_class_name)
             clusterclass.classes.set(class_ids)
             messages.success(request,'Cluster Class Added Succesfully')
-            return render(request, 'admin_template/add_clusterclass_template.html', {'form': form})
+            return redirect('academics:clusterclass_list')
     else:
         form = ClusterClassForm()
-    return render(request, 'admin_template/add_clusterclass_template.html', {'form': form})
+    return render(request, 'class_templates/add_clusterclass_template.html', {'form': form})
+
 
 @user_passes_test(is_admin)
 def clusterclass_edit(request,clusterclass_id):
@@ -188,10 +191,10 @@ def clusterclass_edit(request,clusterclass_id):
             clusterclass = form.save()
             ClusterClassForm(instance=clusterclass)
             messages.success(request,'Cluster Class Updated Succesfully')
-            return render(request, 'admin_template/edit_clusterclass_template.html', {'form': form})
+            return redirect('academics:clusterclass_list')
     else:
         form = ClusterClassForm(instance=clusterclass)
-    return render(request, 'admin_template/edit_clusterclass_template.html', {'form': form})
+    return render(request, 'class_templates/edit_clusterclass_template.html', {'form': form})
 
 
 

@@ -30,13 +30,13 @@ def manage_examinations(request):
         if form.is_valid():
             try:
                 form.save()
-                pudb.set_trace()
+                # pudb.set_trace()
                 messages.success(request,'Exam type ADDED Succesfully')
-                return redirect('manage_exams')
+                return redirect('academics:manage_exams')
                 
             except Exception as e:
                 messages.error(request,f'Exam type NOT Added Succesfully bacuse - {e}')
-                return redirect('manage_exams')
+                return redirect('academics:manage_exams')
 
     context = {
         "exam": exams, 
@@ -55,10 +55,10 @@ def add_exam_type(request):
             try:
                 form.save()
                 messages.success(request,'Exam type ADDED Succesfully')
-                return redirect('manage_exams')
+                return redirect('academics:manage_exams')
             except Exception as e:
                 messages.error(request,f'Exam type NOT Added Succesfully bacuse - {e}')
-                return redirect('manage_exams')
+                return redirect('academics:manage_exams')
 
             
 def add_grade(request):
@@ -71,7 +71,7 @@ def add_grade(request):
         exam = Exam.objects.get(id=exam_id) 
         if grade_ranges:=GradeRange.objects.filter(exam=exam, grade=grade).exists():
             messages.error(request,'This grade already exists for this exam')
-            return redirect('manage_exams')
+            return redirect('academics:manage_exams')
 
         grade_ranges = GradeRange.objects.filter(exam=exam).order_by('min_score', 'max_score')
         prev_grade_range = None
@@ -79,14 +79,14 @@ def add_grade(request):
             if prev_grade_range and (min_score <= prev_grade_range.max_score or max_score <= grade_range.min_score):
                 # overlapping score range, return error response
                 messages.error(request,'The score range overlaps with an existing grade for this exam')
-                return redirect('manage_exams')
+                return redirect('academics:manage_exams')
             prev_grade_range = grade_range
 
         grade_range = GradeRange(exam=exam, grade=grade, min_score=min_score, max_score=max_score)
         grade_range.save()
 
         
-        return redirect('manage_exams')
+        return redirect('academics:manage_exams')
 
 def add_new_grade(request):
     if request.method == 'POST':
@@ -98,7 +98,7 @@ def add_new_grade(request):
         exam = Exam.objects.get(id=exam_id) 
         if grade_ranges:=GradeRange.objects.filter(exam=exam, grade=grade).exists():
             messages.error(request,'This grade already exists for this exam')
-            return redirect('manage_exams')
+            return redirect('academics:manage_exams')
 
         grade_ranges = GradeRange.objects.filter(exam=exam).order_by('min_score', 'max_score')
         prev_grade_range = None
@@ -106,14 +106,14 @@ def add_new_grade(request):
             if prev_grade_range and (min_score <= prev_grade_range.max_score or max_score <= grade_range.min_score):
                 # overlapping score range, return error response
                 messages.error(request,'The score range overlaps with an existing grade for this exam')
-                return redirect('manage_exams')
+                return redirect('academics:manage_exams')
             prev_grade_range = grade_range
 
         grade_range = GradeRange(exam=exam, grade=grade, min_score=min_score, max_score=max_score)
         grade_range.save()
 
         
-        return redirect('manage_exams')
+        return redirect('academics:manage_exams')
     
 
 def register_for_exam(request):
@@ -189,7 +189,7 @@ def mass_edit_student_exam(request):
         for registration in exam_registrations:
             exams_list.append(registration.exams)
 
-        return redirect('register_for_exam')
+        return redirect('academics:register_for_exam')
 
         # context = {
         #     'classes': classes,

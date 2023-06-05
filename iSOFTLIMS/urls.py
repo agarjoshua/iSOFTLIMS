@@ -27,8 +27,8 @@ urlpatterns = [
 
     path('__debug__/', include('debug_toolbar.urls')),
     
-]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT, )+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
-# handler404 = 'iSOFTLIMS.views.handler404'
-# handler500 = 'iSOFTLIMS.views.handler500'
+handler404 = 'iSOFTLIMS.views.handler404'
+handler500 = 'iSOFTLIMS.views.handler500'

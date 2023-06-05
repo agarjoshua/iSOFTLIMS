@@ -1,0 +1,75 @@
+{% extends 'base_template.html' %}
+
+{% block page_title %}
+Enrolled Student
+{% endblock page_title %}
+
+{% block main_content %}
+{% load static %}
+<section class="content">
+    <div class="container-fluid">
+
+        <div class="">
+
+            <h1>Enrollment Student</h1>
+            <form method="post">
+                {% csrf_token %}
+
+                {% if messages %}
+                <div class="form-group">
+                    <div class="col-12">
+                        {% for message in messages %}
+                        {% if message.tags == "error" %}
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert"
+                            style="margin-top: 10px;">
+                            {{ message }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        {% elif message.tags == "success" %}
+                        <div class="alert alert-success alert-dismissible fade show" role="alert"
+                            style="margin-top: 10px;">
+                            {{ message }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        {% elif message.tags == "warning" %}
+                        <div class="alert alert-warning alert-dismissible fade show" role="alert"
+                            style="margin-top: 10px;">
+                            {{ message }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+
+
+                <tr>
+                    <td> {{ form.errors }} </td>
+                    <td> {{ form.non_field_errors }}</td>
+                </tr>
+
+                <div>
+                    <label for="{{ form.session.id_for_label }}">Select Session:</label>
+                    {{ form.session }}
+                </div>
+                <div>
+                    <label for="{{ form.student.id_for_label }}">Select Student:</label>
+                    {{ form.student }}
+                </div>
+                <div>
+                    <label for="{{ form.is_active.id_for_label }}">Active:</label>
+                    {{ form.is_active }}
+                </div>
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+{% endblock main_content %}

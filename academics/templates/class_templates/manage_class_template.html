@@ -1,0 +1,118 @@
+{% extends 'base_template.html' %}
+
+{% block page_title %}
+Manage Class
+{% endblock page_title %}
+
+{% block main_content %}
+
+{% load static %}
+
+<section class="content">
+    <div class="container-fluid">
+
+        <div class="mx-auto row ">
+            
+            <div class="mr-1">
+                <a class="btn btn-primary" href="{% url 'academics:add_class' %}" role="button"> Create a Class</a><br/>&nbsp;
+            </div>
+            <div class="ml-1">
+                <a class="btn btn-primary" href="{% url 'academics:clusterclass_list' %}" role="button"> Manage Class Clusters</a><br/>&nbsp;
+            </div>
+        </div>
+
+        
+
+        {% if messages %}
+        <div class="form-group">
+            <div class="col-12">
+                {% for message in messages %}
+                {% if message.tags == "error" %}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                {% elif message.tags == "success" %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="row">
+            <div class="col-md-12">
+                <!-- general form elements -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Class Details</h3>
+
+                        <div class="card-tools">
+                            <div class="input-group input-group-sm" style="width: 150px;">
+                                <input type="text" name="table_search" class="form-control float-right"
+                                    placeholder="Search">
+
+                                <div class="input-group-append">
+                                    <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body table-responsive p-0">
+                        <table class="table table-hover text-nowrap">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Class Name</th>
+                                    <th>Class Code</th>
+                                    <th>Teacher</th>
+                                    <th>Allowed Grade Levels</th>
+                                    <th>session</th>
+                                    <th>Is Elective</th>
+                                    <th>Start Date</th>
+                                    <th>End Date</th>
+                                    <th>Cost</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for class in classs %}
+                                <tr>
+                                    <td>{{ class.id }}</td>
+                                    <td>{{ class.class_name }}</td>
+                                    <td>{{ class.class_code }}</td>
+                                    <th>{{ class.teacher}}</th>
+                                    <td>{{ class.grade }}</td>
+                                    <td>{{ class.session_id }}</td>
+                                    <td>{{ class.is_elective }}</td>
+                                    <td>{{ class.start_date }}</td>
+                                    <td>{{ class.end_date }}</td>
+                                    <th>{{ class.cost }}</th>
+                                    <td>
+                                        <a href="{% url 'academics:edit_class' class.id %}" class="btn btn-success">Edit</a>
+                                        <a href="{% url 'academics:delete_class' class.id %}" class="btn btn-danger">Delete</a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+
+            </div>
+        </div>
+
+    </div><!-- /.container-fluid -->
+</section>
+
+{% endblock main_content %}

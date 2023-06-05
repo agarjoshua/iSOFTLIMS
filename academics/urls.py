@@ -1,12 +1,26 @@
 from django.urls import path, include
 
-from academics.subviews import classView, sessionRegistrationView, examinationViews
+from academics.subviews import TeacherViews, academicsViews, classView, sessionRegistrationView, examinationViews, sessionViews
 from . import views
 # from . import subviews.classView
 
 app_name = 'academics'
 
 urlpatterns = [
+
+    path('', academicsViews.academics_home, name="academics_home"),
+    
+    path('teacher_home/', TeacherViews.teacher_home, name="teacher_home"), 
+
+    # SESSION URLS
+    path('manage_session/', sessionViews.manage_session, name="manage_session"),
+    path('add_session/', sessionViews.add_session, name="add_session"),
+    path('add_session_save/', sessionViews.add_session_save, name="add_session_save"),
+    path('edit_session/<session_id>', sessionViews.edit_session, name="edit_session"),
+    path('edit_session_save/', sessionViews.edit_session_save, name="edit_session_save"),
+    path('delete_session/<session_id>/', sessionViews.delete_session, name="delete_session"),
+
+    
     # MANAGE SESSION REGISTATION URLS
     path('manage_session_registation/', sessionRegistrationView.manage_session_registation, name="manage_session_registation"), 
     path('enroll_student/',sessionRegistrationView.enroll_student, name='enroll_student'),

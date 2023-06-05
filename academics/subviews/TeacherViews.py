@@ -3,8 +3,8 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.views.decorators.csrf import csrf_exempt
 from core.models import CustomUser, Teacher
-from academics.models import AttendanceReport, ClassAttendance, ClassEnrollment, Course, Class, Students, Session, ExamResult
-from dateutil.parser import parse
+from academics.models import ClassAttendance, ClassEnrollment, Course, Class, Students, Session, ExamResult
+# from dateutil.parser import parse
 from django.contrib import messages
 
 # Attendance, AttendanceReport, LeaveReportStaff, FeedBackTeacher,
@@ -54,7 +54,8 @@ def teacher_home(request):
         # student_list_attendance_present.append(attendance_present_count)
         # student_list_attendance_absent.append(attendance_absent_count)
 
-    context={
+    context = {
+        
         # "students_count": students_count,
         # "attendance_count": attendance_count,
         # "leave_count": leave_count,
@@ -64,8 +65,9 @@ def teacher_home(request):
         "student_list": student_list,
         "attendance_present_list": student_list_attendance_present,
         "attendance_absent_list": student_list_attendance_absent
+
     }
-    return render(request, "teacher_template/teacher_home_template.html", context)
+    return render(request, "teacher_templates/teacher_home_template.html", context)
 
 
 
