@@ -69,6 +69,10 @@ urlpatterns = [
     #student management
     path('register_for_exam/', examinationViews.register_for_exam, name="register_for_exam"),
 
+    #COMMUNICATION MANAGEMENT
+    path('academics_comm_save/', academicsViews.academics_comm_save, name="academics_comm_save"),
+    
+
     # UTILITY URLS
     path('check_class_exist/', classView.check_class_exist, name="check_class_exist"),
     path('check_cluster_class_exist/', classView.check_cluster_class_exist, name="check_cluster_class_exist")

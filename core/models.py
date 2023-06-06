@@ -254,9 +254,7 @@ class Students(models.Model):
         ("4", "Suspended"),
         ("5", "Terminated"),
     ]
-    account_status = models.CharField(
-        max_length=10, choices=ACCOUNT_STATUS, default="1"
-    )
+    account_status = models.CharField(max_length=10, choices=ACCOUNT_STATUS, default="1")
     ACADEMIC_STATUS = [
         (1, "Active"),
         (2, "Inactive"),

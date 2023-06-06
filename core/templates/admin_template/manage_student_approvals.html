@@ -231,7 +231,7 @@
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="myModalLabel">Modal Title</h5>
+                                            <h5 class="modal-title" id="myModalLabel">Make Comments</h5>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
@@ -331,7 +331,11 @@ be included in the mass edit action.
                     
                 },
                 error: function (xhr, status, error) {
-                    $('#register-message').html('<div class="alert alert-danger" role="alert">Deferral status update failed. Please try again ' + error + '.</div>');
+                    var error = xhr.responseJSON.error;
+                    //if (status === 403) {
+                    //    $('#register-message').html('<div class="alert alert-danger" role="alert">Request timed out. Please try again.</div>');
+                    //}
+                    $('#register-message').html('<div class="alert alert-danger" role="alert">Deferral status update failed. ' + error + '.</div>');
                 }
             });
         });

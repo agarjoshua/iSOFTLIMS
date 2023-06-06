@@ -87,9 +87,7 @@ def approve_applications(request):
 def approve(request):
     
     applicant_id = request.POST.get("selected_id")
-    print(applicant_id)
     applicant = Applicant.objects.get(applicant_id=applicant_id)
-    print(applicant)
     selected_applicant = ApplicantApprovalWorklow.objects.get(applicant=applicant)
 
     try:

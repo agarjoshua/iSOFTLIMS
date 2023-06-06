@@ -177,7 +177,6 @@ def admin_profile_update(request):
 def school_profile(request):
     user = CustomUser.objects.get(id=request.user.id)
     school_id = user.institution
-    print('check one')
     
     form = InstitutionForm()
 
@@ -185,11 +184,9 @@ def school_profile(request):
         # Retrieve the institution associated with the logged-in user
     print('check one')
     institution = user.institution
-    print(f'hello {institution}')
-
     form.fields["name"].initial = institution.name 
     form.fields["country"].initial = institution.country 
-    form.fields["institution_order"].initial = institution.institution_order 
+    form.fields["institution_order"].initial = [institution.institution_order]
     # form.fields["examination_centre_number"].initial = institution.examination_centre_number 
     form.fields["institution_location_hierarchy"].initial = institution.institution_location_hierarchy 
     form.fields["institution_cluster"].initial = institution.institution_cluster
@@ -206,7 +203,7 @@ def school_profile(request):
     # form.fields["bank_details"].initial = institution.bank_details 
     # form.fields["logo"].initial = institution.logo 
 
-    print(form)
+    print(institution.institution_order)
 
     context = {"user": user, "institution": institution, "form":form}
     return render(request, "admin_template/school_profile.html", context)
@@ -217,8 +214,8 @@ def school_profile(request):
     #     institution = None
     
 
-    context = {"user": user, "institution": institution, "form":form}
-    return render(request, "admin_template/school_profile.html", context)
+    # context = {"user": user, "institution": institution, "form":form}
+    # return render(request, "admin_template/school_profile.html", context)
 
 
 def admin_school_update(request):
@@ -659,6 +656,7 @@ def add_student_save(request):
                 profile_pic_url = fs.url(filename)
             else:
                 profile_pic_url = None
+            print(profile_pic_url)
             student_type = form.cleaned_data["student_type"]
             account_status=form.cleaned_data["account_status"]
             academic_status =form.cleaned_data["academic_status"]
@@ -683,7 +681,7 @@ def add_student_save(request):
                 user.students.name = f'{first_name} {last_name}'
                 user.students.registration_number = f'{study_type}/{first_name}/{last_name}'
                 user.students.index_number = lambda: ''.join(random.choices('0123456789', k=7))
-                user.students.profile_pic_url = profile_pic_url
+                user.students.profile_pic = profile_pic_url
                 user.students.address = address
                 course = Course.objects.get(id=course.id)
                 user.students.course = course
@@ -733,11 +731,20 @@ def edit_student(request, student_id):
     form.fields["first_name"].initial = student.admin.first_name
     form.fields["last_name"].initial = student.admin.last_name
     form.fields["address"].initial = student.address
-    form.fields["class_id"].initial = student.class_id.id
-    form.fields["gender"].initial = student.gender
-    form.fields["session_year_id"].initial = student.session_year_id.id
 
-    context = {"id": student_id, "username": student.admin.username, "form": form}
+    form.fields["profile_pic"].initial = student.profile_pic
+
+    # form.fields["class_id"].initial = student.class_id.id
+
+    form.fields["gender"].initial = student.gender
+    # form.fields["session_year_id"].initial = student.session_year_id.id
+
+    context = {
+        "id": student_id, 
+        "username": student.admin.username, 
+        "form": form,
+        "student": student
+        }
     return render(request, "admin_template/edit_student_template.html", context)
 
 
@@ -745,16 +752,15 @@ def edit_student_save(request):
     if request.method != "POST":
         return HttpResponse("Invalid Method!")
     else:
+        student_id = request.session.get("student_id")
         form = EditStudentForm(request.POST, request.FILES)
         if form.is_valid():
-            print('-------------------------------------------')
-            print(form)
             email = form.cleaned_data["email"]
             username = form.cleaned_data["username"]
             first_name = form.cleaned_data["first_name"]
             last_name = form.cleaned_data["last_name"]
             address = form.cleaned_data["address"]
-            class_id = form.cleaned_data["class_id"]
+            # class_id = form.cleaned_data["class_id"]
             gender = form.cleaned_data["gender"]
             session_year_id = form.cleaned_data["session_year_id"]
 
@@ -794,8 +800,8 @@ def edit_student_save(request):
 
                 messages.success(request, "Student Updated Successfully!")
                 return redirect("/edit_student/" + student_id)
-            except:
-                messages.success(request, "Failed to Uupdate Student.")
+            except Exception as e:
+                messages.error(request, f"Failed to Update Student.- {e}")
                 return redirect("/edit_student/" + student_id)
         else:
             return redirect("/edit_student/" + student_id)
@@ -807,8 +813,8 @@ def delete_student(request, student_id):
         student.delete()
         messages.success(request, "Student Deleted Successfully.")
         return redirect("manage_students")
-    except:
-        messages.error(request, "Failed to Delete Student.")
+    except Exception as e:
+        messages.error(request, f"Failed to Delete Student. - {e}")
         return redirect("manage_students")
 
 
@@ -934,7 +940,7 @@ def edit_guardian_save(request):
             return redirect("/edit_guardian/" + guardian_id)
 
 
-def delete_student(request, guardian_id):
+def delete_guardian(request, guardian_id):
     guardian = Guardian.objects.get(admin=guardian_id)
     try:
         guardian.delete()

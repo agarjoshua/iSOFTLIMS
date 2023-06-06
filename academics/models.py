@@ -163,3 +163,20 @@ class Transcripts(models.Model):
 
     def __str__(self):
         return self.student
+    
+
+class AcademicCommunications(models.Model):
+    title = models.CharField(max_length=255)
+    body = models.CharField(max_length=255)
+    USER_CHOICES = (
+        ('sms', 'SMS'),
+        ('email', 'Email'),
+        ('notice', 'General Notice')
+    )
+    communication_method = models.CharField(
+        max_length=10,
+        choices=USER_CHOICES,
+        default='email'
+    )
+    def __str__(self):
+        return f"{self.title} - {self.communication_method}"

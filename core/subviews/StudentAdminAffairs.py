@@ -53,10 +53,18 @@ def confirm_defer_student(request):  # sourcery skip: avoid-builtin-shadow
     print(request.user)
 
     # try:
-    role = HOD.objects.get(admin=request.user.id).hod_type
-    print(role)
-    defer_obj = DeferrmentApprovalWorklow.objects.get(id=id)
-    print(defer_obj)
+    try:
+        role = HOD.objects.get(admin=request.user.id).hod_type
+        print(role)
+        defer_obj = DeferrmentApprovalWorklow.objects.get(id=id)
+        print(defer_obj)
+    except HOD.DoesNotExist:
+        error = 'You lack the permissions required for this operation'
+        error = {
+            'error': error,
+        }
+        return JsonResponse(error, status=403)
+    
     if role.name == 'Admissions':
         defer_obj.admissions_comments = comments
         defer_obj.admissions_approved = True
