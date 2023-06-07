@@ -49,7 +49,7 @@ INSTALLED_APPS = [
     # ...
     "debug_toolbar",
     # ...
-    "django_faker",
+    # "django_faker",
 ]
 
 FAKER_LOCALE = None     # settings.LANGUAGE_CODE is loaded
