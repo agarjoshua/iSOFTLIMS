@@ -44,13 +44,16 @@ INSTALLED_APPS = [
     "core",
     "academics",
     "finance",
-
     # UTILITIES
     'django_select2',
     # ...
     "debug_toolbar",
     # ...
+    "django_faker",
 ]
+
+FAKER_LOCALE = None     # settings.LANGUAGE_CODE is loaded
+FAKER_PROVIDERS = None  # faker.DEFAULT_PROVIDERS is loaded (all)
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",

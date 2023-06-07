@@ -260,14 +260,12 @@ Approve Applicants
 
     $(function () {
         $('#approve-btn').click(function () {
-          event.preventDefault();
+          //event.preventDefault();
 
           console.log('I have been clicked')
     
             // Retrieve the selected class ID from the input field
           const selectedId = document.getElementById('approve-btn').value;
-
-          console.log('hello0ooo '+selectedId)
     
           $.ajax({
             type: 'POST',
