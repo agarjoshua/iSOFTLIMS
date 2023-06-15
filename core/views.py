@@ -10,6 +10,13 @@ from django.contrib import messages
 
 # from .EmailBackend import EmailBackEnd
 
+# Imports for password reset
+from django.contrib.auth.views import (
+    PasswordResetView,
+    PasswordResetDoneView,
+    PasswordResetConfirmView,
+    PasswordResetCompleteView,
+)
 
 # Create your views here.
 
@@ -71,6 +78,19 @@ def doLogin(request):
         #return HttpResponseRedirect("/")
         return redirect('login')
 
+class CustomPasswordResetView(PasswordResetView):
+    email_template_name = 'password_reset/email.html'
+    success_url = '/reset/done/'
+
+class CustomPasswordResetDoneView(PasswordResetDoneView):
+    template_name = 'password_reset/reset_done.html'
+
+class CustomPasswordResetConfirmView(PasswordResetConfirmView):
+    success_url = '/reset/complete/'
+    template_name = 'password_reset/confirm.html'
+
+class CustomPasswordResetCompleteView(PasswordResetCompleteView):
+    template_name = 'password_reset/reset_complete.html'
 
 
 def get_user_details(request):

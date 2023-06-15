@@ -238,6 +238,7 @@ class Students(models.Model):
     profile_pic = models.FileField(null=True)
     address = models.TextField(null=True)
     course = models.ForeignKey("academics.Course", on_delete=models.DO_NOTHING, null=True)
+    department = models.ForeignKey(Department, on_delete=models.DO_NOTHING, null=True)
     # grade = models.ForeignKey('academics.Gradelevel', on_delete=models.DO_NOTHING, null=True)
     STUDENT_TYPE = [
         ("1", "Local"), 

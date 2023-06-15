@@ -1,22 +1,24 @@
 {% extends 'base.html' %}
-{% load static %} 
-
+ 
 {% block content %}
+{% load static %}
 
 <body class="hold-transition login-page">
 
       <div class="login-box">
-        <div class="login-logo row d-flex justify-content-md-center">
-          <img src="{% static 'media/images/gluk-logo.jpeg' %}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
-      style="opacity: .8">
-
-      <a href="{% url 'login' %}"><b> The GREAT LAKES UNIVERSITY </b> SYSTEM </a>
-          
-        </div>
+        
         <!-- /.login-logo -->
         <div class="card rounded-lg">
-          <div class="card-body rounded-lg login-card-body">
-            <p class="login-box-msg">Sign in to iSOFT</p>
+          <div class="login-logo row d-flex justify-content-center pt-5">
+            <img src="{% static 'media/images/gluk-logo.jpeg' %}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+        style="opacity: .8">
+  
+        <p class="font-weight-bolder mt-3">GREAT LAKES UNIVERSITY</p>
+            
+          </div>
+
+          <div class="card-body rounded-lg login-card-body pb-5">
+            <p class="login-box-msg">Sign in</p>
 
             <form action="{% url 'doLogin' %}" method="POST">
             {% csrf_token %}
@@ -28,12 +30,13 @@
                   </div>
                 </div>
               </div>
+
               <div class="input-group mb-3">
-                <input type="password" class="form-control" placeholder="Password" name="password">
+                <input type="password" class="form-control" id="password" name="password">
                 <div class="input-group-append">
-                  <div class="input-group-text">
-                    <span class="fas fa-lock"></span>
-                  </div>
+                  <span class="input-group-text password-toggle">
+                    <i class="fas fa-eye"></i>
+                  </span>
                 </div>
               </div>
 
@@ -81,9 +84,39 @@
 <footer>
   <div class="container d-flex flex-column justify-content-end align-items-center">
     <h5 class="text-bolder">
-      POWERED BY ISOFT
+      POWERED BY iSOFT
     </h5>
   </div>
 </footer>
 
-{% endblock %}
+{% endblock content %}
+
+{% block custom_js %}
+
+<script>
+
+  $(document).ready(function() {
+
+    $('password-toggle').click(function() {
+      console.log('helloo')
+    });
+
+
+    '.password-toggle').click(function() {
+      var passwordInput = $(this).siblings('input[type="password"]');
+      var icon = $(this).children('i');
+
+      console.log('helloo')
+
+      if (passwordInput.attr('type') === 'password') {
+        passwordInput.attr('type', 'text');
+        icon.removeClass('fa-eye').addClass('fa-eye-slash');
+      } else {
+        passwordInput.attr('type', 'password');
+        icon.removeClass('fa-eye-slash').addClass('fa-eye');
+      }
+    });
+  });
+</script>
+
+{% endblock custom_js %}

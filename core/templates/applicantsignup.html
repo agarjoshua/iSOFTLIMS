@@ -5,13 +5,16 @@
 
 <body class="hold-transition login-page">
     <div class="login-box">
-        <div class="login-logo">
-            <a href="{% url 'login' %}"><b> iSOFT SYSTEM </b> LMS </a>
+        <div class="login-logo row d-flex justify-content-center">
+            <img src="{% static 'media/images/gluk-logo.jpeg' %}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+            style="opacity: .8">
+
+            <a href="{% url 'login' %}"><b> The GREAT LAKES UNIVERSITY </b> SYSTEM </a>
         </div>
         <!-- /.login-logo -->
         <div class="card">
             <div class="card-body login-card-body">
-                <p class="login-box-msg">Sign up to {{univeristy}}</p>
+                <p class="login-box-msg text-bold">Fill details to sign up:</p>
 
                 {% if messages %}
                 <div class="form-group">
@@ -89,7 +92,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-12">
+                    <div class="">
                         <button type="submit" class="btn btn-primary btn-block">Sign Up</button>
                     </div>
                 </form>
@@ -99,4 +102,11 @@
         </div>
         <!-- /.login-box -->
 
+        <footer>
+            <div class="container d-flex flex-column justify-content-end align-items-center">
+              <h5 class="text-bolder">
+                POWERED BY iSOFT
+              </h5>
+            </div>
+          </footer>
         {% endblock %}

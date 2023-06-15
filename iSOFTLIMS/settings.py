@@ -172,3 +172,17 @@ INTERNAL_IPS = [
     "127.0.0.1",
     # ...
 ]
+
+# EMAIL SERVICE
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'your-email-host'
+EMAIL_PORT = 587  # or the appropriate port number
+EMAIL_USE_TLS = True  # or False if not using TLS
+EMAIL_HOST_USER = 'your-email@example.com'
+EMAIL_HOST_PASSWORD = 'your-email-password'
+DEFAULT_FROM_EMAIL = 'your-email@example.com'
+
+# SMS SERVICE
+UWAZII_SMS_API_KEY = 'your-uwazii-sms-api-key'
+UWAZII_SMS_SENDER_ID = 'your-uwazii-sms-sender-id'
+UWAZII_SMS_BASE_URL = 'https://api.uwazii.com/v1/'

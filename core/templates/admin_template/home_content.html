@@ -44,7 +44,7 @@
               <!-- small box -->
               <div class="small-box bg-warning">
                 <div class="inner">
-                  <h3>{{ class_count }}</h3>
+                  <h3>{{ course_count }}</h3>
 
                   <p>Total Courses</p>
                 </div>
@@ -83,84 +83,37 @@
           <div class="row">
             <div class="col-lg-6">
               <!-- PIE CHART -->
-              <div class="card card-danger">
-                <div class="card-header">
-                  <h3 class="card-title">Student and Staff Chart</h3>
-          
-                  <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
-                    </button>
-                    <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i></button>
-                  </div>
+              <div class="card bg-gradient-light border-0 rounded-3d shadow">
+                <div class="card-header bg-secondary">
+                  <h3 class="card-title">Student and Staff Population Chart</h3>
                 </div>
                 <div class="card-body">
-                  <canvas id="pieChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                  
+                  <div class="card-body">
+                    <canvas id="pieChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;">
+
+                    </canvas>
+                  </div>
                 </div>
-                <!-- /.card-body -->
               </div>
+
               <!-- /.card -->
             </div>
 
             <div class="col-lg-6">
               <!-- DONUT CHART -->
-              <div class="card card-danger">
-                <div class="card-header">
-                  <h3 class="card-title">Total Subjects in Each Course</h3>
-
-                  <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
-                    </button>
-                    <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i></button>
-                  </div>
+              <div class="card bg-gradient-light border-0 rounded-3d shadow">
+                <div class="card-header bg-secondary">
+                  <h3 class="card-title">Total Courses Actively Offered</h3>
                 </div>
                 <div class="card-body">
-                  <canvas id="donutChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                  
+                  <div class="card-body">
+                    <canvas id="donutChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                  </div>
                 </div>
-                <!-- /.card-body -->
               </div>
               <!-- /.card -->
-              
-            </div>
-          </div>
-
-          <div class="row">
-
-            <div class="col-lg-6">
-              <!-- PIE CHART -->
-              <div class="card card-info">
-                <div class="card-header">
-                  <h3 class="card-title">Total Student in Each Course</h3>
-
-                  <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
-                    </button>
-                    <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i></button>
-                  </div>
-                </div>
-                <div class="card-body">
-                  <canvas id="pieChart2" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
-                </div>
-                <!-- /.card-body -->
-                </div>
-            </div>
-
-            <div class="col-lg-6">
-              <!-- PIE CHART -->
-              <div class="card card-info">
-                <div class="card-header">
-                  <h3 class="card-title">Total Students in Each Subject</h3>
-
-                  <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
-                    </button>
-                    <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i></button>
-                  </div>
-                </div>
-                <div class="card-body">
-                  <canvas id="pieChart3" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
-                </div>
-                <!-- /.card-body -->
-            </div>
             </div>
           </div>
 
@@ -170,7 +123,7 @@
             <!-- BAR CHART -->
             <div class="card card-success">
               <div class="card-header">
-                <h3 class="card-title">Staff Attendance vs Leave</h3>
+                <h3 class="card-title">Number of student in Department</h3>
 
                 <div class="card-tools">
                   <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
@@ -180,7 +133,7 @@
               </div>
               <div class="card-body">
                 <div class="chart">
-                  <canvas id="barChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                  <canvas id="barChart" style="min-height: 250px; height: 30px; max-height: 60vh; max-width: 100%;"></canvas>
                 </div>
               </div>
               <!-- /.card-body -->
@@ -220,7 +173,7 @@
 
 
           <div class="col-lg-6">
-            
+            <canvas id="chartCanvas"></canvas>
           </div>
         
         </div>
@@ -231,19 +184,22 @@
   {% endblock main_content %}
 
   {% block custom_js %}
+  <!-- Create a Django template variable to store the JavaScript data -->
+
 
   <script>
+
     $(document).ready(function(){
       var donutChartCanvas = $('#pieChart').get(0).getContext('2d')
-      var pieData        = {
+      var pieData = {
         labels: [
             'Students', 
-            'Staffs',
+            'Staff',
         ],
         datasets: [
           {
-            data: [{{ all_student_count }}, {{ staff_count }}],
-            backgroundColor : ['#f56954', '#00a65a'],
+            data: ['{{ all_student_count }}', '{{ staff_count }}'],
+            backgroundColor : ['#2C3E50', '#27AE60'],
           }
         ]
       }
@@ -268,15 +224,15 @@
 
 
       // Get context with jQuery - using jQuery's .get() method.
-      var class_name_list = {{ class_name_list|safe }}
-      var subject_count_list = {{ subject_count_list }}
+      var course_name_list = "{{ course_count }}"
+      var class_count_list = "{{ registered_course_count }}"
       var donutChartCanvas = $('#donutChart').get(0).getContext('2d')
       var donutData        = {
-        labels: class_name_list,
+        labels: ['total courses','active courses'],
         datasets: [
           {
-            data: subject_count_list,
-            backgroundColor : ['#f56954', '#00a65a', '#f39c12', '#00c0ef', '#3c8dbc', '#d2d6de'],
+            data: ['{{ course_count }}', '{{ registered_course_count }}'],
+            backgroundColor : ['#F1C40F', '#27AE60'],
           }
         ]
       }
@@ -293,129 +249,76 @@
       })
 
 
-      // Total Students in Each Course
-      //var donutChartCanvas = $('#pieChart2').get(0).getContext('2d')
-      var student_count_list_in_class = {{ student_count_list_in_class }}
-      var pieData2 = {
-        labels: class_name_list,
-        datasets: [
-          {
-            data: student_count_list_in_class,
-            backgroundColor : ['#f56954', '#00a65a', '#f39c12', '#00c0ef', '#3c8dbc', '#d2d6de'],
-          }
-        ]
-      }
-
-      //-------------
-      //- PIE CHART -
-      //-------------
-      // Get context with jQuery - using jQuery's .get() method.
-      var pieChartCanvas2 = $('#pieChart2').get(0).getContext('2d')
-      var pieData2        = pieData2;
-      var pieOptions2     = {
-        maintainAspectRatio : false,
-        responsive : true,
-      }
-
-      var pieChart2 = new Chart(pieChartCanvas2, {
-        type: 'pie',
-        data: pieData2,
-        options: pieOptions2      
-      })
-
-      // Total Students in Each Subject
-      var student_count_list_in_subject = {{ student_count_list_in_subject }}
-      var subject_list = {{ subject_list|safe }}
-      var pieData3 = {
-        labels: subject_list,
-        datasets: [
-          {
-            data: student_count_list_in_subject,
-            backgroundColor : ['#f56954', '#00a65a', '#f39c12', '#00c0ef', '#3c8dbc', '#d2d6de'],
-          }
-        ]
-      }
-
-      //-------------
-      //- PIE CHART -
-      //-------------
-      // Get context with jQuery - using jQuery's .get() method.
-      var pieChartCanvas3 = $('#pieChart3').get(0).getContext('2d')
-      var pieData3        = pieData3;
-      var pieOptions3     = {
-        maintainAspectRatio : false,
-        responsive : true,
-      }
-
-      var pieChart3 = new Chart(pieChartCanvas3, {
-        type: 'pie',
-        data: pieData3,
-        options: pieOptions3      
-      })
-
       //-------------
       //- BAR CHART - Staff Attendance vs Leave
       //-------------
 
-      var staff_attendance_present_list = {{ staff_attendance_present_list }};
-      var staff_attendance_leave_list = {{ staff_attendance_leave_list }};
-      var staff_name_list = {{ staff_name_list|safe }};
+      var department_list = "{{ department_name_list|safe  }}";
+      var students_in_departments = "{{ students_in_departments_list|safe  }}";
+      var department_name_list = "{{ department_name_list|safe }}";
+
+      var barThickness = 40;
+
+      // Generate random colors for each bar
+      var barColors = [];
+      for (var i = 0; i < department_list.length; i++) {
+        var randomColor = '#' + Math.floor(Math.random() * 16777215).toString(16);
+        barColors.push(randomColor);
+      }
 
       var areaChartData = {
-        labels  : staff_name_list,
+        labels  : department_name_list,
         datasets: [
+
           {
-            label               : 'Leave',
-            backgroundColor     : 'rgba(60,141,188,0.9)',
-            borderColor         : 'rgba(60,141,188,0.8)',
-            pointRadius          : false,
-            pointColor          : '#3b8bba',
-            pointStrokeColor    : 'rgba(60,141,188,1)',
-            pointHighlightFill  : '#fff',
-            pointHighlightStroke: 'rgba(60,141,188,1)',
-            data                : staff_attendance_leave_list 
-          },
-          {
-            label               : 'Attendance',
-            backgroundColor     : 'rgba(210, 214, 222, 1)',
-            borderColor         : 'rgba(210, 214, 222, 1)',
+            label: 'Number of Students In Department',
+            backgroundColor: barColors,
+            borderColor: 'rgba(60,141,188,0.8)',
             pointRadius         : false,
             pointColor          : 'rgba(210, 214, 222, 1)',
             pointStrokeColor    : '#c1c7d1',
             pointHighlightFill  : '#fff',
             pointHighlightStroke: 'rgba(220,220,220,1)',
-            data                : staff_attendance_present_list
-          },
+            data: students_in_departments,
+            barThickness:barThickness
+          }
         ]
       }
 
 
-      var barChartCanvas = $('#barChart').get(0).getContext('2d')
-      var barChartData = jQuery.extend(true, {}, areaChartData)
-      var temp0 = areaChartData.datasets[0]
-      var temp1 = areaChartData.datasets[1]
-      barChartData.datasets[0] = temp1
-      barChartData.datasets[1] = temp0
+      var barChartCanvas = $('#barChart').get(0).getContext('2d');
+      var barChartData = jQuery.extend(true, {}, areaChartData);
+      var temp0 = areaChartData.datasets[0];
+      barChartData.datasets[0] = temp0;
+      areaChartData.datasets[0].barThickness = 100;
 
       var barChartOptions = {
-        responsive              : true,
-        maintainAspectRatio     : false,
-        datasetFill             : false
-      }
-
-      var barChart = new Chart(barChartCanvas, {
-        type: 'bar', 
+        type: 'bar',
         data: barChartData,
-        options: barChartOptions
-      })
+        options: {
+          scales: {
+            x: {
+              beginAtZero: true,
+              ticks: {
+                autoSkip: false
+              }
+            },
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      };
+
+      var barChart = new Chart(barChartCanvas, barChartOptions);
 
 
         //- BAR CHART - Student Attendance vs Leave
       //-------------
 
-      var student_attendance_present_list = {{ student_attendance_present_list }};
-      var student_attendance_leave_list = {{ student_attendance_leave_list }};
-      var student_name_list = {{ student_name_list|safe }};
+      var student_attendance_present_list = "{{ student_attendance_present_list }}";
+      var student_attendance_leave_list = "{{ student_attendance_leave_list }}";
+      var student_name_list = "{{ student_name_list|safe }}";
 
       var areaChartData2 = {
         labels  : student_name_list,

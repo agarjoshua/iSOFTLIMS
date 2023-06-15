@@ -17,6 +17,7 @@ from core.forms.hodforms import AddHodForm, AddStaffTypeForm, EditHodForm
 from core.forms.institutionform import InstitutionForm
 from core.forms.studentforms import EditStudentForm, AddStudentForm
 from django.contrib.admin.views.decorators import user_passes_test # type: ignore
+from django.db.models import Count
 
 from core.models import (
     HOD,
@@ -61,21 +62,27 @@ from core.subviews.utilities.accesscontrolutilities import allow_user
 def admin_home(request):
     all_teachers_count = Teacher.objects.all().count()
     all_student_count = Students.objects.all().count()
-    # subject_count = Subjects.objects.all().count()
+
     staff_count = Staff.objects.all().count()
+    course_count = Course.objects.all().count()
+    unregistered_course_count = Course.objects.annotate(student_count=Count('students')).filter(student_count=0).count()
+    registered_course_count = int(course_count) - int(unregistered_course_count)
+    course_name_list = list(Course.objects.values_list('course_name', flat=True))
 
-    # Total Subjects and students in Each Course
-    # class_all = Class.objects.all()
-    # class_name_list = []
-    # subject_count_list = []
-    # student_count_list_in_class = []
+    departments = Department.objects.all()
+    department_name_list = []
+    students_in_departments_list = []
+    
+    student_in_course_int = []
+    department_name_list = []
 
-    # for class in class_all:
-    #     subjects = Subjects.objects.filter(class_id=class.id).count()
-    #     students = Students.objects.filter(class_id=class.id).count()
-    #     class_name_list.append(class.class_name)
-    #     subject_count_list.append(subjects)
-    #     student_count_list_in_class.append(students)
+    for i in departments:
+        department_name_list_obj = Department.objects.get(id=i.id).name
+        department_name_list.append(department_name_list_obj)
+        students_in_departments_list_obj = Students.objects.filter(department_id=i.id).count()
+        students_in_departments_list.append(students_in_departments_list_obj)
+
+    print(department_name_list,students_in_departments_list)
 
     # subject_all = Subjects.objects.all()
     # subject_list = []
@@ -135,11 +142,17 @@ def admin_home(request):
         "student_name_list": student_name_list,
         # "subject_count": subject_count,
         "staff_count": staff_count,
+        "course_count": course_count,
         # "class_name_list": class_name_list,
         # "subject_count_list": subject_count_list,
-        # "student_count_list_in_class": student_count_list_in_class,
+        "student_in_course_int": student_in_course_int,
         # "subject_list": subject_list,
         # "student_count_list_in_subject": student_count_list_in_subject,
+        "unregistered_course_count": unregistered_course_count,
+        "registered_course_count":registered_course_count,
+        "course_name_list":course_name_list,
+        "department_name_list":department_name_list,
+        "students_in_departments_list":students_in_departments_list
     }
     return render(request, "admin_template/home_content.html", context)
 

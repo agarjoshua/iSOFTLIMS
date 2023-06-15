@@ -1,9 +1,10 @@
 #!/bin/bash
 
 # Check if venv is activated
-if [ -z "$VENV" ]; then
-    echo "Virtual environment is not activated. Activating..."
+if [ -z "$venv" ]; then
+    echo "Virtual environment activating..."
     source venv/bin/activate
+    echo "Starting local development server..."
 fi
 
 # Run the server
