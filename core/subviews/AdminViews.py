@@ -70,6 +70,7 @@ def admin_home(request):
     course_name_list = list(Course.objects.values_list('course_name', flat=True))
 
     departments = Department.objects.all()
+    department_count = Department.objects.all().count()
     department_name_list = []
     students_in_departments_list = []
     
@@ -152,7 +153,8 @@ def admin_home(request):
         "registered_course_count":registered_course_count,
         "course_name_list":course_name_list,
         "department_name_list":department_name_list,
-        "students_in_departments_list":students_in_departments_list
+        "students_in_departments_list":students_in_departments_list,
+        "department_count": department_count
     }
     return render(request, "admin_template/home_content.html", context)
 
