@@ -3,9 +3,9 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
       <!-- Brand Logo -->
       <a href="{% url 'admin_home' %}" class="brand-link">
-        <img src="{% static 'dist/img/AdminLTELogo.png' %}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
-            style="opacity: .8">
-        <span class="brand-text font-weight-light">ISOFT LMS</span>
+        <img src="{% static 'media/images/gluk-logo.jpeg' %}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+      style="opacity: .8">
+    <span class="brand-text font-weight-light">GLUK System</span>
       </a>
 
       <!-- Sidebar -->
@@ -35,29 +35,17 @@
                 </p>
               </a>
             </li>
-            
-            <li class="nav-item">
-              {% url 'academics:academics_home' as home %}
-              <a href="{{ home }}" class="nav-link {% if request.path == home %} active {% endif %}">
-                <i class="nav-icon fa fa-graduation-cap"></i>
-                <p>
-                  Academics Module
-                  {% comment %} <span class="right badge badge-danger">New</span> {% endcomment %}
-                </p>
-              </a>
-            </li>
 
-            {% comment %}
-            {% url 'academics:academics_home' as admin_home %}
-            <li class="nav-link collapsed text-truncate {% if request.path == admin_home %} active {% endif %}">
-              <a class="nav-link collapsed text-truncate" href="#submenu1" data-toggle="collapse" data-target="#submenuc"><i
+            {% url 'academics:academics_home' as academics_home %}
+            <li class="nav-item">
+              <a class="nav-link collapsed text-truncate {% if request.path == academics_home %} active {% endif %}" href="#submenu1" data-toggle="collapse" data-target="#submenuc"><i
                   class="nav-icon fa fa-graduation-cap"></i> <span class="d-none d-sm-inline">Academics Module</span></a>
     
               <div class="collapse" id="submenuc" aria-expanded="false">
                 <ul class="flex-column pl-2 nav">
     
                   <li class="nav-item">
-                    {% url 'manage_grade' as manage_grade %}
+                    {% url 'academics:manage_grade' as manage_grade %}
                     {% url 'edit_grade' grade_id=id as edit_grade %}
                     <a href="{{ manage_grade }}"
                       class="nav-link {% if request.path == manage_grade %} active {% endif %} {% if request.path == edit_grade %} active {% endif %}">
@@ -69,7 +57,7 @@
                   </li>
     
                   <li class="nav-item">
-                    {% url 'manage_class' as manage_class %}
+                    {% url 'academics:manage_class' as manage_class %}
                     {% url 'edit_class' class_id=id as edit_class %}
                     <a href="{{ manage_class }}"
                       class="nav-link {% if request.path == manage_class %} active {% endif %} {% if request.path == edit_class %} active {% endif %}">
@@ -81,7 +69,7 @@
                   </li>
     
                   <li class="nav-item">
-                    {% url 'manage_session_registation' as manage_session_registation %}
+                    {% url 'academics:manage_session_registation' as manage_session_registation %}
                     {% url 'edit_session_registation' session_id=id as edit_session_registation %}
                     <a href="{{ manage_session_registation }}"
                       class="nav-link {% if request.path == manage_session_registation %} active {% endif %} {% if request.path == edit_session_registation %} active {% endif %}">
@@ -93,7 +81,7 @@
                   </li>
     
                   <li class="nav-item">
-                    {% url 'manage_exams' as manage_exams %}
+                    {% url 'academics:manage_exams' as manage_exams %}
                     {% url 'edit_manage_exams' session_id=id as edit_manage_exams %}
                     <a href="{{ manage_exams }}"
                       class="nav-link {% if request.path == manage_exams %} active {% endif %} {% if request.path == manage_exams %} active {% endif %}">
@@ -105,7 +93,6 @@
                   </li>
                 </ul>
             </li>
-            {% endcomment %}
 
             <li class="nav-item">
               {% url 'finance:finance_home' as finance_home %}

@@ -6,7 +6,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>iSOFTLIMS | Dashboard</title>
+  <title>GLUK Learning management System | Admissions Dashboard</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Font Awesome -->
@@ -41,13 +41,8 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0/js/bootstrap-select.min.js" integrity="sha512-QV7pIVZtBhZ7zFbWYyv1pnmOaC+ODP8oJW6m/KvijZLe1lZK2iPEB1CgSZ2yMXzbP4I3q5h5iNzv0R0NStS40A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-
-  <!-- Adding Vuejs  -->
-  {% if env_name == 'production' %}
-  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
-  {% else %}
-  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-  {% endif %}
+  {% block custom_css %}
+    {% endblock custom_css %}
 </head>
 
 
@@ -58,33 +53,33 @@
 {% endblock %}
 
 <!-- jQuery -->
-<script src="{% static "jquery/jquery.min.js" %}"></script>
+<script src="{% static "jquery/jquery.min.js"  %}"></script>
 <!-- jQuery UI 1.11.4 -->
-<script src="{% static "jquery-ui/jquery-ui.min.js" %}"></script>
+<script src="{% static "jquery-ui/jquery-ui.min.js"  %}"></script>
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
 <script>
   $.widget.bridge('uibutton', $.ui.button)
 </script>
 <!-- Bootstrap 4 -->
-<script src="{% static "bootstrap/js/bootstrap.bundle.min.js" %}"></script>
+<script src="{% static "bootstrap/js/bootstrap.bundle.min.js"  %}"></script>
 <!-- ChartJS -->
-<script src="{% static "chart.js/Chart.min.js" %}"></script>
+<script src="{% static "chart.js/Chart.min.js"  %}"></script>
 <!-- Sparkline -->
-<script src="{% static "sparklines/sparkline.js" %}"></script>
+<script src="{% static "sparklines/sparkline.js"  %}"></script>
 <!-- JQVMap -->
-<script src="{% static "jqvmap/jquery.vmap.min.js" %}"></script>
-<script src="{% static "jqvmap/maps/jquery.vmap.usa.js" %}"></script>
+<script src="{% static "jqvmap/jquery.vmap.min.js"  %}"></script>
+<script src="{% static "jqvmap/maps/jquery.vmap.usa.js"  %}"></script>
 <!-- jQuery Knob Chart -->
-<script src="{% static "jquery-knob/jquery.knob.min.js" %}"></script>
+<script src="{% static "jquery-knob/jquery.knob.min.js"  %}"></script>
 <!-- daterangepicker -->
-<script src="{% static "moment/moment.min.js" %}"></script>
-<script src="{% static "daterangepicker/daterangepicker.js" %}"></script>
+<script src="{% static "moment/moment.min.js"  %}"></script>
+<script src="{% static "daterangepicker/daterangepicker.js"  %}"></script>
 <!-- Tempusdominus Bootstrap 4 -->
-<script src="{% static "tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js" %}"></script>
+<script src="{% static "tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"  %}"></script>
 <!-- Summernote -->
-<script src="{% static "summernote/summernote-bs4.min.js" %}"></script>
+<script src="{% static "summernote/summernote-bs4.min.js"  %}"></script>
 <!-- overlayScrollbars -->
-<script src="{% static "overlayScrollbars/js/jquery.overlayScrollbars.min.js" %}"></script>
+<script src="{% static "overlayScrollbars/js/jquery.overlayScrollbars.min.js"  %}"></script>
 <!-- AdminLTE App -->
 <script src="{% static 'dist/js/adminlte.js'  %}"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
@@ -92,11 +87,9 @@
 <!-- AdminLTE for demo purposes -->
 <script src="{% static 'dist/js/demo.js'  %}"></script>
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0/css/bootstrap-select.min.css" integrity="sha512-ZbYUM/obowR1eN/1iXhVoG0H0xb+dNq3r3PBOttJTXOwAz1tT92y7T+JWk9V7FCs/bAhmIVZ7oGjKzFSSoV7Rw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0/js/bootstrap-select.min.js" integrity="sha512-QV7pIVZtBhZ7zFbWYyv1pnmOaC+ODP8oJW6m/KvijZLe1lZK2iPEB1CgSZ2yMXzbP4I3q5h5iNzv0R0NStS40A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% comment %} For Custom JS {% endcomment %}
+{% block custom_js %}
+{% endblock custom_js %}
 
 </body>
 
