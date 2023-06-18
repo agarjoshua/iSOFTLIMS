@@ -57,7 +57,11 @@ FAKER_PROVIDERS = None  # faker.DEFAULT_PROVIDERS is loaded (all)
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    #old session manager
     "django.contrib.sessions.middleware.SessionMiddleware",
+    #New session middleware
+    # 'iSOFTLIMS.utils.session_middleware.SessionIdleTimeoutMiddleware',
+
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -190,3 +194,7 @@ DEFAULT_FROM_EMAIL = 'your-email@example.com'
 UWAZII_SMS_API_KEY = 'your-uwazii-sms-api-key'
 UWAZII_SMS_SENDER_ID = 'your-uwazii-sms-sender-id'
 UWAZII_SMS_BASE_URL = 'https://api.uwazii.com/v1/'
+
+
+# IDLE TIME CONFIGURATIONS
+SESSION_COOKIE_AGE = 600

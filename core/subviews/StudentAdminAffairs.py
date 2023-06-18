@@ -7,6 +7,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse
 
 
+
 def student_affairs_home(request):
     deffereals_count = DeferrmentApprovalWorklow.objects.count()
     temp_defer_count = TemporaryWithdrawalApprovalWorklow.objects.count()

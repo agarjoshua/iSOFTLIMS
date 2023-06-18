@@ -22,7 +22,7 @@ class EmailMaxLoginAttemptsBackend(ModelBackend):
 
                 if cooldown_end_time and cooldown_end_time > current_time:
                     remaining_time = (cooldown_end_time - current_time).total_seconds() // 60
-                    messages.error(request,f"Too many failed attempts. Please try again after {remaining_time} minute.")
+                    messages.error(request,f"Too many failed attempts. Please try again after {remaining_time} minutes.")
                     return None
 
                 if cooldown_end_time and cooldown_end_time <= current_time:

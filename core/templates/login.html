@@ -33,15 +33,15 @@
                   {% endfor %}
                 </div>
                 {% endif %}
-            <p class="login-box-msg">Sign in</p>
+            <p class="login-box-msg">Log in</p>
 
             <form action="{% url 'doLogin' %}" method="POST">
             {% csrf_token %}
               <div class="input-group mb-3">
-                <input type="email" class="form-control" placeholder="Email" name="email">
+                <input type="email" class="form-control" placeholder="User ID" name="email">
                 <div class="input-group-append">
                   <div class="input-group-text">
-                    <span class="fas fa-envelope"></span>
+                    <span class="fas fa-user"></span>
                   </div>
                 </div>
               </div>
@@ -85,7 +85,7 @@
 <footer>
   <div class="container d-flex flex-column justify-content-end align-items-center">
     <h5 class="text-bolder">
-      POWERED BY iSoft Systems
+      Powered By iSoft Systems
     </h5>
   </div>
 </footer>
