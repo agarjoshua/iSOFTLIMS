@@ -9,6 +9,8 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 
 # from .EmailBackend import EmailBackEnd
+from django.contrib.auth import authenticate
+
 
 # Imports for password reset
 from django.contrib.auth.views import (
@@ -33,7 +35,11 @@ def applicantloginPage(request):
 def doLogin(request):
     if request.method != "POST":
         return HttpResponse("<h2>Method Not Allowed</h2>")
-    user = EmailBackEnd.authenticate(request, username=request.POST.get('email'), password=request.POST.get('password'))
+    
+
+    # user = EmailBackEnd.authenticate(request, username=request.POST.get('email'), password=request.POST.get('password'))
+    user = authenticate(request, email=request.POST.get('email'), password=request.POST.get('password'))
+
     if user != None:
         login(request, user)
         user_type = user.user_type

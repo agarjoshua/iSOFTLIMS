@@ -95,6 +95,8 @@ class CustomUser(AbstractUser):
     )
     user_type = models.CharField(default=1, choices=user_type_data, max_length=10)
     institution = models.ForeignKey(Institution, on_delete=models.DO_NOTHING, null=True)
+    login_attempts = models.PositiveIntegerField(default=0)
+    cooldown_end_time = models.DateTimeField(null=True, blank=True)
 
 
 class Admin(models.Model):

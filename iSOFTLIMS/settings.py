@@ -124,7 +124,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "Africa/Nairobi"
 
 USE_I18N = True
 
@@ -164,7 +164,11 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTH_USER_MODEL = "core.CustomUser"
 
 # Registering Custom Backend "EmailBackEnd"
-AUTHENTICATION_BACKENDS = ['core.utils.mail.EmailBackEnd']
+AUTHENTICATION_BACKENDS = [
+    # 'core.utils.mail.EmailBackEnd',
+    'iSOFTLIMS.utils.custom_auth_backend.EmailMaxLoginAttemptsBackend',
+    'django.contrib.auth.backends.ModelBackend',
+    ]
 
 
 INTERNAL_IPS = [
