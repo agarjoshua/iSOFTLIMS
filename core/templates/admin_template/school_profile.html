@@ -7,24 +7,21 @@ School Management Details
 
 <section class="content">
     <div class="container-fluid">
-        <div class="ml-1">
-            <a class="btn btn-warning" href="{% url 'academics:manage_session' %}" role="button">
-                Manage Sessions</a><br />&nbsp;
-        </div>
+        
         <div class="mx-auto row">
             <div class="">
-                <a class="btn btn-primary" href="{% url 'manage_departments' %}" role="button">
+                <a class="btn btn-warning" href="{% url 'academics:manage_session' %}" role="button">
+                    Manage Sessions</a><br />&nbsp;
+            </div>
+            <div class="ml-3">
+                <a class="btn btn-warning" href="{% url 'manage_departments' %}" role="button">
                     Manage Departments</a><br />&nbsp;
             </div>
-            <div class="ml-1">
-                <a class="btn btn-primary" href="{% url 'manage_courses' %}" role="button">
+            <div class="ml-3">
+                <a class="btn btn-warning" href="{% url 'manage_courses' %}" role="button">
                     Manage Courses</a><br />&nbsp;
             </div>
 
-            <div class="ml-1">
-                <a class="btn btn-primary" href="{% url 'academics:clusterclass_list' %}" role="button">
-                    Manage Class Clusters</a><br />&nbsp;
-            </div>
         </div>
 
         <div class="row">

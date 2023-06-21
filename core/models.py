@@ -77,7 +77,7 @@ class Institution(models.Model):
     currency = models.CharField(max_length=20, null=True)
     bank_details = models.JSONField(null=True)
     # TODO: Nationalities & Currencies (List World Nationalities & their Currencies & provide capture of exchange rate against Base currency)
-    logo = models.FileField(null=True)
+    logo = models.FileField(upload_to='media/',null=True)
     objects = models.Manager()
 
 

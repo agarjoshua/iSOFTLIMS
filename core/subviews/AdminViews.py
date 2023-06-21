@@ -46,6 +46,7 @@ from academics.models import (
     Session,
 )
 from core.subviews.utilities.accesscontrolutilities import allow_user
+from django.core.files.base import ContentFile
 # from core.forms import AddStudentForm, EditStudentForm
 
 # USER NUMBER REFERENCE
@@ -197,28 +198,61 @@ def school_profile(request):
 
     # try:
         # Retrieve the institution associated with the logged-in user
-    print('check one')
     institution = user.institution
+
+    def extract_integers_from_list(lst):
+        integers = []
+        for item in lst:
+            if isinstance(item, int):
+                integers.append(item)
+            elif isinstance(item, str):
+                try:
+                    number = int(item)
+                    integers.append(number)
+                except ValueError:
+                    pass
+        return integers
+    
+    form.fields["institution_code"].initial = institution.institution_code
     form.fields["name"].initial = institution.name 
     form.fields["country"].initial = institution.country 
-    form.fields["institution_order"].initial = [institution.institution_order]
-    # form.fields["examination_centre_number"].initial = institution.examination_centre_number 
+
+    form.fields["institution_order"].initial = extract_integers_from_list(institution.institution_order)
+    form.fields["examination_centre_number"].initial = institution.examination_centre_number 
     form.fields["institution_location_hierarchy"].initial = institution.institution_location_hierarchy 
-    form.fields["institution_cluster"].initial = institution.institution_cluster
-    form.fields["institution_category"].initial = institution.institution_category 
-    # form.fields["institution_gender_category "].initial = institution.institution_gender_category 
-    # form.fields["institution_accomodation_type "].initial = institution.institution_accomodation_type 
+
+    form.fields["institution_cluster"].initial = extract_integers_from_list(institution.institution_cluster)
+    form.fields["institution_category"].initial = extract_integers_from_list(institution.institution_category) 
+
+
+
+    form.fields["institution_gender_category"].initial = extract_integers_from_list(institution.institution_gender_category)
+    form.fields["institution_accomodation_type"].initial = institution.institution_accomodation_type 
+
+
+
     form.fields["institution_status"].initial = institution.institution_status 
     form.fields["institution_type"].initial = institution.institution_type 
     form.fields["institution_in_ASAL_area"].initial = institution.institution_in_ASAL_area 
-    # form.fields["institution_residence "].initial = institution.institution_residence 
-    # form.fields["contact_details "].initial = institution.contact_details 
-    # form.fields["institution_statutory_numbers"].initial = institution.institution_statutory_numbers 
-    form.fields["currency"].initial = institution.currency 
-    # form.fields["bank_details"].initial = institution.bank_details 
-    # form.fields["logo"].initial = institution.logo 
+    form.fields["institution_residence"].initial = extract_integers_from_list(institution.institution_residence)
 
-    print(institution.institution_order)
+    contact_data = json.loads(institution.contact_details)
+    for field_name, field_value in contact_data.items():
+        if field_name in form.fields:
+            form.fields[field_name].initial = field_value
+
+    institution_statutory_data = json.loads(institution.institution_statutory_numbers)
+    for field_name, field_value in institution_statutory_data.items():
+        if field_name in form.fields:
+            form.fields[field_name].initial = field_value
+    form.fields["currency"].initial = institution.currency 
+
+    bank_data = json.loads(institution.bank_details)
+    for field_name, field_value in bank_data.items():
+        if field_name in form.fields:
+            form.fields[field_name].initial = field_value
+    form.fields["logo"].initial = institution.logo 
+
 
     context = {"user": user, "institution": institution, "form":form}
     return render(request, "admin_template/school_profile.html", context)
@@ -238,7 +272,7 @@ def admin_school_update(request):
         messages.error(request, "Invalid Method!")
         return redirect("school_profile")
     else:
-        form = InstitutionForm(request.POST)
+        form = InstitutionForm(request.POST, request.FILES)
         # print(form)
         # if form.is_valid():
         name = form["name"].value()
@@ -260,6 +294,22 @@ def admin_school_update(request):
         institution_type = form["institution_type"].value()
         institution_in_ASAL_area = form["institution_in_ASAL_area"].value()
         institution_residence = form["institution_residence"].value()
+        institution_logo = form["logo"].value()
+
+        # save_path = 'media'  # Replace with your desired save path
+
+        # # Save the uploaded file to the determined path
+        # with open(save_path, 'wb') as f:
+        #     f.write(institution_logo)
+
+          # Replace with your desired save path
+            
+        
+        print('=========================================================================')
+        print(institution_logo)
+        print(form["logo"].value())
+        print(form["logo"])
+        print('=========================================================================')
 
 
         def contact_details_json(form): # type: ignore
@@ -394,8 +444,20 @@ def admin_school_update(request):
             specific_institution.institution_statutory_numbers = other_statutory_details_var
             specific_institution.currency = currency
             specific_institution.bank_details = bank_details_var
-            print('heloooooooooooooooooooooooooooo')
-            specific_institution.save()
+
+            # save_path = 'path/to/save/logo.jpg'
+
+            # # Create a ContentFile from the logo file value
+            # content = ContentFile(institution_logo.read())
+            
+            # # Save the ContentFile to the determined path
+            # with open(save_path, 'wb') as f:
+            #     for chunk in content.chunks():
+            #         f.write(chunk)
+
+            specific_institution.logo = institution_logo
+
+            # specific_institution.save()
         except Exception as e:
             print(e)
             return e
