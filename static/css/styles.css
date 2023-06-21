@@ -39,7 +39,9 @@
   
 
 
-
+  .nowrap {
+    white-space: nowrap;
+}
 
 
 

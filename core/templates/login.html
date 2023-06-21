@@ -9,11 +9,11 @@
         
         <!-- /.login-logo -->
         <div class="card rounded-lg">
-          <div class="login-logo row d-flex justify-content-center pt-5">
-            <img src="{% static 'media/images/gluk-logo.jpeg' %}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
-        style="opacity: .8">
+          <div class="login-logo pt-5">
+            <img src="{% static 'media/images/limslogo.png' %}" alt="iSoft logo" class="brand-image img-circle elevation-3"
+            style="opacity: .8">
   
-        <p class="font-weight-bolder mt-3">GREAT LAKES UNIVERSITY</p>
+            <h6 class="font-weight-bolder mt-3 nowrap">iSoft Systems University of Information and Technology</h6>
             
           </div>
 
@@ -33,7 +33,6 @@
                   {% endfor %}
                 </div>
                 {% endif %}
-            <p class="login-box-msg">Log in</p>
 
             <form action="{% url 'doLogin' %}" method="POST">
             {% csrf_token %}
@@ -63,17 +62,23 @@
                   <div class="col-md-6">
                     <a href="{% url 'password_reset' %}">Forgot Password</a>
                   </div> 
-                  <div class="col-md-6 text-right">
+                  <div class="col-md-6 text-md-right">
                     <a href="">Activate Account</a>
                   </div> 
 
 
                 </div>
+                
 
                 
                 
 
                 <!-- /.col -->
+              </div>
+              <div class="container d-flex flex-column justify-content-end align-items-center">
+                <h6 class="text-bolder">
+                  Powered By iSoft Systems
+                </h6>
               </div>
             </form>
 
@@ -82,13 +87,6 @@
       <!-- /.login-box -->
 </body>
 
-<footer>
-  <div class="container d-flex flex-column justify-content-end align-items-center">
-    <h5 class="text-bolder">
-      Powered By iSoft Systems
-    </h5>
-  </div>
-</footer>
 
 {% endblock content %}
 
