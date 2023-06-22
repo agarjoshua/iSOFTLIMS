@@ -1,7 +1,7 @@
 {% extends 'base_template.html' %}
 
 {% block page_title %}
-Cluster class Detail
+Course Requirements Management
 {% endblock page_title %}
 
 {% block main_content %}
@@ -16,7 +16,7 @@ Cluster class Detail
         <!-- general form elements -->
         <div class="card card-primary">
           <div class="card-header">
-            <h3 class="card-title">Cluster Classes</h3>
+            <h3 class="card-title">Manage Course Requirements</h3>
           </div>
           <!-- /.card-header -->
           <!-- form start -->
@@ -51,18 +51,43 @@ Cluster class Detail
 
           <div class="card-body">
 
-            <ul>
-              {% for clusterclass in clusters %}
-              <li><a href="{% url 'academics:clusterclass_detail' pk=clusterclass.pk %}">{{ clusterclass.cluster_class_name}}</a></li>
-              {% empty %}
-              <li class="text-bold">No cluster classes yet.</li>
-              {% endfor %}
-            </ul>
+            <div class="card-body table-responsive p-0">
+              <div class="">
+                <div class="btn btn-primary text-white"><a class="text-white"
+                    href="{% url 'academics:clusterclass_create' %}">Create Compulsory Course Lectures</a></div>
+              </div>
+              <table class="table table-hover text-nowrap">
+                  <thead>
+                      <tr>
+                          <th>ID</th>
+                          <th>Class Name</th>
+                          <th>Course</th>
+                          <th>Action</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                    {% for i in clusters %}
 
-            <div class="">
-              <div class="btn btn-primary text-white"><a class="text-white"
-                  href="{% url 'academics:clusterclass_create' %}">Create a new cluster class</a></div>
-            </div>
+                      <tr>
+                          <td>{{ i.id }}</td>
+                          <td>{{ i.cluster_class_name }}</td>
+                          {% for j in courses %}
+                          {% if j.id == i.id %}
+                          <td>{{ j }}</td>
+                          {% endif %}
+                          {% endfor %}
+                          <td>
+                            <a class="btn btn-warning text-bold" href="{% url 'academics:clusterclass_edit' i.id %}">Edit this Course Classes</a>
+                            <a class="btn btn-danger text-bold" href="{% url 'academics:clusterclass_edit' i.id %}">Delete this Course Classes</a>
+                          </td>
+                      </tr>
+                      {% empty %}
+              <li class="text-bold">No Course Lectures yet.</li>
+              {% endfor %}
+  
+                  </tbody>
+              </table>
+              </div>
 
           </div>
         </div>

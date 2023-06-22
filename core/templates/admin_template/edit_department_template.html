@@ -52,10 +52,11 @@
 
                         <div class="card-body">
                             <input name="department_id" value="{{department_id}}" hidden>
+
                             <div class="form-group">
-                                <label>Institution Code</label>
-                                <input type="hidden" name="class_id" value="{{ class.id }}" />
-                                <input type="text" class="form-control" name="institution_code" placeholder="Institution Code" id="institution_code" value="{{ department.institution_code}}">
+                                <label>Department Code</label>
+                                <input type="hidden" name="class_id" value="{{ department.department_code }}" />
+                                <input type="text" class="form-control" name="department_code" placeholder="Institution Code" id="department_code" value="{{ department.department_code}}">
                             </div>
 
                             <div class="form-group">

@@ -43,7 +43,7 @@ Manage Course
                 <!-- general form elements -->
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Department Details</h3>
+                        <h3 class="card-title">Course Details</h3>
 
                         <div class="card-tools">
                             <div class="input-group input-group-sm" style="width: 150px;">
@@ -62,12 +62,64 @@ Manage Course
                             <thead>
                                 <tr>
                                     <th>Name</th>
+                                    <th>Required Classes</th>
+                                    <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {% for i in courses %}
                                 <tr>
                                     <td>{{ i.course_name}}</td>
+                                    <td>
+                                        <a href="#" data-toggle="modal" data-target="#requiredClassesModal{{ i.id }}">View/Edit Classes</a>
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="requiredClassesModal{{ i.id }}" tabindex="-1" role="dialog" aria-labelledby="requiredClassesModal{{ i.id }}Label" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg" role="document">
+                                            <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="requiredClassesModal{{ i.id }}Label">Required Classes</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="container modal-body">
+                                                <table class="table table-hover">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>ID</th>
+                                                            <th>Class Name</th>
+                                                            <th>Action</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    {% for j in cluster_course_units%}
+                                                    {% if j.id == i.id %}
+                                                    <td>{{ j.id }}</td>
+                                                    <td>{{ j.cluster_class_name }}</td>
+                                                    <td>
+                                                        <a class="btn btn-warning text-bold" href="{% url 'academics:clusterclass_edit' i.id %}">Edit this Course Classes</a>
+                                                        <a class="btn btn-danger text-bold" href="{% url 'academics:clusterclass_edit' i.id %}">Delete this Course Classes</a>
+                                                    </td>
+                                                    </tbody>
+                                                    <hr>
+                                                    <p class="text-bold">Associated Classes:</p>
+                                                    <ol class="text-bold">
+                                                        {% for k in j.classes.all %}
+                                                        <p>{{ k.class_name }}</p>
+                                                        {% endfor %}
+                                                    </ol>
+                                                    {% endif %}
+                                                    {% endfor %}
+                                                </table>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                            </div>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </td>
+                                    </td>
                                     <td>
                                         <a href="{% url 'edit_course' i.id %}" class="btn btn-success">Edit</a>
                                         <a href="{% url 'delete_course' i.id %}" class="btn btn-danger">Delete</a>

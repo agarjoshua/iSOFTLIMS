@@ -17,7 +17,6 @@ urlpatterns = [
     path('add_session/', sessionViews.add_session, name="add_session"),
     path('add_session_save/', sessionViews.add_session_save, name="add_session_save"),
     path('edit_session/<session_id>', sessionViews.edit_session, name="edit_session"),
-    path('edit_session_save/', sessionViews.edit_session_save, name="edit_session_save"),
     path('delete_session/<session_id>/', sessionViews.delete_session, name="delete_session"),
 
     

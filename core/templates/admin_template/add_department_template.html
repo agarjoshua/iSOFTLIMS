@@ -51,13 +51,10 @@
                             
 
                         <div class="card-body">
-                            <div class="form-group">
-                                <label>Department Code</label>
-                                <input type="text" class="form-control" name="institution_code" placeholder="Department Code" id="institution_code">
-                            </div>
 
                             <div class="form-group">
-                                <label>Name</label>
+                                <label>Department Name</label>
+                                <div class="error"></div>
                                 <input type="text" class="form-control" name="name" placeholder="Name" id="name">
                             </div>
 
@@ -90,25 +87,25 @@
     <script>
         $(document).ready(function(){
             // keyup event will be triggered when user leaves keyboard
-            $("#id_email").keyup(function(){
-                var email = $(this).val();
+            $("#name").keyup(function(){
+                var department = $(this).val();
 
-                if(email!=""){
+                if(department!=""){
                     $.ajax({
-                        url : '{% url 'check_email_exist' %}',
+                        url : '{% url 'check_department_exist' %}',
                         type : 'POST',
-                        data : {email:email}
+                        data : {department:department}
                     })
                     .done(function(response){
                         //console.log(response);
 
                         if(response == "True"){
-                            $(".email_error").remove();
-                            $("<span class='email_error' style='color: red; padding: 5px; font-weight: bold;'> Email Not Available. </span>").insertAfter("#id_email")
+                            $(".error").remove();
+                            $("<span class='error' style='color: red; padding: 5px; font-weight: bold;'> Department already exists. </span>").insertAfter("#name")
                         }
                         else{
-                            $(".email_error").remove();
-                            $("<span class='email_error' style='color: green; padding: 5px; font-weight: bold;'> Email Available. </span>").insertAfter("#id_email")
+                            $(".error").remove();
+                            $("<span class='error' style='color: green; padding: 5px; font-weight: bold;'> Department does not exist. </span>").insertAfter("#name")
                         }
                     })
 
@@ -117,39 +114,7 @@
                     })
                 }
                 else{
-                    $(".email_error").remove();
-                }
-                
-            })
-
-            $("#id_username").keyup(function(){
-                var username = $(this).val();
-                
-                if(username!=""){
-                    $.ajax({
-                        url : '{% url 'check_username_exist' %}',
-                        type : 'POST',
-                        data : {username:username}
-                    })
-                    .done(function(response){
-                        //console.log(response);
-
-                        if(response == "True"){
-                            $(".username_error").remove();
-                            $("<span class='username_error' style='color: red; padding: 5px; font-weight: bold;'> Username Not Available. </span>").insertAfter("#id_username")
-                        }
-                        else{
-                            $(".username_error").remove();
-                            $("<span class='username_error' style='color: green; padding: 5px; font-weight: bold;'> Username Available. </span>").insertAfter("#id_username")
-                        }
-                    })
-
-                    .fail(function(){
-                        console.log("Failed");
-                    })
-                }
-                else{
-                    $(".username_error").remove();
+                    $(".error").remove();
                 }
                 
             })

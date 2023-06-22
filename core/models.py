@@ -210,6 +210,7 @@ class Staff(models.Model):
 class Department(models.Model):
     id = models.AutoField(primary_key=True)
     institution_code = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
+    department_code = models.CharField(max_length=30, null=True)
     name = models.CharField(max_length=30)
     description = models.CharField(max_length=255, default="institution", null=True)
     head = models.ForeignKey(HOD, on_delete=models.DO_NOTHING, null=True)

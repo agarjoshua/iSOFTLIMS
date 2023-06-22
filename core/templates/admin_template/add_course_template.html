@@ -49,9 +49,18 @@ Add Course
 
                     <form method="post" action="{% url 'add_course_save'%}">
                         {% csrf_token %}
-                        {{ form.as_p }}
-                        <button type="submit">Submit</button>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label>Course Name:</label>
+                                    {{ form.course_name }}
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                            
+                        </div>
+                            
                     </form>
+
+                    
 
                 </div>
                 <!-- /.card -->

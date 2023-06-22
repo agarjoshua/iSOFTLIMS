@@ -5,6 +5,7 @@ from core.models import Students
 class Course(models.Model):
     id = models.AutoField(primary_key=True)
     course_name = models.CharField(max_length=255)
+    compulsory_classes = models.ForeignKey("ClusterClass",on_delete=models.DO_NOTHING,null=True)
     created_at = models.DateTimeField(auto_now_add=True)    
     updated_at = models.DateTimeField(auto_now=True)
     objects = models.Manager()

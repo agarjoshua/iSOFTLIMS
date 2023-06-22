@@ -4,7 +4,7 @@ from django.contrib import messages
 from academics.forms.classforms import ClassEditForm, ClassCreateForm
 from academics.forms.clusterforms import ClusterClassForm
 from academics.forms.gradeforms import ClassGradeForm, GradeEditForm
-from academics.models import Class, ClusterClass, GradeLevel
+from academics.models import Class, ClusterClass, Course, GradeLevel
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.admin.views.decorators import user_passes_test
 
@@ -150,13 +150,16 @@ def delete_grade(request, grade_id):
         messages.error(request, f"Failed to Delete Grade, because {e}")
         return redirect("academics:manage_grade")
 
+
 @user_passes_test(is_admin)
 def clusterclass_list(request):
     clusters = ClusterClass.objects.all()
     classes = Class.objects.all()
+    courses = Course.objects.all()
     context = {
         "clusters": clusters,
-        "classes": classes
+        "classes": classes,
+        "courses":courses
         }
     return render(request, "class_templates/manage_clusters_template.html", context)
 
@@ -197,6 +200,10 @@ def clusterclass_edit(request,clusterclass_id):
     return render(request, 'class_templates/edit_clusterclass_template.html', {'form': form})
 
 
+def get_course_name(clusterclass_id):
+    clusterclass = get_object_or_404(ClusterClass, id=clusterclass_id)
+    course_name = clusterclass.course.course_name
+    return course_name
 
 # TODO: Fix this disaster
 @csrf_exempt

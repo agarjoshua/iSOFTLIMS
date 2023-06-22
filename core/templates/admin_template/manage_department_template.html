@@ -60,18 +60,19 @@ Manage Departments
                     <div class="card-body table-responsive p-0">
                         <table class="table table-hover text-nowrap">
                             <thead>
-                                <tr>
-                                    <th>Institution Code</th>
+                                <tr class="text-bold">
+                                    <th>Department Code</th>
                                     <th>Name</th>
                                     <th>Description</th>
                                     <th>Head</th>
                                     <th>Deputy</th>
+                                    <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {% for department in department %}
                                 <tr>
-                                    <td>{{ department.institution_code}}</td>
+                                    <td>{{ department.department_code}}</td>
                                     <td>{{ department.name}}</td>
                                     <td>{{ department.description }}</td>
                                     <td>{{ department.head }}</td>

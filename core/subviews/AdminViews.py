@@ -10,7 +10,7 @@ from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.core import serializers
 import json
-from core.forms.courseforms import AddCourseForm
+from core.forms.courseforms import AddCourseForm, CourseEditForm
 from core.forms.departmentforms import AddDepartmentForm
 from core.forms.guardianforms import AddGuardianForm, EditGuardianForm
 from core.forms.hodforms import AddHodForm, AddStaffTypeForm, EditHodForm
@@ -42,11 +42,14 @@ from core.models import (
 )
 from academics.models import (
     Class,
+    ClusterClass,
     Course,
     Session,
 )
 from core.subviews.utilities.accesscontrolutilities import allow_user
 from django.core.files.base import ContentFile
+from iSOFTLIMS.utils.generator_utils.code_generations import generate_custom_code
+from django.db.models import Q
 # from core.forms import AddStudentForm, EditStudentForm
 
 # USER NUMBER REFERENCE
@@ -444,16 +447,6 @@ def admin_school_update(request):
             specific_institution.institution_statutory_numbers = other_statutory_details_var
             specific_institution.currency = currency
             specific_institution.bank_details = bank_details_var
-
-            # save_path = 'path/to/save/logo.jpg'
-
-            # # Create a ContentFile from the logo file value
-            # content = ContentFile(institution_logo.read())
-            
-            # # Save the ContentFile to the determined path
-            # with open(save_path, 'wb') as f:
-            #     for chunk in content.chunks():
-            #         f.write(chunk)
 
             specific_institution.logo = institution_logo
 
@@ -1307,10 +1300,20 @@ def add_department_save(request):
         head = request.POST.get("head")
         deputy = request.POST.get("deputy")
 
+        name = ' '.join(name.split()).lower()
+        if name_exists := Department.objects.filter(Q(name__iexact=name)).exists():
+            messages.error(request, "Failed to Add Department! Department Already Exists")
+            return redirect("add_department")
+
         try:
+            user = CustomUser.objects.get(id=request.user.id)
+
+            institution = user.institution.name
+
             department = Department.objects.create(
                 name=name,
                 description=description,
+                department_code = generate_custom_code([institution,name])
             )
             department.save()
             messages.success(request, "Department Added Successfully!")
@@ -1343,12 +1346,15 @@ def edit_department_save(request):
         head = request.POST.get("head")
         deputy = request.POST.get("deputy")
         department_id = request.POST.get("department_id")
-        print(department_id)
+        department_code = request.POST.get("department_code")
+        print(department_code)
 
         try:
             department = Department.objects.get(id=department_id)
             if name:
                 department.name = name
+            if department_code:
+                department.department_code = department_code
             if desc:
                 department.desc = desc
             if head:
@@ -1357,6 +1363,8 @@ def edit_department_save(request):
             if deputy:
                 dep_deputy = Staff.objects.get(admin=deputy)
                 department.deputy = dep_deputy
+            
+            department.save()
 
             messages.success(request, "Department upated Successfully!")
             return redirect("manage_departments")
@@ -1367,16 +1375,25 @@ def edit_department_save(request):
 
 
 def delete_department(request, department_id):
-    pass
+    department = Department.objects.get(id=department_id)
+    try:
+        department.delete()
+        messages.success(request, "Department Deleted Successfully.")
+        return redirect("manage_departments")
+    except:
+        messages.error(request, "Failed to Delete Department.")
+        return redirect("manage_departments")
 
 #########################################MANAGE COURSES#######################################################################
 
 def manage_courses(request):
     form = AddCourseForm()
     courses = Course.objects.all()
+    cluster_course_units = ClusterClass.objects.all()
     context = {
         "form":form,
-        "courses":courses
+        "courses":courses,
+        "cluster_course_units":cluster_course_units
     }
     return render(request,'admin_template/manage_courses_template.html',context)
 
@@ -1391,7 +1408,6 @@ def add_course(request):
 
 
 def add_course_save(request):
-    print('helloooo')
     if request.method != "POST":
         messages.error(request, "Invalid Method")
         return redirect("manage_courses")
@@ -1408,9 +1424,45 @@ def add_course_save(request):
         messages.error(request, "Form is not valid!")
         return redirect("add_course")
         
+def edit_course(request, course_id):
+    selected_course = Course.objects.get(id=course_id)
+    if request.method == 'POST':
+        form = CourseEditForm(request.POST, instance=selected_course)
+        if form.is_valid():
+            try: 
+                form.save()
+                messages.success(request, "Grade edited Successfully.")
+                return redirect("manage_courses")
+            except Exception as e:
+                messages.error(request, f"Failed to Edit Course. bacause {e}")
+                form = CourseEditForm(instance=selected_course)
 
-# def check_if_course_exists(request):
-#     pass
+        else:
+            errors = form.errors
+            print(errors) 
+            messages.error(request, "Failed to Edit Grade. Form isnt valid")
+            return _edit_sessions_helper(selected_course, course_id, request)
+    else:
+        _edit_sessions_helper(selected_course, course_id, request)
+
+    return _edit_sessions_helper(selected_course, course_id, request)
+
+def _edit_sessions_helper(selected_course, course_id, request):
+    form = CourseEditForm(instance=selected_course)
+    context = {'form': form, 'selected_session': selected_course, "id": course_id}
+    return render(request, "admin_template/edit_course_template.html", context)
+
+
+def delete_course(request, course_id):
+    course = Course.objects.get(id=course_id)
+    try:
+        course.delete()
+        messages.success(request, "Course Deleted Successfully.")
+        return redirect("manage_courses")
+    except:
+        messages.error(request, "Failed to Delete Course!")
+        return redirect("manage_courses")
+
 
 @csrf_exempt
 def check_if_course_exists(request):
@@ -1426,11 +1478,6 @@ def check_if_course_exists(request):
         return HttpResponse(False)
 
 
-def edit_course(request):
-    pass
-
-def delete_course(request):
-    pass
 
 
 #########################################UTILITIES#######################################################################
@@ -1449,6 +1496,16 @@ def check_username_exist(request):
     username = request.POST.get("username")
     user_obj = CustomUser.objects.filter(username=username).exists()
     if user_obj:
+        return HttpResponse(True)
+    else:
+        return HttpResponse(False)
+    
+@csrf_exempt
+def check_department_exist(request):
+    name = request.POST.get("department")
+    print(name)
+    name = ' '.join(name.split()).lower()
+    if name_exists := Department.objects.filter(Q(name__iexact=name)).exists():
         return HttpResponse(True)
     else:
         return HttpResponse(False)
