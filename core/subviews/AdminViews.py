@@ -50,6 +50,7 @@ from core.subviews.utilities.accesscontrolutilities import allow_user
 from django.core.files.base import ContentFile
 from iSOFTLIMS.utils.generator_utils.code_generations import generate_custom_code
 from django.db.models import Q
+# from iSOFTLIMS.utils.mail_engine import send_email
 # from core.forms import AddStudentForm, EditStudentForm
 
 # USER NUMBER REFERENCE
@@ -136,6 +137,7 @@ def admin_home(request):
 
     # For Teachers
     teachers = Students.objects.all()
+    
 
     context = {
         "all_student_count": all_student_count,

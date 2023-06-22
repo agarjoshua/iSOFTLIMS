@@ -190,6 +190,7 @@ EMAIL_HOST_USER = 'your-email@example.com'
 EMAIL_HOST_PASSWORD = 'your-email-password'
 DEFAULT_FROM_EMAIL = 'your-email@example.com'
 
+
 # SMS SERVICE
 UWAZII_SMS_API_KEY = 'your-uwazii-sms-api-key'
 UWAZII_SMS_SENDER_ID = 'your-uwazii-sms-sender-id'
@@ -198,3 +199,4 @@ UWAZII_SMS_BASE_URL = 'https://api.uwazii.com/v1/'
 
 # IDLE TIME CONFIGURATIONS
 # SESSION_COOKIE_AGE = 600
+PASSWORD_RESET_TIMEOUT = 86400

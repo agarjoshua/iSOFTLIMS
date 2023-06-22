@@ -2,6 +2,9 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 
 from core.models import HOD, CustomUser, Institution, Staff
+from iSOFTLIMS import settings
+from iSOFTLIMS.utils.auth.password_reset import ForgotPasswordTokenGenerator
+from iSOFTLIMS.utils.mail_engine import send_mail
 from .utils.mail import EmailBackEnd
 from django.contrib.auth import login, logout
 from django.shortcuts import render, redirect
@@ -20,7 +23,20 @@ from django.contrib.auth.views import (
     PasswordResetCompleteView,
 )
 
+
+import sendgrid
+from sendgrid.helpers.mail import Mail
+from django.shortcuts import redirect, render
+from django.contrib.auth.models import User
+
+
+from django.contrib.auth.forms import SetPasswordForm
+from django.contrib.auth.tokens import default_token_generator
+from django.contrib.auth.views import PasswordResetConfirmView
+from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
 # Create your views here.
+
 
 ## USER AUTH CRUD
 def home(request):
@@ -93,11 +109,95 @@ class CustomPasswordResetDoneView(PasswordResetDoneView):
 
 class CustomPasswordResetConfirmView(PasswordResetConfirmView):
     success_url = '/reset/complete/'
-    template_name = 'password_reset/confirm.html'
+    template_name = 'utility_templates/password_reset_confirm.html'
+
+    token_generator = default_token_generator
+    form_class = SetPasswordForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        form = context['form']
+        print(form)
+        context['form'] = form
+        return context
 
 class CustomPasswordResetCompleteView(PasswordResetCompleteView):
     template_name = 'password_reset/reset_complete.html'
 
+
+def send_reset_email(request):
+    print(']]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]')
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        try:
+            user = CustomUser.objects.get(email=email)
+        except CustomUser.DoesNotExist:
+            # Handle user not found error
+            return render(request, 'reset_email.html', {'error': 'User not found'})
+        print(']]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]')
+        reset_token_generator_object = ForgotPasswordTokenGenerator()
+        password_reset_token = reset_token_generator_object.make_token(user)
+        reset_link = f'{_get_base_url(request)}/reset/confirm/{user.id}/{password_reset_token}'
+
+        print(reset_link)
+
+        recepient=email,
+        subject='Password Reset',
+        message=f'Click the link to reset your password: {reset_link}'
+        try:
+            # response = send_mail(recepient,subject,message)
+            print('hello')
+        except Exception as e:
+            return e
+
+        # Redirect the user after sending the email
+        return redirect('password_reset_done')
+
+    return render(request, 'utility_templates/reset_email.html')
+
+def _get_base_url(request):
+    if settings.DEBUG:
+        # Running locally
+        print(']]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]')
+        print(request.build_absolute_uri('/')[:-1])
+        print('[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]')
+        return request.build_absolute_uri('/')[:-1]
+    else:
+        # Hosted environment
+        return 'https://isoft.azurewebsites.net/'
+
+# class CustomPasswordResetConfirmView(PasswordResetConfirmView):
+#     template_name = 'utility_templates/password_reset_confirm.html'  # Replace with your template name
+#     success_url = reverse_lazy('password_reset_complete')  # Replace with your reset complete URL
+#     token_generator = default_token_generator
+#     form_class = SetPasswordForm
+
+#     def form_valid(self, form):
+#         # Perform additional actions when the form is valid
+#         # For example, you can log the user in after the password reset
+#         user = form.save()
+#         # Log in the user (optional)
+#         self.user_login(user)
+#         return super().form_valid(form)
+
+#     def user_login(self, user):
+#         # Custom logic to log in the user
+#         # For example, you can use Django's built-in login function
+#         login(self.request, user)
+    
+    
+
+def custom_password_reset_confirm(request, uidb64, token):
+    # Retrieve user and perform token validation (code omitted for brevity)
+
+    # Create the password reset confirmation form
+    form = SetPasswordForm(user=user)
+
+    # Render the template with the form and other necessary context variables
+    context = {
+        'form': form,
+    }
+    return render(request, 'password_reset_confirm.html', context)
 
 def get_user_details(request):
     if request.user != None:
