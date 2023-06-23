@@ -126,7 +126,6 @@ class CustomPasswordResetCompleteView(PasswordResetCompleteView):
 
 
 def send_reset_email(request):
-    print(']]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]')
     if request.method == 'POST':
         email = request.POST.get('email')
         try:
@@ -134,18 +133,16 @@ def send_reset_email(request):
         except CustomUser.DoesNotExist:
             # Handle user not found error
             return render(request, 'reset_email.html', {'error': 'User not found'})
-        print(']]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]')
         reset_token_generator_object = ForgotPasswordTokenGenerator()
         password_reset_token = reset_token_generator_object.make_token(user)
         reset_link = f'{_get_base_url(request)}/reset/confirm/{user.id}/{password_reset_token}'
 
-        print(reset_link)
+        recepient=email
+        subject='Password Reset'
+        message=f'Click the link to reset your password:{reset_link}'
 
-        recepient=email,
-        subject='Password Reset',
-        message=f'Click the link to reset your password: {reset_link}'
         try:
-            # response = send_mail(recepient,subject,message)
+            send_mail(recepient,subject,message)
             print('hello')
         except Exception as e:
             return e
@@ -158,33 +155,10 @@ def send_reset_email(request):
 def _get_base_url(request):
     if settings.DEBUG:
         # Running locally
-        print(']]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]')
-        print(request.build_absolute_uri('/')[:-1])
-        print('[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]')
         return request.build_absolute_uri('/')[:-1]
     else:
         # Hosted environment
         return 'https://isoft.azurewebsites.net/'
-
-# class CustomPasswordResetConfirmView(PasswordResetConfirmView):
-#     template_name = 'utility_templates/password_reset_confirm.html'  # Replace with your template name
-#     success_url = reverse_lazy('password_reset_complete')  # Replace with your reset complete URL
-#     token_generator = default_token_generator
-#     form_class = SetPasswordForm
-
-#     def form_valid(self, form):
-#         # Perform additional actions when the form is valid
-#         # For example, you can log the user in after the password reset
-#         user = form.save()
-#         # Log in the user (optional)
-#         self.user_login(user)
-#         return super().form_valid(form)
-
-#     def user_login(self, user):
-#         # Custom logic to log in the user
-#         # For example, you can use Django's built-in login function
-#         login(self.request, user)
-    
     
 
 def custom_password_reset_confirm(request, uidb64, token):
