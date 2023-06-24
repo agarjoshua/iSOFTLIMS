@@ -48,7 +48,7 @@ INSTALLED_APPS = [
     'django_select2',
     # ...
     "debug_toolbar",
-    "sendgrid",
+    # "sendgrid",
     # ...
     # "django_faker",
 ]
