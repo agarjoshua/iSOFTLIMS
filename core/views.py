@@ -111,15 +111,17 @@ class CustomPasswordResetConfirmView(PasswordResetConfirmView):
     success_url = '/reset/complete/'
     template_name = 'utility_templates/password_reset_confirm.html'
 
-    token_generator = default_token_generator
-    form_class = SetPasswordForm
+#     token_generator = default_token_generator
+#     form_class = SetPasswordForm
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        form = context['form']
-        print(form)
-        context['form'] = form
-        return context
+#     print(form_class)
+
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         form = context['form']
+#         print(form)
+#         context['form'] = form
+#         return context
 
 class CustomPasswordResetCompleteView(PasswordResetCompleteView):
     template_name = 'password_reset/reset_complete.html'

@@ -17,7 +17,7 @@ def send_mail(recepient,subject,message):
         # html_content=Content('<strong>and easy to do anywhere, even with Python</strong>')
     )
     try:
-        sg = SendGridAPIClient(api_key='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')
+        sg = SendGridAPIClient(api_key='')
         response = sg.send(message)
         print(response.status_code)
         print(response.body)
