@@ -37,6 +37,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 # Create your views here.
 
+from django.contrib.messages.views import SuccessMessageMixin
 
 ## USER AUTH CRUD
 def home(request):
@@ -99,81 +100,6 @@ def doLogin(request):
         messages.error(request, "Invalid Login Credentials!")
         #return HttpResponseRedirect("/")
         return redirect('login')
-
-class CustomPasswordResetView(PasswordResetView):
-    email_template_name = 'password_reset/email.html'
-    success_url = '/reset/done/'
-
-class CustomPasswordResetDoneView(PasswordResetDoneView):
-    template_name = 'password_reset/reset_done.html'
-
-class CustomPasswordResetConfirmView(PasswordResetConfirmView):
-    success_url = '/reset/complete/'
-    template_name = 'utility_templates/password_reset_confirm.html'
-
-#     token_generator = default_token_generator
-#     form_class = SetPasswordForm
-
-#     print(form_class)
-
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         form = context['form']
-#         print(form)
-#         context['form'] = form
-#         return context
-
-class CustomPasswordResetCompleteView(PasswordResetCompleteView):
-    template_name = 'password_reset/reset_complete.html'
-
-
-def send_reset_email(request):
-    if request.method == 'POST':
-        email = request.POST.get('email')
-        try:
-            user = CustomUser.objects.get(email=email)
-        except CustomUser.DoesNotExist:
-            # Handle user not found error
-            return render(request, 'reset_email.html', {'error': 'User not found'})
-        reset_token_generator_object = ForgotPasswordTokenGenerator()
-        password_reset_token = reset_token_generator_object.make_token(user)
-        reset_link = f'{_get_base_url(request)}/reset/confirm/{user.id}/{password_reset_token}'
-
-        recepient=email
-        subject='Password Reset'
-        message=f'Click the link to reset your password:{reset_link}'
-
-        try:
-            send_mail(recepient,subject,message)
-            print('hello')
-        except Exception as e:
-            return e
-
-        # Redirect the user after sending the email
-        return redirect('password_reset_done')
-
-    return render(request, 'utility_templates/reset_email.html')
-
-def _get_base_url(request):
-    if settings.DEBUG:
-        # Running locally
-        return request.build_absolute_uri('/')[:-1]
-    else:
-        # Hosted environment
-        return 'https://isoft.azurewebsites.net/'
-    
-
-def custom_password_reset_confirm(request, uidb64, token):
-    # Retrieve user and perform token validation (code omitted for brevity)
-
-    # Create the password reset confirmation form
-    form = SetPasswordForm(user=user)
-
-    # Render the template with the form and other necessary context variables
-    context = {
-        'form': form,
-    }
-    return render(request, 'password_reset_confirm.html', context)
 
 def get_user_details(request):
     if request.user != None:

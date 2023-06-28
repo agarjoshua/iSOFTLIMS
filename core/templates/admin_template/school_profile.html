@@ -72,15 +72,18 @@ School Management Details
                                     <!-- form start -->
                                     <div class="card-body">
                                         <form method="post" action="{% url 'admin_school_update'%}">
-                                            {% csrf_token %} {{ form.as_p }}
+                                            {% csrf_token %} 
+                                            <div>
+                                                <img src="{{ student.profile_pic }}" style="width: 100px;" />
+                                                <img src="{{ institution.logo }}" alt="Uploaded Image">
+                                            </div>
+                                            {{ form.as_p }}
                                             <div class="ml-1">
                                                 <button class="btn btn-primary" type="submit">Submit</button>
                                                 <br/>&nbsp;
                                             </div>
                                             
                                         </form>
-
-
                                     </div>
                                 </div>
                                 <!-- /.card -->

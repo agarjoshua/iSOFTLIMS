@@ -12,11 +12,13 @@ urlpatterns = [
     path("register/", views.applicantloginPage, name="register"),
     path("doSignUp/", ApplicantViews.applicantsignup, name="doSignUp"), # type: ignore
 
+    path('', include('django.contrib.auth.urls')),
+
     # path('reset/', views.PasswordResetView.as_view(), name='password_reset'),
-    path('reset/', views.send_reset_email, name='password_reset'),
-    path('reset/done/', views.PasswordResetDoneView.as_view(), name='password_reset_done'),
-    path('reset/confirm/<uidb64>/<token>/', views.CustomPasswordResetConfirmView.as_view(), name='password_reset_confirm'),
-    path('reset/complete/', views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
+    # # path('reset/', views.send_reset_email, name='password_reset'),
+    # path('reset/done/', views.PasswordResetDoneView.as_view(), name='password_reset_done'),
+    # path('reset/confirm/<uidb64>/<token>/', views.ResetPasswordView.as_view(), name='password_reset_confirm'),
+    # path('reset/complete/', views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
     # path('password/', include('password_reset.urls')),
 
     path('applicant_home/', ApplicantViews.applicant_home, name="applicant_home"), # type: ignore

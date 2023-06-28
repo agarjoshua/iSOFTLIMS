@@ -218,6 +218,7 @@ def school_profile(request):
                     pass
         return integers
     
+    form.fields["logo"].initial = institution.logo
     form.fields["institution_code"].initial = institution.institution_code
     form.fields["name"].initial = institution.name 
     form.fields["country"].initial = institution.country 
@@ -256,7 +257,7 @@ def school_profile(request):
     for field_name, field_value in bank_data.items():
         if field_name in form.fields:
             form.fields[field_name].initial = field_value
-    form.fields["logo"].initial = institution.logo 
+    
 
 
     context = {"user": user, "institution": institution, "form":form}
@@ -299,7 +300,8 @@ def admin_school_update(request):
         institution_type = form["institution_type"].value()
         institution_in_ASAL_area = form["institution_in_ASAL_area"].value()
         institution_residence = form["institution_residence"].value()
-        institution_logo = form["logo"].value()
+        institution_logo = form["logo"]
+        print(institution_logo)
 
         # save_path = 'media'  # Replace with your desired save path
 
@@ -308,10 +310,17 @@ def admin_school_update(request):
         #     f.write(institution_logo)
 
           # Replace with your desired save path
+        if len(request.FILES) != 0:
+            institution_logo = request.FILES["logo"]
+            fs = FileSystemStorage()
+            filename = fs.save(institution_logo.name, institution_logo)
+            institution_logo_url = fs.url(filename)
+        else:
+            institution_logo_url = None
             
         
         print('=========================================================================')
-        print(institution_logo)
+        print(institution_logo_url)
         print(form["logo"].value())
         print(form["logo"])
         print('=========================================================================')
@@ -335,7 +344,6 @@ def admin_school_update(request):
                 data[field_name] = form[field_name].value()
 
             json_data = json.dumps(data)
-            print(json_data)
 
             return json_data
 
@@ -367,7 +375,6 @@ def admin_school_update(request):
                 data[field_name] = form[field_name].value()
 
             json_data = json.dumps(data)
-            print(json_data)
 
             return json_data
         contact_details_var = contact_details(form)
@@ -449,10 +456,9 @@ def admin_school_update(request):
             specific_institution.institution_statutory_numbers = other_statutory_details_var
             specific_institution.currency = currency
             specific_institution.bank_details = bank_details_var
-
-            specific_institution.logo = institution_logo
-
-            # specific_institution.save()
+            specific_institution.logo = institution_logo_url
+            # print(institution_logo_url)
+            specific_institution.save()
         except Exception as e:
             print(e)
             return e

@@ -30,7 +30,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["*","isoft.azurewebsites.net","https://isoft.azurewebsites.net"]
 
-CSRF_TRUSTED_ORIGINS = ["'https://'+ os.environ['WEBSITE_HOSTNAME']","https://isoft.azurewebsites.net/","https://*.127.0.0.1","https://*.azurewebsites.net/"]
+CSRF_TRUSTED_ORIGINS = ["'https://'+ os.environ['WEBSITE_HOSTNAME']","https://isoft.azurewebsites.net/","https://*.127.0.0.1","https://*.azurewebsites.net/","http://*.127.0.0.1"]
 
 # Application definition
 
@@ -149,17 +149,6 @@ STATIC_URL = 'static/'
 MEDIA_URL = 'media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-# Extra places for collectstatic to find static files.
-# STATICFILES_DIRS = (
-#     os.path.join(BASE_DIR, 'static'),
-# )
-# if not DEBUG:
-#         STATIC_ROOT = ''
-    
-# STATICFILES_DIRS = [
-#     os.path.join(BASE_DIR, 'static/'),
-#     ]
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
@@ -183,13 +172,14 @@ INTERNAL_IPS = [
 ]
 
 # EMAIL SERVICE
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.sendgrid.net'
+EMAIL_HOST_USER = 'apikey' # this is exactly the value 'apikey'
+EMAIL_HOST_PASSWORD = 'EMAIL_HOST_PASSWORD' # this is your API key
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'your-email-host'
-EMAIL_PORT = 587  # or the appropriate port number
-EMAIL_USE_TLS = True  # or False if not using TLS
-EMAIL_HOST_USER = 'your-email@example.com'
-EMAIL_HOST_PASSWORD = 'your-email-password'
-DEFAULT_FROM_EMAIL = 'your-email@example.com'
+DEFAULT_FROM_EMAIL = 'ilims@isoftsystems.co.ke' # this is the sendgrid email
 
 
 # SMS SERVICE
@@ -201,3 +191,8 @@ UWAZII_SMS_BASE_URL = 'https://api.uwazii.com/v1/'
 # IDLE TIME CONFIGURATIONS
 # SESSION_COOKIE_AGE = 600
 PASSWORD_RESET_TIMEOUT = 86400
+
+# CSRF_COOKIE_SECURE = False
+# SESSION_COOKIE_SECURE = False
+
+LOGIN_URL = '/'
