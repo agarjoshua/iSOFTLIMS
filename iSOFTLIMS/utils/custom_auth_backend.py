@@ -9,38 +9,29 @@ from django.contrib import messages
 from django.contrib.messages import constants as message_constants
 
 User = get_user_model()
-
 class EmailMaxLoginAttemptsBackend(ModelBackend):
     def authenticate(self, request, email=None, password=None, **kwargs):
         try:
             user = User.objects.get(email=email)
-            current_time = timezone.now()
 
-            # Check if cooldown period has expired
-            if user.login_attempts >= 5:
-                cooldown_end_time = user.cooldown_end_time
+            if user.account_status == 'Deactivated':
+                print("deactivated")
+                messages.error(request, "Your account has been deactivated. Please click activate to start the activation process.")
+                return None
 
-                if cooldown_end_time and cooldown_end_time > current_time:
-                    remaining_time = (cooldown_end_time - current_time).total_seconds() // 60
-                    messages.error(request,f"Too many failed attempts. Please try again after {remaining_time} minutes.")
-                    return None
-
-                if cooldown_end_time and cooldown_end_time <= current_time:
-                    user.login_attempts = 0
-                    user.cooldown_end_time = None
-                    user.save(update_fields=['login_attempts', 'cooldown_end_time'])
+            if user.login_attempts >= 3:
+                user.account_status = 'Deactivated'
+                messages.error(request, "Too many failed attempts. Your account has been temporarily locked.")
+                user.save(update_fields=['account_status'])
+                return None
 
             if user.check_password(password):
                 user.login_attempts = 0
-                user.cooldown_end_time = None
-                user.save(update_fields=['login_attempts', 'cooldown_end_time'])
+                user.save(update_fields=['login_attempts'])
                 return user
             else:
                 user.login_attempts += 1
-                if user.login_attempts % 5 == 0:
-                    cooldown_end_time = current_time + datetime.timedelta(minutes=5)
-                    user.cooldown_end_time = cooldown_end_time
-                user.save(update_fields=['login_attempts', 'cooldown_end_time'])
+                user.save(update_fields=['login_attempts'])
                 return None
         except User.DoesNotExist:
             return None

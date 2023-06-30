@@ -28,13 +28,18 @@ urlpatterns = [
     path("doLogin/", views.doLogin, name="doLogin"),
     path("get_user_details/", views.get_user_details, name="get_user_details"),
     path("logout_user/", views.logout_user, name="logout_user"),
+    path("activate_account", views.activate_account, name='activate_account'),
+    path("activate_user/<user_id>", AdminViews.activate_user, name='activate_user'),
+    path("deactivate_user/<user_id>", AdminViews.deactivate_user, name='deactivate_user'),
+    
 
 
     # ADMIN URLS
-    path('doLogin/', views.doLogin, name="doLogin"),
     path('get_user_details/', views.get_user_details, name="get_user_details"),
     path('logout_user/', views.logout_user, name="logout_user"),
     path('admin_home/', AdminViews.admin_home, name="admin_home"),
+
+    path('manage_users/', AdminViews.manage_users, name="manage_users"),
     # path('admin_view_attendance/', AdminViews.admin_view_attendance, name="admin_view_attendance"),
     # path('admin_get_attendance_dates/', AdminViews.admin_get_attendance_dates, name="admin_get_attendance_dates"),
     # path('admin_get_attendance_student/', AdminViews.admin_get_attendance_student, name="admin_get_attendance_student"),

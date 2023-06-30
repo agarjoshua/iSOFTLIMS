@@ -474,6 +474,36 @@ def admin_school_update(request):
     #     return redirect("school_profile")
 
 
+def manage_users(request):
+    users = CustomUser.objects.all()
+    context = {
+        "users":users
+    }
+    return render(request,'admin_template/manage_users_template.html', context)
+
+def activate_user(request, user_id):
+    user = CustomUser.objects.get(id=user_id)
+    try:
+        user.account_status = 'Active'
+        user.save()
+        messages.success(request, "Account Activated!")
+        return redirect('manage_users')
+    except CustomUser.DoesNotExist:
+        messages.error(request, "User does not exist")
+        return redirect('manage_users')
+
+def deactivate_user(request, user_id):
+    user = CustomUser.objects.get(id=user_id)
+    # try:
+    user.account_status = 'Deactivated'
+    user.save()
+    messages.warning(request, "Account Dectivated!")
+    return redirect('manage_users')
+    # except CustomUser.DoesNotExist:
+    #     messages.error(request, "User does not exist")
+    #     return redirect('manage_users')
+
+
 def add_staff(request):
     staff_type = StaffType.objects.all()
     departments = Department.objects.all()

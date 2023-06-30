@@ -97,6 +97,13 @@ class CustomUser(AbstractUser):
     institution = models.ForeignKey(Institution, on_delete=models.DO_NOTHING, null=True)
     login_attempts = models.PositiveIntegerField(default=0)
     cooldown_end_time = models.DateTimeField(null=True, blank=True)
+    user_account_status = (
+        ("Suspended", "Suspended"),
+        ("Deactivated", "Deactivated"),
+        ("Activation Requested", "Activation Requested"),
+        ("Active", "Active"),
+    )
+    account_status = models.CharField(default="Active", choices=user_account_status, max_length=20)
 
 
 class Admin(models.Model):
