@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+ 
+{% block content %}
+{% load static %}
+
+<body class="hold-transition login-page">
+
+      <div class="login-box">
+        
+        <!-- /.login-logo -->
+        <div class="card">
+          <div class="container">
+            <div class="row mt-5 justify-content-center">
+                <div class="col-md-6">
+                    <div class="circle-img mx-auto">
+                        <img src="{% static 'media/images/limslogo.png' %}" alt="Profile Image" class="img-fluid">
+                    </div>
+                </div>
+            </div>
+  
+            <h6 class=" mt-3 nowrap text-center">iSoft Systems University of Information and Technology</h6>
+            
+            
+          </div>
+
+          <div class="card-body rounded-lg login-card-body pb-5">
+            {% comment %} Display Messages {% endcomment %}
+                {% if messages %}
+                <div class="col-12">
+                  {% for message in messages %}
+                    {% if message.tags == "error" %}
+                      <div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                        {{ message }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                  Powered By iSoft Systems
+                </h6>
+              </div>
+            </form>
+
+        </div>
+      </div>
+      <!-- /.login-box -->
+</body>
+
+
+{% endblock content %}
+
+<!-- jQuery -->
+<script src="{% static "jquery/jquery.min.js"  %}"></script>
+<!-- jQuery UI 1.11.4 -->
+<script src="{% static "jquery-ui/jquery-ui.min.js"  %}"></script>
+<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+<script>
+  $.widget.bridge('uibutton', $.ui.button)
+</script>
+<!-- Bootstrap 4 -->
+<script src="{% static "bootstrap/js/bootstrap.bundle.min.js"  %}"></script>
+
+{% block custom_js %}
+
+<script>
+  function togglePasswordVisibility() {
+    console.log('angelo')
+    var passwordInput = document.getElementById('password');
+    var icon = document.querySelector('.password-toggle i');
+
+    if (passwordInput.type === 'password') {
+      passwordInput.type = 'text';
+      icon.classList.remove('fa-eye');
+      icon.classList.add('fa-eye-slash');
+    } else {
+      passwordInput.type = 'password';
+      icon.classList.remove('fa-eye-slash');
+      icon.classList.add('fa-eye');
+    }
+  }
+</script>
+
+{% endblock custom_js %}
