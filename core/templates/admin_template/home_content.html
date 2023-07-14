@@ -4,6 +4,8 @@
 
 {% load static %}
 
+<!-- <button id="darkModeButton" class="btn btn-primary">Toggle Dark Mode</button> -->
+
 <section class="content">
         <div class="container-fluid">
           <!-- Small boxes (Stat box) -->
@@ -367,7 +369,50 @@
         options: barChartOptions2
       })
 
+      // Check if dark mode preference is set in local storage
+      console.log('I am in the code')
+      const prefersDarkMode = localStorage.getItem('darkMode');
+
+      // Apply the dark mode class to body if the preference is set
+      if (prefersDarkMode === 'true') {
+        console.log('I am in the code clicked maxxx')
+        $('body').addClass('dark-mode');
+      }
+
+      // Toggle dark mode when the button is clicked
+      $('#darkModeButton').on('click', function() {
+        // Toggle the dark mode class on body
+        $('body').toggleClass('dark-mode');
+
+        // Update the preference in local storage
+        const isDarkMode = $('body').hasClass('dark-mode');
+        localStorage.setItem('darkMode', isDarkMode.toString());
+      });
+
     })
+
+    $(document).ready(function() {
+      // Check if dark mode preference is set in local storage
+      console.log('I am in the code')
+      const prefersDarkMode = localStorage.getItem('darkMode');
+
+      // Apply the dark mode class to body if the preference is set
+      if (prefersDarkMode === 'true') {
+        console.log('I am in the code clicked maxxx')
+        $('body').addClass('dark-mode');
+      }
+
+      // Toggle dark mode when the button is clicked
+      $('#darkModeButton').on('click', function() {
+        // Toggle the dark mode class on body
+        $('body').toggleClass('dark-mode');
+
+        // Update the preference in local storage
+        const isDarkMode = $('body').hasClass('dark-mode');
+        localStorage.setItem('darkMode', isDarkMode.toString());
+      });
+    });
+
   </script>
 
   {% endblock custom_js %}

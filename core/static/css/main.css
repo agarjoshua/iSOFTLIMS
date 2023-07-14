@@ -8,5 +8,34 @@ body {
     background-color: #3FC3D2 !important;
 }
 
+/* Custom CSS */
 
+body {
+  /* Default light mode styles */
+  background-color: #ffffff !important;
+  color: #333333 !important;
+}
+
+body.dark-mode {
+  /* Dark mode styles */
+  background-color: #333333 !important;
+  color: #ffffff !important;
+}
+
+/* Add any other custom styles for dark mode */
+.dark-mode .navbar {
+  background-color: #222222 !important;
+  color: #ffffff !important;
+}
+
+.dark-mode .btn {
+  background-color: #222222 !important;
+  color: #ffffff !important;
+}
+
+.dark-mode .card {
+  background-color: #222222 !important;
+  color: #ffffff !important;
+  border-color: #ffffff !important;
+}
 
