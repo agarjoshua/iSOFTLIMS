@@ -29,9 +29,9 @@
     <div class="navi">
       <div class="">
         <nav class="d-flex justify-content-center">
-          <div class="row justify-content-between">
-            <div class="col-md-2">
-                <div class="circle-img">
+          <div class="col-md-8 row justify-content-around pl-0">
+            <div class="col-md-1 justify-content-start lims-img pl-0">
+                <div class="circle-img pl-0">
                     <img src="{% static 'media/images/limslogobgless.png' %}" alt="Profile Image" class="img-fluid">
                 </div>
             </div>
@@ -57,6 +57,7 @@
           <div>
             <div class="text-muted font-weight-light">.
               </div>
+              <hr>
           </div>
           </div>
         </div>
@@ -180,19 +181,23 @@
     
   </body>
   <footer class="mt-5 pt-5">
-    <section class="container d-flex flex-column justify-content-end align-items-center">
-      <h6 class=" mt-2">
-        Contact Isoft support: 070 0000 000 (safaricom), 020 0000 000 (Telkom)
-      </h6>
-      <h6>
-        E-mail: info@isfoft.co.ke  |  complaints@isfoft.co.ke |
-Copyright © 2023 iSoft Systems. All Rights Reserved. | 
-v1.1
-      </h6>
-      <h6 class="font-weight-bold mt-2">
-        Powered By iSoft Systems
-      </h6>
-    </section>
+    <div class="container-fluid">
+      <div class="mt-2 row justify-content-around pt-4">
+        <p class="">
+          Integrated Software Systems Limited (Soft Systems)
+        </p>
+        <p>
+          Copyright ©Integrated Software Systems Limited (Soft Systems) 2023 All Rights Reserved
+        </p>
+        <p class="font-weight-bold mt-2">
+          Powered By iSoft Systems
+        </p>
+  
+      </div>
+
+    </div>
+    
+
   </footer>
 
   {% block custom_js %}
