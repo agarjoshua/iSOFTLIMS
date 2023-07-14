@@ -23,55 +23,53 @@
 <body>
   <div class="">
 
-  <header class="header container-fluid ">
-    <div class="row flex-nowrap justify-content-around align-items-center">
-      <div class="col-4 pt-1">
-        <div class=" text-dark">
-          Contact iSoft support: 070 0000 000 (safaricom), 020 0000 000 (Telkom)</div>
-      </div>
-      <div>
-        <div class="text-muted font-weight-light">
-          |</div>
-      </div>
-      </div>
-    </div>
-  </header>
-
   </div>
 
   <body class="hold-transition login-page">
-    <div class="container">
-
-      
-    
-      <div class="nav-scroller py-1 mb-2">
-        <nav class="nav d-flex justify-content-between">
-          <div class="row justify-content-center">
-            <div class="col-md-6">
-                <div class="circle-img mx-auto">
-                    <img src="{% static 'media/images/logol.png' %}" alt="Profile Image" class="img-fluid">
+    <div class="navi">
+      <div class="">
+        <nav class="d-flex justify-content-center">
+          <div class="row justify-content-between">
+            <div class="col-md-2">
+                <div class="circle-img">
+                    <img src="{% static 'media/images/limslogobgless.png' %}" alt="Profile Image" class="img-fluid">
                 </div>
             </div>
-        </div>
-        <div class="align-self-center font-weight-bold large">
-          <h5 class="align-self-center font-weight-bold large">iSoft Systems University of Information and Technology</h5>
-        </div>
-        <div class="align-self-center justify-content-end">
-          <a class="btn btn-sm btn-outline-light font-weight-bold text-white" href="{% url 'register' %}">Register/Enroll</a>
-        </div>
-
-        
+            <div class="align-self-center font-weight-bold large text-dark">
+              <h5 class="align-self-center font-weight-bold large">iSoft Systems University of Information and Technology</h5>
+            </div>
+            <div class="align-self-center justify-content-start text-dark">
+              <a class="btn btn-sm btn-outline-dark font-weight-bold text-dark" href="{% url 'register' %}">Register/Enroll</a>
+            </div>
+          </div>
         </nav>
       </div>
 
     </div>
+
+    <div class="">
+
+      <header class="container-fluid">
+        <div class="row flex-nowrap justify-content-around align-items-center">
+          <div class="col-4 pt-1 text-muted">
+            .
+          </div>
+          <div>
+            <div class="text-muted font-weight-light">.
+              </div>
+          </div>
+          </div>
+        </div>
+      </header>
+    
+      </div>
     
   
-    <section class="login-block h-70">
-      <div class="container container-b">
+    <section class="login-block h-">
+      <div class="container ">
         <div class="row">
           
-          <div class="col-md-8 banner-sec">
+          <div class="col-md-8 banner-sec mr-0">
             <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
               <ol class="carousel-indicators">
                 <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
@@ -84,9 +82,8 @@
                     alt="First slide">
                   <div class="carousel-caption d-none d-md-block">
                     <div class="banner-text">
-                      <h2>This is First Slide</h2>
-                      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                        labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation</p>
+                      <h2>Core Module</h2>
+                      <p>The Core module in a Learning Management System (LMS) serves as the foundation for all other modules. It includes essential features and functionalities that are common to most LMS platforms. The Core module typically manages user authentication and access control, allowing administrators to create and manage user accounts, roles, and permissions. It may also include features such as a dashboard for administrators, announcements, messaging systems, and reporting capabilities.</p>
                     </div>
                   </div>
                 </div>
@@ -95,9 +92,8 @@
                     src="https://plus.unsplash.com/premium_photo-1661963502826-a0ccb55196fd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Second slide">
                   <div class="carousel-caption d-none d-md-block">
                     <div class="banner-text">
-                      <h2>This is Second Slide</h2>
-                      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                        labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation</p>
+                      <h2>Academic Module</h2>
+                      <p>The Academic module in an LMS focuses on the management of academic-related activities and resources. It typically includes features for course management, such as creating and organizing courses, uploading course materials (e.g., syllabi, lecture notes, assignments), and managing course enrollment. The Academic module may also provide tools for communication between instructors and students, such as discussion boards or chat functionalities. Additionally, it may include features for tracking and assessing student progress, such as gradebooks, quizzes, and assignment submission portals</p>
                     </div>
                   </div>
                 </div>
@@ -106,9 +102,8 @@
                     alt="Third slide">
                   <div class="carousel-caption d-none d-md-block">
                     <div class="banner-text">
-                      <h2>This is Heaven</h2>
-                      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                        labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation</p>
+                      <h2>Library Module</h2>
+                      <p>Provides a platform for managing and accessing digital resources such as e-books, journals, articles, videos, and other educational materials. This module serves as a centralized repository for learning materials and supports seamless integration with the LMS ecosystem</p>
                     </div>
                   </div>
                 </div>
@@ -118,16 +113,10 @@
           </div>
 
           <div class="col-md-4">
-            <div class="login-box">
+            <div class="login-box bg-light ps-0">
         
               <!-- /.login-logo -->
               <div class="">
-                <div class="container">
-                  
-                  
-                  
-                </div>
-      
                 <div class="card-body rounded-lg login-card-body pb-5">
                   {% comment %} Display Messages {% endcomment %}
                       {% if messages %}
@@ -170,12 +159,12 @@
                       </div>
       
                       <div class="row d-flex mt-3 ">
-                        <div class="col-md-6">
+                        <div class="col-md-6 text-dark">
                           
-                          <a href="{% url 'password_reset' %}">Forgot Password</a>
+                          <a href="{% url 'password_reset' %}" class="no-blue-underline">Forgot Password</a>
                         </div> 
                         <div class="col-md-6 text-md-right">
-                          <a href="{% url 'activate_account'%}">Activate Account</a>
+                          <a href="{% url 'activate_account'%}" class="no-blue-underline">Activate Account</a>
                         </div> 
                       </div>
                       <!-- /.col -->

@@ -9,10 +9,12 @@ def academics_home(request):
     session_years = Session.objects.all()
     communicationsform = AcademicCommunicationForm()
     communication_list = AcademicCommunications.objects.all()
+    sessions_number = session_years.count()
     context = {
         "session_years": session_years[:3],
         "communicationsform": communicationsform,
-        "communication_list": communication_list
+        "communication_list": communication_list,
+        "sessions_number":sessions_number
         }
     
     return render(request, "academics_home.html", context)

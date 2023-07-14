@@ -7,8 +7,10 @@
 <!-- <button id="darkModeButton" class="btn btn-primary">Toggle Dark Mode</button> -->
 
 <section class="content">
+  <a class="btn btn-primary ml-2" href="{% url 'school_profile' %}" role="button">+ Set Up Institution</a> <br />&nbsp;
         <div class="container-fluid">
           <!-- Small boxes (Stat box) -->
+          
           <div class="row">
             <div class="col-lg-3 col-6">
               <!-- small box -->
@@ -20,6 +22,7 @@
                 </div>
                 <div class="icon">
                   <i class="ion ion-stats-bars"></i>
+                  
                 </div>
                 <a href="{% url 'manage_students' %}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
               </div>

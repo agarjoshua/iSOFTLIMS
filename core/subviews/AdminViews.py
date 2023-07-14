@@ -87,9 +87,6 @@ def admin_home(request):
         department_name_list.append(department_name_list_obj)
         students_in_departments_list_obj = Students.objects.filter(department_id=i.id).count()
         students_in_departments_list.append(students_in_departments_list_obj)
-
-    print(department_name_list,students_in_departments_list)
-
     # subject_all = Subjects.objects.all()
     # subject_list = []
     # student_count_list_in_subject = []
