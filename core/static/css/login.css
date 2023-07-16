@@ -28,6 +28,22 @@ body {
 	background-color: #ffffff;
 }
 
+.logo-margin {
+	margin-left: -1.6rem !important;
+}
+
+@media (min-width: 992px) {
+	.icon-elem {
+	  margin-right: 2rem !important; /* Increase distance to the right */
+	}
+	
+	.text-elem {
+	  margin-left: 2rem !important; /* Increase distance to the left */
+	}
+  }
+  
+
+
 .login-block {
 	/* background: #DE6262; */
 	/* fallback for old browsers */

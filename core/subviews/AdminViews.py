@@ -214,8 +214,8 @@ def school_profile(request):
                 except ValueError:
                     pass
         return integers
-    
-    form.fields["logo"].initial = institution.logo
+    # print(institution.logo)
+    # form.fields["logo"].initial = institution.logo
     form.fields["institution_code"].initial = institution.institution_code
     form.fields["name"].initial = institution.name 
     form.fields["country"].initial = institution.country 
@@ -297,7 +297,7 @@ def admin_school_update(request):
         institution_type = form["institution_type"].value()
         institution_in_ASAL_area = form["institution_in_ASAL_area"].value()
         institution_residence = form["institution_residence"].value()
-        institution_logo = form["logo"]
+        institution_logo = form["id_logo"]
         print(institution_logo)
 
         # save_path = 'media'  # Replace with your desired save path

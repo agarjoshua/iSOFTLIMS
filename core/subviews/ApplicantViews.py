@@ -32,9 +32,10 @@ def applicantsignup(request):
             )
             user.applicant.application_status = False
             user.save()
-            messages.success(request, "You have been registered Successfully!")
             user = EmailBackEnd.authenticate(request, username=request.POST.get('email'), password=request.POST.get('password'))
-            login(request, user)
+            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+            # login(request, user)
+            messages.success(request, "You have been logged in Successfully!")
             return redirect("applicant_home")
         except Exception as e:
             print(e)  # type: ignore
@@ -44,7 +45,7 @@ def applicantsignup(request):
         form = ApplicantForm()
 
     context = {"form": form}
-    return render(request, "application_form.html", context)
+    return render(request, "applicantsignup.html", context)
 
 
 # @user_passes_test(is_applicant)

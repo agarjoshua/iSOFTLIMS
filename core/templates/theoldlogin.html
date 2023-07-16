@@ -15,6 +15,8 @@
   <link rel="stylesheet" href="{% static 'css/login.css' %}">
 
   <link rel="stylesheet" href="{% static 'fontawesome-free/css/all.min.css' %}">
+
+  <script src="https://cdn.tailwindcss.com"></script>
   
 </head>
 
@@ -29,16 +31,16 @@
     <div class="navi">
       <div class="">
         <nav class="d-flex justify-content-center">
-          <div class="col-md-8 row justify-content-around pl-0">
-            <div class="icon-elem col-md-1 justify-content-start lims-img pl-0">
-                <div class="circle-img pl-0">
+          <div class="col-md-9 row justify-content-around">
+            <div class="col-md-1 justify-content-start">
+                <div class="circle-img pl-0 logo-margin">
                     <img src="{% static 'media/images/limslogobgless.png' %}" alt="Profile Image" class="img-fluid">
                 </div>
             </div>
             <div class="align-self-center font-weight-bold large text-dark">
               <h5 class="align-self-center font-weight-bold large">iSoft Systems University of Information and Technology</h5>
             </div>
-            <div class="text-elem align-self-center justify-content-start text-dark">
+            <div class="align-self-center justify-content-start text-dark ">
               <a class="btn btn-sm btn-outline-dark font-weight-bold text-dark" href="{% url 'register' %}">Apply/Sign Up</a>
             </div>
           </div>
@@ -66,8 +68,8 @@
       </div>
     
   
-    <section class="login-block py-5 mb-4">
-      <div class="container ">
+    <section class="login-block py-5 mb-5">
+      <div class="container col-md-8">
         <div class="row">
           
           <div class="col-md-8 banner-sec mr-0">
@@ -137,28 +139,17 @@
       
                   <form action="{% url 'doLogin' %}" method="POST">
                   {% csrf_token %}
-                  <label for="id_password" class="font-weight-bold text-dark no-blue-underline">User ID/ Username</label>
                     <div class="input-group mb-3">
-                    <div>
-                        <i class="pt-2 pr-2 fas fa-solid fa-user fa-lg" style="color: #1d263e;"></i>
-                    </div>
-                        
-                      <input type="email" class="form-control" placeholder="Enter UserID/Username" name="email">
-                      
+                      <input type="email" class="form-control" placeholder="User ID" name="email">
                       <div class="input-group-append">
-                        
                         <div class="input-group-text">
                           <span class="fas fa-user"></span>
                         </div>
                       </div>
                     </div>
-                    
-                    <label for="id_password" class="font-weight-bold text-dark no-blue-underline">Password</label>
+      
                     <div class="input-group mb-3">
-                      <div>
-                        <i class="pt-2 pr-2 fas fa-solid fa-lock fa-lg" style="color: #1d263e;"></i>
-                      </div>
-                      <input type="password" class="form-control" id="password" name="password" placeholder="Enter Password">
+                      <input type="password" class="form-control" id="password" name="password">
                       <div class="input-group-append">
                         <span class="input-group-text password-toggle" onclick="togglePasswordVisibility()">
                           <i class="fas fa-eye"></i>
@@ -191,30 +182,20 @@
     </section>
     
   </body>
-  <footer class="container-fluid mt-5 pt-5">
-    <div class="row justify-content-center ">
-    <div class="align-items-center text-muted">
-        <p class="small text-center">
-            Support Contact: +254 745 644 126 (Safaricom) | +254 /770 140 377 (Telkom) and +254 733 991 517 (Airtel)
+  <footer class="mt-5 pt-5">
+    <div class="container-fluid">
+      <div class="mt-2 row justify-content-around pt-4">
+        <p class="">
+          Integrated Software Systems Limited (Soft Systems)
         </p>
-        <p class="small text-center">
-            Email: support@isoftsystems.co.ke
+        <p>
+          Copyright ©Integrated Software Systems Limited (Soft Systems) 2023 All Rights Reserved
         </p>
-        <p class="small text-center">
-            Integrated Software Systems Limited (Soft Systems)
+        <p class="font-weight-bold mt-2">
+          Powered By iSoft Systems
         </p>
-    </div>
-
-    </div>
-    <div class="row justify-content-between px-3 text-muted">
-    <p class="small">
-        Copyright ©iSoft Systems 2023. All Rights Reserved
-    </p>
-    <p class="small">
-        iSoft LIMS Versions 1.1.01 Powered By iSoft Systems
-    </p>
-
-    </div>
+  
+      </div>
 
     </div>
     
