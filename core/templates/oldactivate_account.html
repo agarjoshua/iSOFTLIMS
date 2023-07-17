@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+ 
+{% block content %}
+{% load static %}
+
+<body class="hold-transition login-page">
+
+      <div class="login-box">
+        
+        <!-- /.login-logo -->
+        <div class="card">
+          <div class="container">
+            <div class="row mt-5 justify-content-center">
+                <div class="col-md-6">
+                    <div class="circle-img mx-auto">
+                        <img src="{% static 'media/images/limslogo.png' %}" alt="Profile Image" class="img-fluid">
+                    </div>
+                </div>
+            </div>
+  
+            <h6 class=" mt-3 nowrap text-center">iSoft Systems University of Information and Technology</h6>
+
+            <h6 class=" mt-3 nowrap text-center">Enter email to activate account:</h6>
+            
+          </div>
+
+          <div class="card-body rounded-lg login-card-body pb-5">
+            {% comment %} Display Messages {% endcomment %}
+                {% if messages %}
+                <div class="col-12">
+                  {% for message in messages %}
+                    {% if message.tags == "error" %}
+                      <div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                        {{ message }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                    {% endif %}
+                  {% endfor %}
+                </div>
+                {% endif %}
+
+            <form action="{% url "activate_account" %}" method="POST">
+            {% csrf_token %}
+              <div class="input-group mb-3">
+                <input type="email" class="form-control" placeholder="User ID" name="email">
+                <div class="input-group-append">
+                  <div class="input-group-text">
+                    <span class="fas fa-user"></span>
+                  </div>
+                </div>
+              </div>
+
+                <div class="">
+                  <button type="submit" class="activatebutn btn btn-primary btn-block" onclick="">Request Activation</button>
+                </div>
+
+                <!-- /.col -->
+              </div>
+              <div class="container d-flex flex-column justify-content-end align-items-center">
+                <h6 class="text-bolder">
+                  Powered By iSoft Systems
+                </h6>
+              </div>
+            </form>
+
+        </div>
+      </div>
+      <!-- /.login-box -->
+</body>
+
+
+{% endblock content %}
