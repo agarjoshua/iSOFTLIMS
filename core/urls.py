@@ -1,6 +1,7 @@
 from django.urls import path, include
 
 from academics.subviews import classView, studentView
+from iSOFTLIMS import utils
 from . import views
 from core.subviews import AdminViews, StudentViews,StudentAdminAffairs, ApplicantViews
 from django.contrib.auth import views as auth_views
@@ -192,6 +193,7 @@ urlpatterns = [
     path('check_email_exist/', AdminViews.check_email_exist, name="check_email_exist"),
     path('check_username_exist/', AdminViews.check_username_exist, name="check_username_exist"),
     path('check_department_exist/', AdminViews.check_department_exist, name="check_department_exist"),
+    path('generate_pdf/', AdminViews.generate_table_pdf, name="generate_pdf"),
     
     # path('check_cluster_class_exist/', classView.check_cluster_class_exist, name="check_cluster_class_exist")
 ]

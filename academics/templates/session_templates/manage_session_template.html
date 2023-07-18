@@ -38,6 +38,7 @@ Manage Session
         {% endif %}
 
         <div class="row">
+            
             <div class="col-md-12">
                 <!-- general form elements -->
                 <div class="card">
@@ -57,13 +58,14 @@ Manage Session
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body table-responsive p-0">
-                        <table class="table table-hover text-nowrap">
+                        <table class="table table-hover text-nowrap sortable">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
-                                    <th>Session Start Date</th>
-                                    <th>Session End Date</th>
-                                    <th>Is Current session</th>
+                                    <th>Records listing</th>
+                                    <th><a href="?sort=id">ID</a></th>
+                                    <th><a href="?sort=session_start_date">Session Start Date</a></th>
+                                    <th><a href="?sort=session_end_date">Session End Date</a></th>
+                                    <th><a href="?sort=is_current">Is Current Session</a></th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -71,6 +73,11 @@ Manage Session
                                 {% for session_year in session_years %}
                                 <tr {% if not session_year.is_current %} class="text-muted" {% else %} class="text-bold"
                                     {% endif %}>
+                                    {% if not session_year.is_current %} 
+                                    <td>In-Active</td> 
+                                    {% else %} 
+                                    <td>Active</td>
+                                    {% endif %}
                                     <td>{{ session_year.id }}</td>
                                     <td>{{ session_year.session_start_date }}</td>
                                     <td>{{ session_year.session_end_date }}</td>
@@ -105,3 +112,9 @@ Manage Session
 </section>
 
 {% endblock main_content %}
+
+{% block custom_js %}
+<!-- Create a Django template variable to store the JavaScript data -->
+
+
+{% endblock custom_js %}

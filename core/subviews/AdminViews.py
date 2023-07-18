@@ -214,7 +214,6 @@ def school_profile(request):
                 except ValueError:
                     pass
         return integers
-    # print(institution.logo)
     # form.fields["logo"].initial = institution.logo
     form.fields["institution_code"].initial = institution.institution_code
     form.fields["name"].initial = institution.name 
@@ -297,31 +296,16 @@ def admin_school_update(request):
         institution_type = form["institution_type"].value()
         institution_in_ASAL_area = form["institution_in_ASAL_area"].value()
         institution_residence = form["institution_residence"].value()
-        institution_logo = form["id_logo"]
-        print(institution_logo)
+        institution_logo = request.FILES["logo"]
 
-        # save_path = 'media'  # Replace with your desired save path
-
-        # # Save the uploaded file to the determined path
-        # with open(save_path, 'wb') as f:
-        #     f.write(institution_logo)
-
-          # Replace with your desired save path
         if len(request.FILES) != 0:
             institution_logo = request.FILES["logo"]
+            print('----------------------------hello world')
             fs = FileSystemStorage()
             filename = fs.save(institution_logo.name, institution_logo)
             institution_logo_url = fs.url(filename)
         else:
             institution_logo_url = None
-            
-        
-        print('=========================================================================')
-        print(institution_logo_url)
-        print(form["logo"].value())
-        print(form["logo"])
-        print('=========================================================================')
-
 
         def contact_details_json(form): # type: ignore
             field_names = [
@@ -454,21 +438,14 @@ def admin_school_update(request):
             specific_institution.currency = currency
             specific_institution.bank_details = bank_details_var
             specific_institution.logo = institution_logo_url
-            # print(institution_logo_url)
+            print(institution_logo_url)
             specific_institution.save()
         except Exception as e:
             print(e)
             return e
-        # else:
-        #     messages.error(request, "Form not valid")
-        #     return redirect("school_profile")
 
     messages.success(request, "Profile Updated Successfully")
     return redirect("school_profile")
-    # except Exception as e:
-    #     # messages.error(request, "Failed to Update Profile")
-    #     print(e)
-    #     return redirect("school_profile")
 
 
 def manage_users(request):
@@ -761,7 +738,6 @@ def add_student_save(request):
                 profile_pic_url = fs.url(filename)
             else:
                 profile_pic_url = None
-            print(profile_pic_url)
             student_type = form.cleaned_data["student_type"]
             account_status=form.cleaned_data["account_status"]
             academic_status =form.cleaned_data["academic_status"]
@@ -1545,3 +1521,46 @@ def check_department_exist(request):
     else:
         return HttpResponse(False)
 
+@csrf_exempt
+def generate_table_pdf(data, institution):
+    # Create a BytesIO buffer for the PDF
+    buffer = BytesIO()
+
+    # Set up the PDF document
+    doc = SimpleDocTemplate(buffer, pagesize=letter)
+    elements = []
+
+    # Add the institution logo
+    if institution.logo:
+        logo_path = institution.logo.path
+        logo_image = Image(logo_path, width=200, height=100)
+        elements.append(logo_image)
+
+    # Create the table
+    table_data = [[column for column in data[0].keys()]]
+    for row in data:
+        table_data.append([str(row[column]) for column in data[0].keys()])
+
+    table = Table(table_data)
+    table.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (-1, 0), 'grey'),
+        ('TEXTCOLOR', (0, 0), (-1, 0), 'white'),
+        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+        ('FONTSIZE', (0, 0), (-1, 0), 14),
+        ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+        ('BACKGROUND', (0, 1), (-1, -1), 'white'),
+        ('TEXTCOLOR', (0, 1), (-1, -1), 'black'),
+        ('FONTNAME', (0, 1), (-1, -1), 'Helvetica'),
+        ('FONTSIZE', (0, 1), (-1, -1), 12),
+        ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+    ]))
+
+    # Add the table to the PDF document
+    elements.append(table)
+    doc.build(elements)
+
+    # Reset the buffer's file pointer
+    buffer.seek(0)
+
+    return buffer

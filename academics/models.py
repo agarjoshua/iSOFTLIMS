@@ -24,6 +24,20 @@ class Session(models.Model):
         if self.is_current:
             return ('Current Session')
         return f'from - {self.session_start_date} to - {self.session_end_date}'
+    class Meta:
+        ordering = ['id']
+
+    def get_next(self):
+        return Session.objects.filter(id__gt=self.id).order_by('id').first()
+    
+    def get_previous(self):
+        return Session.objects.filter(id__lt=self.id).order_by('-id').first()
+    
+    def get_first(self):
+        return Session.objects.order_by('id').first()
+
+    def get_last(self):
+        return Session.objects.order_by('id').last()
 
 class Enrollment(models.Model):
     id = models.AutoField(primary_key=True)

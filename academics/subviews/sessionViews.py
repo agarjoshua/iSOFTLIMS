@@ -16,10 +16,16 @@ from django.db import DatabaseError, IntegrityError, DataError, OperationalError
  
 
 
-@allow_user('1','2','3','4','5','6') 
+@allow_user('1','2','3','4','5','6')
 def manage_session(request):
     session_years = Session.objects.all()
-    context = {"session_years": session_years}
+
+    if sort_by := request.GET.get('sort'):
+        session_years = session_years.order_by(sort_by)
+
+    context = {
+        "session_years": session_years,
+        }
     return render(request, "session_templates/manage_session_template.html", context)
 
 
@@ -60,16 +66,16 @@ def edit_session(request, session_id):
         if form.is_valid():
             try: 
                 form.save()
-                messages.success(request, "Grade edited Successfully.")
+                messages.success(request, "Session edited Successfully.")
                 return redirect("academics:manage_session")
             except Exception as e:
-                messages.error(request, f"Failed to Edit Grade. bacause {e}")
+                messages.error(request, f"Failed to Edit Session. bacause {e}")
                 form = SessionEditForm(instance=selected_session)
 
         else:
             errors = form.errors
             print(errors) 
-            messages.error(request, "Failed to Edit Grade. Form isnt valid")
+            messages.error(request, "Failed to Edit Session. Form isnt valid")
             return _edit_sessions_helper(selected_session, session_id, request)
     else:
         _edit_sessions_helper(selected_session, session_id, request)
@@ -88,6 +94,6 @@ def delete_session(request, session_id):
         session.delete()
         messages.success(request, "Session Deleted Successfully.")
         return redirect("academics:manage_session")
-    except:
-        messages.error(request, "Failed to Delete Session.")
+    except Exception as e:
+        messages.error(request, f"Failed to Delete Session. {e}")
         return redirect("academics:manage_session")

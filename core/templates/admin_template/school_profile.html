@@ -75,11 +75,11 @@ School Management Details
                                     <!-- /.card-header -->
                                     <!-- form start -->
                                     <div class="card-body">
-                                        <form method="post" action="{% url 'admin_school_update'%}">
+                                        <form method="post" action="{% url 'admin_school_update'%}" enctype="multipart/form-data">
                                             {% csrf_token %} 
                                             <div class="mb-3">
                                                 <h5 class="text-bold">Institution logo:</h5>
-                                                <img src="{{ institution.logo }}" alt="Uploaded Image" id="id_logo">
+                                                <img src="{{ institution.logo }}" alt="Uploaded Image" id="logo" name="logo">
                                             </div>
 
                                             {{ form.as_p }}

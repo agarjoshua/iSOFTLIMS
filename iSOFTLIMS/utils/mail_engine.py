@@ -1,4 +1,5 @@
 
+from core.utils import mail
 import sendgrid
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import *
@@ -9,7 +10,7 @@ from sendgrid.helpers.mail import *
 # message=f'Click the link to reset your password:{reset_link}'
 
 def send_mail(recepient,subject,message):
-    message = Mail(
+    message = mail(
         from_email=From('ilims@isoftsystems.co.ke'),
         to_emails=To(recepient),
         subject=Subject(subject),
