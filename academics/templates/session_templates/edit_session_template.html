@@ -9,23 +9,7 @@
 {% load static %}
 
 <section class="content">
-
-    <div class="container-fluid d-flex flex-row my-2">
-        <button type="button" class=" btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Action
-        </button>
-        <div class="dropdown-menu bg-dark">
-          <a class="dropdown-item" href="#">Download(PDF)</a>
-          <a class="dropdown-item" href="#">Print</a>
-          <a class="dropdown-item" href="#">Email</a>
-          <button type="button" onclick="createData()">Create JSON</button>
-        </div>
-    </div>
         <div class="container-fluid">
-            <div id="test">
-                <h1>helloo world</h1>
-
-            </div>
             <div class="row" id="form">
                 <div class="d-flex col-md-12 justify-content-between mb-2">
                     {% if not selected_session.get_first.id == selected_session.id%}
