@@ -1290,6 +1290,8 @@ def dvc_approve(request):
 
 def manage_departments(request):
     department = Department.objects.all()
+    if sort_by := request.GET.get('sort'):
+        department = department.order_by(sort_by)
     context = {"department": department}
     return render(request, "admin_template/manage_department_template.html", context)
 
@@ -1341,7 +1343,7 @@ def edit_department(request, department_id):
     hod = HOD.objects.all()
     context = {
         "department": department,
-        "department_id": department_id,
+        # "department_id": department_id,
         "staff": staff,
         "hod": hod,
     }
@@ -1391,8 +1393,8 @@ def delete_department(request, department_id):
         department.delete()
         messages.success(request, "Department Deleted Successfully.")
         return redirect("manage_departments")
-    except:
-        messages.error(request, "Failed to Delete Department.")
+    except Exception as e:
+        messages.error(request, f"Failed to Delete Department. {e}")
         return redirect("manage_departments")
 
 #########################################MANAGE COURSES#######################################################################
@@ -1521,46 +1523,46 @@ def check_department_exist(request):
     else:
         return HttpResponse(False)
 
-@csrf_exempt
-def generate_table_pdf(data, institution):
-    # Create a BytesIO buffer for the PDF
-    buffer = BytesIO()
+# @csrf_exempt
+# def generate_table_pdf(data, institution):
+#     # Create a BytesIO buffer for the PDF
+#     buffer = BytesIO()
 
-    # Set up the PDF document
-    doc = SimpleDocTemplate(buffer, pagesize=letter)
-    elements = []
+#     # Set up the PDF document
+#     doc = SimpleDocTemplate(buffer, pagesize=letter)
+#     elements = []
 
-    # Add the institution logo
-    if institution.logo:
-        logo_path = institution.logo.path
-        logo_image = Image(logo_path, width=200, height=100)
-        elements.append(logo_image)
+#     # Add the institution logo
+#     if institution.logo:
+#         logo_path = institution.logo.path
+#         logo_image = Image(logo_path, width=200, height=100)
+#         elements.append(logo_image)
 
-    # Create the table
-    table_data = [[column for column in data[0].keys()]]
-    for row in data:
-        table_data.append([str(row[column]) for column in data[0].keys()])
+#     # Create the table
+#     table_data = [[column for column in data[0].keys()]]
+#     for row in data:
+#         table_data.append([str(row[column]) for column in data[0].keys()])
 
-    table = Table(table_data)
-    table.setStyle(TableStyle([
-        ('BACKGROUND', (0, 0), (-1, 0), 'grey'),
-        ('TEXTCOLOR', (0, 0), (-1, 0), 'white'),
-        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
-        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-        ('FONTSIZE', (0, 0), (-1, 0), 14),
-        ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
-        ('BACKGROUND', (0, 1), (-1, -1), 'white'),
-        ('TEXTCOLOR', (0, 1), (-1, -1), 'black'),
-        ('FONTNAME', (0, 1), (-1, -1), 'Helvetica'),
-        ('FONTSIZE', (0, 1), (-1, -1), 12),
-        ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
-    ]))
+#     table = Table(table_data)
+#     table.setStyle(TableStyle([
+#         ('BACKGROUND', (0, 0), (-1, 0), 'grey'),
+#         ('TEXTCOLOR', (0, 0), (-1, 0), 'white'),
+#         ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+#         ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+#         ('FONTSIZE', (0, 0), (-1, 0), 14),
+#         ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+#         ('BACKGROUND', (0, 1), (-1, -1), 'white'),
+#         ('TEXTCOLOR', (0, 1), (-1, -1), 'black'),
+#         ('FONTNAME', (0, 1), (-1, -1), 'Helvetica'),
+#         ('FONTSIZE', (0, 1), (-1, -1), 12),
+#         ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+#     ]))
 
-    # Add the table to the PDF document
-    elements.append(table)
-    doc.build(elements)
+#     # Add the table to the PDF document
+#     elements.append(table)
+#     doc.build(elements)
 
-    # Reset the buffer's file pointer
-    buffer.seek(0)
+#     # Reset the buffer's file pointer
+#     buffer.seek(0)
 
-    return buffer
+#     return buffer

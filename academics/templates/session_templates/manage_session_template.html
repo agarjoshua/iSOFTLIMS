@@ -38,7 +38,6 @@ Manage Session
         {% endif %}
 
         <div class="row">
-            
             <div class="col-md-12">
                 <!-- general form elements -->
                 <div class="card">
@@ -62,10 +61,10 @@ Manage Session
                             <thead>
                                 <tr>
                                     <th>Records listing</th>
-                                    <th><a href="?sort=id">ID</a></th>
-                                    <th><a href="?sort=session_start_date">Session Start Date</a></th>
-                                    <th><a href="?sort=session_end_date">Session End Date</a></th>
-                                    <th><a href="?sort=is_current">Is Current Session</a></th>
+                                    <th><a href="?sort=id" class="text-dark">ID </a><span class="text-dark fas fa-sort-amount-down-alt"></span></th>
+                                    <th><a href="?sort=session_start_date" class="text-dark">Session Start Date </a><span class="text-dark fas fa-sort-amount-down-alt"></span></th>
+                                    <th><a href="?sort=session_end_date" class="text-dark">Session End Date </a><span class="text-dark fas fa-sort-amount-down-alt"></span></th>
+                                    <th><a href="?sort=is_current" class="text-dark">Is Current Session </a><span class="text-dark fas fa-sort-amount-down-alt"></span></th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -86,16 +85,40 @@ Manage Session
                                         {% if session_year.is_current %}
                                         <a href="{% url 'academics:edit_session' session_year.id %}"
                                             class="btn btn-success">Edit</a>
-                                        <a href="{% url 'academics:delete_session' session_year.id %}"
-                                            class="btn btn-danger">Delete</a>
+                                        
+                                        <button type="button" class="ml-0 my-2 btn btn-danger" data-toggle="modal" data-target="#deleteModal{{session_year.id}}">
+                                            Delete Session
+                                        </button>
                                         {% else %}
                                         <a href="{% url 'academics:edit_session' session_year.id %}"
                                             class="btn btn-success ">Edit</a>
-                                        <a href="{% url 'academics:delete_session' session_year.id %}"
-                                            class="btn btn-danger ">Delete</a>
+                                        <button type="button" class="ml-0 my-2 btn btn-danger" data-toggle="modal" data-target="#deleteModal{{session_year.id}}">
+                                            Delete Session
+                                        </button>
                                         {% endif %}
                                     </td>
                                 </tr>
+                                <div class="modal fade" id="deleteModal{{session_year.id}}" tabindex="-1" role="dialog" aria-labelledby="deleteModal{{session_year.id}}"
+                                    aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="deleteModalLabel">Confirmation</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                Are you sure you want to <b>DELETE</b> the session year?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-dark" data-dismiss="modal">Cancel</button>
+                                                <a href="{% url 'academics:delete_session' session_year.id %}"
+                                                        class="btn btn-danger">Delete</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 {% endfor %}
 
                             </tbody>

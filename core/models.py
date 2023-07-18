@@ -222,9 +222,25 @@ class Department(models.Model):
     description = models.CharField(max_length=255, default="institution", null=True)
     head = models.ForeignKey(HOD, on_delete=models.DO_NOTHING, null=True)
     deputy = models.ForeignKey(Staff, on_delete=models.DO_NOTHING, null=True)
+    status = models.BooleanField(default=True)
 
     def __str__(self):
         return self.name
+    
+    class Meta:
+        ordering = ['id']
+
+    def get_next(self):
+        return Department.objects.filter(id__gt=self.id).order_by('id').first()
+    
+    def get_previous(self):
+        return Department.objects.filter(id__lt=self.id).order_by('-id').first()
+    
+    def get_first(self):
+        return Department.objects.order_by('id').first()
+
+    def get_last(self):
+        return Department.objects.order_by('id').last()
 
 
 class Guardian(models.Model):

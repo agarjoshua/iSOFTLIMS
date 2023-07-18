@@ -10,7 +10,7 @@
 
 <section class="content">
         <div class="container-fluid">
-            <div class="row" id="form">
+            <div class="row">
                 <div class="d-flex col-md-12 justify-content-between mb-2">
                     {% if not selected_session.get_first.id == selected_session.id%}
                     <a href="{{selected_session.get_previous.id}}"><button class="btn btn-primary">Previous</button></a>
@@ -162,9 +162,6 @@
                             <button type="button" class="ml-0 my-2 btn btn-danger" data-toggle="modal" data-target="#deleteModal">
                                 Delete Session
                             </button>
-
-                        
-
                     </div>
                     
      
