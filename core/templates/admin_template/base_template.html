@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>GLUK Learning management System | Admin Dashboard</title>
+  <title>iSoft LIMS</title>
   <link rel="icon" type="image/png" href="{% static 'media/images/limslogo.png' %}" sizes="16x16">
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -99,12 +99,15 @@
             <div class="col-sm-6">
               <h1 class="m-0 text-dark">
                 {% block page_title %}
-                {% endblock page_title %}
+                {% endblock page_title %} <span class="font-weight-bold" id="current-date"></span>
               </h1>
             </div><!-- /.col -->
             {% if user.is_authenticated %}
-            <div class="col-sm-6">
-              <ol class="breadcrumb float-sm-right">
+            <div class="col-md-12">
+              <ol class="breadcrumb float-sm-left">
+                <span class="font-weight-bold" id="current-date"></span>
+              </ol>
+              <ol class="breadcrumb float-sm-right font-weight-bold">
                 <li class="breadcrumb-item"><a href="{% url 'admin_home' %}">Home</a></li>
               </ol>
             </div><!-- /.col -->
@@ -116,6 +119,7 @@
 
       <!-- Main content -->
       {% block main_content %}
+
       {% endblock main_content %}
       <!-- /.content -->
     </div>
@@ -166,6 +170,47 @@
 
 {% comment %} For Custom JS {% endcomment %}
 {% block custom_js %}
+
+<script>
+  function formatDate() {
+    var currentDate = new Date();
+    var daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  
+    var day = daysOfWeek[currentDate.getDay()];
+    var date = currentDate.getDate();
+    var month = months[currentDate.getMonth()];
+    var year = currentDate.getFullYear();
+  
+    // Add appropriate suffix to the date
+    var suffix = getNumberSuffix(date);
+    var formattedDate = day + ' ' + date + suffix + ' ' + month + ', ' + year;
+  
+    document.getElementById('current-date').textContent = formattedDate;
+  }
+  
+  function getNumberSuffix(date) {
+    if (date >= 11 && date <= 13) {
+      return 'th';
+    } else {
+      var lastDigit = date % 10;
+      switch (lastDigit) {
+        case 1:
+          return 'st';
+        case 2:
+          return 'nd';
+        case 3:
+          return 'rd';
+        default:
+          return 'th';
+      }
+    }
+  }
+  
+  // Call the formatDate function when the page loads
+  window.addEventListener('DOMContentLoaded', formatDate);
+</script>
+
 {% endblock custom_js %}
 
 </body>
