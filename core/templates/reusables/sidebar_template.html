@@ -25,11 +25,20 @@
       <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
         <!-- Add icons to the links using the .nav-icon class
                 with font-awesome or any other icon font library -->
+        <li class="nav-item">
+          {% url 'school_profile' as institution_setup %}
+          <a href="{{ institution_setup }}" class="nav-link {% if request.path == institution_setup %} active {% endif %}">
+            <i class="nav-icon fas fa-tachometer-alt"></i>
+            <p>
+              Core
+            </p>
+          </a>
+        </li>
 
         <li class="nav-item">
           {% url 'admin_home' as admin_home %}
           <a href="{{admin_home}}" class="nav-link {% if request.path == admin_home %} active {% endif %}">
-            <i class="nav-icon fas fa-tachometer-alt"></i> <span class="d-none d-sm-inline">Academics</span></a>
+            <i class="nav-icon fas fa-tachometer-alt"></i> <span class="d-none d-sm-inline">Academic</span></a>
           {% comment %}
           <div class="collapse" id="submenu" aria-expanded="false">
             <ul class="flex-column pl-2 nav">
@@ -100,58 +109,124 @@
         </li>
 
         <li class="nav-item">
-          {% url 'academics:academics_home' as academics_home %}
-          <a href="{{ academics_home }}" class="nav-link {% if request.path == academics_home %} active {% endif %}">
-            <i class="nav-icon fa fa-graduation-cap"></i>
-            <p>
-              Learning and Examination
-            </p>
-          </a>
-        </li>
-
-        <li class="nav-item">
           {% url 'finance:finance_home' as finance_home %}
           <a href="{{ finance_home }}" class="nav-link {% if request.path == finance_home %} active {% endif %}">
             <i class="nav-icon fas fa-hand-holding-usd"></i>
             <p>
-              Finance Module
+              Finance
             </p>
           </a>
         </li>
 
         <li class="nav-item">
-          <a class="nav-link collapsed text-truncate" href="#submenu1" data-toggle="collapse" data-target="#submenu3"><i
-              class="nav-icon fas fa-tachometer-alt"></i> <span class="d-none d-sm-inline">Procurement&Inventory</span></a>
+          {% url 'academics:academics_home' as academics_home %}
+          <a href="{{ academics_home }}" class="nav-link {% if request.path == academics_home %} active {% endif %}">
+            <i class="nav-icon fa fa-graduation-cap"></i>
+            <p>
+              Learning
+            </p>
+          </a>
         </li>
 
         <li class="nav-item">
-          <a class="nav-link collapsed text-truncate" href="#submenu1" data-toggle="collapse" data-target="#submenu5"><i
-              class="nav-icon fas fa-tachometer-alt"></i> <span class="d-none d-sm-inline">Library</span></a>
+          {% url 'academics:manage_exams' as examinations %}
+          <a href="{{ examinations }}" class="nav-link {% if request.path == examinations %} active {% endif %}">
+            <i class="nav-icon fa fa-graduation-cap"></i>
+            <p>
+              Examination
+            </p>
+          </a>
+        </li>
+
+        
+
+        <li class="nav-item">
+          <a class="nav-link collapsed text-truncate" href="#submenu1" data-toggle="collapse" data-target="#submenu3"><i
+              class="nav-icon fas fa-tachometer-alt"></i> <span class="d-none d-sm-inline">Procurement</span></a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link collapsed text-truncate" href="#submenu1" data-toggle="collapse" data-target="#submenu3"><i
+              class="nav-icon fas fa-tachometer-alt"></i> <span class="d-none d-sm-inline">Inventory</span></a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link collapsed text-truncate" href="#submenu1" data-toggle="collapse" data-target="#submenuusers">
+            <i class="nav-icon fas fa fa-users"></i>
+            <span class="d-none d-sm-inline">Services</span>
+          </a>
+          <div class="collapse" id="submenuusers" aria-expanded="false">
+            <ul class="flex-column pl-2 nav">
+              <li class="nav-item">
+                <a href="#" class="nav-link{% if request.path == manage_hod %} active{% endif %}{% if request.path == edit_hod %} active{% endif %}">
+                  <i class="nav-icon fas fa-user-graduate"></i>
+                  <p>
+                    Library
+                  </p>
+                </a>
+              </li>
+        
+              <li class="nav-item">
+                <a href="#" class="nav-link{% if request.path == manage_staff %} active{% endif %}{% if request.path == edit_staff %} active{% endif %}">
+                  <i class="nav-icon fas fa-chalkboard-teacher"></i>
+                  <p>
+                    Accommodation
+                  </p>
+                </a>
+              </li>
+        
+              <li class="nav-item">
+                <a href="#" class="nav-link{% if request.path == manage_guardians %} active{% endif %}{% if request.path == edit_guardians %} active{% endif %}">
+                  <i class="nav-icon fas fa fa fa-users"></i>
+                  <p>
+                    Catering
+                  </p>
+                </a>
+              </li>
+        
+              <li class="nav-item">
+                <a href="#" class="nav-link{% if request.path == manage_guadians %} active{% endif %}{% if request.path == edit_guardians %} active{% endif %}">
+                  <i class="nav-icon fas fa fa fa-users"></i>
+                  <p>
+                    Transport
+                  </p>
+                </a>
+              </li>
+        
+              <li class="nav-item">
+                <a href="#" class="nav-link{% if request.path == manage_guadians %} active{% endif %}{% if request.path == edit_guardians %} active{% endif %}">
+                  <i class="nav-icon fas fa fa fa-users"></i>
+                  <p>
+                    Internet
+                  </p>
+                </a>
+              </li>
+        
+              <li class="nav-item">
+                <a href="#" class="nav-link{% if request.path == manage_guadians %} active{% endif %}{% if request.path == edit_guardians %} active{% endif %}">
+                  <i class="nav-icon fas fa fa fa-users"></i>
+                  <p>
+                    Medical
+                  </p>
+                </a>
+              </li>
+            </ul>
+          </div>
         </li>
 
         <li class="nav-item">
           <a class="nav-link collapsed text-truncate" href="#submenu1" data-toggle="collapse" data-target="#submenu6"><i
-              class="nav-icon fas fa-tachometer-alt"></i> <span class="d-none d-sm-inline">Accommodation&Catering</span></a>
+              class="nav-icon fas fa-tachometer-alt"></i> <span class="d-none d-sm-inline">EC Activities</span></a>
         </li>
 
         <li class="nav-item">
           <a class="nav-link collapsed text-truncate" href="#submenu1" data-toggle="collapse" data-target="#submenu7"><i
-              class="nav-icon fas fa-car"></i> <span class="d-none d-sm-inline">Fleet</span></a>
+              class="nav-icon fas fa-car"></i> <span class="d-none d-sm-inline">Project</span></a>
         </li>
 
         <li class="nav-item">
           <a class="nav-link collapsed text-truncate" href="#submenu1" data-toggle="collapse" data-target="#submenu8"><i
-              class="nav-icon fas fa-hospital"></i> <span class="d-none d-sm-inline">Medical</span></a>
-        </li>
-
-        <li class="nav-item">
-          <a class="nav-link collapsed text-truncate" href="#submenu1" data-toggle="collapse" data-target="#submenu8"><i
-              class="nav-icon fas fa-bars"></i> <span class="d-none d-sm-inline">Extra Curriculum Activities</span></a>
-        </li>
-
-        <li class="nav-item">
-          <a class="nav-link collapsed text-truncate" href="#submenu1" data-toggle="collapse" data-target="#submenu8"><i
-              class="nav-icon fas fa-file"></i> <span class="d-none d-sm-inline">Project</span></a>
+              class="nav-icon fas fa-hospital"></i> <span class="d-none d-sm-inline">Communication</span></a>
         </li>
       </ul>
       

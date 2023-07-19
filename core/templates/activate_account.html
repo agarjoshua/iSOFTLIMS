@@ -171,6 +171,44 @@
         icon.classList.add('fa-eye');
       }
     }
+
+    function formatDate() {
+      var currentDate = new Date();
+      var daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+      var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    
+      var day = daysOfWeek[currentDate.getDay()];
+      var date = currentDate.getDate();
+      var month = months[currentDate.getMonth()];
+      var year = currentDate.getFullYear();
+    
+      // Add appropriate suffix to the date
+      var suffix = getNumberSuffix(date);
+      var formattedDate = day + ' ' + date + suffix + ' ' + month + ', ' + year;
+    
+      document.getElementById('current-date').textContent = formattedDate;
+    }
+    
+    function getNumberSuffix(date) {
+      if (date >= 11 && date <= 13) {
+        return 'th';
+      } else {
+        var lastDigit = date % 10;
+        switch (lastDigit) {
+          case 1:
+            return 'st';
+          case 2:
+            return 'nd';
+          case 3:
+            return 'rd';
+          default:
+            return 'th';
+        }
+      }
+    }
+    
+    // Call the formatDate function when the page loads
+    window.addEventListener('DOMContentLoaded', formatDate);
   </script>
 
   {% endblock custom_js %}
