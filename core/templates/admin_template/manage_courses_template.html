@@ -58,20 +58,26 @@ Manage Course
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body table-responsive p-0">
-                        <table class="table table-hover text-nowrap">
+                        <table class="table table-hover text-nowrap sortable">
                             <thead>
                                 <tr>
-                                    <th>Name</th>
-                                    <th>Required Classes</th>
+                                    <th> <a href="?sort=status" class="text-dark">Record status </a><span class="text-dark fas fa-sort-amount-down-alt"></span></th>
+                                    <th> <a href="?sort=course_name" class="text-dark">Name </a><span class="text-dark fas fa-sort-amount-down-alt"></span></th>
+                                    <th> Required Classes </th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {% for i in courses %}
                                 <tr>
+                                    {% if not i.status %} 
+                                    <td>In-Active</td> 
+                                    {% else %} 
+                                    <td>Active</td>
+                                    {% endif %}
                                     <td>{{ i.course_name}}</td>
                                     <td>
-                                        <a href="#" data-toggle="modal" data-target="#requiredClassesModal{{ i.id }}">View/Edit Classes</a>
+                                        <a href="" data-toggle="modal" data-target="#requiredClassesModal{{ i.id }}">View/Edit Classes</a>
                                         <!-- Modal -->
                                         <div class="modal fade" id="requiredClassesModal{{ i.id }}" tabindex="-1" role="dialog" aria-labelledby="requiredClassesModal{{ i.id }}Label" aria-hidden="true">
                                         <div class="modal-dialog modal-lg" role="document">
@@ -86,6 +92,7 @@ Manage Course
                                                 <table class="table table-hover">
                                                     <thead>
                                                         <tr>
+                                                            
                                                             <th>ID</th>
                                                             <th>Class Name</th>
                                                             <th>Action</th>
@@ -94,6 +101,7 @@ Manage Course
                                                     <tbody>
                                                     {% for j in cluster_course_units%}
                                                     {% if j.id == i.id %}
+                                                    
                                                     <td>{{ j.id }}</td>
                                                     <td>{{ j.cluster_class_name }}</td>
                                                     <td>
@@ -122,8 +130,31 @@ Manage Course
                                     </td>
                                     <td>
                                         <a href="{% url 'edit_course' i.id %}" class="btn btn-success">Edit</a>
-                                        <a href="{% url 'delete_course' i.id %}" class="btn btn-danger">Delete</a>
+                                        <button type="button" class="ml-0 my-2 btn btn-danger" data-toggle="modal" data-target="#deleteModal{{i.id}}">
+                                            Delete Course
+                                        </button>
                                     </td>
+
+                                    <div class="modal fade" id="deleteModal{{i.id}}" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="deleteModalLabel">Confirmation</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Are you sure you want to <b>DELETE</b> the course?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-dark" data-dismiss="modal">Cancel</button>
+                                                    <a href="{% url 'delete_course' i.id %}"
+                                                            class="btn btn-danger">Delete</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </tr>
                                 {% endfor %}
 

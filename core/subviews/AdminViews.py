@@ -450,6 +450,9 @@ def admin_school_update(request):
 
 def manage_users(request):
     users = CustomUser.objects.all()
+
+    if sort_by := request.GET.get('sort'):
+        users = users.order_by(sort_by)
     context = {
         "users":users
     }
@@ -1292,7 +1295,9 @@ def manage_departments(request):
     department = Department.objects.all()
     if sort_by := request.GET.get('sort'):
         department = department.order_by(sort_by)
-    context = {"department": department}
+    context = {
+        "department": department
+        }
     return render(request, "admin_template/manage_department_template.html", context)
 
 
@@ -1369,7 +1374,7 @@ def edit_department_save(request):
             if department_code:
                 department.department_code = department_code
             if desc:
-                department.desc = desc
+                department.description = desc
             if head:
                 dep_head = HOD.objects.get(admin=head)
                 department.head = dep_head
@@ -1379,7 +1384,7 @@ def edit_department_save(request):
             
             department.save()
 
-            messages.success(request, "Department upated Successfully!")
+            messages.success(request, "Department updated Successfully!")
             return redirect("manage_departments")
         except Exception as e:
             messages.error(request, "Failed to upate Department!")
@@ -1403,6 +1408,8 @@ def manage_courses(request):
     form = AddCourseForm()
     courses = Course.objects.all()
     cluster_course_units = ClusterClass.objects.all()
+    if sort_by := request.GET.get('sort'):
+        courses = courses.order_by(sort_by)
     context = {
         "form":form,
         "courses":courses,
@@ -1444,7 +1451,7 @@ def edit_course(request, course_id):
         if form.is_valid():
             try: 
                 form.save()
-                messages.success(request, "Grade edited Successfully.")
+                messages.success(request, "Course edited Successfully.")
                 return redirect("manage_courses")
             except Exception as e:
                 messages.error(request, f"Failed to Edit Course. bacause {e}")
@@ -1453,7 +1460,7 @@ def edit_course(request, course_id):
         else:
             errors = form.errors
             print(errors) 
-            messages.error(request, "Failed to Edit Grade. Form isnt valid")
+            messages.error(request, "Failed to Edit Course. Form isnt valid")
             return _edit_sessions_helper(selected_course, course_id, request)
     else:
         _edit_sessions_helper(selected_course, course_id, request)
@@ -1462,7 +1469,7 @@ def edit_course(request, course_id):
 
 def _edit_sessions_helper(selected_course, course_id, request):
     form = CourseEditForm(instance=selected_course)
-    context = {'form': form, 'selected_session': selected_course, "id": course_id}
+    context = {'form': form, 'selected_course': selected_course, "id": course_id}
     return render(request, "admin_template/edit_course_template.html", context)
 
 

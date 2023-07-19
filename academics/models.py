@@ -8,10 +8,26 @@ class Course(models.Model):
     compulsory_classes = models.ForeignKey("ClusterClass",on_delete=models.DO_NOTHING,null=True)
     created_at = models.DateTimeField(auto_now_add=True)    
     updated_at = models.DateTimeField(auto_now=True)
+    status = models.BooleanField(default=True)
     objects = models.Manager()
 
     def __str__(self):
         return self.course_name
+    
+    class Meta:
+        ordering = ['id']
+    
+    def get_next(self):
+        return Course.objects.filter(id__gt=self.id).order_by('id').first()
+    
+    def get_previous(self):
+        return Course.objects.filter(id__lt=self.id).order_by('-id').first()
+    
+    def get_first(self):
+        return Course.objects.order_by('id').first()
+
+    def get_last(self):
+        return Course.objects.order_by('id').last()
 
 class Session(models.Model):
     id = models.AutoField(primary_key=True)

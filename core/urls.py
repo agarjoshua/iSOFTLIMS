@@ -52,6 +52,7 @@ urlpatterns = [
     path('admin_home/', AdminViews.admin_home, name="admin_home"),
 
     path('manage_users/', AdminViews.manage_users, name="manage_users"),
+#     path('manage_users/', AdminViews.edit_users, name="manage_users"),
     # path('admin_view_attendance/', AdminViews.admin_view_attendance, name="admin_view_attendance"),
     # path('admin_get_attendance_dates/', AdminViews.admin_get_attendance_dates, name="admin_get_attendance_dates"),
     # path('admin_get_attendance_student/', AdminViews.admin_get_attendance_student, name="admin_get_attendance_student"),

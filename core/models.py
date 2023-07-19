@@ -105,6 +105,15 @@ class CustomUser(AbstractUser):
     )
     account_status = models.CharField(default="Active", choices=user_account_status, max_length=20)
 
+    class Meta:
+        ordering = ['id']
+
+    def get_user_type(self):
+        for user_type in self.user_type_data:
+            if str(self.user_type) == str(user_type[0]):
+                return user_type[1]
+        return None
+
 
 class Admin(models.Model):
     id = models.AutoField(primary_key=True)
@@ -222,13 +231,15 @@ class Department(models.Model):
     description = models.CharField(max_length=255, default="institution", null=True)
     head = models.ForeignKey(HOD, on_delete=models.DO_NOTHING, null=True)
     deputy = models.ForeignKey(Staff, on_delete=models.DO_NOTHING, null=True)
+    created_at = models.DateTimeField(auto_now_add=True,null=True)
+    updated_at = models.DateTimeField(auto_now=True,null=True)
     status = models.BooleanField(default=True)
 
     def __str__(self):
         return self.name
     
-    class Meta:
-        ordering = ['id']
+    # class Meta:
+    #     ordering = ['id']
 
     def get_next(self):
         return Department.objects.filter(id__gt=self.id).order_by('id').first()

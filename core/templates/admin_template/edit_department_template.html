@@ -9,22 +9,22 @@
 {% load static %}
 
 <section class="content">
-        <div class="d-flex col-md-12 justify-content-between mb-2">
-            {% if not department.get_first.id == department.id %}
-            <a href="/{{department.get_previous.id}}"><button class="btn btn-primary">Previous</button></a>
-            {% else %}
-            <button class="btn btn-dark disabled">Start</button>
-            {% endif%}
-
-            {% if not department.get_last.id == department.id %}
-            <a href="{{department.get_next.id}}"><button class="btn btn-primary">Next</button></a>
-            {% else %}
-            <button class="btn btn-dark disabled">End </button>
-            {% endif%}
-        </div>      
         <div class="container-fluid">
 
             <div class="row">
+                <div class="d-flex col-md-12 justify-content-between mb-2">
+                    {% if not department.get_first.id == department.id %}
+                    <a href="{% url 'edit_department' department.get_previous.id %}"><button class="btn btn-primary">Previous</button></a>
+                    {% else %}
+                    <button class="btn btn-dark disabled">Start</button>
+                    {% endif%}
+        
+                    {% if not department.get_last.id == department.id %}
+                    <a href="{% url 'edit_department' department.get_next.id %}"><button class="btn btn-primary">Next</button></a>
+                    {% else %}
+                    <button class="btn btn-dark disabled">End </button>
+                    {% endif%}
+                </div>      
                 <div class="col-md-12">
                     <!-- general form elements -->
                     <div class="card card-primary">
@@ -33,7 +33,7 @@
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->
-                    <form role="form" method="POST" action="{% url 'edit_department_save' %}">
+                    <form role="form" method="POST" action="{% url 'edit_department_save'%}">
                         {% csrf_token %}
 
                         
@@ -64,7 +64,7 @@
                             
 
                         <div class="card-body">
-                            <input name="department_id" value="{{department_id}}" hidden>
+                            <input name="department_id" value="{{department.id}}" hidden>
 
                             <div class="form-group">
                                 <label>Department Code</label>
@@ -94,26 +94,64 @@
                                 </select>
                             </div>
 
-                            <!-- <div class="form-group">
-                               <label>Deputy Head</label>
-                                <select name="deputy">
-                                    {% for staff in staff %}
-                                    <option value="{{ staff.admin.id }}">{{ staff.admin.first_name }}</option>
-                                    {% endfor %}
+                            <div class="form-group">
+                                <label>Deputy Head</label>
+                                <select name="deputy" class="form-control">
+                                <option value="{{ current_deputy.admin.id }}" selected>{{ department.deputy }} - (Current Deputy H.O.D)</option>
+                                {% for staff in staff %}
+                                {% if staff.admin.id != current_deputy.admin.id %}
+                                <option value="{{ staff.admin.id }}">{{ staff.admin.first_name }}</option>
+                                {% endif %}
+                                {% endfor %}
                                 </select>
-                            </div> -->
+                            </div>
+
+                            <div class="mx- d-flex justify-content-between">
+                                <button type="submit" class="btn btn-primary">Update Department</button>
+                                <div class="ml-3">
+                                    <a class="btn btn-warning" href="{% url 'manage_departments' %}" role="button">
+                                        Cancel</a>
+                                </div>
+                            </div>
+                            <div class="mx-">
+                                <button type="button" class="ml-0 my-2 btn btn-danger" data-toggle="modal" data-target="#deleteModal{{department.id}}">
+                                    Delete
+                                </button>
+                            </div>
 
                             
                         </div>
                         <!-- /.card-body -->
 
-                        <div class="card-footer">
-                        <button type="submit" class="btn btn-primary">Update Department</button>
+                        <div class="modal fade" id="deleteModal{{department.id}}" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="deleteModalLabel">Confirmation</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Are you sure you want to <b>DELETE</b> the department?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-dark" data-dismiss="modal">Cancel</button>
+                                        <a href="{% url 'delete_department' department.id %}"
+                                                class="btn btn-danger">Delete</a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+                                        
+                    </div>
+                    
+
+                    
+                       
                     </form>
                     </div>
                     <!-- /.card -->
-
                 </div>
             </div>
 

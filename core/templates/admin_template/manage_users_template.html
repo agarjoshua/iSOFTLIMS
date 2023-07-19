@@ -57,53 +57,88 @@ Manage Users
                     <!-- /.card-header -->
                     <div class="card-body table-responsive p-0">
 
-                        <table class="table table-hover text-nowrap">
+                        <table class="table table-hover sortable">
                             <thead>
                               <tr>
-                                <th>Username</th>
-                                <th>User Type</th>
+                                <th> <a href="?sort=username" class="text-dark">Username </a><span class="text-dark fas fa-sort-amount-down-alt"></span></th>
+                                <th> <a href="?sort=user_type" class="text-dark">User Type </a><span class="text-dark fas fa-sort-amount-down-alt"></span></th>
                                 <th>Institution</th>
-                                <th>Login Attempts</th>
-                                <th>Account Status</th>
-                                <th>Action</th>
-                                <th>Account Requests</th>
+                                <th> <a href="?sort=login_attempts" class="text-dark">Login Attempts </a><span class="text-dark fas fa-sort-amount-down-alt"></span></th>
+                                <th> <a href="?sort=cooldown_end_time" class="text-dark">Cooldown Endtime </a><span class="text-dark fas fa-sort-amount-down-alt"></span></th>
+                                <th> <a href="?sort=account_status" class="text-dark">Account Status </a><span class="text-dark fas fa-sort-amount-down-alt"></span></th>
+                                <th> Status Action</th>
+                                <th> <a href="?sort=account_status" class="text-dark">Account Requests </a><span class="text-dark fas fa-sort-amount-down-alt"></span></th>
+                                <th>Other actions</th>
                               </tr>
                             </thead>
                             <tbody>
                               {% for user in users %}
                               <tr>
                                 <td>{{ user.username }}</td>
-                                <td>{{ user.get_user_type_display }}</td>
-                                <td>{{ user.institution }}</td>
+                                <td>{{ user.get_user_type }}</td>
+                                <td>{{ user.institution.name }}</td>
                                 <td>{{ user.login_attempts }}</td>
+                                <td>{{ user.cooldown_end_time}}</td>
                                 {% if user.get_account_status_display == 'Active'%}
                                 <td>
                                     <a href=""
                                         class="btn btn-success disabled">Account Active</a>
                                 </td>
                                 <td>
-                                    <a href="{% url 'deactivate_user' user.id %}"
-                                        class="btn btn-danger">Deactivate Account</a>
+                                    <a href="{% url 'deactivate_user' user.id %}" class="btn btn-danger">Deactivate Account</a>
                                 </td>
-                                        
-
                                 {% else %}
                                 <td>
-                                    <a href=""
-                                        class="btn btn-danger disabled">Account deactivated</a>
+                                    <a href="" class="btn btn-danger disabled">Account deactivated</a>
                                 </td>
                                 <td>
                                     <a href="{% url 'activate_user' user.id %}"
                                         class="btn btn-success">Activate Account</a>
                                 </td>
+
+                                {%endif%}
+                                
                                 {% if user.get_account_status_display == 'Activation Requested' %}
-                                        <td>
-                                            <a href=""
-                                                class="btn btn-warning disabled">Account Activation Requested</a>
-                                        </td>
-                                        {%endif%}
+                                <td>
+                                    <a href="" class="btn btn-warning disabled">Account Activation Requested</a>
+                                </td>
+                                {% elif user.get_account_status_display == 'Active'%}
+                                <td>
+                                    <a href="" class="btn btn-primary disabled">Action Not Required</a>
+                                </td>
+                                {% else%}
+                                <td>
+                                    <a href="" class="btn btn-dark disabled">Account Not Requested</a>
+                                </td>
                                 
                                 {% endif %}
+
+                                <td>
+                                    <button type="button" class="ml-0 my-2 btn btn-danger" data-toggle="modal" data-target="#deleteModal{{user.id}}">
+                                        Delete User
+                                    </button>
+                                </td>
+
+                                <div class="modal fade" id="deleteModal{{user.id}}" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="deleteModalLabel">Confirmation</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                Are you sure you want to <b>DELETE</b> the user?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-dark" data-dismiss="modal">Cancel</button>
+                                                <a href=""
+                                                        class="btn btn-danger">Delete</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                               </tr>
                               {% endfor %}
                             </tbody>
