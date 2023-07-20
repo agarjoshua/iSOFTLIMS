@@ -118,6 +118,7 @@ class CustomUser(AbstractUser):
 class Admin(models.Model):
     id = models.AutoField(primary_key=True)
     admin = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    profile_pic = models.FileField(null=True)
     admin_type = models.ForeignKey('AdminType', on_delete=models.DO_NOTHING, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -152,6 +153,7 @@ class HOD(models.Model):
     def __str__(self):
         return f"{self.admin.first_name}  {self.admin.last_name}"
     
+
 class HODType(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=12, null=True, unique=True)
@@ -159,8 +161,6 @@ class HODType(models.Model):
 
     def __str__(self):
         return self.name
-
-
 class Teacher(models.Model):
     id = models.AutoField(primary_key=True)
     admin = models.OneToOneField(CustomUser, on_delete=models.CASCADE)

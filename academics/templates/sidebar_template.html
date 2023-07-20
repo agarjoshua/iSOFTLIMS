@@ -5,20 +5,29 @@
   <a href="{% url 'admin_home' %}" class="brand-link">
     <img src="{% static 'media/images/limslogo.png' %}" alt="" class="brand-image "
       style="opacity: .8">
-    <span class="brand-text font-weight-light">iSoft</span>
+    <span class="brand-text font-weight-light">iSoft LIMS</span>
   </a>
 
   <!-- Sidebar -->
   <div class="sidebar">
     <!-- Sidebar user panel (optional) -->
-    <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-      <div class="image">
-        <img src="{% static 'dist/img/user2-160x160.jpg' %}" class="img-circle elevation-2" alt="User Image">
+    <div class="user-panel mt-3">
+
+        <div class="d-flex">
+          <div class="image">
+            <img src="{% static 'dist/img/user2-160x160.jpg' %}" class="img-circle elevation-2" alt="User Image">
+          </div>
+          <div class="info">
+            <a href="{% url 'admin_profile' %}" class="d-block font-weight-bold">{{ user.first_name }} {{ user.last_name }}</a>
+          </div>
+        </div>
+        
+        
+        <div class="info">
+          <a href="{% url 'admin_profile' %}" class="my-2 d-block font-weight-bold">Role: {{ user.get_user_type}}</a>
+        </div>
+
       </div>
-      <div class="info">
-        <a href="{% url 'admin_profile' %}" class="d-block">{{ user.first_name }} {{ user.last_name }}</a>
-      </div>
-    </div>
 
     <!-- Sidebar Menu -->
     <nav class="mt-2">

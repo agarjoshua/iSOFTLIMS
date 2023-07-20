@@ -2,7 +2,7 @@ import json
 from django import forms
 from core.models import Institution
 class InstitutionForm(forms.Form):
-    logo = forms.FileField(label="Change Logo", widget=forms.ClearableFileInput(attrs={'class': 'form-control-file'}))
+    logo = forms.FileField(label="Change Logo", widget=forms.ClearableFileInput(attrs={'class': 'form-control-file'}),required=False)
 
     name = forms.CharField(label="Name", max_length=50, widget=forms.TextInput(attrs={"class":"form-control"}))
     COUNTRY_CHOICES = [

@@ -195,6 +195,7 @@ def admin_profile_update(request):
 def school_profile(request):
     user = CustomUser.objects.get(id=request.user.id)
     school_id = user.institution
+    logged_in_user_profile = Admin.objects.get(admin=request.user.id)
     
     form = InstitutionForm()
 
@@ -256,7 +257,12 @@ def school_profile(request):
     
 
 
-    context = {"user": user, "institution": institution, "form":form}
+    context = {
+        "user": user, 
+        "institution": institution, 
+        "form":form,
+        "logged_in_user_profile":logged_in_user_profile
+        }
     return render(request, "admin_template/school_profile.html", context)
 
     # except Exception as e:
@@ -296,7 +302,6 @@ def admin_school_update(request):
         institution_type = form["institution_type"].value()
         institution_in_ASAL_area = form["institution_in_ASAL_area"].value()
         institution_residence = form["institution_residence"].value()
-        institution_logo = request.FILES["logo"]
 
         if len(request.FILES) != 0:
             institution_logo = request.FILES["logo"]
@@ -437,7 +442,8 @@ def admin_school_update(request):
             specific_institution.institution_statutory_numbers = other_statutory_details_var
             specific_institution.currency = currency
             specific_institution.bank_details = bank_details_var
-            specific_institution.logo = institution_logo_url
+            if institution_logo_url is not None:
+                specific_institution.logo = institution_logo_url
             print(institution_logo_url)
             specific_institution.save()
         except Exception as e:
