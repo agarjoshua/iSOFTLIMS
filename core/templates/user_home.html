@@ -1,0 +1,221 @@
+{% extends 'user_base_template.html' %} 
+{% block page_title %} 
+<b>User Home:</b> 
+{% endblock page_title %} 
+{% block main_content %}
+{% load static %}
+
+<section class="content">
+
+        <h3 class="text-bold">Hello - {{ user.first_name }} {{ user.last_name }}</h3>
+
+        <div class="row d-flex">
+            <div class="col-md-8">
+                <div class="row d-flex">
+        
+                  <div class="col-md-6">
+                    <div class="card bg-dark text-white widget-visitor-card vh-25">
+                      <div class="text-center"><!----></div>
+                      <div class="card-block-small text-center">
+                        <a
+                          class="nav-link active h4"
+                          href="{% url 'school_profile'%}"
+                          role="tab"
+                          aria-selected="true"
+                          >
+                          Admin Dashboard
+                          <hr>
+                        </a>
+                        <div class="ml-3 mb-3 d-flex justify-content-between mr-3">
+                          <div>Pending Issues/Notifications: {{sessions_number}}</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <div class="card bg-gradient-success text-white widget-visitor-card">
+                      <div class="text-center"><!----></div>
+                      <div class="card-block-small text-center">
+                        <a
+                          class="nav-link active h4"
+                          href="{% url 'admin_home'%}"
+                          role="tab"
+                          aria-selected="true"
+                          >
+                          Academics Dashboard
+                          <hr>
+                        </a>
+                        <div class="ml-3 mb-3 d-flex justify-content-between mr-3">
+                          <div>Pending Issues/Notifications: {{sessions_number}}</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+        
+                  <div class="col-md-6">
+                    <div class="card bg-gradient-primary text-white widget-visitor-card">
+                      <div class="text-center"><!----></div>
+                      <div class="card-block-small text-center">
+                        <a
+                          class="nav-link active h4"
+                          href="{% url 'finance:finance_home'%}"
+                          role="tab"
+                          aria-selected="true"
+                          >
+                          Finance Dashboard
+                          <hr>
+                        </a>
+                        <div class="ml-3 mb-3 d-flex justify-content-between mr-3">
+                          <div>Pending Issues/Notifications: {{sessions_number}}</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+        
+                  
+        
+                  <div class="col-md-6">
+                    <div class="card bg-gradient-info text-white widget-visitor-card">
+                      <div class="text-center"><!----></div>
+                      <div class="card-block text-center">
+                        <a
+                          class="nav-link active h4"
+                          href="{% url 'academics:academics_home'%}"
+                          role="tab"
+                          aria-selected=""
+                          >
+                          Learning dashboard
+                          <hr>
+                        </a>
+                        <div class="ml-3 mb-3 d-flex justify-content-between mr-3">
+                          <div>Pending Issues/Notifications: {{sessions_number}}</div>
+                        </div>
+                      </div>
+                    </div>
+
+                    
+                  </div>
+
+                  <div class="col-md-6">
+                    <div class="card bg-warning text-white widget-visitor-card">
+                      <div class="text-center"><!----></div>
+                      <div class="card-block text-center">
+                        <a
+                          class="nav-link active h4"
+                          href="{% url 'academics:manage_exams'%}"
+                          role="tab"
+                          aria-selected=""
+                          >
+                          Examinations dashboard
+                          <hr>
+                        </a>
+                        <div class="ml-3 mb-3 d-flex justify-content-between mr-3">
+                          <div>Pending Issues/Notifications: {{sessions_number}}</div>
+                        </div>
+                      </div>
+                    </div>
+
+                    
+                  </div>
+
+
+
+
+                  <div class="col-md-6">
+                    <div class="card bg-gradient-secondary text-white widget-visitor-card">
+                      <div class="text-center"><!----></div>
+                      <div class="card-block-small text-center">
+                        <a
+                          class="nav-link active h4"
+                          href="{% url 'student_home'%}"
+                          role="tab"
+                          aria-selected="true"
+                          >
+                          Student Dashboard
+                          <hr>
+                        </a>
+                        <div class="ml-3 mb-3 d-flex justify-content-between mr-3">
+                          <div>Pending Issues/Notifications: {{sessions_number}}</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <div class="card bg-gradient-success text-white widget-visitor-card">
+                      <div class="text-center text dark"><!----></div>
+                      <div class="card-block-small text-center">
+                        <a
+                          class="nav-link active h4"
+                          href="#"
+                          role="tab"
+                          aria-selected="true"
+                          >
+                          Teacher Dashboard
+                          <hr class="light-dark">
+                        </a>
+                        <div class="ml-3 mb-3 d-flex justify-content-between mr-3">
+                          <div>Pending Issues/Notifications: {{sessions_number}}</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+        
+                  <div class="col-md-6">
+                    <div class="card bg-gradient-dark text-white text-white widget-visitor-card">
+                      <div class="text-center"><!----></div>
+                      <div class="card-block text-center">
+                        <a
+                          class="nav-link active h4"
+                          href="{% url 'academics:manage_session_registation'%}"
+                          role="tab"
+                          aria-selected=""
+                          >
+                          Parent dashboard
+                          <hr>
+                        </a>
+                        <div class="ml-3 mb-3 d-flex justify-content-between mr-3">
+                          <div>Pending Issues/Notifications: {{sessions_number}}</div>
+                        </div>
+                      </div>
+                    </div>
+
+                    
+                  </div>
+        
+                </div>
+        
+                 <div class="col-md-12">
+                <div class="card table-card latest-activity-card">
+                  <div class="card-header border-0">
+                    <h5 class="text-bold">General Correspondence</h5>
+                  </div>
+          
+                  <div class="mx-4 mb-3">
+                    <a href="{% url 'academics:add_session'%}"><button class="btn btn-primary">Add
+                            Session</button></a>
+                </div>
+          
+                </div>
+              </div>
+            </div>
+            <div class="card col-md-4 bg-gradient-light">
+              <div class="col-md-4 mx-auto">
+                  <img src="{% static 'media/images/limslogo.png' %}" alt="Profile Image" class="card-img-top img-circle elevation-2">
+              </div>
+              <div class="card-body text-center">
+                  <p class="card-text text-bold">Name: {{ user.first_name }} {{ user.last_name }}</p>
+                  <ul class="list-group ">
+                      <li class="list-group-item text-bold">User Type: {{user.get_user_type}}</li>
+                      <li class="list-group-item text-bold">Account Status: {{user.account_status}}</li>
+                  </ul>
+                  <a href="{% url 'admin_profile'%}" class="btn btn-primary my-3">Edit Profile</a>
+              </div>
+          </div>
+          
+        </div>
+</section>
+
+{% endblock main_content %}

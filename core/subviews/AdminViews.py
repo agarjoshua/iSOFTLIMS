@@ -60,7 +60,6 @@ from django.db.models import Q
 # 4 = HOD
 # 5 = GUARDIAN
 # 6 = TEACHER
- 
 
 
 @allow_user('1','2','3','4','5','6') 

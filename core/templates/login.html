@@ -135,7 +135,7 @@
       
                   <form action="{% url 'doLogin' %}" method="POST">
                   {% csrf_token %}
-                  <label for="id_password" class="font-weight-bold text-dark no-blue-underline">User ID/ Username</label>
+                  <label for="id_password" class="font-weight-bold text-dark no-blue-underline">User ID/Username</label>
                     <div class="input-group mb-3">
                     <div>
                         <i class="pt-2 pr-2 fas fa-solid fa-user fa-lg" style="color: #1d263e;"></i>
@@ -143,12 +143,7 @@
                         
                       <input type="email" class="form-control" placeholder="Enter UserID/Username" name="email">
                       
-                      <div class="input-group-append">
-                        
-                        <div class="input-group-text">
-                          <span class="fas fa-user"></span>
-                        </div>
-                      </div>
+                      
                     </div>
                     
                     <label for="id_password" class="font-weight-bold text-dark no-blue-underline">Password</label>

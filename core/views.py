@@ -135,7 +135,7 @@ def doLogin(request):
 
         if user.account_status == 'Active':
             if user_type == '1':
-                return redirect('school_profile')
+                return redirect('user_home')
             elif user_type == '2':
                 specified_staff = Staff.objects.get(admin=user)
                 staff_dept = specified_staff.associated_department
