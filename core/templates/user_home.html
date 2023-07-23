@@ -18,7 +18,7 @@
                       <div class="text-center"><!----></div>
                       <div class="card-block-small text-center">
                         <a
-                          class="nav-link active h4"
+                          class="nav-link active h4 text-warning font-weight-bold"
                           href="{% url 'school_profile'%}"
                           role="tab"
                           aria-selected="true"
@@ -28,10 +28,11 @@
                         </a>
                       </div>
                       <div class="ml-3 mb-3">
-                        <div>Pending Issues/Notifications: {{sessions_number}}</div>
-                        <div>Pending Issues/Notifications: {{sessions_number}}</div>
-                        <div>Pending Issues/Notifications: {{sessions_number}}</div>
-                        <div>Pending Issues/Notifications: {{sessions_number}}</div>
+                        <div class="font-weight-bold text-warning">Current Session: {{current_session.session_start_date }} to {{current_session.session_end_date }}</div>
+                        <div class="font-weight-bold text-warning">Students In Session: {{student_count}}</div>
+                        <div class="font-weight-bold text-warning">Teachers in Employment: {{teacher_count}}</div>
+                        <div class="font-weight-bold text-warning">Staff In Employment: {{staff_count}}</div>
+
                       </div>
                     </div>
                   </div>
@@ -41,7 +42,7 @@
                       <div class="text-center"><!----></div>
                       <div class="card-block-small text-center">
                         <a
-                          class="nav-link active h4"
+                          class="nav-link active h4 text-light font-weight-bold"
                           href="{% url 'admin_home'%}"
                           role="tab"
                           aria-selected="true"
@@ -49,12 +50,12 @@
                           Academics Dashboard
                           <hr>
                         </a>
-                        <div class="ml-3 mb-3">
-                          <div>Pending Issues/Notifications: {{sessions_number}}</div>
-                          <div>Pending Issues/Notifications: {{sessions_number}}</div>
-                          <div>Pending Issues/Notifications: {{sessions_number}}</div>
-                          <div>Pending Issues/Notifications: {{sessions_number}}</div>
-                        </div>
+                      </div>
+                      <div class="ml-3 mb-3">
+                        <div class="font-weight-bold text-light">Pending Applicants: {{applicants_count}} </div>
+                        <div class="font-weight-bold text-light">Course Count: {{course_count}}</div>
+                        <div class="font-weight-bold text-light">Departments: {{departments}}</div>
+                        <div class="font-weight-bold text-light">Pending Issues/Notifications: {{sessions_number}}</div>
                       </div>
                     </div>
                   </div>
@@ -65,7 +66,7 @@
                       <div class="text-center"><!----></div>
                       <div class="card-block-small text-center">
                         <a
-                          class="nav-link active h4"
+                          class="nav-link active h4 font-weight-bold"
                           href="{% url 'finance:finance_home'%}"
                           role="tab"
                           aria-selected="true"
@@ -73,12 +74,9 @@
                           Finance Dashboard
                           <hr>
                         </a>
-                        <div class="ml-3 mb-3">
-                          <div>Pending Issues/Notifications: {{sessions_number}}</div>
-                          <div>Pending Issues/Notifications: {{sessions_number}}</div>
-                          <div>Pending Issues/Notifications: {{sessions_number}}</div>
-                          <div>Pending Issues/Notifications: {{sessions_number}}</div>
-                        </div>
+                      </div>
+                      <div class="ml-3 mb-3">
+                        <div class="font-weight-bold text-light">Pending Transactions: {{transactions_count}}</div>
                       </div>
                     </div>
                   </div>
@@ -90,7 +88,7 @@
                       <div class="text-center"><!----></div>
                       <div class="card-block text-center">
                         <a
-                          class="nav-link active h4"
+                          class="nav-link active h4 font-weight-bold"
                           href="{% url 'academics:academics_home'%}"
                           role="tab"
                           aria-selected=""
@@ -98,16 +96,11 @@
                           Learning dashboard
                           <hr>
                         </a>
-                        <div class="ml-3 mb-3">
-                          <div>Pending Issues/Notifications: {{sessions_number}}</div>
-                          <div>Pending Issues/Notifications: {{sessions_number}}</div>
-                          <div>Pending Issues/Notifications: {{sessions_number}}</div>
-                          <div>Pending Issues/Notifications: {{sessions_number}}</div>
-                        </div>
+                      </div>
+                      <div class="ml-3 mb-3">
+                        <div class="font-weight-bold text-light">Session Enrollment Count: {{session_enrollment_count}}</div>
                       </div>
                     </div>
-
-                    
                   </div>
 
                   <div class="col-md-6">
@@ -115,7 +108,7 @@
                       <div class="text-center"><!----></div>
                       <div class="card-block text-center">
                         <a
-                          class="nav-link active h4"
+                          class="nav-link active h4 font-weight-bold"
                           href="{% url 'academics:manage_exams'%}"
                           role="tab"
                           aria-selected=""
@@ -123,27 +116,19 @@
                           Examinations dashboard
                           <hr>
                         </a>
-                        <div class="ml-3 mb-3">
-                          <div>Pending Issues/Notifications: {{sessions_number}}</div>
-                          <div>Pending Issues/Notifications: {{sessions_number}}</div>
-                          <div>Pending Issues/Notifications: {{sessions_number}}</div>
-                          <div>Pending Issues/Notifications: {{sessions_number}}</div>
-                        </div>
+                      </div>
+                      <div class="ml-3 mb-3">
+                        <div class="font-weight-bold text-dark">Examinations: {{exam_count}}</div>
                       </div>
                     </div>
-
-                    
                   </div>
-
-
-
 
                   <div class="col-md-6">
                     <div class="card bg-gradient-secondary text-white widget-visitor-card">
                       <div class="text-center"><!----></div>
                       <div class="card-block-small text-center">
                         <a
-                          class="nav-link active h4"
+                          class="nav-link active h4 font-weight-bold"
                           href="{% url 'student_home'%}"
                           role="tab"
                           aria-selected="true"
@@ -151,12 +136,9 @@
                           Student Dashboard
                           <hr>
                         </a>
-                        <div class="ml-3 mb-3">
-                          <div>Pending Issues/Notifications: {{sessions_number}}</div>
-                          <div>Pending Issues/Notifications: {{sessions_number}}</div>
-                          <div>Pending Issues/Notifications: {{sessions_number}}</div>
-                          <div>Pending Issues/Notifications: {{sessions_number}}</div>
-                        </div>
+                      </div>
+                      <div class="ml-3 mb-3">
+                        <div class="font-weight-bold text-light">Pending Issues/Notifications: {{sessions_number}}</div>
                       </div>
                     </div>
                   </div>
@@ -166,7 +148,7 @@
                       <div class="text-center text dark"><!----></div>
                       <div class="card-block-small text-center">
                         <a
-                          class="nav-link active h4"
+                          class="nav-link active h4 font-weight-bold"
                           href="#"
                           role="tab"
                           aria-selected="true"
@@ -174,22 +156,20 @@
                           Teacher Dashboard
                           <hr class="light-dark">
                         </a>
-                        <div class="ml-3 mb-3">
-                          <div>Pending Issues/Notifications: {{sessions_number}}</div>
-                          <div>Pending Issues/Notifications: {{sessions_number}}</div>
-                          <div>Pending Issues/Notifications: {{sessions_number}}</div>
-                          <div>Pending Issues/Notifications: {{sessions_number}}</div>
-                        </div>
+                      </div>
+                      <div class="ml-3 mb-3">
+                        <div class="font-weight-bold text-light">Pending Issues/Notifications: {{sessions_number}}</div>
                       </div>
                     </div>
                   </div>
-        
+
+
                   <div class="col-md-6">
                     <div class="card bg-gradient-dark text-white text-white widget-visitor-card">
                       <div class="text-center"><!----></div>
                       <div class="card-block text-center">
                         <a
-                          class="nav-link active h4"
+                          class="nav-link active h4 font-weight-bold"
                           href="{% url 'academics:manage_session_registation'%}"
                           role="tab"
                           aria-selected=""
@@ -197,19 +177,14 @@
                           Parent dashboard
                           <hr>
                         </a>
-                        <div class="ml-3 mb-3">
-                          <div>Pending Issues/Notifications: {{sessions_number}}</div>
-                          <div>Pending Issues/Notifications: {{sessions_number}}</div>
-                          <div>Pending Issues/Notifications: {{sessions_number}}</div>
-                          <div>Pending Issues/Notifications: {{sessions_number}}</div>
-                        </div>
+                      </div>
+                      <div class="ml-3 mb-3">
+                        <div class="font-weight-bold text-light">Pending Issues/Notifications: {{sessions_number}}</div>
                       </div>
                     </div>
+                  </div>
 
                     
-                  </div>
-        
-                </div>
         
                  <div class="col-md-12">
                 <div class="card table-card latest-activity-card">
