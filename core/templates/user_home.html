@@ -1,16 +1,16 @@
 {% extends 'user_base_template.html' %} 
 {% block page_title %} 
-<b>User Home:</b> 
+<b>User Home</b> 
 {% endblock page_title %} 
 {% block main_content %}
 {% load static %}
 
-<section class="content">
+<section class="content mx-2">
 
         <h3 class="text-bold">Hello - {{ user.first_name }} {{ user.last_name }}</h3>
 
         <div class="row d-flex">
-            <div class="col-md-8">
+            <div class="col-md-12">
                 <div class="row d-flex">
         
                   <div class="col-md-6">
@@ -26,9 +26,12 @@
                           Admin Dashboard
                           <hr>
                         </a>
-                        <div class="ml-3 mb-3 d-flex justify-content-between mr-3">
-                          <div>Pending Issues/Notifications: {{sessions_number}}</div>
-                        </div>
+                      </div>
+                      <div class="ml-3 mb-3">
+                        <div>Pending Issues/Notifications: {{sessions_number}}</div>
+                        <div>Pending Issues/Notifications: {{sessions_number}}</div>
+                        <div>Pending Issues/Notifications: {{sessions_number}}</div>
+                        <div>Pending Issues/Notifications: {{sessions_number}}</div>
                       </div>
                     </div>
                   </div>
@@ -46,7 +49,10 @@
                           Academics Dashboard
                           <hr>
                         </a>
-                        <div class="ml-3 mb-3 d-flex justify-content-between mr-3">
+                        <div class="ml-3 mb-3">
+                          <div>Pending Issues/Notifications: {{sessions_number}}</div>
+                          <div>Pending Issues/Notifications: {{sessions_number}}</div>
+                          <div>Pending Issues/Notifications: {{sessions_number}}</div>
                           <div>Pending Issues/Notifications: {{sessions_number}}</div>
                         </div>
                       </div>
@@ -67,7 +73,10 @@
                           Finance Dashboard
                           <hr>
                         </a>
-                        <div class="ml-3 mb-3 d-flex justify-content-between mr-3">
+                        <div class="ml-3 mb-3">
+                          <div>Pending Issues/Notifications: {{sessions_number}}</div>
+                          <div>Pending Issues/Notifications: {{sessions_number}}</div>
+                          <div>Pending Issues/Notifications: {{sessions_number}}</div>
                           <div>Pending Issues/Notifications: {{sessions_number}}</div>
                         </div>
                       </div>
@@ -89,7 +98,10 @@
                           Learning dashboard
                           <hr>
                         </a>
-                        <div class="ml-3 mb-3 d-flex justify-content-between mr-3">
+                        <div class="ml-3 mb-3">
+                          <div>Pending Issues/Notifications: {{sessions_number}}</div>
+                          <div>Pending Issues/Notifications: {{sessions_number}}</div>
+                          <div>Pending Issues/Notifications: {{sessions_number}}</div>
                           <div>Pending Issues/Notifications: {{sessions_number}}</div>
                         </div>
                       </div>
@@ -111,7 +123,10 @@
                           Examinations dashboard
                           <hr>
                         </a>
-                        <div class="ml-3 mb-3 d-flex justify-content-between mr-3">
+                        <div class="ml-3 mb-3">
+                          <div>Pending Issues/Notifications: {{sessions_number}}</div>
+                          <div>Pending Issues/Notifications: {{sessions_number}}</div>
+                          <div>Pending Issues/Notifications: {{sessions_number}}</div>
                           <div>Pending Issues/Notifications: {{sessions_number}}</div>
                         </div>
                       </div>
@@ -136,7 +151,10 @@
                           Student Dashboard
                           <hr>
                         </a>
-                        <div class="ml-3 mb-3 d-flex justify-content-between mr-3">
+                        <div class="ml-3 mb-3">
+                          <div>Pending Issues/Notifications: {{sessions_number}}</div>
+                          <div>Pending Issues/Notifications: {{sessions_number}}</div>
+                          <div>Pending Issues/Notifications: {{sessions_number}}</div>
                           <div>Pending Issues/Notifications: {{sessions_number}}</div>
                         </div>
                       </div>
@@ -156,7 +174,10 @@
                           Teacher Dashboard
                           <hr class="light-dark">
                         </a>
-                        <div class="ml-3 mb-3 d-flex justify-content-between mr-3">
+                        <div class="ml-3 mb-3">
+                          <div>Pending Issues/Notifications: {{sessions_number}}</div>
+                          <div>Pending Issues/Notifications: {{sessions_number}}</div>
+                          <div>Pending Issues/Notifications: {{sessions_number}}</div>
                           <div>Pending Issues/Notifications: {{sessions_number}}</div>
                         </div>
                       </div>
@@ -176,7 +197,10 @@
                           Parent dashboard
                           <hr>
                         </a>
-                        <div class="ml-3 mb-3 d-flex justify-content-between mr-3">
+                        <div class="ml-3 mb-3">
+                          <div>Pending Issues/Notifications: {{sessions_number}}</div>
+                          <div>Pending Issues/Notifications: {{sessions_number}}</div>
+                          <div>Pending Issues/Notifications: {{sessions_number}}</div>
                           <div>Pending Issues/Notifications: {{sessions_number}}</div>
                         </div>
                       </div>
@@ -193,27 +217,10 @@
                     <h5 class="text-bold">General Correspondence</h5>
                   </div>
           
-                  <div class="mx-4 mb-3">
-                    <a href="{% url 'academics:add_session'%}"><button class="btn btn-primary">Add
-                            Session</button></a>
-                </div>
-          
                 </div>
               </div>
             </div>
-            <div class="card col-md-4 bg-gradient-light">
-              <div class="col-md-4 mx-auto">
-                  <img src="{% static 'media/images/limslogo.png' %}" alt="Profile Image" class="card-img-top img-circle elevation-2">
-              </div>
-              <div class="card-body text-center">
-                  <p class="card-text text-bold">Name: {{ user.first_name }} {{ user.last_name }}</p>
-                  <ul class="list-group ">
-                      <li class="list-group-item text-bold">User Type: {{user.get_user_type}}</li>
-                      <li class="list-group-item text-bold">Account Status: {{user.account_status}}</li>
-                  </ul>
-                  <a href="{% url 'admin_profile'%}" class="btn btn-primary my-3">Edit Profile</a>
-              </div>
-          </div>
+           
           
         </div>
 </section>
