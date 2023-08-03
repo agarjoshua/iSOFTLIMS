@@ -39,135 +39,222 @@
       <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
         <!-- Add icons to the links using the .nav-icon class
                 with font-awesome or any other icon font library -->
+        
+
         <li class="nav-item">
           {% url 'school_profile' as institution_setup %}
-          <a href="{{ institution_setup }}" class="nav-link {% if request.path == institution_setup %} active {% endif %}">
-            <i class="nav-icon fas fa-tachometer-alt"></i>
-            <p>
-              Core
-            </p>
-          </a>
+            <a href="{{institution_setup}}" class="nav-link {% if request.path == institution_setup %} active nav-link-collapsed {% endif %}" href="#submenusetup" data-toggle="collapse" data-target="#submenusetup">
+              <i class="nav-icon fas fa fa-users"></i>
+              <span class="d-none d-sm-inline">Core</span>
+            </a>
+            <div class="collapse {% if request.path == institution_setup %}show{% endif %}" id="submenusetup" aria-expanded="false">
+              <ul class="flex-column pl-2 nav">
+                <li class="nav-item">
+                  <a href="{{ institution_setup }}" class="nav-link{% if request.path == institution_setup %} bg-secondary{% endif %}{% if request.path == institution_setup %} bg-secondary{% endif %}">
+                    <i class="nav-icon fas fa-user-graduate"></i>
+                    <p>
+                      Institution’s Profile
+                    </p>
+                  </a>
+                </li>
+          
+                <li class="nav-item">
+                  <a href="#" class="nav-link{% if request.path == manage_staff %} active{% endif %}{% if request.path == edit_staff %} active{% endif %}">
+                    <i class="nav-icon fas fa-chalkboard-teacher"></i>
+                    <p>
+                      Administration
+                    </p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="#" class="nav-link{% if request.path == manage_guardians %} active{% endif %}{% if request.path == edit_guardians %} active{% endif %}">
+                    <i class="nav-icon fas fa fa fa-users"></i>
+                    <p>
+                      Processes
+                    </p>
+                  </a>
+                </li>
+          
+                <li class="nav-item">
+                  <a href="#" class="nav-link{% if request.path == manage_guadians %} active{% endif %}{% if request.path == edit_guardians %} active{% endif %}">
+                    <i class="nav-icon fas fa fa fa-users"></i>
+                    <p>
+                      Report & Analysis
+                    </p>
+                  </a>
+                </li>
+          
+                <li class="nav-item">
+                  <a href="#" class="nav-link{% if request.path == manage_guadians %} active{% endif %}{% if request.path == edit_guardians %} active{% endif %}">
+                    <i class="nav-icon fas fa fa fa-users"></i>
+                    <p>
+                      Utilities
+                    </p>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          
         </li>
 
         <li class="nav-item">
-          {% url 'admin_home' as admin_home %}
-          <a href="{{admin_home}}" class="nav-link {% if request.path == admin_home %} active {% endif %}">
-            <i class="nav-icon fas fa-tachometer-alt"></i> <span class="d-none d-sm-inline">Academic</span></a>
-          {% comment %}
-          <div class="collapse" id="submenu" aria-expanded="false">
-            <ul class="flex-column pl-2 nav">
+          {% url 'academics:academics_home' as academics %}
+          {% url 'academics:manage_class' as learning %}
+          {% url 'academics:manage_exams' as examinations %}
 
-              <li class="nav-item">
-                {% url 'student_affairs' as student_affairs %}
-                {% url 'student_affairs' student_affairs_id=id as edit_student_affairs %}
-                <a href="{{ student_affairs }}"
-                  class="nav-link {% if request.path == student_affairs  %} active {% endif %} {% if request.path == edit_student_affairs %} active {% endif %}">
-                  <i class="nav-icon fas fa fa-building"></i>
-                  <p>
-                    Manage Student Affairs
-                  </p>
-                </a>
-              </li>
+          <a href="{{academics}}" class="nav-link {% if request.path == academics%} active nav-link-collapsed {% endif %}" href="#submenuacademic" data-toggle="collapse" data-target="#submenuacademic">
+            <i class="nav-icon fas fa-tachometer-alt"></i> <span class="d-none d-sm-inline">Academics</span></a>
 
+            <div class="collapse {% if request.path == academics%}show{% endif %}" id="submenuacademic" aria-expanded="false">
+              <ul class="flex-column pl-2 nav">
+                <li class="nav-item">
+                  {% url 'academics:academics_home' as dashboard %}
+                  <a href="{{ dashboard }}" class="nav-link{% if request.path == dashboard %} bg-secondary{% endif %}{% if request.path == dashboard %} bg-secondary{% endif %}">
+                    <i class="nav-icon fas fa-user-graduate"></i>
+                    <p>
+                      Dashboard
+                    </p>
+                  </a>
+                </li>
+          
+                <li class="nav-item">
+                  <a href="{{learning}}" class="nav-link{% if request.path == learning %} bg-secondary{% endif %}{% if request.path == learning %} bg-secondary{% endif %}">
+                    <i class="nav-icon fas fa-chalkboard-teacher"></i>
+                    <p>
+                      Learning
+                    </p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="{{examinations}}" class="nav-link{% if request.path == examinations %} bg-secondary{% endif %}{% if request.path == examinations %} bg-secondary{% endif %}">
+                    <i class="nav-icon fas fa fa fa-users"></i>
+                    <p>
+                      Examination
+                    </p>
+                  </a>
+                </li>
+          
+                <li class="nav-item">
+                  <a href="#" class="nav-link{% if request.path == manage_guardians %} bg-secondary{% endif %}{% if request.path == edit_guardians %} bg-secondary{% endif %}">
+                    <i class="nav-icon fas fa fa fa-users"></i>
+                    <p>
+                      Attendance
+                    </p>
+                  </a>
+                </li>
+          
+                <li class="nav-item">
+                  <a href="#" class="nav-link{% if request.path == manage_guardians %} bg-secondary{% endif %}{% if request.path == edit_guardians %} bg-secondary{% endif %}">
+                    <i class="nav-icon fas fa fa fa-users"></i>
+                    <p>
+                      Industrial Attachment & Internship
+                    </p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="#" class="nav-link{% if request.path == manage_guardians %} bg-secondary{% endif %}{% if request.path == edit_guardians %} bg-secondary{% endif %}">
+                    <i class="nav-icon fas fa fa fa-users"></i>
+                    <p>
+                      Graduation
+                    </p>
+                  </a>
+                </li>
 
-              <li class="nav-item">
-                <a class="nav-link collapsed text-truncate" href="#submenu1" data-toggle="collapse"
-                  data-target="#submenuusers"><i class="nav-icon fas fa fa-users"></i> <span
-                    class="d-none d-sm-inline">Manage Users</span></a>
-
-                <div class="collapse" id="submenuusers" aria-expanded="false">
-                  <ul class="flex-column pl-2 nav">
-
-                    <li class="nav-item">
-                      {% url 'manage_hod' as manage_hod %}
-                      {% url 'edit_hod' hod_id=id as edit_hod %}
-                      <a href="{{ manage_hod }}"
-                        class="nav-link {% if request.path == manage_hod %} active {% endif %} {% if request.path == edit_hod %} active {% endif %}">
-                        <i class="nav-icon fas fa-user-graduate"></i>
-                        <p>
-                          Manage H.O.D
-                        </p>
-                      </a>
-                    </li>
-
-                    <li class="nav-item">
-                      {% url 'manage_staff' as manage_staff %}
-                      {% url 'edit_staff' staff_id=id as edit_staff %}
-                      <a href="{{ manage_staff }}"
-                        class="nav-link {% if request.path == manage_staff %} active {% endif %} {% if request.path == edit_staff %} active {% endif %}">
-                        <i class="nav-icon fas fa-chalkboard-teacher"></i>
-                        <p>
-                          Manage Staff
-                        </p>
-                      </a>
-                    </li>
-
-                    <li class="nav-item">
-                      {% url 'manage_guardians' as manage_guardians %}
-                      {% url 'edit_guardian' guardian_id=id as edit_guardian %}
-                      <a href="{{ manage_guardians }}"
-                        class="nav-link {% if request.path == manage_guadians %} active {% endif %} {% if request.path == edit_guardians %} active {% endif %}">
-                        <i class="nav-icon fas fa fa fa-users"></i>
-                        <p>
-                          Manage Guardian
-                        </p>
-                      </a>
-                    </li>
-
-                  </ul>
-                </div>
-              </li>
-            </ul>
-          </div>
-          {% endcomment %}
+                <li class="nav-item">
+                  <a href="#" class="nav-link{% if request.path == manage_guardians %} bg-secondary{% endif %}{% if request.path == edit_guardians %} bg-secondary{% endif %}">
+                    <i class="nav-icon fas fa fa fa-users"></i>
+                    <p>
+                      Utilities
+                    </p>
+                  </a>
+                </li>
+              </ul>
+            </div>
+            
         </li>
 
         <li class="nav-item">
-          {% url 'finance:finance_home' as finance_home %}
-          <a href="{{ finance_home }}" class="nav-link {% if request.path == finance_home %} active {% endif %}">
+          {% url 'finance:finance_home' as finance %}
+          <a href="{{finance}}" class="nav-link  {% if request.path == finance %} active nav-link-collapsed {% endif %}" href="#submenufinance" data-toggle="collapse" data-target="#submenufinance">
             <i class="nav-icon fas fa-hand-holding-usd"></i>
             <p>
               Finance
             </p>
           </a>
-        </li>
 
-        <li class="nav-item">
-          {% url 'academics:academics_home' as academics_home %}
-          <a href="{{ academics_home }}" class="nav-link {% if request.path == academics_home %} active {% endif %}">
-            <i class="nav-icon fa fa-graduation-cap"></i>
-            <p>
-              Learning
-            </p>
-          </a>
-        </li>
-
-        <li class="nav-item">
-          {% url 'academics:manage_exams' as examinations %}
-          <a href="{{ examinations }}" class="nav-link {% if request.path == examinations %} active {% endif %}">
-            <i class="nav-icon fa fa-graduation-cap"></i>
-            <p>
-              Examination
-            </p>
-          </a>
-        </li>
-
+          <div class="collapse {% if request.path == finance %}show{% endif %}" id="submenufinance" aria-expanded="false">
+            <ul class="flex-column pl-2 nav">
+              <li class="nav-item">
+                {% url 'finance:finance_home' as finance_dashboard %}
+                <a href="{{ finance_dashboard }}" class="nav-link{% if request.path == finance_dashboard %} bg-secondary{% endif %}{% if request.path == finance_dashboard %} bg-secondary{% endif %}">
+                  <i class="nav-icon fas fa-user-graduate"></i>
+                  <p>
+                    Dashboard
+                  </p>
+                </a>
+              </li>
         
+              <li class="nav-item">
+                <a href="" class="nav-link{% if request.path == '' %} bg-secondary{% endif %}{% if request.path == '' %} bg-secondary{% endif %}">
+                  <i class="nav-icon fas fa-chalkboard-teacher"></i>
+                  <p>
+                    Budget
+                  </p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="" class="nav-link{% if request.path == '' %} bg-secondary{% endif %}{% if request.path == '' %} bg-secondary{% endif %}">
+                  <i class="nav-icon fas fa fa fa-users"></i>
+                  <p>
+                    Fee Management
+                  </p>
+                </a>
+              </li>
+        
+              <li class="nav-item">
+                <a href="#" class="nav-link{% if request.path == '' %} bg-secondary{% endif %}{% if request.path == '' %} bg-secondary{% endif %}">
+                  <i class="nav-icon fas fa fa fa-users"></i>
+                  <p>
+                    Accounts
+                  </p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link{% if request.path == '' %} bg-secondary{% endif %}{% if request.path == '' %} bg-secondary{% endif %}">
+                  <i class="nav-icon fas fa fa fa-users"></i>
+                  <p>
+                    Mobile Money & Bank Integration
+                  </p>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </li>
 
         <li class="nav-item">
-          <a class="nav-link collapsed text-truncate" href="#submenu1" data-toggle="collapse" data-target="#submenu3"><i
-              class="nav-icon fas fa-tachometer-alt"></i> <span class="d-none d-sm-inline">Procurement</span></a>
+          <a href="" class="nav-link {% if request.path == '' %} active {% endif %}">
+            <i class="nav-icon fa fa-graduation-cap"></i>
+            <p>
+              Procurement & Inventory
+              <span class="right badge badge-success" style="position: absolute; top: 0; right: 0; font-size: 8px;">coming soon</span>
+            </p>
+            
+          </a>
         </li>
 
         <li class="nav-item">
           <a class="nav-link collapsed text-truncate" href="#submenu1" data-toggle="collapse" data-target="#submenu3"><i
-              class="nav-icon fas fa-tachometer-alt"></i> <span class="d-none d-sm-inline">Inventory</span></a>
+              class="nav-icon fas fa-tachometer-alt"></i> 
+              <span class="d-none d-sm-inline">Asset Management</span>
+              <span class="right badge badge-success" style="position: absolute; top: 0; right: 0; font-size: 8px;">coming soon</span>
+            </a>
         </li>
 
         <li class="nav-item">
           <a class="nav-link collapsed text-truncate" href="#submenu1" data-toggle="collapse" data-target="#submenuusers">
             <i class="nav-icon fas fa fa-users"></i>
-            <span class="d-none d-sm-inline">Services</span>
+            <span class="d-none d-sm-inline">Services Management</span>
+            <span class="right badge badge-success" style="position: absolute; top: 0; right: 0; font-size: 8px;">coming soon</span>
           </a>
           <div class="collapse" id="submenuusers" aria-expanded="false">
             <ul class="flex-column pl-2 nav">
@@ -229,18 +316,27 @@
         </li>
 
         <li class="nav-item">
+          <a class="nav-link collapsed text-truncate" href="#submenu1" data-toggle="collapse" data-target="#submenu3"><i
+              class="nav-icon fas fa-tachometer-alt"></i> 
+              <span class="d-none d-sm-inline">EC Activities Mgmt</span>
+              <span class="right badge badge-success" style="position: absolute; top: 0; right: 0; font-size: 8px;">coming soon</span>
+            </a>
+        </li>
+
+        <li class="nav-item">
           <a class="nav-link collapsed text-truncate" href="#submenu1" data-toggle="collapse" data-target="#submenu6"><i
-              class="nav-icon fas fa-tachometer-alt"></i> <span class="d-none d-sm-inline">EC Activities</span></a>
+              class="nav-icon fas fa-tachometer-alt"></i> 
+              <span class="d-none d-sm-inline">Project Management </span>
+              <span class="right badge badge-success" style="position: absolute; top: 0; right: 0; font-size: 8px;">coming soon</span>
+            </a>
         </li>
 
         <li class="nav-item">
           <a class="nav-link collapsed text-truncate" href="#submenu1" data-toggle="collapse" data-target="#submenu7"><i
-              class="nav-icon fas fa-car"></i> <span class="d-none d-sm-inline">Project</span></a>
-        </li>
-
-        <li class="nav-item">
-          <a class="nav-link collapsed text-truncate" href="#submenu1" data-toggle="collapse" data-target="#submenu8"><i
-              class="nav-icon fas fa-hospital"></i> <span class="d-none d-sm-inline">Communication</span></a>
+              class="nav-icon fas fa-envelope"></i> 
+              <span class="d-none d-sm-inline">Communication</span>
+              <span class="right badge badge-success" style="position: absolute; top: 0; right: 0; font-size: 8px;">coming soon</span>
+            </a>
         </li>
       </ul>
       
