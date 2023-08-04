@@ -43,6 +43,8 @@
 
         <li class="nav-item">
           {% url 'school_profile' as institution_setup %}
+
+          {% if request.path == institution_setup %}
             <a href="{{institution_setup}}" class="nav-link {% if request.path == institution_setup %} active nav-link-collapsed {% endif %}" href="#submenusetup" data-toggle="collapse" data-target="#submenusetup">
               <i class="nav-icon fas fa fa-users"></i>
               <span class="d-none d-sm-inline">Core</span>
@@ -94,7 +96,14 @@
                 </li>
               </ul>
             </div>
-          
+          {% else %}
+          <li class="nav-item">
+            <a class="nav-link collapsed text-truncate" href="{{institution_setup}}"><i
+                class="nav-icon fas fa-tachometer-alt"></i> 
+                <span class="d-none d-sm-inline">Core</span>
+              </a>
+          </li>
+          {% endif %}
         </li>
 
         <li class="nav-item">
@@ -102,10 +111,11 @@
           {% url 'academics:manage_class' as learning %}
           {% url 'academics:manage_exams' as examinations %}
 
-          <a href="{{academics}}" class="nav-link {% if request.path == academics%} active nav-link-collapsed {% endif %}" href="#submenuacademic" data-toggle="collapse" data-target="#submenuacademic">
+          {% if request.path == academics or request.path == learning or request.path == examinations %}
+          <a href="{{academics}}" class="nav-link {% if request.path == academics%} active nav-link-collapsed {% endif %} {% if request.path == learning%}active nav-link-collapsed{% endif %} {% if request.path == examinations%}active nav-link-collapsed{% endif %}" href="#submenuacademic" data-toggle="collapse" data-target="#submenuacademic">
             <i class="nav-icon fas fa-tachometer-alt"></i> <span class="d-none d-sm-inline">Academics</span></a>
 
-            <div class="collapse {% if request.path == academics%}show{% endif %}" id="submenuacademic" aria-expanded="false">
+            <div class="collapse {% if request.path == academics%}show{% endif %} {% if request.path == learning%}show{% endif %} {% if request.path == examinations%}show{% endif %} " id="submenuacademic" aria-expanded="false">
               <ul class="flex-column pl-2 nav">
                 <li class="nav-item">
                   {% url 'academics:academics_home' as dashboard %}
@@ -172,6 +182,14 @@
             </div>
             
         </li>
+        {% else %}
+        <li class="nav-item">
+          <a class="nav-link collapsed text-truncate" href="{{academics}}"><i
+              class="nav-icon fas fa-tachometer-alt"></i> 
+              <span class="d-none d-sm-inline">Academics</span>
+            </a>
+        </li>
+        {% endif %}
 
         <li class="nav-item">
           {% url 'finance:finance_home' as finance %}
@@ -236,7 +254,7 @@
             <i class="nav-icon fa fa-graduation-cap"></i>
             <p>
               Procurement & Inventory
-              <span class="right badge badge-success" style="position: absolute; top: 0; right: 0; font-size: 8px;">coming soon</span>
+              
             </p>
             
           </a>
@@ -246,7 +264,7 @@
           <a class="nav-link collapsed text-truncate" href="#submenu1" data-toggle="collapse" data-target="#submenu3"><i
               class="nav-icon fas fa-tachometer-alt"></i> 
               <span class="d-none d-sm-inline">Asset Management</span>
-              <span class="right badge badge-success" style="position: absolute; top: 0; right: 0; font-size: 8px;">coming soon</span>
+              
             </a>
         </li>
 
@@ -254,7 +272,7 @@
           <a class="nav-link collapsed text-truncate" href="#submenu1" data-toggle="collapse" data-target="#submenuusers">
             <i class="nav-icon fas fa fa-users"></i>
             <span class="d-none d-sm-inline">Services Management</span>
-            <span class="right badge badge-success" style="position: absolute; top: 0; right: 0; font-size: 8px;">coming soon</span>
+            
           </a>
           <div class="collapse" id="submenuusers" aria-expanded="false">
             <ul class="flex-column pl-2 nav">
@@ -319,7 +337,7 @@
           <a class="nav-link collapsed text-truncate" href="#submenu1" data-toggle="collapse" data-target="#submenu3"><i
               class="nav-icon fas fa-tachometer-alt"></i> 
               <span class="d-none d-sm-inline">EC Activities Mgmt</span>
-              <span class="right badge badge-success" style="position: absolute; top: 0; right: 0; font-size: 8px;">coming soon</span>
+              
             </a>
         </li>
 
@@ -327,7 +345,7 @@
           <a class="nav-link collapsed text-truncate" href="#submenu1" data-toggle="collapse" data-target="#submenu6"><i
               class="nav-icon fas fa-tachometer-alt"></i> 
               <span class="d-none d-sm-inline">Project Management </span>
-              <span class="right badge badge-success" style="position: absolute; top: 0; right: 0; font-size: 8px;">coming soon</span>
+              
             </a>
         </li>
 
@@ -335,7 +353,7 @@
           <a class="nav-link collapsed text-truncate" href="#submenu1" data-toggle="collapse" data-target="#submenu7"><i
               class="nav-icon fas fa-envelope"></i> 
               <span class="d-none d-sm-inline">Communication</span>
-              <span class="right badge badge-success" style="position: absolute; top: 0; right: 0; font-size: 8px;">coming soon</span>
+              
             </a>
         </li>
       </ul>
