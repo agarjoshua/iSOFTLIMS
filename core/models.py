@@ -81,6 +81,128 @@ class Institution(models.Model):
     objects = models.Manager()
 
 
+class Campus(models.Model):
+    id = models.AutoField(primary_key=True)
+    institution_code = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
+    campus_code = models.CharField(max_length=30, null=True)
+    name = models.CharField(max_length=30)
+    physical_address = models.CharField(max_length=255, null=True)
+    notes = models.TextField(null=True)
+    gl_account = models.CharField(max_length=255, null=True)
+    STATUS = [(1, "Active"), (2, "Inactive")]
+    status = models.CharField(max_length=255, choices=STATUS, default="1")
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True)
+    institution = models.ForeignKey(Institution, on_delete=models.DO_NOTHING, null=True)
+    objects = models.Manager()
+
+    def __str__(self):
+        return self.name
+    # class Meta:
+    #     ordering = ['id']
+
+    def get_next(self):
+        return Campus.objects.filter(id__gt=self.id).order_by('id').first()
+    
+    def get_previous(self):
+        return Campus.objects.filter(id__lt=self.id).order_by('-id').first()
+    
+    def get_first(self):
+        return Campus.objects.order_by('id').first()
+
+    def get_last(self):
+        return Campus.objects.order_by('id').last()
+    
+
+class School(models.Model):
+    id = models.AutoField(primary_key=True)
+    code = models.CharField(max_length=30, null=True)
+    name = models.CharField(max_length=30)
+    description = models.CharField(max_length=30)
+    campus = models.ForeignKey(Campus, on_delete=models.DO_NOTHING, null=True)
+    gl_account = models.CharField(max_length=255, null=True)
+    notes = models.TextField(null=True)
+    objects = models.Manager()
+
+    def __str__(self):
+        return self.name
+
+
+class Program(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=30)
+    code = models.CharField(max_length=30, null=True)
+    description = models.CharField(max_length=30)
+    duration = models.CharField(max_length=30)
+    number_of_terms = models.CharField(max_length=30)
+    current_term = models.CharField(max_length=30)
+    school = models.ForeignKey(School, on_delete=models.DO_NOTHING, null=True)
+    minimum_examinable_subjects = models.CharField(max_length=30)
+    maximum_examinable_subjects = models.CharField(max_length=30)
+    final_exam_marks_based_on = models.CharField(max_length=30)
+    mean_mark_to_advance_to_next_level = models.CharField(max_length=30)
+    curriculum_description = models.CharField(max_length=30)
+    class_progression = models.CharField(max_length=30)
+    progression_next_level = models.CharField(max_length=30)
+    gl_account = models.CharField(max_length=30)
+    notes = models.TextField(null=True)
+    objects = models.Manager()
+
+    def __str__(self):
+        return self.name
+
+
+class Course(models.Model):
+    id = models.AutoField(primary_key=True)
+    code = models.CharField(max_length=30, null=True)
+    name = models.CharField(max_length=30)
+    description = models.CharField(max_length=30)
+    duration = models.CharField(max_length=30)
+    number_of_terms = models.CharField(max_length=30)
+    current_term = models.CharField(max_length=30)
+    school = models.ForeignKey(School, on_delete=models.DO_NOTHING, null=True)
+    minimum_examinable_subjects = models.CharField(max_length=30)
+    maximum_examinable_subjects = models.CharField(max_length=30)
+    final_exam_marks_based_on = models.CharField(max_length=30)
+    mean_mark_to_advance_to_next_level = models.CharField(max_length=30)
+    curriculum_description = models.CharField(max_length=30)
+    class_progression = models.CharField(max_length=30)
+    progression_next_level = models.CharField(max_length=30)
+    gl_account = models.CharField(max_length=30)
+    notes = models.TextField(null=True)
+    objects = models.Manager()
+
+    def __str__(self):
+        return self.name
+
+
+# create a model for System & Curriculum (Example 8.4.4, CBC, GCE) with the fields below:
+# Code*
+# name
+# Description*
+# Study Period*
+# Levels
+# Campuses/Study Locations/Branches
+# School/Faculty
+# GL Account
+# Notes/Remarks
+
+class CurriculumSystem(models.Model):
+    id = models.AutoField(primary_key=True)
+    code = models.CharField(max_length=30, null=True)
+    name = models.CharField(max_length=30)
+    description = models.CharField(max_length=30)
+    study_period = models.CharField(max_length=30)
+    levels = models.CharField(max_length=30)
+    campuses = models.CharField(max_length=30)
+    school = models.ForeignKey(School, on_delete=models.DO_NOTHING, null=True)
+    gl_account = models.CharField(max_length=30)
+    notes = models.TextField(null=True)
+    objects = models.Manager()
+
+    def __str__(self):
+        return self.name
+
 
 class CustomUser(AbstractUser):
     user_type_data = (
@@ -225,6 +347,10 @@ class Staff(models.Model):
 
 class Department(models.Model):
     id = models.AutoField(primary_key=True)
+    campus = models.ForeignKey(Campus, on_delete=models.DO_NOTHING, null=True)
+    gl_account = models.CharField(max_length=255, null=True)
+    notes = models.TextField(null=True)
+    code = models.CharField(max_length=30, null=True)
     institution_code = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     department_code = models.CharField(max_length=30, null=True)
     name = models.CharField(max_length=30)
@@ -234,6 +360,8 @@ class Department(models.Model):
     created_at = models.DateTimeField(auto_now_add=True,null=True)
     updated_at = models.DateTimeField(auto_now=True,null=True)
     status = models.BooleanField(default=True)
+    school = models.ForeignKey(School, on_delete=models.DO_NOTHING, null=True)
+
 
     def __str__(self):
         return self.name
@@ -349,6 +477,53 @@ class Students(models.Model):
 
     def __str__(self):
         return str(self.name)
+    
+
+
+    
+#     a. Registration Type (New/Continuing)
+# b. Pupil/Student Type (Local/International)
+# c. Gender (Male/Female)
+# d. Account Status (Active/Inactive/On-Hold/Suspended/Terminated)
+# e. Study Type (Full Time/Part Time/Online)
+# f. Boarding Type (Boarder/Day Scholar)
+# g. Student Type (Local/Regional/International)
+# h. Sponsorship Type (Self-Sponsored/Sponsored)
+# i. Sponsors (Government/Organizations/Individuals)
+# j. Relationships (Parent/Guardian/Sponsor)
+# k. Special Needs (Physically Impaired/Visually Impaired/Hearing
+# Impaired/Intellectually Impaired/Multiple Disabilities/Other Impairment)
+# l. Nationalities &amp; Currencies (List World Nationalities &amp; their Currencies &amp;
+# provide capture of exchange rate against Base currency)
+# m. Religions (List Major World Religions)
+# n. Extra-Curriculum Activities (Music/Football/Netball/Athletics/Drama)
+# o. Require Services (Yes/No)
+# p. Entry Exam Required (Yes/No)
+# q. Type of Entry Examination (Normal/Government/Special)
+# r. Compulsory (Yes/No)
+# s. Contract Type (Permanent/Long Term/Short Term/Contracted Labour)
+# t. Job Type (Permanent/Contractual/Temporary)
+# u. Staff Category (Administrative/Teaching/Support)
+# v. Staff Type (Vice Chancellor/Deputy Vice Chancellor/Dean/Head of
+# Department/Teacher/Lecturer/Director/Manager/Officer/Employee/Support)
+# w. Payment Methods (Cheque/Direct Bank Deposit/EFT-Electronic File
+# Transfer/RTGS-Real Time Gross Settlement/Mobile Money/In-Kind)
+# x. Payment Reference Required (Yes/No)
+# y. Fee Item Categories (Tuition/Other Billable Item)
+# z. Fee Item Occurrence (One Off/Variable/Per Semester/Per Academic Year)
+# aa. Fee Item Applicability (All Students/Day Scholars Only/Boarders
+# Only/International Students Only/Local Students Only/Class/Form/First Year
+
+# iSoft LIMS (iSoft Learning Institution Information Management System) Core Module Brief
+
+# ©iSoft Systems 2023 All Rights Reserved
+
+# Quality Driven Solutions
+# Students Only/ Second Year Students Only/ Third Year Students Only/Final Year
+# Students Only)
+# bb. Fee Item Payment Priority (0-9)
+# cc. Services Type (Permanent/Sessional)
+# dd. Payment Plan (Pre-Paid/Post-Paid)
 
 
 #: TODO
