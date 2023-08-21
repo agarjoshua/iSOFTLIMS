@@ -43,13 +43,14 @@
 
         <li class="nav-item">
           {% url 'school_profile' as institution_setup %}
+          {% url 'administration' as administration %}
 
-          {% if request.path == institution_setup %}
-            <a href="{{institution_setup}}" class="nav-link {% if request.path == institution_setup %} active nav-link-collapsed {% endif %}" href="#submenusetup" data-toggle="collapse" data-target="#submenusetup">
+          {% if request.path == institution_setup or request.path == administration %}
+            <a href="{{institution_setup}}" class="nav-link {% if request.path == institution_setup %} active nav-link-collapsed {% endif %} {% if request.path == administration %}active nav-link-collapsed{% endif %}" href="#submenusetup" data-toggle="collapse" data-target="#submenusetup">
               <i class="nav-icon fas fa fa-users"></i>
               <span class="d-none d-sm-inline">Core</span>
             </a>
-            <div class="collapse {% if request.path == institution_setup %}show{% endif %}" id="submenusetup" aria-expanded="false">
+            <div class="collapse {% if request.path == institution_setup %}show{% endif %} {% if request.path == administration %}show{% endif %}" id="submenusetup" aria-expanded="false">
               <ul class="flex-column pl-2 nav">
                 <li class="nav-item">
                   <a href="{{ institution_setup }}" class="nav-link{% if request.path == institution_setup %} bg-secondary{% endif %}{% if request.path == institution_setup %} bg-secondary{% endif %}">
@@ -61,7 +62,7 @@
                 </li>
           
                 <li class="nav-item">
-                  <a href="#" class="nav-link{% if request.path == manage_staff %} active{% endif %}{% if request.path == edit_staff %} active{% endif %}">
+                  <a href="{{ administration }}" class="nav-link{% if request.path == administration %} bg-secondary{% endif %}{% if request.path == administration %} active{% endif %}">
                     <i class="nav-icon fas fa-chalkboard-teacher"></i>
                     <p>
                       Administration

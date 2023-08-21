@@ -10,6 +10,7 @@ from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.core import serializers
 import json
+from core.forms.campusForm import CampusForm
 from core.forms.courseforms import AddCourseForm, CourseEditForm
 from core.forms.departmentforms import AddDepartmentForm
 from core.forms.guardianforms import AddGuardianForm, EditGuardianForm
@@ -23,6 +24,7 @@ from core.models import (
     HOD,
     Applicant,
     ApplicantApprovalWorklow,
+    Campus,
     CustomUser, 
     Admin,
     Department,
@@ -451,6 +453,64 @@ def admin_school_update(request):
 
     messages.success(request, "Profile Updated Successfully")
     return redirect("school_profile")
+
+
+def administration(request):
+    campus_form = CampusForm()
+    edit_campus_form = CampusForm()
+
+    all_campuses = Campus.objects.all()
+
+    context = {
+        'campus_form': campus_form,
+        'campuses': all_campuses,
+        'edit_campus_form': edit_campus_form
+    }
+    return render(request, "admin_template/manage_administration.html",context)
+
+def add_campus(request):
+    if request.method == "POST":
+        campus_form = CampusForm(request.POST)
+        if campus_form.is_valid():
+            campus_form.save()
+            messages.success(request, "Campus Added Successfully")
+            return redirect("administration")
+        else:
+            messages.error(request, "Failed to Add Campus")
+            return redirect("administration")
+    return redirect("administration")
+
+
+def edit_campus(request, campus_id):
+    campus = Campus.objects.get(id=campus_id)
+
+    if request.method == "POST":    
+        campus_form = CampusForm(request.POST)
+        if campus_form.is_valid():
+            campus_form.update(campus) # type: ignore
+            messages.success(request, "Campus Updated Successfully")
+            return redirect("administration")
+        else:
+            messages.error(request, "Failed to Update Campus")
+            return redirect("administration")
+
+    context = {
+        'campus_form': campus_form,
+        'campus': campus
+    }
+    return render(request, "admin_template/edit_campus_template.html", context)
+
+# function for deleting a campus
+def delete_campus(request, campus_id):
+    print('-------------------hello world')
+    campus = Campus.objects.get(id=campus_id)
+    # try:
+    campus.delete()
+    messages.success(request, "Campus Deleted Successfully.")
+    return redirect("administration")
+    # except:
+        # messages.error(request, "Failed to Delete Campus.")
+        # return redirect("administration")
 
 
 def manage_users(request):

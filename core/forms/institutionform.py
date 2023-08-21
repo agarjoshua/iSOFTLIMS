@@ -349,3 +349,7 @@ class InstitutionForm(forms.Form):
     social_security_number = forms.CharField(label="Social Security Number", widget=forms.TextInput(attrs={"class": "form-control"}))
     industrial_training_number = forms.CharField(label="Industrial Training Number", widget=forms.TextInput(attrs={"class": "form-control"}))
     currency = forms.CharField(label="Currency", widget=forms.TextInput(attrs={"class": "form-control"}))
+
+    # Form for the model Campus
+    # Path: core/forms/campusform.py
+

@@ -84,6 +84,12 @@ urlpatterns = [
         AdminViews.admin_school_update,
         name="admin_school_update",
     ),
+    # ADMINISTRATION URLS:
+    path("administration/", AdminViews.administration, name="administration"),
+    path("add_campus/", AdminViews.add_campus, name="add_campus"),
+    path("edit_campus/<campus_id>", AdminViews.edit_campus, name="edit_campus"),
+    path("delete_campus/<campus_id>", AdminViews.delete_campus, name="delete_campus"),
+
     # ADMISSIONS
     path("admissions/", AdminViews.admissions, name="admissions"),
     path(
