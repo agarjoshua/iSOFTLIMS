@@ -16,6 +16,7 @@ from core.forms.departmentforms import AddDepartmentForm
 from core.forms.guardianforms import AddGuardianForm, EditGuardianForm
 from core.forms.hodforms import AddHodForm, AddStaffTypeForm, EditHodForm
 from core.forms.institutionform import InstitutionForm
+from core.forms.schoolforms import SchoolForm
 from core.forms.studentforms import EditStudentForm, AddStudentForm
 from django.contrib.admin.views.decorators import user_passes_test # type: ignore
 from django.db.models import Count
@@ -29,6 +30,7 @@ from core.models import (
     Admin,
     Department,
     Guardian,
+    School,
     Staff,
     StaffType,
     Students,
@@ -502,15 +504,51 @@ def edit_campus(request, campus_id):
 
 # function for deleting a campus
 def delete_campus(request, campus_id):
-    print('-------------------hello world')
     campus = Campus.objects.get(id=campus_id)
-    # try:
-    campus.delete()
-    messages.success(request, "Campus Deleted Successfully.")
-    return redirect("administration")
-    # except:
-        # messages.error(request, "Failed to Delete Campus.")
-        # return redirect("administration")
+    try:
+        campus.delete()
+        messages.success(request, "Campus Deleted Successfully.")
+        return redirect("administration")
+    except:
+        messages.error(request, "Failed to Delete Campus.")
+        return redirect("administration")
+
+def school(request):
+    # campus_form = CampusForm()
+    # edit_campus_form = CampusForm()
+    school_form = SchoolForm()
+    all_schools = School.objects.all()
+
+    context = {
+        'all_schools': all_schools,
+        'school_form': school_form,
+        # 'edit_campus_form': edit_campus_form
+    }
+    return render(request, "admin_template/manage_school_template.html",context)
+
+
+def add_school(request):
+    if request.method == "POST":
+        school_form = SchoolForm(request.POST)
+        if school_form.is_valid():
+            school_form.save()
+            messages.success(request, "School Added Successfully")
+            return redirect("schools")
+        else:
+            messages.error(request, "Failed to Add School")
+            return redirect("school")
+    return redirect("schools")
+
+
+def delete_school(request, school_id):
+    school = School.objects.get(id=school_id)
+    try:
+        school.delete()
+        messages.success(request, "School Deleted!")
+        return redirect('schools')
+    except CustomUser.DoesNotExist:
+        messages.error(request, "School Does Not Exist")
+        return redirect('schools')
 
 
 def manage_users(request):

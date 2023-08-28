@@ -122,6 +122,8 @@ class School(models.Model):
     campus = models.ForeignKey(Campus, on_delete=models.DO_NOTHING, null=True)
     gl_account = models.CharField(max_length=255, null=True)
     notes = models.TextField(null=True)
+    STATUS = [(1, "Active"), (2, "Inactive")]
+    status = models.CharField(max_length=255, choices=STATUS, default="1")
     objects = models.Manager()
 
     def __str__(self):

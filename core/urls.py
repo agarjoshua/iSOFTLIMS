@@ -90,6 +90,11 @@ urlpatterns = [
     path("edit_campus/<campus_id>", AdminViews.edit_campus, name="edit_campus"),
     path("delete_campus/<campus_id>", AdminViews.delete_campus, name="delete_campus"),
 
+    path("schools/", AdminViews.school, name="schools"),
+    path("add_school/", AdminViews.add_school, name="add_school"),
+    path("delete_school/<school_id>", AdminViews.delete_school, name="delete_school"),
+    
+
     # ADMISSIONS
     path("admissions/", AdminViews.admissions, name="admissions"),
     path(
