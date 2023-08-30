@@ -177,6 +177,22 @@ class Course(models.Model):
     def __str__(self):
         return self.name
 
+# Code
+# Description
+# Duration
+# Number of Terms/Sessions/Semesters Per Academic Year
+# Current Term/Session/Semester
+# School/Faculty
+# Minimum Examinable Subjects/Units*
+# Maximum Examinable Subjects/Units*
+# Final Exam Marks Based On?*
+# Mean Mark to advance to next level (Mean %age Mark or Mean Score or )
+# Curriculum/Faculty Description*
+# Class/Form/Level Progression (Mean Mark to advance to next Class/Form (Mean %age Mark)
+# Progression Next Level
+# GL Account
+# Notes/Remarks
+
 
 # create a model for System & Curriculum (Example 8.4.4, CBC, GCE) with the fields below:
 # Code*

@@ -8,7 +8,7 @@ class SchoolForm(forms.Form):
     code = forms.CharField(max_length=50, required=True, widget=forms.TextInput(attrs={"class":"form-control"}))
     name = forms.CharField(max_length=50, required=True, widget=forms.TextInput(attrs={"class":"form-control"}))
     description = forms.CharField(max_length=50, required=True, widget=forms.TextInput(attrs={"class":"form-control"}))
-    campus = forms.ModelChoiceField(queryset=Campus.objects.all(), label="Campus", widget=forms.Select(attrs={"class":"form-control"}))
+    # campus = forms.ModelChoiceField(queryset=Campus.objects.all(), label="Campus", widget=forms.Select(attrs={"class":"form-control"}))
     gl_account = forms.CharField(max_length=50, required=True, widget=forms.TextInput(attrs={"class":"form-control"}))
     notes = forms.CharField(max_length=50, required=True, widget=forms.TextInput(attrs={"class":"form-control"}))
     STATUS = [(1, "Active"), (2, "Inactive")]
@@ -33,7 +33,7 @@ class SchoolForm(forms.Form):
         school.code = self.cleaned_data['code']
         school.name = self.cleaned_data['name']
         school.description = self.cleaned_data['description']
-        school.campus = self.campus # type: ignore
+        # school.campus = self.campus # type: ignore
         school.notes = self.cleaned_data['notes']
         school.gl_account = self.cleaned_data['gl_account']
         school.status = self.cleaned_data['status']

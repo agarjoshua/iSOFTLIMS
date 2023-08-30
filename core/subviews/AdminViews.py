@@ -465,7 +465,7 @@ def administration(request):
 
     context = {
         'campus_form': campus_form,
-        'campuses': all_campuses,
+        'all_campuses': all_campuses,
         'edit_campus_form': edit_campus_form
     }
     return render(request, "admin_template/manage_administration.html",context)
@@ -514,15 +514,16 @@ def delete_campus(request, campus_id):
         return redirect("administration")
 
 def school(request):
-    # campus_form = CampusForm()
+    campus_form = CampusForm()
     # edit_campus_form = CampusForm()
-    school_form = SchoolForm()
+    edit_school_form = SchoolForm()
     all_schools = School.objects.all()
 
     context = {
         'all_schools': all_schools,
-        'school_form': school_form,
+        # 'school_form': school_form,
         # 'edit_campus_form': edit_campus_form
+        'edit_school_form': edit_school_form
     }
     return render(request, "admin_template/manage_school_template.html",context)
 
@@ -539,6 +540,24 @@ def add_school(request):
             return redirect("school")
     return redirect("schools")
 
+def edit_school(request, school_id):
+    school = School.objects.get(id=school_id) 
+    if request.method == "POST":    
+        school_form = SchoolForm(request.POST)
+        if school_form.is_valid():
+            school_form.update(school) # type: ignore
+            messages.success(request, "Campus Updated Successfully")
+        else:
+            messages.error(request, "Failed to Update Campus, Form invalid")
+            return redirect("schools")
+
+    # context = {
+    #     'school_form': school_form,
+    #     'school': school
+    # }
+    # return render(request, "admin_template/edit_school_template.html", context)
+
+
 
 def delete_school(request, school_id):
     school = School.objects.get(id=school_id)
@@ -549,6 +568,30 @@ def delete_school(request, school_id):
     except CustomUser.DoesNotExist:
         messages.error(request, "School Does Not Exist")
         return redirect('schools')
+
+#create crud methods for programs
+def programs(request):
+    return render(request, "admin_template/manage_programs_template.html")
+
+def add_program(request):
+    return render(request, "admin_template/add_program_template.html")
+
+def edit_program(request):
+    return render(request, "admin_template/edit_program_template.html")
+
+def delete_program(request):
+    return render(request, "admin_template/delete_program_template.html")
+
+def courses(request):
+    courses = Course.objects.all()
+    context = {
+        "courses":courses
+    }
+    return render(request, "admin_template/manage_courses_template.html", context)
+
+
+
+
 
 
 def manage_users(request):

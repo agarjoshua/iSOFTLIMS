@@ -86,12 +86,14 @@ urlpatterns = [
     ),
     # ADMINISTRATION URLS:
     path("administration/", AdminViews.administration, name="administration"),
+
     path("add_campus/", AdminViews.add_campus, name="add_campus"),
     path("edit_campus/<campus_id>", AdminViews.edit_campus, name="edit_campus"),
     path("delete_campus/<campus_id>", AdminViews.delete_campus, name="delete_campus"),
 
     path("schools/", AdminViews.school, name="schools"),
     path("add_school/", AdminViews.add_school, name="add_school"),
+    path("edit_school/<school_id>", AdminViews.edit_school, name="edit_school"),
     path("delete_school/<school_id>", AdminViews.delete_school, name="delete_school"),
     
 

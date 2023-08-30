@@ -57,10 +57,24 @@
                                                 Manage Campuses</a><br />&nbsp;
                                         </div>
                 
-                                        <div class="">
+                                        <div class="ml-2">
                                             <a class="btn btn-warning" href="{% url 'schools' %}" role="button">
                                                 Manage Schools</a><br />&nbsp;
                                         </div>
+
+                                        <div class="ml-2">
+                                            <a class="btn btn-warning" href="{% url 'manage_departments' %}" role="button">
+                                                Manage Departments</a><br />&nbsp;
+                                        </div>
+
+                                        <div class="ml-2">
+                                            <a class="btn btn-warning" href="{% url 'manage_courses' %}" role="button">
+                                                Manage Courses</a><br />&nbsp;
+                                        </div>
+
+                                        
+
+                                        
                                     </div>
                                     
                                     <div class="card-header">
@@ -114,19 +128,19 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        {% for campus in campuses %}
+                                                        {% for campus in all_campuses %}
                                                             <tr>
-                                                                <td>{{ school.name }}</td>
-                                                                <td>{{ school.status }}</td>
-                                                                <td>{{ school.physical_address|slice:":10"}}</td>
+                                                                <td>{{ campus.name }}</td>
+                                                                <td>{{ campus.status }}</td>
+                                                                <td>{{ campus.physical_address|slice:":10"}}</td>
                                                                 <td class="">
-                                                                    <button class="btn btn-primary" data-toggle="collapse" data-target="#form{{ school.id }}">More Details</button>
+                                                                    <button class="btn btn-primary" data-toggle="collapse" data-target="#form{{ campus.id }}">More Details</button>
                                                                 </td>
                                                             </tr>
 
                                                             <tr>
                                                                 <td colspan="8">
-                                                                    <div id="form{{ school.id }}" class="form-row collapse">
+                                                                    <div id="form{{ campus.id }}" class="form-row collapse">
                                                                         <div>
                                                                         </div>
                                                                         <div class="card col-md-6 my-3">
@@ -143,9 +157,9 @@
                                                                                         </thead> 
                                                                                         <tbody>
                                                                                             <tr>
-                                                                                                <td>{{ school.gl_account }}</td>
-                                                                                                <td>{{ school.get_status_display }}</td>
-                                                                                                <td>{{ school.notes }}</td>
+                                                                                                <td>{{ campus.gl_account }}</td>
+                                                                                                <td>{{ campus.get_status_display }}</td>
+                                                                                                <td>{{ campus.notes }}</td>
                                                                                             </tr>
                                                                                         </tbody>
                                                                                     </table>
@@ -157,11 +171,11 @@
                                                                             <div class="card rowss">
                                                                                 <h3 class="mx-3 my-3 text-bold">Actions</h3>
                                                 
-                                                                                <button type="button" class="btn btn-primary mx-2 my-2" data-toggle="modal" data-target="#editModal{{ school.id }}">
+                                                                                <button type="button" class="btn btn-primary mx-2 my-2" data-toggle="modal" data-target="#editModal{{ campus.id }}">
                                                                                     Edit
                                                                                 </button>
             
-                                                                                <div class="modal fade" id="editModal{{ school.id }}" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+                                                                                <div class="modal fade" id="editModal{{ campus.id }}" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
                                                                                     <div class="modal-dialog" role="document">
                                                                                         <div class="modal-content">
                                                                                             <div class="modal-header">
@@ -172,39 +186,39 @@
                                                                                             </div>
                                                                                             <div class="modal-body">
                                                                                                 <!-- Edit form fields here -->
-                                                                                                <form method="POST" action="{% url 'edit_campus' school.id %}" enctype="multipart/form-data" class="mx-3 my-3">
+                                                                                                <form method="POST" action="{% url 'edit_campus' campus.id %}" enctype="multipart/form-data" class="mx-3 my-3">
                                                                                                     {% csrf_token %} 
                     
                                                                                                     <div class="form-group">
                                                                                                         <label for="campus_code">Campus Code</label>
-                                                                                                        <input type="text" class="form-control" name="campus_code" value="{{ school.campus_code }}">
+                                                                                                        <input type="text" class="form-control" name="campus_code" value="{{ campus.campus_code }}">
                                                                                                     </div>
                                                                                                     
                                                                                                     <div class="form-group">
                                                                                                         <label for="name">Name</label>
-                                                                                                        <input type="text" class="form-control" name="name" value="{{ school.name }}">
+                                                                                                        <input type="text" class="form-control" name="name" value="{{ campus.name }}">
                                                                                                     </div>
                                                                                                     
                                                                                                     <div class="form-group">
                                                                                                         <label for="physical_address">Address</label>
-                                                                                                        <input type="text" class="form-control" name="physical_address" value="{{ school.physical_address }}">
+                                                                                                        <input type="text" class="form-control" name="physical_address" value="{{ campus.physical_address }}">
                                                                                                     </div>
                                                                                                     
                                                                                                     <div class="form-group">
                                                                                                         <label for="notes">Notes</label>
-                                                                                                        <input type="text" class="form-control" name="notes" value="{{ school.notes }}">
+                                                                                                        <input type="text" class="form-control" name="notes" value="{{ campus.notes }}">
                                                                                                     </div>
                                                                                                     
                                                                                                     <div class="form-group">
                                                                                                         <label for="gl_account">GL Account</label>
-                                                                                                        <input type="text" class="form-control" name="gl_account" value="{{ school.gl_account }}">
+                                                                                                        <input type="text" class="form-control" name="gl_account" value="{{ campus.gl_account }}">
                                                                                                     </div>
                                                                                                     
                                                                                                     <div class="form-group">
                                                                                                         <label for="status">Status</label>
                                                                                                         <select class="form-control" name="status">
-                                                                                                            <option value="1" {% if school.status == "1" %}selected{% endif %}>Active</option>
-                                                                                                            <option value="2" {% if school.status == "2" %}selected{% endif %}>Inactive</option>
+                                                                                                            <option value="1" {% if campus.status == "1" %}selected{% endif %}>Active</option>
+                                                                                                            <option value="2" {% if campus.status == "2" %}selected{% endif %}>Inactive</option>
                                                                                                         </select>
                                                                                                     </div>
                     
@@ -224,11 +238,11 @@
                                                                                     </div>
                                                                                 </div>
             
-                                                                                <button type="button" class="btn btn-danger mx-2 my-2" data-toggle="modal" data-target="#deleteModal{{ school.id }}">
+                                                                                <button type="button" class="btn btn-danger mx-2 my-2" data-toggle="modal" data-target="#deleteModal{{ campus.id }}">
                                                                                     Delete
                                                                                 </button>
             
-                                                                                <div class="modal fade" id="deleteModal{{ school.id }}" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                                                                                <div class="modal fade" id="deleteModal{{ campus.id }}" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
                                                                                     <div class="modal-dialog" role="document">
                                                                                         <div class="modal-content">
                                                                                             <div class="modal-header">
@@ -244,7 +258,7 @@
                                                                                             </div>
                                                                                             
                                                                                             <div class="modal-footer">
-                                                                                                <a href="{% url 'delete_campus' school.id %}" class="btn btn-danger" >Delete</a>
+                                                                                                <a href="{% url 'delete_campus' campus.id %}" class="btn btn-danger" >Delete</a>
                                                                                                 <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
                                                                                             </div>
                                                                                         </div>
@@ -273,183 +287,6 @@
                     </div>
                 </div>
 
-                <div class="card card-primary">
-                    <div class="card-header">
-                        <h3 class="card-title">Manage Schools</h3>
-                    </div>
-                    <div class="card-tools">
-                    </div>
-                
-                    <div class="card-body">
-                        <div class="mx-3 mt-2 card-body table-responsive p-0">
-                            <div class="container table-responsive">
-                                <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#addCampusModal">
-                                    Add School
-                                </button>
-
-                                <div class="modal fade" id="addCampusModal" tabindex="-1" role="dialog" aria-labelledby="ADDModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="editModalLabel">Edit Campus</h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <form method="POST" action="{% url 'add_campus'%}" enctype="multipart/form-data" class="mx-3 my-3">
-                                                    {% csrf_token %} 
-                                                    {{ campus_form.as_p }}
-                                                    <div class="ml-1">
-                                                        <button class="btn btn-primary" type="submit">Submit</button>
-                                                        <br/>&nbsp;
-                                                    </div>
-                                                    
-                                                </form>
-
-                                            </div>
-                                            
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <h2>Schools List</h2>
-                                <table class="table table-hover text-nowrap sortable">
-                                    <thead>
-                                        <tr>
-                                            <th>Campus Code</th>
-                                            <th>Name</th>
-                                            <th>Address</th>
-                                            <th>Notes</th>
-                                            <th>GL Account</th>
-                                            <th>Status</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {% for campus in campuses %}
-                                            <tr>
-                                                <td>{{ school.campus_code }}</td>
-                                                <td>{{ school.name }}</td>
-                                                <td>{{ school.physical_address }}</td>
-                                                <td>{{ school.notes }}</td>
-                                                <td>{{ school.gl_account }}</td>
-                                                <td>{{ school.get_status_display }}</td>
-                                                <td class="d-flex mx-1">
-                                                    <button type="button" class="btn btn-primary mx-1" data-toggle="modal" data-target="#editModal{{ school.id }}">
-                                                        Edit
-                                                    </button>
-
-                                                    <div class="modal fade" id="editModal{{ school.id }}" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
-                                                        <div class="modal-dialog" role="document">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <h5 class="modal-title" id="editModalLabel">Edit Campus</h5>
-                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                        <span aria-hidden="true">&times;</span>
-                                                                    </button>
-                                                                </div>
-                                                                <div class="modal-body">
-                                                                    <!-- Edit form fields here -->
-                                                                    <form method="POST" action="{% url 'edit_campus' school.id %}" enctype="multipart/form-data" class="mx-3 my-3">
-                                                                        {% csrf_token %} 
-
-                                                                        <div class="form-group">
-                                                                            <label for="campus_code">Campus Code</label>
-                                                                            <input type="text" class="form-control" name="campus_code" value="{{ school.campus_code }}">
-                                                                        </div>
-                                                                        
-                                                                        <div class="form-group">
-                                                                            <label for="name">Name</label>
-                                                                            <input type="text" class="form-control" name="name" value="{{ school.name }}">
-                                                                        </div>
-                                                                        
-                                                                        <div class="form-group">
-                                                                            <label for="physical_address">Address</label>
-                                                                            <input type="text" class="form-control" name="physical_address" value="{{ school.physical_address }}">
-                                                                        </div>
-                                                                        
-                                                                        <div class="form-group">
-                                                                            <label for="notes">Notes</label>
-                                                                            <input type="text" class="form-control" name="notes" value="{{ school.notes }}">
-                                                                        </div>
-                                                                        
-                                                                        <div class="form-group">
-                                                                            <label for="gl_account">GL Account</label>
-                                                                            <input type="text" class="form-control" name="gl_account" value="{{ school.gl_account }}">
-                                                                        </div>
-                                                                        
-                                                                        <div class="form-group">
-                                                                            <label for="status">Status</label>
-                                                                            <select class="form-control" name="status">
-                                                                                <option value="1" {% if school.status == "1" %}selected{% endif %}>Active</option>
-                                                                                <option value="2" {% if school.status == "2" %}selected{% endif %}>Inactive</option>
-                                                                            </select>
-                                                                        </div>
-
-                                                                        <div class="ml-1">
-                                                                            <button class="btn btn-primary" type="submit">Save</button>
-                                                                            <br/>&nbsp;
-                                                                        </div>
-                                                                        
-                                                                    </form>
-
-                                                                </div>
-                                                                
-                                                                <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal{{ school.id }}">
-                                                        Delete
-                                                    </button>
-
-                                                    <div class="modal fade" id="deleteModal{{ school.id }}" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
-                                                        <div class="modal-dialog" role="document">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <h5 class="modal-title" id="editModalLabel">Edit Campus</h5>
-                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                        <span aria-hidden="true">&times;</span>
-                                                                    </button>
-                                                                </div>
-                                                                <div class="modal-body">
-                                                                    <!-- Edit form fields here -->
-                                                                    Are you sure you want to delete this campus?
-
-                                                                </div>
-                                                                
-                                                                <div class="modal-footer">
-                                                                    <a href="{% url 'delete_campus' school.id %}" class="btn btn-danger" >Delete</a>
-                                                                    <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                </td>
-                                            </tr>
-
-                                            <!-- Edit Modal -->
-                                            
-                                        {% endfor %}
-                                    </tbody>
-                                </table>
-                        </div>
-
-
-                    </div>
-
-
-
-
-                </div>
                 <!-- /.card -->
 
             </div>

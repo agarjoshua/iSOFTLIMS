@@ -148,9 +148,9 @@
                                                                         </thead> 
                                                                         <tbody>
                                                                             <tr>
-                                                                                <td>{{ campus.gl_account }}</td>
-                                                                                <td>{{ campus.get_status_display }}</td>
-                                                                                <td>{{ campus.notes }}</td>
+                                                                                <td>{{ school.gl_account }}</td>
+                                                                                <td>{{ school.status }}</td>
+                                                                                <td>{{ school.notes }}</td>
                                                                             </tr>
                                                                         </tbody>
                                                                     </table>
@@ -177,39 +177,40 @@
                                                                             </div>
                                                                             <div class="modal-body">
                                                                                 <!-- Edit form fields here -->
-                                                                                <form method="POST" action="{% url 'edit_campus' school.id %}" enctype="multipart/form-data" class="mx-3 my-3">
+                                                                                <form method="POST" action="{% url 'edit_school' school.id %}" enctype="multipart/form-data" class="mx-3 my-3">
                                                                                     {% csrf_token %} 
+                                                                                    {{ school_form.as_p }}
             
                                                                                     <div class="form-group">
                                                                                         <label for="campus_code">Campus Code</label>
-                                                                                        <input type="text" class="form-control" name="campus_code" value="{{ school.campus_code }}">
+                                                                                        <input type="text" class="form-control" name="campus_code" value="{{ school.code }}">
                                                                                     </div>
                                                                                     
                                                                                     <div class="form-group">
                                                                                         <label for="name">Name</label>
-                                                                                        <input type="text" class="form-control" name="name" value="{{ campus.name }}">
+                                                                                        <input type="text" class="form-control" name="name" value="{{ school.name }}">
                                                                                     </div>
                                                                                     
                                                                                     <div class="form-group">
-                                                                                        <label for="physical_address">Address</label>
-                                                                                        <input type="text" class="form-control" name="physical_address" value="{{ campus.physical_address }}">
+                                                                                        <label for="physical_address">Description</label>
+                                                                                        <input type="text" class="form-control" name="description" value="{{ school.description }}">
                                                                                     </div>
                                                                                     
                                                                                     <div class="form-group">
                                                                                         <label for="notes">Notes</label>
-                                                                                        <input type="text" class="form-control" name="notes" value="{{ campus.notes }}">
+                                                                                        <input type="text" class="form-control" name="notes" value="{{ school.notes }}">
                                                                                     </div>
                                                                                     
                                                                                     <div class="form-group">
                                                                                         <label for="gl_account">GL Account</label>
-                                                                                        <input type="text" class="form-control" name="gl_account" value="{{ campus.gl_account }}">
+                                                                                        <input type="text" class="form-control" name="gl_account" value="{{ school.gl_account }}">
                                                                                     </div>
                                                                                     
                                                                                     <div class="form-group">
                                                                                         <label for="status">Status</label>
                                                                                         <select class="form-control" name="status">
-                                                                                            <option value="1" {% if campus.status == "1" %}selected{% endif %}>Active</option>
-                                                                                            <option value="2" {% if campus.status == "2" %}selected{% endif %}>Inactive</option>
+                                                                                            <option value="1" {% if school.status == "1" %}selected{% endif %}>Active</option>
+                                                                                            <option value="2" {% if school.status == "2" %}selected{% endif %}>Inactive</option>
                                                                                         </select>
                                                                                     </div>
             
