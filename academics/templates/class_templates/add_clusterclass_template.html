@@ -16,7 +16,7 @@ Add Cluster Class
         <!-- general form elements -->
         <div class="card card-primary">
           <div class="card-header">
-            <h3 class="card-title">Add Cluster</h3>
+            <h3 class="card-title">Add Unit Cluster</h3>
           </div>
           <!-- /.card-header -->
           {% csrf_token %}
@@ -56,7 +56,7 @@ Add Cluster Class
                 {{ form.cluster_class_name.label_tag }}
                 {{ form.cluster_class_name }}
                 <div class="invalid-feedback">
-                  Please provide a valid cluster class name.
+                  Please provide a valid cluster unit name.
                 </div>
               </div>
               <div class="form-group">
@@ -64,7 +64,7 @@ Add Cluster Class
                 {{ form.classes }}
               </div>
               <div class="">
-                <button type="submit" class="btn btn-primary">Add Subject</button>
+                <button type="submit" class="btn btn-primary">Add Unit</button>
               </div>
             </form>
           </div>

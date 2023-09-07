@@ -13,4 +13,4 @@ class ClassGradeForm(forms.ModelForm):
 class GradeEditForm(forms.ModelForm):
     class Meta:
         model = GradeLevel
-        fields = ('grade_name', 'cost', 'compulsory_classes')
+        fields = ('grade_name', 'compulsory_classes')

@@ -1,7 +1,7 @@
 {% extends 'base_template.html' %}
 
 {% block page_title %}
-Manage Grade
+<b>Manage Grade Year</b>
 {% endblock page_title %}
 
 {% block main_content %}
@@ -11,7 +11,7 @@ Manage Grade
 <section class="content">
     <div class="container-fluid">
 
-        <a class="btn btn-primary" href="{% url 'academics:add_grade' %}" role="button">+ Add Grade</a> <br />&nbsp;
+        <a class="btn btn-primary" href="{% url 'academics:add_grade' %}" role="button">+ Grade Year</a> <br />&nbsp;
 
         {% if messages %}
         <div class="form-group">
@@ -42,7 +42,7 @@ Manage Grade
                 <!-- general form elements -->
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Grade Details</h3>
+                        <h3 class="card-title">Grade Year Details</h3>
 
                         <div class="card-tools">
                             <div class="input-group input-group-sm" style="width: 150px;">
@@ -58,7 +58,7 @@ Manage Grade
                     <!-- /.card-header -->
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">Grade List</h3>
+                            <h3 class="card-title">Grade Year List</h3>
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body table-responsive p-0">
@@ -66,8 +66,7 @@ Manage Grade
                                 <thead>
                                     <tr>
                                         <th>ID</th>
-                                        <th>Grade Name</th>
-                                        <th>Cost</th>
+                                        <th>Grade Year Name</th>
                                         <th>Compulsory Classes</th>
                                         <th>Created At</th>
                                         <th>Updated At</th>
@@ -79,7 +78,6 @@ Manage Grade
                                     <tr>
                                         <td>{{ grade.id }}</td>
                                         <td>{{ grade.grade_name }}</td>
-                                        <td>{{ grade.cost }}</td>
                                         <td>{{ grade.compulsory_classes }}</td>
                                         <td>{{ grade.created_at }}</td>
                                         <td>{{ grade.updated_at }}</td>

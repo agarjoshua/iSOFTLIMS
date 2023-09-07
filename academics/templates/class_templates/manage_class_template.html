@@ -1,7 +1,7 @@
 {% extends 'base_template.html' %}
 
 {% block page_title %}
-Manage Class
+<b>Manage Unit</b>
 {% endblock page_title %}
 
 {% block main_content %}
@@ -14,10 +14,10 @@ Manage Class
         <div class="mx-auto row ">
             
             <div class="mr-1">
-                <a class="btn btn-primary" href="{% url 'academics:add_class' %}" role="button"> Create a Class</a><br/>&nbsp;
+                <a class="btn btn-primary" href="{% url 'academics:add_class' %}" role="button"> Create a Unit</a><br/>&nbsp;
             </div>
             <div class="ml-1">
-                <a class="btn btn-primary" href="{% url 'academics:clusterclass_list' %}" role="button"> Manage Class Clusters</a><br/>&nbsp;
+                <a class="btn btn-primary" href="{% url 'academics:clusterclass_list' %}" role="button"> Manage Unit Clusters</a><br/>&nbsp;
             </div>
         </div>
 
@@ -71,8 +71,8 @@ Manage Class
                             <thead>
                                 <tr>
                                     <th>ID</th>
-                                    <th>Class Name</th>
-                                    <th>Class Code</th>
+                                    <th>Unit Name</th>
+                                    <th>Unit Code</th>
                                     <th>Teacher</th>
                                     <th>Allowed Grade Levels</th>
                                     <th>session</th>

@@ -1,5 +1,5 @@
 from django.db import models
-from core.models import Students
+from core.models import CurriculumSystem, Students
 
 # Create your models here.
 class Course(models.Model):
@@ -68,9 +68,19 @@ class Enrollment(models.Model):
 
 class GradeLevel(models.Model):
     id = models.AutoField(primary_key=True)
+    code = models.CharField(max_length=50,null=True)
     grade_name = models.CharField(max_length=50)
-    cost = models.IntegerField()
-    compulsory_classes = models.ForeignKey("ClusterClass", on_delete=models.CASCADE)
+    description = models.CharField(max_length=50,null=True)
+    program = models.CharField(max_length=50,null=True)
+    system = models.ForeignKey(CurriculumSystem, on_delete=models.DO_NOTHING,null=True)
+    course = models.ForeignKey(Course, on_delete=models.DO_NOTHING,null=True)
+    class_progression_mean_grade_score = models.CharField(max_length=50,null=True)
+    class_capacity = models.IntegerField(default=0,null=True)
+    students_teacher_ratio = models.IntegerField(null=True)
+    assigned_class_capacity = models.IntegerField(null=True)
+    number_of_streams = models.IntegerField(null=True)
+    compulsory_classes = models.ForeignKey("ClusterClass", on_delete=models.CASCADE,null=True)
+    notes = models.CharField(max_length=50,null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     objects = models.Manager()
