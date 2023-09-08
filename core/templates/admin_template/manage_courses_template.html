@@ -1,7 +1,7 @@
 {% extends 'admin_template/base_template.html' %}
 
 {% block page_title %}
-Manage Course
+<b>Manage Course</b>
 {% endblock page_title %}
 
 {% block main_content %}
@@ -9,6 +9,9 @@ Manage Course
 {% load static %}
 
 <section class="content">
+    <div class="ml-2">
+        {% include 'core_navigation_navbar.html' %}
+    </div>
     <div class="container-fluid">
 
         <a class="btn btn-primary" href="{% url 'add_course' %}" role="button">+ Add Course</a> <br />&nbsp;

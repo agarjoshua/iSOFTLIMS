@@ -44,8 +44,9 @@
         <li class="nav-item">
           {% url 'school_profile' as institution_setup %}
           {% url 'administration' as administration %}
+          {% url 'reports' as reports%}
 
-          {% if request.path == institution_setup or request.path == administration %}
+          {% if request.path == institution_setup or request.path == administration or request.path == reports%}
             <a href="{{institution_setup}}" class="nav-link {% if request.path == institution_setup %} active nav-link-collapsed {% endif %} {% if request.path == administration %}active nav-link-collapsed{% endif %}" href="#submenusetup" data-toggle="collapse" data-target="#submenusetup">
               <i class="nav-icon fas fa fa-users"></i>
               <span class="d-none d-sm-inline">Core</span>
@@ -79,7 +80,7 @@
                 </li>
           
                 <li class="nav-item">
-                  <a href="#" class="nav-link{% if request.path == manage_guadians %} active{% endif %}{% if request.path == edit_guardians %} active{% endif %}">
+                  <a href="{{ reports }}" class="nav-link{% if request.path == reports %} active{% endif %}{% if request.path == edit_reports %} active{% endif %}">
                     <i class="nav-icon fas fa fa fa-users"></i>
                     <p>
                       Report & Analysis

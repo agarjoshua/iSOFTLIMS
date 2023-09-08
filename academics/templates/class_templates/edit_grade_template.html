@@ -1,7 +1,7 @@
 {% extends 'base_template.html' %}
 
 {% block page_title %}
-Edit Grade | #ID : {{ grade.name }}
+<b>Edit Grade Year</b>
 {% endblock page_title %}
 
 {% block main_content %}
@@ -9,6 +9,9 @@ Edit Grade | #ID : {{ grade.name }}
 {% load static %}
 
 <section class="content">
+    <div class="ml-2">
+        {% include 'core_navigation_navbar.html' %}
+    </div>
     <div class="container-fluid">
 
         <div class="row">
@@ -49,29 +52,10 @@ Edit Grade | #ID : {{ grade.name }}
                         </div>
                         {% endif %}
 
-
                         <div class="card-body">
-                            <div class="form-group">
-                                <label for="grade_name">Grade Name</label>
-                                <input type="text" class="form-control" id="grade_name" name="grade_name" value="{{ form.grade_name.value }}">
-                            </div>
-                        
-                            <div class="form-group">
-                                <label for="cost">Cost</label>
-                                <input type="number" class="form-control" id="cost" name="cost" value="{{ form.cost.value }}">
-                            </div>
-                        
-                            <div class="form-group">
-                                <label for="compulsory_classes">Compulsory Classes</label>
-                                <input type="text" class="form-control" id="compulsory_classes" name="compulsory_classes" value="{{ form.compulsory_classes.value }}">
-                            </div>
-                            
-                        </div>
-                        <!-- /.card-body -->
-
-                        <div class="card-footer">
-                            <button type="submit" class="btn btn-primary">Update Class</button>
-                        </div>
+                            {{form.as_p}}
+                            <button type="submit" class="btn btn-primary">Save Edit Grade Year</button>
+                          </div>
                     </form>
                 </div>
                 <!-- /.card -->

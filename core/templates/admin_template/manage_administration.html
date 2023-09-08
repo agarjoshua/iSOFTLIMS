@@ -10,6 +10,9 @@
 {% load static %}
 
 <section class="content">
+    <div class="ml-2">
+        {% include 'core_navigation_navbar.html' %}
+    </div>
     <div class="container-fluid">
 
         <div class="row">
@@ -51,44 +54,6 @@
                             <div class="col-md-12">
                                 <!-- general form elements -->
                                 <div class="card card-primary">
-                                    <div class="d-flex">
-                                        <div class="">
-                                            <a class="btn btn-warning" href="{% url 'administration' %}" role="button">
-                                                Manage Campuses</a><br />&nbsp;
-                                        </div>
-                
-                                        <div class="ml-2">
-                                            <a class="btn btn-warning" href="{% url 'schools' %}" role="button">
-                                                Manage Schools</a><br />&nbsp;
-                                        </div>
-
-                                        <div class="ml-2">
-                                            <a class="btn btn-warning" href="{% url 'manage_departments' %}" role="button">
-                                                Manage Departments</a><br />&nbsp;
-                                        </div>
-
-                                        <div class="ml-2">
-                                            <a class="btn btn-warning" href="{% url 'manage_courses' %}" role="button">
-                                                Manage Courses</a><br />&nbsp;
-                                        </div>
-
-                                        <div class="ml-2">
-                                            <a class="btn btn-warning" href="{% url 'academics:manage_class' %}" role="button">
-                                                Manage Unit</a><br />&nbsp;
-                                        </div>
-
-                                        <div class="ml-2">
-                                            <a class="btn btn-warning" href="{% url 'academics:clusterclass_list' %}" role="button">
-                                                Manage Unit Clusters</a><br />&nbsp;
-                                        </div>
-
-                                        <div class="ml-2">
-                                            <a class="btn btn-warning" href="{% url 'academics:manage_grade' %}" role="button">
-                                                Grade Year</a><br />&nbsp;
-                                        </div>
-                                        
-                                        
-                                    </div>
                                     
                                     <div class="card-header">
                                         <h3 class="card-title">Manage Campuses</h3>
@@ -96,7 +61,7 @@
                                     <div class="">
                                     
 
-                                        <div class="mx-3 mt-2 card-body table-responsive p-0">
+                                        <div class="mt-2 card-body table-responsive p-0">
                                             <div class="container table-responsive">
                                                 <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#addCampusModal">
                                                     Add Campus

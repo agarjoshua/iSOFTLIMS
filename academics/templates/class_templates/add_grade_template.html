@@ -1,7 +1,7 @@
 {% extends 'base_template.html' %}
 
 {% block page_title %}
-Add Grade Year
+<b>Add Grade Year</b>
 {% endblock page_title %}
 
 {% block main_content %}
@@ -9,6 +9,9 @@ Add Grade Year
 {% load static %}
 
 <section class="content">
+  <div class="ml-2">
+    {% include 'core_navigation_navbar.html' %}
+</div>
   <div class="container-fluid">
 
     <div class="row">
@@ -49,26 +52,13 @@ Add Grade Year
             </div>
             {% endif %}
 
-
             <div class="card-body">
-              <div class="form-group">
-                <label class="control-label col-sm-3">Grade Name:</label>
-                <div class="col-sm-9">
-                  {{ form.grade_name }}
-                </div>
-              </div>
-              
-              <div class="form-group">
-                <label class="control-label col-sm-3">Compulsory Cluster Class:</label>
-                <div class="col-sm-9">
-                  {{ form.compulsory_classes }}
-                </div>
-              </div>
-              <div class="form-group">
-                <div class="col-sm-offset-3 col-sm-9">
-                  <button type="submit" class="btn btn-primary">Submit</button>
-                </div>
-              </div>
+              {{form.as_p}}
+              <button type="submit" class="btn btn-primary">Add Grade Year</button>
+            </div>
+
+
+            
           </form>
 
         </div>

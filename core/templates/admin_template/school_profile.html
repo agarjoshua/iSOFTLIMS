@@ -10,21 +10,15 @@
         
         <div class="mx-auto row">
             <div class="">
-                <a class="btn btn-warning" href="{% url 'academics:manage_session' %}" role="button">
+                <a class="btn btn-success" href="{% url 'academics:manage_session' %}" role="button">
                     Manage Sessions</a><br />&nbsp;
             </div>
             <div class="ml-3">
-                <a class="btn btn-warning" href="{% url 'manage_departments' %}" role="button">
-                    Manage Departments</a><br />&nbsp;
-            </div>
-            <div class="ml-3">
-                <a class="btn btn-warning" href="{% url 'manage_courses' %}" role="button">
-                    Manage Courses</a><br />&nbsp;
-            </div>
-            <div class="ml-3">
-                <a class="btn btn-warning" href="{% url 'manage_users' %}" role="button">
+                <a class="btn btn-success" href="{% url 'manage_users' %}" role="button">
                     Manage All Users</a><br />&nbsp;
             </div>
+
+            {% include 'core_navigation_navbar.html' %}
 
         </div>
 

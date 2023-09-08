@@ -10,6 +10,9 @@
 {% load static %}
 
 <section class="content">
+    <div class="ml-2">
+        {% include 'core_navigation_navbar.html' %}
+    </div>
     <div class="container-fluid">
 
         <div class="row">
@@ -47,19 +50,6 @@
                       </div>
 
                 <div class="card card-primary">
-
-                    <div class="d-flex">
-                        <div class="">
-                            <a class="btn btn-warning" href="{% url 'administration' %}" role="button">
-                                Manage Campuses</a><br />&nbsp;
-                        </div>
-
-                        <div class="">
-                            <a class="btn btn-warning ml-2" href="{% url 'schools' %}" role="button">
-                                Manage Schools</a><br />&nbsp;
-                        </div>
-
-                    </div>
 
                     <div class="card-header">
                         <h3 class="card-title">Manage Schools</h3>

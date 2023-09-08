@@ -1643,7 +1643,8 @@ def check_if_course_exists(request):
     else:
         return HttpResponse(False)
 
-
+def reports(requests):
+    return render(requests, 'reports/core.html')
 
 
 #########################################UTILITIES#######################################################################
