@@ -157,6 +157,12 @@ urlpatterns = [
     path("edit_guardian_save/", AdminViews.edit_guardian_save, name="edit_guardian_save"),
     path("delete_guardian/<guardian_id>/", AdminViews.delete_student, name="delete_guardian"),
 
+
+    # PROCESSES
+    path("processes", AdminViews.processes, name="processes"),
+
+
+
     # REPORTS
     path("reports/", AdminViews.reports, name="reports"),
     

@@ -1644,7 +1644,108 @@ def check_if_course_exists(request):
         return HttpResponse(False)
 
 def reports(requests):
-    return render(requests, 'reports/core.html')
+
+    all_teachers_count = Teacher.objects.all().count()
+    all_student_count = Students.objects.all().count()
+
+    staff_count = Staff.objects.all().count()
+    course_count = Course.objects.all().count()
+    unregistered_course_count = Course.objects.annotate(student_count=Count('students')).filter(student_count=0).count()
+    registered_course_count = int(course_count) - int(unregistered_course_count)
+    course_name_list = list(Course.objects.values_list('course_name', flat=True))
+
+    departments = Department.objects.all()
+    department_count = Department.objects.all().count()
+    department_name_list = []
+    students_in_departments_list = []
+    
+    student_in_course_int = []
+    department_name_list = []
+
+    for i in departments:
+        department_name_list_obj = Department.objects.get(id=i.id).name
+        department_name_list.append(department_name_list_obj)
+        students_in_departments_list_obj = Students.objects.filter(department_id=i.id).count()
+        students_in_departments_list.append(students_in_departments_list_obj)
+    # subject_all = Subjects.objects.all()
+    # subject_list = []
+    # student_count_list_in_subject = []
+    # for subject in subject_all:
+    #     class = Class.objects.get(id=subject.class_id.id)
+    #     student_count = Students.objects.filter(class_id=class.id).count()
+    #     subject_list.append(subject.subject_name)
+    #     student_count_list_in_subject.append(student_count)
+
+    # For Saff
+    staff_attendance_present_list = []
+    staff_attendance_leave_list = []
+    staff_name_list = []
+
+    staffs = Staff.objects.all()
+    # for staff in staffs:
+    #     subject_ids = Subjects.objects.filter(staff_id=staff.admin.id)
+    #     attendance = Attendance.objects.filter(subject_id__in=subject_ids).count()
+    #     leaves = LeaveReportStaff.objects.filter(
+    #         staff_id=staff.id, leave_status=1
+    #     ).count()
+    #     staff_attendance_present_list.append(attendance)
+    #     staff_attendance_leave_list.append(leaves)
+    #     staff_name_list.append(staff.admin.first_name)
+
+    # For Students
+    student_attendance_present_list = []
+    student_attendance_leave_list = []
+    student_name_list = []
+
+    students = Students.objects.all()
+    # for student in students:
+    #     attendance = AttendanceReport.objects.filter(
+    #         student_id=student.id, status=True
+    #     ).count()
+    #     absent = AttendanceReport.objects.filter(
+    #         student_id=student.id, status=False
+    #     ).count()
+    #     leaves = LeaveReportStudent.objects.filter(
+    #         student_id=student.id, leave_status=1
+    #     ).count()
+    #     student_attendance_present_list.append(attendance)
+    #     student_attendance_leave_list.append(leaves + absent)
+    #     student_name_list.append(student.admin.first_name)
+
+    # For Teachers
+    teachers = Students.objects.all()
+    
+
+    context = {
+        "all_student_count": all_student_count,
+        "staff_attendance_present_list": staff_attendance_present_list,
+        "staff_attendance_leave_list": staff_attendance_leave_list,
+        "staff_name_list": staff_name_list,
+        "student_attendance_present_list": student_attendance_present_list,
+        "student_attendance_leave_list": student_attendance_leave_list,
+        "student_name_list": student_name_list,
+        # "subject_count": subject_count,
+        "staff_count": staff_count,
+        "course_count": course_count,
+        # "class_name_list": class_name_list,
+        # "subject_count_list": subject_count_list,
+        "student_in_course_int": student_in_course_int,
+        # "subject_list": subject_list,
+        # "student_count_list_in_subject": student_count_list_in_subject,
+        "unregistered_course_count": unregistered_course_count,
+        "registered_course_count":registered_course_count,
+        "course_name_list":course_name_list,
+        "department_name_list":department_name_list,
+        "students_in_departments_list":students_in_departments_list,
+        "department_count": department_count
+    }
+    return render(requests, 'reports/core.html', context=context)
+
+
+
+def processes(request):
+    return render(request, 'admin_template/processes.html')
+
 
 
 #########################################UTILITIES#######################################################################

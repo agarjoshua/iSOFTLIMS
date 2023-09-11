@@ -176,6 +176,9 @@ class Course(models.Model):
 
     def __str__(self):
         return self.name
+    
+
+
 
 class CurriculumSystem(models.Model):
     id = models.AutoField(primary_key=True)
@@ -597,7 +600,7 @@ class Applicant(models.Model):
     how_did_you_know_about_us = models.CharField(max_length=255, blank=True)
     require_entry_exams = models.BooleanField(default=True)
     application_status = models.BooleanField(default=False)
-    
+    objects = models.Manager()
 
 class ApplicantApprovalWorklow(models.Model):
     id = models.AutoField(primary_key=True)
@@ -657,6 +660,24 @@ class SpecialUser(models.Model):
 
     def __str__(self):
         return self.user.name
+
+
+# class House(models.Model):
+#     GENDER_CHOICES = [
+#         ('Male', 'Male'),
+#         ('Female', 'Female'),
+#         ('Both', 'Both'),
+#     ]
+
+#     code = models.CharField(max_length=20)
+#     description = models.CharField(max_length=100)
+#     gender = models.CharField(max_length=10, choices=GENDER_CHOICES)
+#     campus = models.CharField(max_length=100)  # You can adjust the max_length as needed
+
+
+
+
+
 
 
 # Creating Django Signals

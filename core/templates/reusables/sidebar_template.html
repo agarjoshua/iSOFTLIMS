@@ -44,14 +44,15 @@
         <li class="nav-item">
           {% url 'school_profile' as institution_setup %}
           {% url 'administration' as administration %}
-          {% url 'reports' as reports%}
+          {% url 'reports' as reports %}
+          {% url 'processes' as processes%}
 
-          {% if request.path == institution_setup or request.path == administration or request.path == reports%}
-            <a href="{{institution_setup}}" class="nav-link {% if request.path == institution_setup %} active nav-link-collapsed {% endif %} {% if request.path == administration %}active nav-link-collapsed{% endif %}" href="#submenusetup" data-toggle="collapse" data-target="#submenusetup">
+          {% if request.path == institution_setup or request.path == administration or request.path == reports or request.path == processes%}
+            <a href="{{institution_setup}}" class="nav-link {% if request.path == institution_setup %} active nav-link-collapsed {% endif %} {% if request.path == administration %}active nav-link-collapsed{% endif %} {% if request.path == reports %}active nav-link-collapsed{% endif %}  {% if request.path == processes %}active nav-link-collapsed{% endif %}" href="#submenusetup" data-toggle="collapse" data-target="#submenusetup">
               <i class="nav-icon fas fa fa-users"></i>
               <span class="d-none d-sm-inline">Core</span>
             </a>
-            <div class="collapse {% if request.path == institution_setup %}show{% endif %} {% if request.path == administration %}show{% endif %}" id="submenusetup" aria-expanded="false">
+            <div class="collapse {% if request.path == institution_setup %}show{% endif %} {% if request.path == administration %}show{% endif %} {% if request.path == reports %}show{% endif %} {% if request.path == processes %}show{% endif %}" id="submenusetup" aria-expanded="false">
               <ul class="flex-column pl-2 nav">
                 <li class="nav-item">
                   <a href="{{ institution_setup }}" class="nav-link{% if request.path == institution_setup %} bg-secondary{% endif %}{% if request.path == institution_setup %} bg-secondary{% endif %}">
@@ -71,7 +72,7 @@
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a href="#" class="nav-link{% if request.path == manage_guardians %} active{% endif %}{% if request.path == edit_guardians %} active{% endif %}">
+                  <a href="{{ processes }}" class="nav-link{% if request.path == processes %} active{% endif %}{% if request.path == edit_processes %} active{% endif %}">
                     <i class="nav-icon fas fa fa fa-users"></i>
                     <p>
                       Processes
