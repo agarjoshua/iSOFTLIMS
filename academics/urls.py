@@ -57,6 +57,13 @@ urlpatterns = [
     path('edit_grade/<grade_id>/', classView.edit_grade, name="edit_grade"),
     path('delete_grade/<grade_id>/', classView.delete_grade, name="delete_grade"),
 
+    # CLASS PROGRESSION URLS
+    path('add_class_progression/', classView.add_class_progression, name="add_class_progression"),
+    path('add_class_progression_save/', classView.add_class_progression_save, name="add_class_progression_save"),
+    path('manage_class_progression/', classView.manage_class_progression, name="manage_class_progression"),
+    path('edit_class_progression/<class_progression_id>/', classView.edit_class_progression, name="edit_class_progression"),
+    path('delete_class_progression/<class_progression_id>/', classView.delete_class_progression, name="delete_class_progression"),
+
     # MANAGE EXAMINATIONS
     path('manage_exams/', examinationViews.manage_examinations, name="manage_exams"),
     path('add_exam_type/', examinationViews.add_exam_type, name="add_exam_type"),

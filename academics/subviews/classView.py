@@ -2,9 +2,10 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse, HttpResponseBadRequest
 from django.contrib import messages
 from academics.forms.classforms import ClassEditForm, ClassCreateForm
+from academics.forms.classprogressionforms import ClassProgressionForm, Editclassprogressionform
 from academics.forms.clusterforms import ClusterClassForm
 from academics.forms.gradeforms import ClassGradeForm, GradeEditForm
-from academics.models import Class, ClusterClass, Course, GradeLevel
+from academics.models import Class, ClusterClass, Course, GradeLevel, ClassProgression
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.admin.views.decorators import user_passes_test
 
@@ -204,6 +205,65 @@ def get_course_name(clusterclass_id):
     clusterclass = get_object_or_404(ClusterClass, id=clusterclass_id)
     course_name = clusterclass.course.course_name
     return course_name
+
+
+def add_class_progression(request):
+    class_progression_form = ClassProgressionForm()
+
+    context = {
+        "class_progression_form": class_progression_form
+        }
+    return render(request, 'class_templates/add_class_progression.html', context)
+
+def add_class_progression_save(request):
+        if request.method == 'POST':
+            form = ClassProgressionForm(request.POST)
+            if form.is_valid():
+                form.save()
+                messages.success(request, "Class Progression Succesfully Added")
+                return redirect("academics:add_class_progression")
+        else:
+            messages.error(request, "Invalid Method!")
+            form = ClassProgressionForm()
+        return render(request, 'class_templates/add_class_progression.html')
+
+
+def manage_class_progression(request):
+    class_progressions = ClassProgression.objects.all()
+    context = {
+        "class_progressions": class_progressions
+        }
+    return render(request, 'class_templates/manage_class_progression.html', context)
+
+
+def edit_class_progression(request, class_progression_id):
+    class_progression = get_object_or_404(ClassProgression, id=class_progression_id)
+    edit_class_progression_form = Editclassprogressionform(instance=class_progression)
+
+    if request.method == 'POST':
+        form = Editclassprogressionform(request.POST, instance=class_progression)
+        if form.is_valid():
+            clusterclass = form.save()
+            Editclassprogressionform(instance=class_progression)
+            messages.success(request,'Class Progression Updated Succesfully')
+            return redirect("academics:manage_class_progression")
+    context = {
+        'edit_class_progression_form':edit_class_progression_form
+    }
+    return render(request, 'class_templates/edit_class_progression.html', context)
+
+def delete_class_progression(request, class_progression_id):
+    
+    try:
+        get_class_progression = ClassProgression.objects.get(id=class_progression_id) # type: ignore
+        get_class_progression.delete()
+        messages.warning(request,'Class Progression Succesfully Deleted')
+        return redirect('academics:manage_class_progression')
+    except Exception as e:
+        messages.error(request,f'Class Progression NOT Succesfully Deleted - {e}')
+        return redirect('academics:manage_class_progression')
+
+
 
 # TODO: Fix this disaster
 @csrf_exempt

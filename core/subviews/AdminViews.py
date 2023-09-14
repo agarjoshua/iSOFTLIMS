@@ -13,10 +13,14 @@ import json
 from core.forms.campusForm import CampusForm
 from core.forms.courseforms import AddCourseForm, CourseEditForm
 from core.forms.departmentforms import AddDepartmentForm
+from core.forms.extracurricularactivitiesform import EcActivitiesForm, EditEcActivitiesForm
 from core.forms.guardianforms import AddGuardianForm, EditGuardianForm
 from core.forms.hodforms import AddHodForm, AddStaffTypeForm, EditHodForm
+from core.forms.houseforms import EditHouseForm, HouseForm
 from core.forms.institutionform import InstitutionForm
+from core.forms.jobforms import EditJobForm, JobForm
 from core.forms.schoolforms import SchoolForm
+from core.forms.serviceforms import EditServiceForm, ServiceForm
 from core.forms.studentforms import EditStudentForm, AddStudentForm
 from django.contrib.admin.views.decorators import user_passes_test # type: ignore
 from django.db.models import Count
@@ -29,7 +33,10 @@ from core.models import (
     CustomUser, 
     Admin,
     Department,
+    EcActivities,
     Guardian,
+    House,
+    Job,
     School,
     Staff,
     StaffType,
@@ -43,6 +50,7 @@ from core.models import (
     # LeaveReportStaff,S
     # Attendance,
     # AttendanceReport,
+    Service,
 )
 from academics.models import (
     Class,
@@ -1630,6 +1638,7 @@ def delete_course(request, course_id):
         return redirect("manage_courses")
 
 
+
 @csrf_exempt
 def check_if_course_exists(request):
     name = request.POST.get("course_name")
@@ -1642,6 +1651,273 @@ def check_if_course_exists(request):
         return HttpResponse(True)
     else:
         return HttpResponse(False)
+
+
+
+#########################################MANAGE HOUSES#######################################################################
+def manage_houses(request):
+    houses = House.objects.all()
+
+    context = {
+        "houses":houses,
+    }
+    return render(request, 'house_templates/manage_houses_template.html', context)
+
+def add_house(request):
+    form = HouseForm()
+    context = {
+        "form":form
+    }
+    return render(request, 'house_templates/add_house_template.html', context)
+
+def add_house_save(request):
+    if request.method != "POST":
+        messages.error(request, "Invalid Method")
+        return redirect("manage_houses")
+    else:
+        form = HouseForm(request.POST, request.FILES)
+        if form.is_valid():
+            try:
+                form.save()
+                messages.success(request, "House Added Successfully!")
+                return redirect("manage_houses")
+            except Exception as e:
+                messages.error(request, f"Failed to Add House - {e}!")
+                return redirect("add_house")
+        else:
+            error_message = "Form is not valid. Please check the following issues:\n"
+            for field, errors in form.errors.items():
+                error_message += f"{field}: {', '.join(errors)}"
+            messages.error(request, error_message)
+            return redirect("add_house")
+
+
+def edit_house(request, house_id):
+    house = get_object_or_404(House, id=house_id)
+    edit_house_form = EditHouseForm(instance=house)
+
+    if request.method == 'POST':
+        form = EditHouseForm(request.POST, instance=house)
+        if form.is_valid():
+            form = form.save()
+            EditHouseForm(instance=house)
+            messages.success(request,'House Updated Succesfully')
+            return redirect("manage_houses")
+    context = {
+        'edit_house_form':edit_house_form
+    }
+    return render(request, 'house_templates/edit_house_template.html', context)
+
+
+def delete_house(request, house_id):
+    house = House.objects.get(id=house_id)
+    try:
+        house.delete()
+        messages.warning(request, "House Deleted Successfully.")
+        return redirect("manage_houses")
+    except:
+        messages.error(request, "Failed to Delete House!")
+        return redirect("manage_houses")
+
+
+
+######################################### MANAGE SERVICES #######################################################################
+def manage_services(request):
+    services = Service.objects.all()
+    context = {
+        "services":services
+    }
+    return render(request, 'admin_template/manage_services_template.html', context)
+
+def add_service(request):
+    form = ServiceForm()
+    context = {
+        "form":form
+    }
+    return render(request, 'admin_template/add_service_template.html', context)
+
+def add_service_save(request):
+    if request.method != "POST":
+        messages.error(request, "Invalid Method")
+        return redirect("manage_services")
+    else:
+        form = ServiceForm(request.POST, request.FILES)
+        if form.is_valid():
+            try:
+                form.save()
+                messages.success(request, "Service Added Successfully!")
+                return redirect("manage_services")
+            except Exception as e:
+                messages.error(request, f"Failed to Add Service - {e}!")
+                return redirect("add_service")
+        else:
+            error_message = "Form is not valid. Please check the following issues:\n"
+            for field, errors in form.errors.items():
+                error_message += f"{field}: {', '.join(errors)}"
+            messages.error(request, error_message)
+            return redirect("add_service")
+        
+
+def edit_service(request, service_id):
+    service = get_object_or_404(Service, id=service_id)
+    edit_service_form = EditServiceForm(instance=service)
+
+    if request.method == 'POST':
+        form = EditServiceForm(request.POST, instance=service)
+        if form.is_valid():
+            form = form.save()
+            EditServiceForm(instance=service)
+            messages.success(request,'Service Updated Succesfully')
+            return redirect("manage_services")
+    context = {
+        'edit_service_form':edit_service_form
+    }
+    return render(request, 'admin_template/edit_service_template.html', context)
+
+
+def delete_service(request, service_id):
+    service = Service.objects.get(id=service_id)
+    try:
+        service.delete()
+        messages.warning(request, "Service Deleted Successfully.")
+        return redirect("manage_services")
+    except:
+        messages.error(request, "Failed to Delete Service!")
+        return redirect("manage_services")
+
+
+
+######################################### MANAGE ACTIVITIES #######################################################################
+
+def manage_activities(request):
+    activities = EcActivities.objects.all()
+    context = {
+        "activities":activities
+    }
+    return render(request, 'admin_template/manage_activity_template.html', context)
+
+def add_activities(request):
+    form = EcActivitiesForm()
+    context = {
+        "form":form
+    }
+    return render(request, 'admin_template/add_activities_template.html', context)
+
+
+def add_activities_save(request):
+    if request.method != "POST":
+        messages.error(request, "Invalid Method")
+        return redirect("manage_activities")
+    else:
+        form = EcActivitiesForm(request.POST, request.FILES)
+        if form.is_valid():
+            try:
+                form.save()
+                messages.success(request, "Activity Added Successfully!")
+                return redirect("manage_activities")
+            except Exception as e:
+                messages.error(request, f"Failed to Add Activity - {e}!")
+                return redirect("add_activities")
+        else:
+            error_message = "Form is not valid. Please check the following issues:\n"
+            for field, errors in form.errors.items():
+                error_message += f"{field}: {', '.join(errors)}"
+            messages.error(request, error_message)
+            return redirect("add_activities")
+
+
+def edit_activities(request, service_id):
+    service = get_object_or_404(EcActivities, id=service_id)
+    edit_service_form = EditEcActivitiesForm(instance=service)
+
+    if request.method == 'POST':
+        form = EditEcActivitiesForm(request.POST, instance=service)
+        if form.is_valid():
+            form = form.save()
+            EditEcActivitiesForm(instance=service)
+            messages.success(request,'Service Updated Succesfully')
+            return redirect("manage_activities")
+    context = {
+        'edit_service_form' : edit_service_form
+    }
+    return render(request, 'admin_template/edit_activity_template.html', context)
+
+def delete_activities(request, service_id):
+    service = EcActivities.objects.get(id=service_id)
+    try:
+        service.delete()
+        messages.warning(request, "Extra Curricular activity Deleted Successfully.")
+        return redirect("manage_activities")
+    except:
+        messages.error(request, "Failed to Delete Extra Curricular activity!")
+        return redirect("manage_activities")
+
+
+
+######################################### MANAGE JOBS AND POSITION #######################################################################
+def manage_jobs(request):
+    jobs = Job.objects.all()
+    context = {
+        "jobs":jobs
+    }
+    return render(request, 'admin_template/manage_jobs_template.html', context)
+
+def add_job(request):
+    form = JobForm()
+    context = {
+        "form":form
+    }
+    return render(request, 'admin_template/add_job_template.html', context)
+
+def add_job_save(request):
+    if request.method != "POST":
+        messages.error(request, "Invalid Method")
+        return redirect("manage_jobs")
+    else:
+        form = JobForm(request.POST, request.FILES)
+        if form.is_valid():
+            try:
+                form.save()
+                messages.success(request, "Job Added Successfully!")
+                return redirect("manage_jobs")
+            except Exception as e:
+                messages.error(request, f"Failed to Add Job - {e}!")
+                return redirect("add_job")
+        else:
+            error_message = "Form is not valid. Please check the following issues:\n"
+            for field, errors in form.errors.items():
+                error_message += f"{field}: {', '.join(errors)}"
+            messages.error(request, error_message)
+            return redirect("add_job")
+
+def edit_job(request, job_id):
+    job = get_object_or_404(Job, id=job_id)
+    edit_job_form = EditJobForm(instance=job)
+
+    if request.method == 'POST':
+        form = EditJobForm(request.POST, instance=job)
+        if form.is_valid():
+            form = form.save()
+            EditJobForm(instance=job)
+            messages.success(request,'Job Updated Succesfully')
+            return redirect("manage_jobs")
+    context = {
+        'edit_job_form' : edit_job_form
+    }
+    return render(request, 'admin_template/edit_job_template.html', context)
+
+def delete_job(request, job_id):
+    job = Job.objects.get(id=job_id)
+    try:
+        job.delete()
+        messages.warning(request, "Job Deleted Successfully.")
+        return redirect("manage_jobs")
+    except:
+        messages.error(request, "Failed to Delete Job!")
+        return redirect("manage_jobs") 
+
+
+
 
 def reports(requests):
 

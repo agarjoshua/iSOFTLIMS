@@ -143,6 +143,7 @@ class DiscplinaryCases(models.Model):
     objects = models.Manager()
 
 
+
 ## EXAM MANAGEMENT MODELS!!!
 class Exam(models.Model):
     id = models.AutoField(primary_key=True)
@@ -191,6 +192,32 @@ class ExamResult(models.Model):
 
     def __str__(self) -> str:
         return f'Name - {self.student} exam - {self.exam} grade - {self.grade}'
+    
+# Make a model from the details below:
+# Study Progression
+# Code
+# Description
+# Program
+# System
+# Course
+# No. of Progression Steps e.g. 4:
+# Step (four steps)
+# Class Code
+
+class ClassProgression(models.Model):
+    id = models.AutoField(primary_key=True)
+    code = models.CharField(max_length=50, null=True)
+    description = models.CharField(max_length=50, null=True)
+    program = models.CharField(max_length=50, null=True)
+    system = models.ForeignKey(CurriculumSystem, on_delete=models.DO_NOTHING, null=True)
+    course = models.ForeignKey(Course, on_delete=models.DO_NOTHING, null=True)
+    number_of_progression_steps = models.IntegerField(null=True)
+    step = models.CharField(max_length=50, null=True)
+    class_code = models.CharField(max_length=50, null=True)
+    objects = models.Manager()
+
+    def __str__(self):
+        return self.code
 
 class Transcripts(models.Model):
     student = models.ForeignKey(Students, on_delete=models.CASCADE)

@@ -1,0 +1,109 @@
+{% extends 'admin_template/base_template.html' %} 
+{% block page_title %} 
+<b>Manage class Progression</b> 
+{% endblock page_title %} 
+{% block main_content %}
+{% load static %}
+
+<section class="content">
+    <div class="container-fluid">
+        
+        <div class="mx-auto row">
+
+            {% include 'core_navigation_navbar.html' %}
+
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="mx-auto row ">
+                    <div class="mr-1">
+                        <a class="btn btn-primary" href="{% url 'academics:add_class_progression' %}" role="button"> Create a class progression</a><br/>&nbsp;
+                    </div>
+                </div>
+                <!-- general form elements -->
+                <div class="card card-primary">
+
+                    <div class="card-body">
+
+                        {% if messages %}
+                        <div class="form-group">
+                            <div class="col-12">
+                                {% for message in messages %}
+                                {% if message.tags == "error" %}
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                                    {{ message }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                {% elif message.tags == "success" %}
+                                <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                                    {{ message }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                {% elif message.tags == "warning" %}
+                                <div class="alert alert-warning alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                                    {{ message }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endif %}
+
+                        <div class="card card-primary">
+                            <div class="card-header">
+                                <h3 class="card-title">Manage Class Progression</h3>
+                            </div>
+                            <!-- /.card-header -->
+                            <!-- form start -->
+                            <div class="card-body">
+                                <table class="table table-hover text-wrap">
+                                    <thead>
+                                    <tr>
+                                        <th>Code</th>
+                                        <th>Description</th>
+                                        <th>Program</th>
+                                        <th>System</th>
+                                        <th>Course</th>
+                                        <th>Progression Steps</th>
+                                        <th>Class Code</th>
+                                        <th>Action</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for progression in class_progressions %}
+                                    <tr>
+                                        <td>{{ progression.code }}</td>
+                                        <td>{{ progression.description }}</td>
+                                        <td>{{ progression.program }}</td>
+                                        <td>{{ progression.system }}</td>
+                                        <td>{{ progression.course }}</td>
+                                        <td>{{ progression.number_of_progression_steps }}</td>
+                                        <td>{{ progression.class_code }}</td>
+                                        <td>
+                                            <a href="{% url 'academics:edit_class_progression' progression.id %}" class="btn btn-success">Edit</a>
+                                            <a href="{% url 'academics:delete_class_progression' progression.id %}" class="btn btn-danger">Delete</a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.card -->
+            </div>
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+</section>
+
+{% endblock main_content %}

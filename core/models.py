@@ -602,6 +602,7 @@ class Applicant(models.Model):
     application_status = models.BooleanField(default=False)
     objects = models.Manager()
 
+
 class ApplicantApprovalWorklow(models.Model):
     id = models.AutoField(primary_key=True)
     applicant = models.ForeignKey(Applicant, on_delete=models.CASCADE)
@@ -662,23 +663,85 @@ class SpecialUser(models.Model):
         return self.user.name
 
 
-# class House(models.Model):
-#     GENDER_CHOICES = [
-#         ('Male', 'Male'),
-#         ('Female', 'Female'),
-#         ('Both', 'Both'),
-#     ]
+class House(models.Model):
+    GENDER_CHOICES = [
+        ('Male', 'Male'),
+        ('Female', 'Female'),
+        ('Both', 'Both'),
+    ]
 
-#     code = models.CharField(max_length=20)
-#     description = models.CharField(max_length=100)
-#     gender = models.CharField(max_length=10, choices=GENDER_CHOICES)
-#     campus = models.CharField(max_length=100)  # You can adjust the max_length as needed
-
-
+    code = models.CharField(max_length=100)
+    description = models.CharField(max_length=100)
+    gender = models.CharField(max_length=10, choices=GENDER_CHOICES)
+    campus = models.ForeignKey(Campus, on_delete=models.DO_NOTHING, null=True)
 
 
+# Dormitories/Hostels
+# Code
+# Description
+# Gender (Male/Female/Co-Ed)
+# Bed Capacity
+# Occupied
+# Damaged
+# Damaged Remarks
+# Available
+# Minimum Percentage Bed Capacity Warning
+# No. of Sections e.g. 2:
+# Section Code
+# Description
+# Bed capacity
+# Occupied
+# Damaged
+# Damaged Remarks
+# Available
+# No. of cubicles e.g. 10:
+# Bed capacity
+# No. of cubicles e.g. 4
+# Occupied
+# Damaged
+# Damaged Remarks
+# Available
 
 
+
+class Service(models.Model):
+    id = models.AutoField(primary_key=True)
+    code = models.CharField(max_length=30, null=True)
+    name = models.CharField(max_length=30)
+    description = models.CharField(max_length=30)
+    service_unit_of_measure = models.CharField(max_length=30)
+    rate = models.CharField(max_length=30)
+    payment_plan = models.CharField(max_length=30)
+    taxable = models.CharField(max_length=30)
+    tax_rate = models.CharField(max_length=30)
+    gl_account = models.CharField(max_length=30)
+    notes = models.TextField(null=True)
+    objects = models.Manager()
+
+    def __str__(self):
+        return self.name
+
+class EcActivities(models.Model):
+    GENDER_CHOICES = [
+        ('Male', 'Male'),
+        ('Female', 'Female'),
+        ('Both', 'Both'),
+    ]
+    code = models.CharField(max_length=100, null=True)
+    description = models.CharField(max_length=100)
+    gender = models.CharField(max_length=10, choices=GENDER_CHOICES)
+    campus = models.ForeignKey(Campus, on_delete=models.DO_NOTHING, null=True)
+
+
+class Job(models.Model):
+    code = models.CharField(max_length=100, null=True)
+    description = models.CharField(max_length=100)
+    job_type = models.CharField(max_length=100)
+    start_date = models.DateField()
+    end_date = models.DateField()
+    gl_account = models.CharField(max_length=100)
+    notes = models.TextField(null=True)
+    objects = models.Manager()
 
 # Creating Django Signals
 

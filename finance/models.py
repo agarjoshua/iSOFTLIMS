@@ -31,7 +31,6 @@ class Transaction(models.Model):
 
 
 class Fee(models.Model):
-    # Structure, Schedule(period for charging),
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=250)
     session = models.ForeignKey(

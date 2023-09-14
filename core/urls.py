@@ -162,6 +162,34 @@ urlpatterns = [
     path("processes", AdminViews.processes, name="processes"),
 
 
+    # HOUSES
+    path("manage_houses", AdminViews.manage_houses, name="manage_houses"),
+    path("add_house", AdminViews.add_house, name="add_house"),
+    path("add_house_save", AdminViews.add_house_save, name="add_house_save"),
+    path("edit_house/<house_id>", AdminViews.edit_house, name="edit_house"),
+    path("delete_house/<house_id>", AdminViews.delete_house, name="delete_house"),
+
+    # SERVICES
+    path("manage_services", AdminViews.manage_services, name="manage_services"),
+    path("add_service", AdminViews.add_service, name="add_service"),
+    path("add_service_save", AdminViews.add_service_save, name="add_service_save"),
+    path("edit_service/<service_id>", AdminViews.edit_service, name="edit_service"),
+    path("delete_service/<service_id>", AdminViews.delete_service, name="delete_service"),
+
+    # EC Activities
+    path("manage_activities", AdminViews.manage_activities, name="manage_activities"),
+    path("add_activities", AdminViews.add_activities, name="add_activities"),
+    path("add_activities_save", AdminViews.add_activities_save, name="add_activities_save"),
+    path("edit_activity/<service_id>", AdminViews.edit_activities, name="edit_activity"),
+    path("delete_activity/<service_id>", AdminViews.delete_activities, name="delete_activity"),
+
+    # JOBS & POSITIONS
+    path("manage_jobs", AdminViews.manage_jobs, name="manage_jobs"),
+    path("add_job", AdminViews.add_job, name="add_job"),
+    path("add_job_save", AdminViews.add_job_save, name="add_job_save"),
+    path("edit_job/<job_id>", AdminViews.edit_job, name="edit_job"),
+    path("delete_job/<job_id>", AdminViews.delete_job, name="delete_job"),
+    
 
     # REPORTS
     path("reports/", AdminViews.reports, name="reports"),
