@@ -1,0 +1,173 @@
+{% extends 'admin_template/base_template.html' %} 
+{% block page_title %} 
+<b>Manage Fee Items</b> 
+{% endblock page_title %} 
+{% block main_content %}
+{% load static %}
+
+<section class="content">
+    <div class="container-fluid">
+        
+        <div class="mx-auto row">
+
+            {% include 'core_navigation_navbar.html' %}
+
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="mx-auto row ">
+                    <div class="mr-1">
+                        <a class="btn btn-primary" href="{% url 'add_fee_item' %}" role="button"> Create Fee Item</a><br/>&nbsp;
+                    </div>
+                </div>
+                <!-- general form elements -->
+                <div class="card card-primary">
+
+                    <div class="card-body">
+
+                        {% if messages %}
+                        <div class="form-group">
+                            <div class="col-12">
+                                {% for message in messages %}
+                                {% if message.tags == "error" %}
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                                    {{ message }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                {% elif message.tags == "success" %}
+                                <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                                    {{ message }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                {% elif message.tags == "warning" %}
+                                <div class="alert alert-warning alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                                    {{ message }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endif %}
+
+                        <div class="card card-primary">
+                            <div class="card-header">
+                                <h3 class="card-title">Manage Fee Items</h3>
+                            </div>
+                            <!-- /.card-header -->
+                            <!-- form start -->
+                            <div class="card-body">
+                                
+                                <!-- Create two table sections -->
+                                <div id="firstTableSection" class="table-section">
+                                    <!-- First half of the table -->
+                                    <table class="table table-hover">
+                                        <!-- ... Table header and rows for the first half ... -->
+                                        <thead>
+                                            
+                                            <tr>
+                                                <th>Code</th>
+                                                <th>Description</th>
+                                                <th>Category</th>
+                                                <th>Occurrence</th>
+                                                <th>Applicability</th>
+                                                <th>Priority</th>
+                                                <th>Default Amount</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for fee_item in fee_items %}
+                                            <tr>
+                                                <td>{{ fee_item.code }}</td>
+                                                <td>{{ fee_item.description }}</td>
+                                                <td>{{ fee_item.category }}</td>
+                                                <td>{{ fee_item.occurrence }}</td>
+                                                <td>{{ fee_item.applicability }}</td>
+                                                <td>{{ fee_item.priority }}</td>
+                                                <td>{{ fee_item.default_amount }}</td>
+                                                <th>
+                                                    <td>
+                                                        <button class="btn btn-primary" data-toggle="collapse"
+                                                            data-target="#form{{ fee_item.id }}">Details</button>
+                                                    </td>
+                                                </th>
+                                                
+                                            </tr>
+
+                                            <tr>
+                                                <td colspan="8">
+                                                    <div id="form{{ fee_item.id }}" class="form-row collapse">
+
+                                                        <div class="data-item">
+                                                            <p><strong>More Details</strong></p>
+                                                            <ul>
+                                                                <li><strong>On Hold Disable Posting:</strong> {{ fee_item.on_hold_disable_posting_on_item }}</li>
+                                                                <li><strong>GL Account:</strong> {{ fee_item.gl_account }}</li>
+                                                                <li><strong>GL Statement Prefix:</strong> {{ fee_item.gl_statement_prefix }}</li>
+                                                                <li><strong>Notes:</strong> {{ fee_item.notes }}</li>
+                                                            </ul>
+                                                            <div class="d-flex">
+                                                                <div>
+                                                                    <a href="{% url 'edit_fee_item' fee_item.id %}" class="btn btn-success">Edit</a>
+                                                                </div>
+                                                                <div class="ml-1">
+                                                                    <a href="{% url 'delete_fee_item' fee_item.id %}" class="btn btn-danger">Delete</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            {% empty %}
+                                            <tr>
+                                                <td colspan="13">No fee items available.</td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                
+                                
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.card -->
+            </div>
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+</section>
+
+{% endblock main_content %}
+
+{% block custom_javascript %}
+
+<script>
+
+     // Function to show the first table section and hide the second
+     document.getElementById("#showFirstTable").addEventListener("click", function() {
+        console.log('Hello world')
+        document.getElementById("firstTableSection").style.display = "block";
+        document.getElementById("secondTableSection").style.display = "none";
+    });
+
+    // Function to show the second table section and hide the first
+    document.getElementById("showSecondTable").addEventListener("click", function() {
+        document.getElementById("firstTableSection").style.display = "none";
+        document.getElementById("secondTableSection").style.display = "block";
+    });
+
+</script>
+    
+{% endblock custom_javascript %}
+    

@@ -132,15 +132,6 @@ class ClusterClass(models.Model):
     def __str__(self):
         return self.cluster_class_name
 
-class DiscplinaryCases(models.Model):
-    id = models.AutoField(primary_key=True)
-    displinary_action = models.CharField(max_length=255)
-    discplinary_case_notes = models.CharField(max_length=255)
-    start_date = models.DateTimeField()
-    end_date = models.DateTimeField()
-    resumption_date = models.DateTimeField()
-    notes = models.CharField(max_length=255)
-    objects = models.Manager()
 
 
 

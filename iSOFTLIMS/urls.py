@@ -26,6 +26,8 @@ urlpatterns = [
     path("", include("core.urls")),
     path("academics/", include("academics.urls")),
     path("finance/", include("finance.urls")),
+    # zesting the inbuilt forms to add custom autocomplete
+    path("select2/", include("django_select2.urls")),
     path('__debug__/', include('debug_toolbar.urls')),
     
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT, )+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

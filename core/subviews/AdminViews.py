@@ -10,15 +10,20 @@ from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.core import serializers
 import json
+from core.forms.billingtemplatesforms import BillingTemplateForm, EditBillingTemplateForm
 from core.forms.campusForm import CampusForm
 from core.forms.courseforms import AddCourseForm, CourseEditForm
 from core.forms.departmentforms import AddDepartmentForm
+from core.forms.disciplinaryforms import DisciplinaryManagementForm, EditDisciplinaryManagementForm
 from core.forms.extracurricularactivitiesform import EcActivitiesForm, EditEcActivitiesForm
+from core.forms.feeitemform import FeeItemForm, UpdateFeeItemForm
 from core.forms.guardianforms import AddGuardianForm, EditGuardianForm
 from core.forms.hodforms import AddHodForm, AddStaffTypeForm, EditHodForm
 from core.forms.houseforms import EditHouseForm, HouseForm
 from core.forms.institutionform import InstitutionForm
 from core.forms.jobforms import EditJobForm, JobForm
+from core.forms.paymentforms import BankForm, BankUpdateForm, PaymentMethodsForm, PaymentMethodsUpdateForm
+from core.forms.responsibilityforms import EditResponsibilityForm, ResponsibilityForm
 from core.forms.schoolforms import SchoolForm
 from core.forms.serviceforms import EditServiceForm, ServiceForm
 from core.forms.studentforms import EditStudentForm, AddStudentForm
@@ -29,14 +34,19 @@ from core.models import (
     HOD,
     Applicant,
     ApplicantApprovalWorklow,
+    Bank,
+    BillingTemplate,
     Campus,
     CustomUser, 
     Admin,
     Department,
+    DiscplinaryManagement,
     EcActivities,
+    FeeItem,
     Guardian,
     House,
     Job,
+    PaymentMethods,
     School,
     Staff,
     StaffType,
@@ -51,6 +61,7 @@ from core.models import (
     # Attendance,
     # AttendanceReport,
     Service,
+    UserResponsibility,
 )
 from academics.models import (
     Class,
@@ -1918,7 +1929,401 @@ def delete_job(request, job_id):
 
 
 
+######################################### MANAGE RESPONSIBILITIES #######################################################################
+def manage_responsibilities(request):
+    user_responsibilities = UserResponsibility.objects.all()
+    context = {
+        "user_responsibilities" : user_responsibilities
+    }
+    return render(request, 'admin_template/manage_responsibilities_template.html', context)
 
+def add_responsibility(request):
+    form = ResponsibilityForm()
+    context = {
+        "form":form
+    }
+    return render(request, 'admin_template/add_responsibility_template.html', context)
+
+def add_responsibility_save(request):
+    if request.method != "POST":
+        messages.error(request, "Invalid Method")
+        return redirect("manage_responsibilities")
+    else:
+        form = ResponsibilityForm(request.POST, request.FILES)
+        if form.is_valid():
+            try:
+                form.save()
+                messages.success(request, "Responsibility Added Successfully!")
+                return redirect("manage_responsibilities")
+            except Exception as e:
+                messages.error(request, f"Failed to Add Responsibility - {e}!")
+                return redirect("add_responsibility")
+        else:
+            error_message = "Form is not valid. Please check the following issues:\n"
+            for field, errors in form.errors.items():
+                error_message += f"{field}: {', '.join(errors)}"
+            messages.error(request, error_message)
+            return redirect("add_responsibility")
+    
+def edit_responsibility(request, responsibility_id):
+    responsibility = get_object_or_404(UserResponsibility, id=responsibility_id) 
+    edit_responsibility_form = EditResponsibilityForm(instance=responsibility)
+
+    if request.method == 'POST':
+        form = EditResponsibilityForm(request.POST, instance=responsibility)
+        if form.is_valid():
+            form = form.save()
+            EditResponsibilityForm(instance=responsibility)
+            messages.success(request,'Responsibility Updated Succesfully')
+            return redirect("manage_responsibilities")
+    context = {
+        'edit_user_responsibility_form' : edit_responsibility_form
+    }
+    return render(request, 'admin_template/edit_responsibility_template.html', context)
+
+def delete_responsibility(request, responsibility_id):
+    responsibility = UserResponsibility.objects.get(id=responsibility_id)
+    try:
+        responsibility.delete()
+        messages.warning(request, "Responsibility Deleted Successfully.")
+        return redirect("manage_responsibilities")
+    except:
+        messages.error(request, "Failed to Delete Responsibility!")
+        return redirect("manage_responsibilities")
+    
+    
+
+
+######################################### MANAGE DISCIPLINARY ISSUES #######################################################################
+def manage_disciplinary_issues(request):
+    disciplinary_issues = DiscplinaryManagement.objects.all()
+    context = {
+        "disciplinary_managements" : disciplinary_issues
+    }
+    return render(request, 'admin_template/manage_disciplinary_issues_template.html', context)
+
+def add_disciplinary_issue(request):
+    form = DisciplinaryManagementForm()
+    context = {
+        "form":form
+    }
+    return render(request, 'admin_template/add_disciplinary_issue_template.html', context)
+
+def add_disciplinary_issue_save(request):
+    if request.method != "POST":
+        messages.error(request, "Invalid Method")
+        return redirect("manage_disciplinary_issues")
+    else:
+        form = DisciplinaryManagementForm(request.POST, request.FILES)
+        if form.is_valid():
+            try:
+                form.save()
+                messages.success(request, "Disciplinary Issue Added Successfully!")
+                return redirect("manage_disciplinary_issues")
+            except Exception as e:
+                messages.error(request, f"Failed to Add Disciplinary Issue - {e}!")
+                return redirect("add_disciplinary_issue")
+        else:
+            error_message = "Form is not valid. Please check the following issues:\n"
+            for field, errors in form.errors.items():
+                error_message += f"{field}: {', '.join(errors)}"
+            messages.error(request, error_message)
+            return redirect("add_disciplinary_issue")
+        
+def edit_disciplinary_issue(request, disciplinary_id):
+    disciplinary_issue = get_object_or_404(DiscplinaryManagement, id=disciplinary_id) 
+    edit_disciplinary_issue_form = EditDisciplinaryManagementForm(instance=disciplinary_issue)
+
+    if request.method == 'POST':
+        form = EditDisciplinaryManagementForm(request.POST, instance=disciplinary_issue)
+        if form.is_valid():
+            form = form.save()
+            EditDisciplinaryManagementForm(instance=disciplinary_issue)
+            messages.success(request,'Disciplinary Issue Updated Succesfully')
+            return redirect("manage_disciplinary_issues")
+    context = {
+        'edit_disciplinary_issue_form' : edit_disciplinary_issue_form
+    }
+    return render(request, 'admin_template/edit_disciplinary_issue_template.html', context)
+
+def delete_disciplinary_issue(request, disciplinary_id):
+    disciplinary_issue = DiscplinaryManagement.objects.get(id=disciplinary_id)
+    try:
+        disciplinary_issue.delete()
+        messages.warning(request, "Disciplinary Issue Deleted Successfully.")
+        return redirect("manage_disciplinary_issues")
+    except:
+        messages.error(request, "Failed to Delete Disciplinary Issue!")
+        return redirect("manage_disciplinary_issues")
+
+
+
+
+######################################### PAYMENT METHODS & BANK ############################################################
+
+def manage_payment_methods(request):
+    payment_methods = PaymentMethods.objects.all()
+    context = {
+        "payment_methods" : payment_methods
+    }
+    return render(request, 'admin_template/manage_payment_methods_template.html', context)
+
+def add_payment_method(request):
+    form = PaymentMethodsForm()
+    context = {
+        "form":form
+    }
+    return render(request, 'admin_template/add_payment_method_template.html', context)
+
+def add_payment_method_save(request):
+    if request.method != "POST":
+        messages.error(request, "Invalid Method")
+        return redirect("manage_payment_methods")
+    else:
+        form = PaymentMethodsForm(request.POST, request.FILES)
+        if form.is_valid():
+            try:
+                form.save()
+                messages.success(request, "Payment Method Added Successfully!")
+                return redirect("manage_payment_methods")
+            except Exception as e:
+                messages.error(request, f"Failed to Add Payment Method - {e}!")
+                return redirect("add_payment_method")
+        else:
+            error_message = "Form is not valid. Please check the following issues:\n"
+            for field, errors in form.errors.items():
+                error_message += f"{field}: {', '.join(errors)}"
+            messages.error(request, error_message)
+            return redirect("add_payment_method")
+        
+def edit_payment_method(request, payment_method_id):
+    payment_method = get_object_or_404(PaymentMethods, id=payment_method_id) 
+    print(payment_method)
+    edit_payment_method_form = PaymentMethodsUpdateForm(instance=payment_method)
+
+    if request.method == 'POST':
+        form = PaymentMethodsUpdateForm(request.POST, instance=payment_method)
+        if form.is_valid():
+            form = form.save()
+            PaymentMethodsUpdateForm(instance=payment_method)
+            messages.success(request,'Payment Method Updated Succesfully')
+            return redirect("manage_payment_methods")
+    context = {
+        'edit_payment_methods_form' : edit_payment_method_form
+    }
+    return render(request, 'admin_template/edit_payment_method_template.html', context)
+
+def delete_payment_method(request, payment_method_id):
+    payment_method = PaymentMethods.objects.get(id=payment_method_id)
+    try:
+        payment_method.delete()
+        messages.warning(request, "Payment Method Deleted Successfully.")
+        return redirect("manage_payment_methods")
+    except:
+        messages.error(request, "Failed to Delete Payment Method!")
+        return redirect("manage_payment_methods")
+    
+def manage_banks(request):
+    banks = Bank.objects.all()
+    context = {
+        "banks" : banks
+    }
+    return render(request, 'admin_template/manage_banks_template.html', context)
+
+def add_bank(request):
+    form = BankForm()
+    context = {
+        "form":form
+    }
+    return render(request, 'admin_template/add_bank_template.html', context)
+
+def add_bank_save(request):
+    if request.method != "POST":
+        messages.error(request, "Invalid Method")
+        return redirect("manage_banks")
+    else:
+        form = BankForm(request.POST, request.FILES)
+        if form.is_valid():
+            try:
+                form.save()
+                messages.success(request, "Bank Added Successfully!")
+                return redirect("manage_banks")
+            except Exception as e:
+                messages.error(request, f"Failed to Add Bank - {e}!")
+                return redirect("add_bank")
+        else:
+            error_message = "Form is not valid. Please check the following issues:\n"
+            for field, errors in form.errors.items():
+                error_message += f"{field}: {', '.join(errors)}"
+            messages.error(request, error_message)
+            return redirect("add_bank")
+        
+
+def edit_bank(request, bank_id):
+    bank = get_object_or_404(Bank, id=bank_id) 
+    edit_bank_form = BankUpdateForm(instance=bank)
+
+    if request.method == 'POST':
+        form = BankUpdateForm(request.POST, instance=bank)
+        if form.is_valid():
+            form = form.save()
+            BankUpdateForm(instance=bank)
+            messages.success(request,'Bank Updated Succesfully')
+            return redirect("manage_banks")
+    context = {
+        'edit_bank_form' : edit_bank_form
+    }
+    return render(request, 'admin_template/edit_bank_template.html', context)
+
+def delete_bank(request, bank_id):
+    bank = Bank.objects.get(id=bank_id)
+    try:
+        bank.delete()
+        messages.warning(request, "Bank Deleted Successfully.")
+        return redirect("manage_banks")
+    except:
+        messages.error(request, "Failed to Delete Bank!")
+        return redirect("manage_banks")
+    
+
+
+######################################### FEE ITEMS #######################################################################
+
+def manage_fee_items(request):
+    fee_items = FeeItem.objects.all()
+    context = {
+        "fee_items" : fee_items
+    }
+    return render(request, 'admin_template/manage_fee_items_template.html', context)
+
+def add_fee_item(request):
+    form = FeeItemForm()
+    context = {
+        "form":form
+    }
+    return render(request, 'admin_template/add_fee_item_template.html', context)
+
+def add_fee_item_save(request):
+    if request.method != "POST":
+        messages.error(request, "Invalid Method")
+        return redirect("manage_fee_items")
+    else:
+        form = FeeItemForm(request.POST, request.FILES)
+        if form.is_valid():
+            try:
+                form.save()
+                messages.success(request, "Fee Item Added Successfully!")
+                return redirect("manage_fee_items")
+            except Exception as e:
+                messages.error(request, f"Failed to Add Fee Item - {e}!")
+                return redirect("add_fee_item")
+        else:
+            error_message = "Form is not valid. Please check the following issues:\n"
+            for field, errors in form.errors.items():
+                error_message += f"{field}: {', '.join(errors)}"
+            messages.error(request, error_message)
+            return redirect("add_fee_item")
+        
+
+def edit_fee_item(request, fee_item_id):
+    fee_item = get_object_or_404(FeeItem, id=fee_item_id) 
+    edit_fee_item_form = UpdateFeeItemForm(instance=fee_item)
+
+    if request.method == 'POST':
+        form = UpdateFeeItemForm(request.POST, instance=fee_item)
+        if form.is_valid():
+            form = form.save()
+            UpdateFeeItemForm(instance=fee_item)
+            messages.success(request,'Fee Item Updated Succesfully')
+            return redirect("manage_fee_items")
+    context = {
+        'edit_fee_item_form' : edit_fee_item_form
+    }
+    return render(request, 'admin_template/edit_fee_item_template.html', context)
+
+
+def delete_fee_item(request, fee_item_id):
+    fee_item = FeeItem.objects.get(id=fee_item_id)
+    try:
+        fee_item.delete()
+        messages.warning(request, "Fee Item Deleted Successfully.")
+        return redirect("manage_fee_items")
+    except:
+        messages.error(request, "Failed to Delete Fee Item!")
+        return redirect("manage_fee_items")
+    
+
+
+
+#########################################   BILLING TEMPLATES   #######################################################################
+def manage_billing_templates(request):
+    billing_templates = BillingTemplate.objects.all()
+    context = {
+        "billing_templates" : billing_templates
+    }
+    return render(request, 'admin_template/manage_billing_templates_template.html', context)
+
+def add_billing_template(request):
+    form = BillingTemplateForm()
+    context = {
+        "form":form
+    }
+    return render(request, 'admin_template/add_billing_template_template.html', context)
+
+def add_billing_template_save(request):
+    if request.method != "POST":
+        messages.error(request, "Invalid Method")
+        return redirect("manage_billing_templates")
+    else:
+        form = BillingTemplateForm(request.POST, request.FILES)
+        if form.is_valid():
+            try:
+                form.save()
+                messages.success(request, "Billing Template Added Successfully!")
+                return redirect("manage_billing_templates")
+            except Exception as e:
+                messages.error(request, f"Failed to Add Billing Template - {e}!")
+                return redirect("add_billing_template")
+        else:
+            error_message = "Form is not valid. Please check the following issues:\n"
+            for field, errors in form.errors.items():
+                error_message += f"{field}: {', '.join(errors)}" 
+            messages.error(request, error_message)
+            return redirect("add_billing_template")
+
+def edit_billing_template(request, billing_template_id):
+    billing_template = get_object_or_404(BillingTemplate, id=billing_template_id) 
+    edit_billing_template_form = EditBillingTemplateForm(instance=billing_template)
+
+    if request.method == 'POST':
+        form = EditBillingTemplateForm(request.POST, instance=billing_template)
+        if form.is_valid():
+            form = form.save()
+            EditBillingTemplateForm(instance=billing_template)
+            messages.success(request,'Billing Template Updated Succesfully')
+            return redirect("manage_billing_templates")
+    context = {
+        'edit_billing_template_form' : edit_billing_template_form
+    }
+    return render(request, 'admin_template/edit_billing_template_template.html', context)
+
+def delete_billing_template(request, billing_template_id):
+    billing_template = BillingTemplate.objects.get(id=billing_template_id)
+    try:
+        billing_template.delete()
+        messages.warning(request, "Billing Template Deleted Successfully.")
+        return redirect("manage_billing_templates")
+    except:
+        messages.error(request, "Failed to Delete Billing Template!")
+        return redirect("manage_billing_templates")
+    
+
+
+
+
+
+
+#########################################   REPORTS   #######################################################################
 def reports(requests):
 
     all_teachers_count = Teacher.objects.all().count()

@@ -1,0 +1,160 @@
+{% extends 'admin_template/base_template.html' %} 
+{% block page_title %} 
+<b>Manage Billing Template</b> 
+{% endblock page_title %} 
+{% block main_content %}
+{% load static %}
+
+<section class="content">
+    <div class="container-fluid">
+        
+        <div class="mx-auto row">
+
+            {% include 'core_navigation_navbar.html' %}
+
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="mx-auto row ">
+                    <div class="mr-1">
+                        <a class="btn btn-primary" href="{% url 'add_billing_template' %}" role="button"> Create Billing Template</a><br/>&nbsp;
+                    </div>
+                </div>
+                <!-- general form elements -->
+                <div class="card card-primary">
+
+                    <div class="card-body">
+
+                        {% if messages %}
+                        <div class="form-group">
+                            <div class="col-12">
+                                {% for message in messages %}
+                                {% if message.tags == "error" %}
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                                    {{ message }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                {% elif message.tags == "success" %}
+                                <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                                    {{ message }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                {% elif message.tags == "warning" %}
+                                <div class="alert alert-warning alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                                    {{ message }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endif %}
+
+                        <div class="card card-primary">
+                            <div class="card-header">
+                                <h3 class="card-title">Manage Billing Template</h3>
+                            </div>
+                            <!-- /.card-header -->
+                            <!-- form start -->
+                            <div class="card-body">
+                                
+                                <!-- Create two table sections -->
+                                <div id="firstTableSection" class="table-section">
+                                    <!-- First half of the table -->
+                                    <table class="table table-hover">
+                                        <!-- ... Table header and rows for the first half ... -->
+                                        <thead>
+                                            
+                                            <tr>
+                                                <th>Code</th>
+                                                <th>Description</th>
+                                                <th>Faculty/School</th>
+                                                <th>Program</th>
+                                                <th>System</th>
+                                                <th>Course</th>
+                                                <th>Class</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for template in billing_templates %}
+                                            <tr>
+                                                <td>{{ template.code }}</td>
+                                                <td>{{ template.description }}</td>
+                                                <td>{{ template.faculty_or_school }}</td>
+                                                <td>{{ template.program }}</td>
+                                                <td>{{ template.system }}</td>
+                                                <td>{{ template.course }}</td>
+                                                <td>{{ template.class_name }}</td>
+                                                <th>
+                                                    <td>
+                                                        <button class="btn btn-primary" data-toggle="collapse"
+                                                            data-target="#form{{ template.id }}">Details</button>
+                                                    </td>
+                                                </th>
+                                                
+                                            </tr>
+
+                                            <tr>
+                                                <td colspan="8">
+                                                    <div id="form{{ template.id }}" class="form-row collapse">
+
+                                                        <div class="data-item">
+                                                            <p><strong>More Details</strong></p>
+                                                            <ul>
+                                                                <li><strong>Sponsorship Type:</strong> {{ template.sponsorship_type }}</li>
+                                                                <li><strong>Year of Study:</strong> {{ template.year_of_study }}</li>
+                                                                <li><strong>Fee Item:</strong> {{ template.fee_item }}</li>
+                                                                <li><strong>Fee Item Amount:</strong> {{ template.fee_item_amount }}</li>
+                                                                <li><strong>GL Statement Prefix:</strong> {{ template.gl_statement_prefix }}</li>
+                                                                <li><strong>Notes/Remarks:</strong> {{ template.notes }}</li>
+                                                            </ul>
+                                                            <div class="d-flex">
+                                                                <div>
+                                                                    <a href="{% url 'edit_billing_template' template.id %}" class="btn btn-success">Edit</a>
+                                                                </div>
+                                                                <div class="ml-1">
+                                                                    <a href="{% url 'delete_billing_template' template.id %}" class="btn btn-danger">Delete</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            {% empty %}
+                                            <tr>
+                                                <td colspan="13">No fee items available.</td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                
+                                
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.card -->
+            </div>
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+</section>
+
+{% endblock main_content %}
+
+{% block custom_javascript %}
+
+
+    
+{% endblock custom_javascript %}
+    
