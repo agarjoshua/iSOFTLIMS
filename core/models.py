@@ -465,6 +465,7 @@ class Students(models.Model):
     require_transport = models.BooleanField(default=False)
     student_contact = models.CharField(max_length=255, unique=True, null=True)
     sponsor_contact = models.CharField(max_length=255, unique=True, null=True)
+    booked_hostel = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     objects = models.Manager()
@@ -671,10 +672,16 @@ class House(models.Model):
         ('Both', 'Both'),
     ]
 
+    name = models.CharField(max_length=100, null=True)
     code = models.CharField(max_length=100)
     description = models.CharField(max_length=100)
     gender = models.CharField(max_length=10, choices=GENDER_CHOICES)
     campus = models.ForeignKey(Campus, on_delete=models.DO_NOTHING, null=True)
+    current_capacity = models.IntegerField(default=0)
+    maximum_capacity = models.IntegerField(default=0)
+
+    def is_capacity_available(self):
+        return self.current_capacity < MAX_CAPACITY
 
 
 # Dormitories/Hostels
@@ -705,6 +712,18 @@ class House(models.Model):
 
 
 
+class Booking(models.Model):
+    student = models.ForeignKey(Students, on_delete=models.CASCADE)
+    house = models.ForeignKey(House, on_delete=models.CASCADE)
+    booking_date = models.DateField(auto_now_add=True)
+    session = models.ForeignKey("academics.Session", on_delete=models.DO_NOTHING, null=True)
+    objects = models.Manager()
+
+    def __str__(self):
+        return f'{self.house.name} {self.student.name}'
+
+
+
 class Service(models.Model):
     id = models.AutoField(primary_key=True)
     code = models.CharField(max_length=30, null=True)
@@ -721,6 +740,7 @@ class Service(models.Model):
 
     def __str__(self):
         return self.name
+
 
 class EcActivities(models.Model):
     GENDER_CHOICES = [

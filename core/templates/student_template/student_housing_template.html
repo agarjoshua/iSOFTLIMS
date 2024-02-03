@@ -1,7 +1,7 @@
 {% extends 'student_template/base_template.html' %}
 
 {% block page_title %}
-<b>Student Home</b>
+<b>Student Housing</b>
 {% endblock page_title %}
 
 {% block main_content %}
@@ -76,55 +76,45 @@
         </div>
         {% comment %} Boxes Section Ends {% endcomment %}
 
-        <div class="row">
-            <div class="col-lg-6">
-                <!-- PIE CHART -->
-                <div class="card card-danger">
-                    <div class="card-header">
-                        <h3 class="card-title">Total Attendance Chart</h3>
-
-                        <div class="card-tools">
-                            <button type="button" class="btn btn-tool" data-card-widget="collapse"><i
-                                    class="fas fa-minus"></i>
-                            </button>
-                            <button type="button" class="btn btn-tool" data-card-widget="remove"><i
-                                    class="fas fa-times"></i></button>
+        <table id="register-table" class="table table-hover text-nowrap">
+            <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>Description</th>
+                    <th>Gender</th>
+                    <th>Campus</th>
+                    <th>Current Capacity</th>
+                    <th>Maximum Capacity</th>
+                    <th>Capacity Balance</th>
+                    <th>Book Hostel</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% csrf_token %}
+                {% for i in houses %}
+                <tr>
+                    <td>{{ i.code }}</td>
+                    <td>{{ i.description }}</td>
+                    <td>{{ i.gender }}</td>
+                    <td>{{ i.campus }}</td>
+                    <td>{{ i.current_capacity }}</td>
+                    <td>{{ i.maximum_capacity }}</td>
+                    <td>
+                        <p>{{ house.code }} - Capacity: {{ house.current_capacity }}/{{ MAX_CAPACITY }}</p>
+                    </td>
+                        
+                    <td>
+                        <div>
+                            <a href="{% url 'book_housing' i.id %}" class="btn btn-success">Book Hostel</a>
                         </div>
-                    </div>
-                    <div class="card-body">
-                        <canvas id="pieChart"
-                            style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
-                    </div>
-                    <!-- /.card-body -->
-                </div>
-                <!-- /.card -->
-            </div>
-
-            <div class="col-lg-6">
-                <!-- BAR CHART -->
-                <div class="card card-success">
-                    <div class="card-header">
-                        <h3 class="card-title">Attendance Statistics by Subjects</h3>
-
-                        <div class="card-tools">
-                            <button type="button" class="btn btn-tool" data-card-widget="collapse"><i
-                                    class="fas fa-minus"></i>
-                            </button>
-                            <button type="button" class="btn btn-tool" data-card-widget="remove"><i
-                                    class="fas fa-times"></i></button>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="chart">
-                            <canvas id="barChart"
-                                style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
-                        </div>
-                    </div>
-                    <!-- /.card-body -->
-                </div>
-                <!-- /.card -->
-            </div>
-        </div>
+                    </td>
+                    
+                </tr>
+                
+                {% endfor %}
+    
+            </tbody>
+        </table>
 
     </div><!-- /.container-fluid -->
 </section>

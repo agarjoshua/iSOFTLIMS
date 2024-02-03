@@ -1,0 +1,25 @@
+Role:
+
+Definition: A role represents a set of permissions or access levels granted to a user.
+Functionality: It defines what a user can or cannot do within the system.
+Example: Roles could include "Admin," "Staff," "Student," etc.
+Implementation: Utilized in Django's built-in permission system to control access to specific views or functionalities.
+
+User Type:
+
+Definition: A user type represents the categorization of users based on their characteristics or responsibilities.
+Functionality: It describes the inherent attributes or characteristics of a user.
+Example: User types could include "Administrator," "Teacher," "Applicant," etc.
+Implementation: It might involve additional fields in the user model or the use of a custom user model to accommodate unique attributes associated with each user type.
+
+Differentiation:
+
+Roles focus on permissions and access control.
+User types focus on categorizing users based on their inherent characteristics or responsibilities.
+Roles are often linked to Django's permission system for authorization.
+User types may involve additional fields in the user model or the use of a custom user model to store specific attributes associated with each type.
+
+Example Implementation:
+
+You could have a "Role" of "Admin" with permissions to manage all aspects of the system.
+You could have a "User Type" of "Administrator" with additional attributes like "Department" or "Responsibility."

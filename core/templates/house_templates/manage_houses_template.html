@@ -66,13 +66,16 @@
                             <div class="card-body">
                                 <table class="table table-hover text-wrap">
                                     <thead>
-                                    <tr>
-                                        <th>Code</th>
-                                        <th>Description</th>
-                                        <th>Gender</th>
-                                        <th>Campus</th>
-                                        <th>Action</th>
-                                    </tr>
+                                        <tr>
+                                            <th>Code</th>
+                                            <th>Description</th>
+                                            <th>Gender</th>
+                                            <th>Campus</th>
+                                            <th>Current Capacity</th>
+                                            <th>Maximum Capacity</th>
+                                            <th>Capacity Percentage</th>
+                                            <th>Action</th>
+                                        </tr>
                                     </thead>
                                     <tbody>
                                     {% for house in houses %}
@@ -81,6 +84,10 @@
                                         <td>{{ house.description }}</td>
                                         <td>{{ house.gender }}</td>
                                         <td>{{ house.campus }}</td>
+                                        <td>{{ house.current_capacity }}</td>
+                                        <td>{{ house.maximum_capacity }}</td>
+                                        <td><p>{{ house.code }} - Capacity: {{ house.current_capacity }}/{{ MAX_CAPACITY }}</p><td>
+
                                         <td class="d-flex">
                                             <div>
                                                 <a href="{% url 'edit_house' house.id %}" class="btn btn-success">Edit</a>

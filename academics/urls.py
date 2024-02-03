@@ -75,6 +75,7 @@ urlpatterns = [
     #student management
     path('register_for_exam/', examinationViews.register_for_exam, name="register_for_exam"),
 
+
     #COMMUNICATION MANAGEMENT
     path('academics_comm_save/', academicsViews.academics_comm_save, name="academics_comm_save"),
     

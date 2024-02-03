@@ -213,6 +213,11 @@ def deny_temporary_defer(request):
     messages.warning(request,'Application for declined made')
     return redirect("manage_temporary_approvals")
 
+def apply_interschool_transfer(request):
+    return render(request, "student_template/student_apply_interschool_transfer.html")
+
+def apply_interfaculty_transfer(request):
+    return render(request, "student_template/student_apply_interfaculty_transfer.html")
 
 
 def manage_interfaculty_transfer(request):

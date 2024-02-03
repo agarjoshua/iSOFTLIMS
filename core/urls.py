@@ -131,6 +131,13 @@ urlpatterns = [
     path("student_profile/", StudentViews.student_profile, name="student_profile"),
     path("student_profile_update/", StudentViews.student_profile_update, name="student_profile_update"),
     path("student_view_result/", StudentViews.student_view_result, name="student_view_result"),
+
+    path("student_housing/", StudentViews.student_housing, name="student_housing"),
+    path("book_housing/<house_id>", StudentViews.book_housing, name="book_housing"),
+    
+
+
+
     path("add_student/", AdminViews.add_student, name="add_student"),
     path("add_student_save/", AdminViews.add_student_save, name="add_student_save"),
     path("edit_student/<student_id>", AdminViews.edit_student, name="edit_student"),
@@ -156,6 +163,9 @@ urlpatterns = [
     path("edit_guardian/<guardian_id>/", AdminViews.edit_guardian, name="edit_guardian"),
     path("edit_guardian_save/", AdminViews.edit_guardian_save, name="edit_guardian_save"),
     path("delete_guardian/<guardian_id>/", AdminViews.delete_student, name="delete_guardian"),
+
+    path("apply_interschool_transfer/", StudentAdminAffairs.apply_interschool_transfer, name="apply_interschool_transfer"),
+    path("apply_interfaculty_transfer/", StudentAdminAffairs.apply_interfaculty_transfer, name="apply_interfaculty_transfer"),
 
 
     # PROCESSES

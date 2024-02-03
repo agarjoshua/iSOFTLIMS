@@ -1,7 +1,7 @@
 {% extends 'student_template/base_template.html' %}
 
 {% block page_title %}
-<b>Student Registratiuon to Examination</b>
+<b>Student Apply Interschool Transfer</b>
 {% endblock page_title %}
 
 {% block main_content %}
@@ -34,52 +34,13 @@
     {% endif %}
 
     <div class="row justify-content-between mx-2 my-2">
-        <!-- <div>
-            <button id="select-all" class="btn btn-primary">Select All</button>
-        </div> -->
-        <div>
-            <button type="button" class="btn btn-primary" id="register-btn1">Register Selected</button>
-        </div>
+        This is the Interfaculty Transfer
     </div>
 
     
     
 
-    <div id="register-message">
-    </div>
-    <table id="register-table" class="table table-hover text-nowrap">
-        <thead>
-            <tr>
-                <th>Class Name</th>
-                <th>Exam Type</th>
-                <th>Exam Date</th>
-                <th>Compulsory</th>
-                <th>Class</th>
-                <th>Select to Register</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% csrf_token %}
-            {% for i in classes %}
-            <tr>
-                <td>{{ i.name}}</td>
-                <td>{{ i.exam_type}}</td>
-                <td>{{ i.exam_date }}</td>
-                <td>{{ i.is_compulsory }}</td>
-                <td>{{ i.exam_class }}</td>
-                <td>
-                {% if i in registered_exams %}
-                <button disabled class="btn btn-success">Student Registered</button>
-                {% elif i not in registered_exams %}
-                <input type="checkbox" name="registered_ids[]" value="{{ i.id }}">
-                {% endif %}
-                </td>
-            </tr>
-            
-            {% endfor %}
-
-        </tbody>
-    </table>
+  
     
 
 </div>

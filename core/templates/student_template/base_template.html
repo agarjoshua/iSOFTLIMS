@@ -96,7 +96,7 @@
           <div class="row mb-2">
             <div class="col-sm-12">
               <h1 class="m-0 text-dark">
-                {% block page_title %}
+                {% block page_title%}
                 {% endblock page_title %} <span class="font-weight-bold float-sm-right" id="current-date"></span>
               </h1>
             </div>
@@ -106,6 +106,76 @@
       <!-- /.content-header -->
 
       <!-- Main content -->
+        <div class="row justify-content-start mx-1 my-">
+          <div>
+            {% url 'enroll_session' as enroll_session %}
+              <a href="{{ enroll_session }}" class="nav-link ">
+                  <p>
+                      <button type="button" class="btn btn-secondary {% if request.path == enroll_session %} border border-dark {% endif %}" id="register-btn">Enroll to Session</button>
+                      {% if request.path == enroll_session %} <hr class="border border-dark border-2"> {% endif %}
+                      
+                    </p>
+
+
+
+                </a>
+          </div>
+
+          <div>
+            {% url 'enroll_classes' as class_management %}
+              <a href="{{ class_management }}" class="nav-link {% if request.path == class_management %} active {% endif %}">
+                  <p>
+                    <button type="button" class="btn btn-success {% if request.path == class_management %} border border-dark {% endif %}" id="register-btn">Class Management</button>
+                      {% if request.path == class_management %} <hr class="border border-dark border-2"> {% endif %}
+                  </p>
+                </a>
+          </div>
+
+          <div>
+            {% url 'academics:register_for_exam' as exam_management %}
+              <a href="{{ exam_management }}" class="nav-link {% if request.path == exam_management %} active {% endif %}">
+                  <p>
+                    <button type="button" class="btn btn-warning {% if request.path == exam_management %} border border-dark {% endif %}" id="register-btn">Examinations</button>
+                      {% if request.path == exam_management %} <hr class="border border-dark border-2"> {% endif %}
+                  </p>
+                </a>
+          </div>
+
+          <div>
+            {% url 'student_housing' as housing %} 
+              <a href="{{ housing }}" class="nav-link {% if request.path == housing %} active {% endif %}">
+                  <p>
+                    <button type="button" class="btn btn-primary {% if request.path == housing %} border border-dark {% endif %}" id="register-btn">House/Boarding Management</button>
+                      {% if request.path == housing %} <hr class="border border-dark border-2"> {% endif %}
+                  </p>
+                </a>
+          </div>
+
+          <div>
+            {% url 'apply_interfaculty_transfer' as apply_interfaculty_transfer %}
+            <a href="{{ apply_interfaculty_transfer }}" class="nav-link {% if request.path == apply_interfaculty_transfer %} active {% endif %}">
+                <p>
+                  <button type="button" class="btn btn-dark {% if request.path == apply_interfaculty_transfer %} border border-dark {% endif %}" id="register-btn">Interfaculty Transfer</button>
+                      {% if request.path == apply_interfaculty_transfer %} <hr class="border border-dark border-2"> {% endif %}
+
+                </p>
+              </a>
+          </div>
+
+          <div>
+            {% url 'apply_interschool_transfer' as apply_interschool_transfer %} 
+              <a href="{{ apply_interschool_transfer }}" class="nav-link {% if request.path == apply_interschool_transfer %} active {% endif %}">
+                  <p>
+                    <button type="button" class="btn btn-info {% if request.path == apply_interschool_transfer %} border border-dark {% endif %}" id="register-btn">Interschool Transfer</button>
+                      {% if request.path == apply_interschool_transfer %} <hr class="border border-dark border-2"> {% endif %}
+                  </p>
+                </a>
+          </div>
+
+          
+
+      </div>
+
       {% block main_content %}
       {% endblock main_content %}
       <!-- /.content -->
