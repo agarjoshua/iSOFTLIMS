@@ -1,0 +1,48 @@
+{% extends "house_templates/manage_houses_template.html" %}
+
+{% block house %}
+<div class="card card-primary">
+    <div class="card-header">
+        <h3 class="card-title">Manage Booking</h3>
+    </div>
+    <!-- /.card-header -->
+    <!-- form start -->
+    <div class="card-body">
+        <table class="table table-hover text-wrap">
+            <thead>
+                <tr>
+                    <th>Student</th>
+                    <th>House</th>
+                    <th>Booking Date</th>
+                    <th>Session</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for i in booking %}
+            <tr>
+                <td>{{ i.student }}</td>
+                <td>{{ i.house }}</td>
+                <td>{{ i.booking_date }}</td>
+                <td>{{ i.session }}</td>
+                <td>{{ i.status }}</td>
+
+                <td class="d-flex">
+                    {% if i.status %}
+                    <div>
+                        <a href="{% url 'confirm_booking' i.id %}" class="btn btn-success disabled">Confirm</a>
+                    </div>
+                    {% else %}
+                    <div>
+                        <a href="{% url 'confirm_booking' i.id %}" class="btn btn-success">Confirm</a>
+                    </div>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock house %}

@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from core.forms.approvalforms import AdminDefferementApprovalWorkflowForm, InterFacultyTransferWorkflowForm, TemporaryDefferementApprovalWorkflowForm
+from core.forms.approvalforms import AdminDefferementApprovalWorkflowForm, InterFacultyTransferWorkflowForm, StudentInterFacultyTransferForm, TemporaryDefferementApprovalWorkflowForm
 from django.contrib import messages
 from core.models import HOD, DeferrmentApprovalWorklow, InterFacultyTransferApprovalWorklow, Students, TemporaryWithdrawalApprovalWorklow
 from core.subviews.utilities.StudentViewUtilities import check_hod_type
@@ -213,11 +213,71 @@ def deny_temporary_defer(request):
     messages.warning(request,'Application for declined made')
     return redirect("manage_temporary_approvals")
 
+
+def apply_interfaculty_transfer(request):
+
+    interfaculty_transfer_approval_workflow_form = StudentInterFacultyTransferForm() 
+
+    user_id = Students.objects.get(admin=request.user.id)
+
+    user = InterFacultyTransferApprovalWorklow.objects.get(applicant=user_id)
+
+    interfaculty_transfer_approval_workflow_form.fields["applicant"].initial = user.applicant.name 
+    interfaculty_transfer_approval_workflow_form.fields["reason"].initial = user.reason 
+    interfaculty_transfer_approval_workflow_form.fields["current_course"].initial = user.current_course.course_name 
+    interfaculty_transfer_approval_workflow_form.fields["desired_course"].initial = user.desired_course.course_name
+    # interfaculty_transfer_approval_workflow_form.fields["admissions_approved"].initial = user.admissions_approved
+    interfaculty_transfer_approval_workflow_form.fields["admissions_comments"].initial = user.admissions_comments
+    # interfaculty_transfer_approval_workflow_form.fields["dean_approved"].initial = user.dean_approved
+    interfaculty_transfer_approval_workflow_form.fields["dean_comments"].initial = user.dean_comments
+    # interfaculty_transfer_approval_workflow_form.fields["registrar_approved"].initial = user.registrar_approved
+    interfaculty_transfer_approval_workflow_form.fields["registrar_comments"].initial = user.registrar_comments
+    # interfaculty_transfer_approval_workflow_form.fields["dvc_approved"].initial = user.dvc_approved
+    interfaculty_transfer_approval_workflow_form.fields["dvc_comments"].initial = user.dvc_comments
+
+
+
+    print(interfaculty_transfer_approval_workflow_form)
+    context = {
+            "interfaculty_transfer_approval_workflow_form" : interfaculty_transfer_approval_workflow_form,
+            # "role":role
+        }
+    return render(request, "student_template/student_apply_interfaculty_transfer.html", context)
+
+def apply_interfaculty_transfer_save(request):
+    interfaculty_transfer_approval_workflow_form = StudentInterFacultyTransferForm() 
+    
+    print(interfaculty_transfer_approval_workflow_form)
+    context = {
+            "interfaculty_transfer_approval_workflow_form" : interfaculty_transfer_approval_workflow_form,
+            # "role":role
+        }
+    return render(request, "student_template/student_apply_interfaculty_transfer.html", context)
+
+    # try:
+    #     role = HOD.objects.get(admin=request.user.id).hod_type
+    #     context = {
+    #         "approvals":approvals,
+    #         "deferrement_approval_workflow_form":interfaculty_transfer_approval_workflow_form,
+    #         # "role":role
+    #     }
+        
+    #     return render(request, "student_template/student_apply_interfaculty_transfer.html", context)
+    # except ObjectDoesNotExist:
+    #     not_authorized = True
+    #     context = {
+    #         "approvals":approvals,
+    #         "deferrement_approval_workflow_form":interfaculty_transfer_approval_workflow_form,
+    #         # "not_authorized": not_authorized
+    #         # "role":role
+    #     }
+        
+
+
 def apply_interschool_transfer(request):
     return render(request, "student_template/student_apply_interschool_transfer.html")
 
-def apply_interfaculty_transfer(request):
-    return render(request, "student_template/student_apply_interfaculty_transfer.html")
+
 
 
 def manage_interfaculty_transfer(request):

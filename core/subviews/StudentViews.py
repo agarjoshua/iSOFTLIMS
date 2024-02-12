@@ -3,11 +3,11 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.contrib import messages
 from django.core.files.storage import FileSystemStorage #To upload Profile Picture
 from django.urls import reverse
-import datetime
+from django.utils import timezone
 from academics.models import Class, ClassEnrollment, ClusterClass, Enrollment, Session
 from core.forms.studentforms import DefferementApprovalWorkflowForm, TemporaryWithdrawalApprovalWorklowForm # To Parse input DateTime into Python Date Time Object
 
-from core.models import DeferrmentApprovalWorklow, House, Students,CustomUser, TemporaryWithdrawalApprovalWorklow
+from core.models import Booking, DeferrmentApprovalWorklow, House, Students,CustomUser, TemporaryWithdrawalApprovalWorklow
 from core.subviews.utilities.StudentViewUtilities import check_student_is_defferred, check_student_is_temporarily_withdrawn
 # Staffs, Courses, Subjects,  Attendance, AttendanceReport, LeaveReportStudent, FeedBackStudent, StudentResult
 
@@ -278,9 +278,12 @@ def withdraw_student(request):
 def student_housing(request):
 
     houses = House.objects.all()
-
+    student = Students.objects.get(admin=request.user.id)
+    
+    print(student)
     context = {
         "houses":houses,
+        "student":student,
     }
     
     return render(request, "student_template/student_housing_template.html", context)
@@ -290,22 +293,38 @@ def book_housing(request, house_id):
     house = House.objects.get(id=house_id)
     student = Students.objects.get(admin=request.user.id)
     
-    
     try:
-
         if student.booked_hostel:
-            print('------------------------check-------------------------')
-            messages.warning(request, "You have already booked a house")
+            messages.warning(request, "You have already booked a house, kindly wait for a response")
+            print(student)
             return redirect('student_housing')
-    
-        house.student = student
-        house.current_capacity += 1
-        student.booked_hostel = True
-        house.save()
-        print('house booked')
-        messages.success(request, "Successfully Booked")
-        return redirect('student_housing')
+        else:
+            house.student = student
+            house.current_capacity += 1
+            student.booked_hostel = True
+            house.save()
+            student.save()
+
+            # Check if the student has already booked a house
+            if Booking.objects.filter(student=student, status=True).exists():
+                messages.warning(request, "You have already booked a house.")
+                return redirect('student_housing')  # Adjust the URL name as per your project
+            
+            # Create a new booking entry
+            booking = Booking.objects.create(
+                student=student,
+                house=house,
+                booking_date=timezone.now().date(), # type: ignore
+                # Assuming 'Session' model is defined in your 'academics' app
+                session=Session.objects.get(pk=1),  # Adjust the session as needed
+            )
+            
+            messages.success(request, "Booking successful!")
+            print('house booked')
+            messages.success(request, "Successfully Booked")
+            return redirect('student_housing')
     except Exception as e:
         print('house not booked')
         messages.error(request, f"Failed to Book {e}")
         return redirect('student_housing')
+    

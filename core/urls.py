@@ -165,6 +165,7 @@ urlpatterns = [
     path("delete_guardian/<guardian_id>/", AdminViews.delete_student, name="delete_guardian"),
 
     path("apply_interschool_transfer/", StudentAdminAffairs.apply_interschool_transfer, name="apply_interschool_transfer"),
+    path("apply_interfaculty_transfer_save/", StudentAdminAffairs.apply_interfaculty_transfer_save, name="apply_interfaculty_transfer_save"),
     path("apply_interfaculty_transfer/", StudentAdminAffairs.apply_interfaculty_transfer, name="apply_interfaculty_transfer"),
 
 
@@ -178,6 +179,9 @@ urlpatterns = [
     path("add_house_save", AdminViews.add_house_save, name="add_house_save"),
     path("edit_house/<house_id>", AdminViews.edit_house, name="edit_house"),
     path("delete_house/<house_id>", AdminViews.delete_house, name="delete_house"),
+
+    path("manage_booking", AdminViews.manage_booking, name="manage_booking"),
+    path("confirm_booking/<booking_id>", AdminViews.confirm_booking, name="confirm_booking"),
 
     # SERVICES
     path("manage_services", AdminViews.manage_services, name="manage_services"),

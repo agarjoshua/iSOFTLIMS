@@ -17,8 +17,12 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="mx-auto row ">
-                    <div class="mr-1">
+                    <div class="mr-2">
                         <a class="btn btn-primary" href="{% url 'add_house' %}" role="button"> Create a House</a><br/>&nbsp;
+                    </div>
+
+                    <div class="mr-2">
+                        <a class="btn btn-primary" href="{% url 'manage_booking' %}" role="button"> Manage Booking</a><br/>&nbsp;
                     </div>
                 </div>
                 <!-- general form elements -->
@@ -57,51 +61,12 @@
                         </div>
                         {% endif %}
 
-                        <div class="card card-primary">
-                            <div class="card-header">
-                                <h3 class="card-title">Manage Houses</h3>
-                            </div>
-                            <!-- /.card-header -->
-                            <!-- form start -->
-                            <div class="card-body">
-                                <table class="table table-hover text-wrap">
-                                    <thead>
-                                        <tr>
-                                            <th>Code</th>
-                                            <th>Description</th>
-                                            <th>Gender</th>
-                                            <th>Campus</th>
-                                            <th>Current Capacity</th>
-                                            <th>Maximum Capacity</th>
-                                            <th>Capacity Percentage</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    {% for house in houses %}
-                                    <tr>
-                                        <td>{{ house.code }}</td>
-                                        <td>{{ house.description }}</td>
-                                        <td>{{ house.gender }}</td>
-                                        <td>{{ house.campus }}</td>
-                                        <td>{{ house.current_capacity }}</td>
-                                        <td>{{ house.maximum_capacity }}</td>
-                                        <td><p>{{ house.code }} - Capacity: {{ house.current_capacity }}/{{ MAX_CAPACITY }}</p><td>
+                        {% block house %}
 
-                                        <td class="d-flex">
-                                            <div>
-                                                <a href="{% url 'edit_house' house.id %}" class="btn btn-success">Edit</a>
-                                            </div>
-                                            <div class="ml-1">
-                                                <a href="{% url 'delete_house' house.id %}" class="btn btn-danger">Delete</a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    {% endfor %}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+                        {% endblock house %}
+
+                        
+
                     </div>
                 </div>
                 <!-- /.card -->

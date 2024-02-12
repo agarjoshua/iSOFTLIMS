@@ -36,6 +36,7 @@ from core.models import (
     ApplicantApprovalWorklow,
     Bank,
     BillingTemplate,
+    Booking,
     Campus,
     CustomUser, 
     Admin,
@@ -1672,7 +1673,7 @@ def manage_houses(request):
     context = {
         "houses":houses,
     }
-    return render(request, 'house_templates/manage_houses_template.html', context)
+    return render(request, 'house_templates/list_houses_templates.html', context)
 
 def add_house(request):
     form = HouseForm()
@@ -1731,7 +1732,19 @@ def delete_house(request, house_id):
         return redirect("manage_houses")
 
 
-######################################### #######################################################################
+def manage_booking(request):
+    booking = Booking.objects.all()
+    context = {
+        "booking":booking
+    }
+    return render(request, 'house_templates/manage_applications_template.html', context)
+
+def confirm_booking(request, booking_id):
+    # booking_id = request.POST.get("selected_id")
+    booking = Booking.objects.get(id=booking_id)
+    booking.status = True
+    booking.save()
+    return redirect('manage_booking')
 
 ######################################### MANAGE SERVICES #######################################################################
 def manage_services(request):

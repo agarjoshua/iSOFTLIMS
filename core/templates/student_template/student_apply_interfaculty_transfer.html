@@ -34,7 +34,18 @@
     {% endif %}
 
     <div class="row justify-content-between mx-2 my-2">
-        This is the Interfaculty Transfer
+        <form action="{%url 'add_job_save' %}" method="POST">
+            {% csrf_token %}
+
+            {{ interfaculty_transfer_approval_workflow_form.as_p }}
+            <div class="">
+                <button type="submit" class="btn btn-primary">Create Request</button>
+            </div>
+
+
+        </form>
+
+        
     </div>
 
     
@@ -61,33 +72,7 @@ be included in the mass edit action.
 <script>
     
 
-    $(function () {
-        $('#register-btn1').click(function () {
-          console.log('Im clicked')
-          var registered_ids = [];
-          $('input[name="registered_ids[]"]:checked').each(function() {
-            registered_ids.push($(this).val());
-          });
-          console.log('yeeeo'+registered_ids)
-    
-            $.ajax({
-                type: 'POST',
-                url: '{% url "academics:mass_edit_student_exam" %}',
-                data: {
-                'registered_ids': registered_ids,
-                'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val(),
-                },
-                success: function(response) {
-                    //$('#register-table').html(response.table_html);
-                    $('#register-table tbody').html(response.tbody_html);
-                    $('#register-message').html('<div class="alert alert-success" role="alert">Registration successful!</div>');
-                },
-                error: function(xhr, status, error) {
-                    $('#register-message').html('<div class="alert alert-danger" role="alert">Registration failed. Please try again.</div>');
-                }
-            });
-        });
-      });
+   
 </script>
 
 {% endblock custom_js %}

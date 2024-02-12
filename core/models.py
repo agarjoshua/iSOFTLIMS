@@ -473,8 +473,6 @@ class Students(models.Model):
     def __str__(self):
         return str(self.name)
     
-
-
     
 #     a. Registration Type (New/Continuing)
 # b. Pupil/Student Type (Local/International)
@@ -682,6 +680,9 @@ class House(models.Model):
 
     def is_capacity_available(self):
         return self.current_capacity < MAX_CAPACITY
+    
+    def __str__(self):
+        return self.name or 'name'
 
 
 # Dormitories/Hostels
@@ -717,10 +718,11 @@ class Booking(models.Model):
     house = models.ForeignKey(House, on_delete=models.CASCADE)
     booking_date = models.DateField(auto_now_add=True)
     session = models.ForeignKey("academics.Session", on_delete=models.DO_NOTHING, null=True)
+    status = models.BooleanField(default=False)
     objects = models.Manager()
 
     def __str__(self):
-        return f'{self.house.name} {self.student.name}'
+        return f'House Name: {self.house.name} Student: {self.student.name}'
 
 
 
