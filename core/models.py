@@ -390,6 +390,7 @@ class Guardian(models.Model):
 class Students(models.Model):
     id = models.AutoField(primary_key=True)
     admin = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    school = models.ForeignKey(School, on_delete=models.DO_NOTHING, null=True)
     admission_number = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     name = models.CharField(max_length=255,null=True)
     registration_number = models.CharField(max_length=10, unique=True, null=True)
@@ -653,6 +654,24 @@ class InterFacultyTransferApprovalWorklow(models.Model):
     dvc_approved = models.BooleanField(default=False)
     dvc_comments = models.CharField(max_length=255, blank=True)
     objects = models.Manager()
+
+
+class InterSchoolTransferApprovalWorklow(models.Model):
+    id = models.AutoField(primary_key=True)
+    applicant = models.ForeignKey(Students, on_delete=models.CASCADE)
+    reason = models.CharField(max_length=255, blank=True)
+    current_school = models.ForeignKey("core.School", on_delete=models.DO_NOTHING, null=True, related_name='current_school_approvals')
+    desired_school = models.ForeignKey("core.School", on_delete=models.DO_NOTHING, null=True, related_name='desired_school_approvals')
+    admissions_approved = models.BooleanField(default=False)
+    admissions_comments = models.CharField(max_length=255, blank=True)
+    dean_approved = models.BooleanField(default=False)
+    dean_comments = models.CharField(max_length=255, blank=True)
+    registrar_approved = models.BooleanField(default=False)
+    registrar_comments = models.CharField(max_length=255, blank=True)
+    dvc_approved = models.BooleanField(default=False)
+    dvc_comments = models.CharField(max_length=255, blank=True)
+    objects = models.Manager()
+
 
 class SpecialUser(models.Model):
     id = models.AutoField(primary_key=True)

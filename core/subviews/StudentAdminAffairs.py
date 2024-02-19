@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
-from core.forms.approvalforms import AdminDefferementApprovalWorkflowForm, InterFacultyTransferWorkflowForm, StudentInterFacultyTransferForm, TemporaryDefferementApprovalWorkflowForm
+from core.forms.approvalforms import AdminDefferementApprovalWorkflowForm, InterFacultyTransferWorkflowForm, StudentInterFacultyTransferForm, StudentSchoolTransferForm, TemporaryDefferementApprovalWorkflowForm
 from django.contrib import messages
-from core.models import HOD, DeferrmentApprovalWorklow, InterFacultyTransferApprovalWorklow, Students, TemporaryWithdrawalApprovalWorklow
+from core.models import HOD, DeferrmentApprovalWorklow, InterFacultyTransferApprovalWorklow, InterSchoolTransferApprovalWorklow, Students, TemporaryWithdrawalApprovalWorklow
 from core.subviews.utilities.StudentViewUtilities import check_hod_type
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse
@@ -218,67 +218,48 @@ def apply_interfaculty_transfer(request):
 
     interfaculty_transfer_approval_workflow_form = StudentInterFacultyTransferForm() 
 
-    user_id = Students.objects.get(admin=request.user.id)
+    user_obj = Students.objects.get(admin=request.user)
 
-    user = InterFacultyTransferApprovalWorklow.objects.get(applicant=user_id)
+    print(user_obj)
 
-    interfaculty_transfer_approval_workflow_form.fields["applicant"].initial = user.applicant.name 
-    interfaculty_transfer_approval_workflow_form.fields["reason"].initial = user.reason 
-    interfaculty_transfer_approval_workflow_form.fields["current_course"].initial = user.current_course.course_name 
-    interfaculty_transfer_approval_workflow_form.fields["desired_course"].initial = user.desired_course.course_name
-    # interfaculty_transfer_approval_workflow_form.fields["admissions_approved"].initial = user.admissions_approved
-    interfaculty_transfer_approval_workflow_form.fields["admissions_comments"].initial = user.admissions_comments
-    # interfaculty_transfer_approval_workflow_form.fields["dean_approved"].initial = user.dean_approved
-    interfaculty_transfer_approval_workflow_form.fields["dean_comments"].initial = user.dean_comments
-    # interfaculty_transfer_approval_workflow_form.fields["registrar_approved"].initial = user.registrar_approved
-    interfaculty_transfer_approval_workflow_form.fields["registrar_comments"].initial = user.registrar_comments
-    # interfaculty_transfer_approval_workflow_form.fields["dvc_approved"].initial = user.dvc_approved
-    interfaculty_transfer_approval_workflow_form.fields["dvc_comments"].initial = user.dvc_comments
+    user = None
 
+    try:
+        user = InterFacultyTransferApprovalWorklow.objects.get(applicant=user_obj.id)
+        interfaculty_transfer_approval_workflow_form.fields["applicant"].initial = user_obj
+        interfaculty_transfer_approval_workflow_form.fields["reason"].initial = user.reason 
 
+        interfaculty_transfer_approval_workflow_form.fields["current_course"].initial = user_obj.course
 
-    print(interfaculty_transfer_approval_workflow_form)
+        interfaculty_transfer_approval_workflow_form.fields["desired_course"].initial = user.desired_course.course_name
+
+        # interfaculty_transfer_approval_workflow_form.fields["admissions_approved"].initial = user.admissions_approved
+        interfaculty_transfer_approval_workflow_form.fields["admissions_comments"].initial = user.admissions_comments
+        # interfaculty_transfer_approval_workflow_form.fields["dean_approved"].initial = user.dean_approved
+        interfaculty_transfer_approval_workflow_form.fields["dean_comments"].initial = user.dean_comments
+        # interfaculty_transfer_approval_workflow_form.fields["registrar_approved"].initial = user.registrar_approved
+        interfaculty_transfer_approval_workflow_form.fields["registrar_comments"].initial = user.registrar_comments
+        # interfaculty_transfer_approval_workflow_form.fields["dvc_approved"].initial = user.dvc_approved
+        interfaculty_transfer_approval_workflow_form.fields["dvc_comments"].initial = user.dvc_comments
+
+    except InterFacultyTransferApprovalWorklow.DoesNotExist:
+        # Handle the case when the instance does not exist, e.g., set default values or show an error message.
+        pass
+
     context = {
             "interfaculty_transfer_approval_workflow_form" : interfaculty_transfer_approval_workflow_form,
-            # "role":role
+            "user": user
         }
     return render(request, "student_template/student_apply_interfaculty_transfer.html", context)
 
 def apply_interfaculty_transfer_save(request):
     interfaculty_transfer_approval_workflow_form = StudentInterFacultyTransferForm() 
-    
-    print(interfaculty_transfer_approval_workflow_form)
+
     context = {
             "interfaculty_transfer_approval_workflow_form" : interfaculty_transfer_approval_workflow_form,
             # "role":role
         }
     return render(request, "student_template/student_apply_interfaculty_transfer.html", context)
-
-    # try:
-    #     role = HOD.objects.get(admin=request.user.id).hod_type
-    #     context = {
-    #         "approvals":approvals,
-    #         "deferrement_approval_workflow_form":interfaculty_transfer_approval_workflow_form,
-    #         # "role":role
-    #     }
-        
-    #     return render(request, "student_template/student_apply_interfaculty_transfer.html", context)
-    # except ObjectDoesNotExist:
-    #     not_authorized = True
-    #     context = {
-    #         "approvals":approvals,
-    #         "deferrement_approval_workflow_form":interfaculty_transfer_approval_workflow_form,
-    #         # "not_authorized": not_authorized
-    #         # "role":role
-    #     }
-        
-
-
-def apply_interschool_transfer(request):
-    return render(request, "student_template/student_apply_interschool_transfer.html")
-
-
-
 
 def manage_interfaculty_transfer(request):
     approvals = InterFacultyTransferApprovalWorklow.objects.all()
@@ -301,7 +282,6 @@ def manage_interfaculty_transfer(request):
             # "role":role
         }
         return render(request, "admin_template/manage_student_transfer_template.html", context)
-
 
 def confirm_interfaculty_transfer(request):
     id = request.POST.get('id')
@@ -374,3 +354,37 @@ def deny_interfaculty_transfer(request):
         defer_obj.save()
     messages.warning(request,'Application for declined made')
     return redirect("manage_temporary_approvals")
+
+
+def apply_interschool_transfer(request):
+
+    interschool_transfer_approval_workflow_form = StudentSchoolTransferForm() 
+
+    user_id = Students.objects.get(admin=request.user.id)
+
+    user = None
+
+    try:
+        user = InterSchoolTransferApprovalWorklow.objects.get(applicant=user_id)
+        print(user)
+        interschool_transfer_approval_workflow_form.fields["applicant"].initial = user
+        interschool_transfer_approval_workflow_form.fields["reason"].initial = user.reason 
+        interschool_transfer_approval_workflow_form.fields["current_school"].initial = user.current_school
+        interschool_transfer_approval_workflow_form.fields["desired_school"].initial = user.desired_school
+        interschool_transfer_approval_workflow_form.fields["admissions_comments"].initial = user.admissions_comments
+        interschool_transfer_approval_workflow_form.fields["dean_comments"].initial = user.dean_comments
+        interschool_transfer_approval_workflow_form.fields["registrar_comments"].initial = user.registrar_comments
+        interschool_transfer_approval_workflow_form.fields["dvc_comments"].initial = user.dvc_comments
+
+    except InterSchoolTransferApprovalWorklow.DoesNotExist:
+        # Handle the case when the instance does not exist, e.g., set default values or show an error message.
+        pass
+
+
+    context = {
+            "interschool_transfer_approval_workflow_form" : interschool_transfer_approval_workflow_form,
+            "user": user
+        }
+    return render(request, "student_template/student_apply_interschool_transfer.html", context)
+
+
