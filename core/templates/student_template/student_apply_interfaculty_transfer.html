@@ -34,7 +34,7 @@
     {% endif %}
 
     <div class="justify-content-between mx-2 my-2">
-        <form action="{%url 'add_job_save' %}" method="POST">
+        <form method="POST">
             {% csrf_token %}
 
             {{ interfaculty_transfer_approval_workflow_form.as_p }}
@@ -45,7 +45,7 @@
             </div>
             {% else %}
             <div class="">
-                <button type="submit" class="disabled btn btn-primary">Request Created</button>
+                <button type="submit" class="disabled btn btn-success">Request Created</button>
             </div>
             {% endif %}
 

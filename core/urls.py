@@ -165,7 +165,7 @@ urlpatterns = [
     path("delete_guardian/<guardian_id>/", AdminViews.delete_student, name="delete_guardian"),
 
     path("apply_interschool_transfer/", StudentAdminAffairs.apply_interschool_transfer, name="apply_interschool_transfer"),
-    path("apply_interfaculty_transfer_save/", StudentAdminAffairs.apply_interfaculty_transfer_save, name="apply_interfaculty_transfer_save"),
+    # path("apply_interfaculty_transfer_save/", StudentAdminAffairs.apply_interfaculty_transfer_save, name="apply_interfaculty_transfer_save"),
     path("apply_interfaculty_transfer/", StudentAdminAffairs.apply_interfaculty_transfer, name="apply_interfaculty_transfer"),
 
 
