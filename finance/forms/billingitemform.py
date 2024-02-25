@@ -1,8 +1,8 @@
 from django import forms
 from django.core.validators import MinValueValidator, MaxValueValidator
-from core.models import FeeItem
+from finance.models import BillingItem
 
-class FeeItemForm(forms.ModelForm):
+class BillingItemForm(forms.ModelForm):
     priority = forms.IntegerField(
         label="Priority",
         validators=[MinValueValidator(1), MaxValueValidator(9)],
@@ -79,12 +79,12 @@ class FeeItemForm(forms.ModelForm):
     )
 
     class Meta:
-        model = FeeItem
+        model = BillingItem
         fields = '__all__'
 
 
 
-class UpdateFeeItemForm(forms.ModelForm):
+class UpdateBillingItemForm(forms.ModelForm):
     priority = forms.IntegerField(
         label="Priority",
         validators=[MinValueValidator(1), MaxValueValidator(9)],
@@ -159,5 +159,5 @@ class UpdateFeeItemForm(forms.ModelForm):
     )
 
     class Meta:
-        model = FeeItem
+        model = BillingItem
         fields = '__all__'

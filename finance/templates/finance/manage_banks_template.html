@@ -18,10 +18,10 @@
             <div class="col-md-12">
                 <div class="mx-auto row ">
                     <div class="mr-1">
-                        <a class="btn btn-primary" href="{% url 'add_bank' %}" role="button"> Create Bank</a><br/>&nbsp;
+                        <a class="btn btn-primary" href="{% url 'finance:add_bank' %}" role="button"> Create Bank</a><br/>&nbsp;
                     </div>
                     <div class="">
-                        <a class="btn btn-primary" href="{% url 'manage_payment_methods' %}" role="button"> Manage Payment Method</a><br/>&nbsp;
+                        <a class="btn btn-primary" href="{% url 'finance:manage_payment_methods' %}" role="button"> Manage Payment Method</a><br/>&nbsp;
                     </div>
                 </div>
                 <!-- general form elements -->
@@ -90,10 +90,10 @@
                                             <td>{{ bank.physical_address }}</td>
                                             <td class="d-flex">
                                                 <div>
-                                                    <a href="{% url 'edit_bank' bank.id %}" class="btn btn-success">Edit</a>
+                                                    <a href="{% url 'finance:edit_bank' bank.id %}" class="btn btn-success">Edit</a>
                                                 </div>
                                                 <div class="ml-1">
-                                                    <a href="{% url 'delete_bank' bank.id %}" class="btn btn-danger">Delete</a>
+                                                    <a href="{% url 'finance:delete_bank' bank.id %}" class="btn btn-danger">Delete</a>
                                                 </div>
                                             </td>
                                         </tr>

@@ -1,6 +1,6 @@
 {% extends 'admin_template/base_template.html' %} 
 {% block page_title %} 
-<b>Manage Fee Items</b> 
+<b>Manage Billing Items</b> 
 {% endblock page_title %} 
 {% block main_content %}
 {% load static %}
@@ -16,15 +16,16 @@
 
         <div class="row">
             <div class="col-md-12">
-                <div class="mx-auto row ">
-                    <div class="mr-1">
-                        <a class="btn btn-primary" href="{% url 'add_fee_item' %}" role="button"> Create Fee Item</a><br/>&nbsp;
-                    </div>
-                </div>
+                
                 <!-- general form elements -->
                 <div class="card card-primary">
 
                     <div class="card-body">
+                        <div class="mx-auto row ">
+                            <div class="mr-1">
+                                <a class="btn btn-primary" href="{% url 'finance:add_billing_item' %}" role="button"> Create Billing Item</a><br/>&nbsp;
+                            </div>
+                        </div>
 
                         {% if messages %}
                         <div class="form-group">
@@ -59,7 +60,7 @@
 
                         <div class="card card-primary">
                             <div class="card-header">
-                                <h3 class="card-title">Manage Fee Items</h3>
+                                <h3 class="card-title">Manage Billing Items</h3>
                             </div>
                             <!-- /.card-header -->
                             <!-- form start -->
@@ -84,19 +85,19 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {% for fee_item in fee_items %}
+                                            {% for i in billing_items %}
                                             <tr>
-                                                <td>{{ fee_item.code }}</td>
-                                                <td>{{ fee_item.description }}</td>
-                                                <td>{{ fee_item.category }}</td>
-                                                <td>{{ fee_item.occurrence }}</td>
-                                                <td>{{ fee_item.applicability }}</td>
-                                                <td>{{ fee_item.priority }}</td>
-                                                <td>{{ fee_item.default_amount }}</td>
+                                                <td>{{ i.code }}</td>
+                                                <td>{{ i.description }}</td>
+                                                <td>{{ i.category }}</td>
+                                                <td>{{ i.occurrence }}</td>
+                                                <td>{{ i.applicability }}</td>
+                                                <td>{{ i.priority }}</td>
+                                                <td>{{ i.default_amount }}</td>
                                                 <th>
                                                     <td>
                                                         <button class="btn btn-primary" data-toggle="collapse"
-                                                            data-target="#form{{ fee_item.id }}">Details</button>
+                                                            data-target="#form{{ i.id }}">Details</button>
                                                     </td>
                                                 </th>
                                                 
@@ -104,22 +105,22 @@
 
                                             <tr>
                                                 <td colspan="8">
-                                                    <div id="form{{ fee_item.id }}" class="form-row collapse">
+                                                    <div id="form{{ i.id }}" class="form-row collapse">
 
                                                         <div class="data-item">
                                                             <p><strong>More Details</strong></p>
                                                             <ul>
-                                                                <li><strong>On Hold Disable Posting:</strong> {{ fee_item.on_hold_disable_posting_on_item }}</li>
-                                                                <li><strong>GL Account:</strong> {{ fee_item.gl_account }}</li>
-                                                                <li><strong>GL Statement Prefix:</strong> {{ fee_item.gl_statement_prefix }}</li>
-                                                                <li><strong>Notes:</strong> {{ fee_item.notes }}</li>
+                                                                <li><strong>On Hold Disable Posting:</strong> {{ i.on_hold_disable_posting_on_item }}</li>
+                                                                <li><strong>GL Account:</strong> {{ i.gl_account }}</li>
+                                                                <li><strong>GL Statement Prefix:</strong> {{ i.gl_statement_prefix }}</li>
+                                                                <li><strong>Notes:</strong> {{ i.notes }}</li>
                                                             </ul>
                                                             <div class="d-flex">
                                                                 <div>
-                                                                    <a href="{% url 'edit_fee_item' fee_item.id %}" class="btn btn-success">Edit</a>
+                                                                    <a href="{% url 'finance:edit_billing_item' i.id %}" class="btn btn-success">Edit</a>
                                                                 </div>
                                                                 <div class="ml-1">
-                                                                    <a href="{% url 'delete_fee_item' fee_item.id %}" class="btn btn-danger">Delete</a>
+                                                                    <a href="{% url 'finance:delete_billing_item' i.id %}" class="btn btn-danger">Delete</a>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -128,7 +129,7 @@
                                             </tr>
                                             {% empty %}
                                             <tr>
-                                                <td colspan="13">No fee items available.</td>
+                                                <td colspan="13">No Billing items available.</td>
                                             </tr>
                                             {% endfor %}
                                         </tbody>

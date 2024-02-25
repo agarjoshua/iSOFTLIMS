@@ -18,12 +18,12 @@
             <div class="col-md-12">
                 <div class="mx-auto row ">
                     <div class="mr-1">
-                        <a class="btn btn-primary" href="{% url 'add_payment_method' %}" role="button"> Create Payment</a><br/>&nbsp;
+                        <a class="btn btn-primary" href="{% url 'finance:add_payment_method' %}" role="button"> Create Payment</a><br/>&nbsp;
                     </div>
                     <div class="mr-3">
-                        <a class="btn btn-primary" href="{% url 'manage_banks' %}" role="button"> Manage Banks</a><br/>&nbsp;
+                        <a class="btn btn-primary" href="{% url 'finance:manage_banks' %}" role="button"> Manage Banks</a><br/>&nbsp;
                     </div>
-                </div>
+                </div> 
                 <!-- general form elements -->
                 <div class="card card-primary">
 
@@ -149,11 +149,11 @@
                                                                     <br>
                                                                     
                                                                     <div class="mb-2">
-                                                                        <a class="btn btn-success" href="{% url 'edit_payment_method' payment_method.id %}" role="button">
+                                                                        <a class="btn btn-success" href="{% url 'finance:edit_payment_method' payment_method.id %}" role="button">
                                                                             Edit Transaction</a>
                                                                     </div>
                                                                     <div class="mb-1">
-                                                                        <a class="btn btn-danger" href="{% url 'delete_payment_method' payment_method.id %}" role="button">
+                                                                        <a class="btn btn-danger" href="{% url 'finance:delete_payment_method' payment_method.id %}" role="button">
                                                                             Delete</a>
                                                                     </div>
                                                                 </div>

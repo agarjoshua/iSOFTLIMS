@@ -1,6 +1,6 @@
 {% extends 'admin_template/base_template.html' %} 
 {% block page_title %} 
-<b>Add Billing Item</b> 
+<b>Edit Billing Item</b> 
 {% endblock page_title %} 
 {% block main_content %}
 {% load static %}
@@ -15,14 +15,7 @@
         </div>
 
         <div class="row">
-            
             <div class="col-md-12">
-                <div class="">
-                    <div class="mr-3">
-                        <a class="btn btn-primary" href="{% url 'manage_billing_templates' %}" role="button"> Manage Billing Item</a><br/>&nbsp;
-                    </div>
-                </div>
-
                 <!-- general form elements -->
                 <div class="card card-primary">
                     <div class="card-tools">
@@ -63,22 +56,18 @@
                                 <!-- general form elements -->
                                 <div class="card card-primary">
                                     <div class="card-header">
-                                        <h3 class="card-title">Add Billing Item</h3>
+                                        <h3 class="card-title">Edit Billing Item</h3>
                                     </div>
                                     <!-- /.card-header -->
                                     <!-- form start -->
                                     <div class="card-body">
-                                        <form action="{%url 'add_billing_template_save' %}" method="POST">
+                                        <form action="" method="post">
                                             {% csrf_token %}
-
-                                            {{form.as_p}}
+                                            {{edit_fee_item_form.as_p}}
                                             <div class="">
-                                                <button type="submit" class="btn btn-primary">Add Item</button>
+                                                <button type="submit" class="btn btn-primary">Save Edit</button>
                                             </div>
-
-
                                         </form>
-                                        
                                     </div>
                                     
                                 </div>

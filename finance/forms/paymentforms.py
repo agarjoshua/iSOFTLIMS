@@ -1,7 +1,6 @@
 from django import forms
 
-from core.models import PaymentMethods
-from core.models import Bank
+from finance.models import PaymentMethods, Bank, Transactiontype, Transaction
 
 class BankForm(forms.ModelForm):
     bank_code = forms.CharField(label="Bank Code", max_length=10, widget=forms.TextInput(attrs={"class": "form-control"}))

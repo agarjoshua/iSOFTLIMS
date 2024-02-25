@@ -18,7 +18,7 @@
             <div class="col-md-12">
                 <div class="mx-auto row ">
                     <div class="mr-1">
-                        <a class="btn btn-primary" href="{% url 'add_billing_template' %}" role="button"> Create Billing Template</a><br/>&nbsp;
+                        <a class="btn btn-primary" href="{% url 'finance:add_billing_template' %}" role="button"> Create Billing Template</a><br/>&nbsp;
                     </div>
                 </div>
                 <!-- general form elements -->
@@ -116,10 +116,10 @@
                                                             </ul>
                                                             <div class="d-flex">
                                                                 <div>
-                                                                    <a href="{% url 'edit_billing_template' template.id %}" class="btn btn-success">Edit</a>
+                                                                    <a href="{% url 'finance:edit_billing_template' template.id %}" class="btn btn-success">Edit</a>
                                                                 </div>
                                                                 <div class="ml-1">
-                                                                    <a href="{% url 'delete_billing_template' template.id %}" class="btn btn-danger">Delete</a>
+                                                                    <a href="{% url 'finance:delete_billing_template' template.id %}" class="btn btn-danger">Delete</a>
                                                                 </div>
                                                             </div>
                                                         </div>

@@ -19,10 +19,10 @@
             <div class="col-md-12">
                 <div class="">
                     <div class="mr-3">
-                        <a class="btn btn-primary" href="{% url 'manage_banks' %}" role="button"> Manage Bank</a><br/>&nbsp;
+                        <a class="btn btn-primary" href="{% url 'finance:manage_banks' %}" role="button"> Manage Bank</a><br/>&nbsp;
                     </div>
                     <div class="mr-3">
-                        <a class="btn btn-primary" href="{% url 'manage_payment_methods' %}" role="button"> Manage Payment Method</a><br/>&nbsp;
+                        <a class="btn btn-primary" href="{% url 'finance:manage_payment_methods' %}" role="button"> Manage Payment Method</a><br/>&nbsp;
                     </div>
                 </div>
 
@@ -71,7 +71,7 @@
                                     <!-- /.card-header -->
                                     <!-- form start -->
                                     <div class="card-body">
-                                        <form action="{%url 'add_bank_save' %}" method="POST">
+                                        <form action="{%url 'finance:add_bank_save' %}" method="POST">
                                             {% csrf_token %}
 
                                             {{form.as_p}}

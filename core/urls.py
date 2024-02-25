@@ -7,10 +7,6 @@ from core.subviews import AdminViews, StudentViews, StudentAdminAffairs, Applica
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
-    
-
-
-
     # HOMEPAGE URL
     path("", views.loginPage, name="login"),
     path("login", views.loginPage, name="login"),
@@ -168,7 +164,7 @@ urlpatterns = [
     # path("apply_interfaculty_transfer_save/", StudentAdminAffairs.apply_interfaculty_transfer_save, name="apply_interfaculty_transfer_save"),
     path("apply_interfaculty_transfer/", StudentAdminAffairs.apply_interfaculty_transfer, name="apply_interfaculty_transfer"),
 
-
+ 
     # PROCESSES
     path("processes", AdminViews.processes, name="processes"),
 
@@ -217,33 +213,6 @@ urlpatterns = [
     path("add_disciplinary_issue_save", AdminViews.add_disciplinary_issue_save, name="add_disciplinary_issue_save"),
     path("edit_disciplinary_issue/<disciplinary_id>", AdminViews.edit_disciplinary_issue, name="edit_disciplinary_issue"),
     path("delete_disciplinary_issue/<disciplinary_id>", AdminViews.delete_disciplinary_issue, name="delete_disciplinary_issue"),
-
-    # PAYMENT METHODS
-    path("manage_payment_methods", AdminViews.manage_payment_methods, name="manage_payment_methods"),
-    path("add_payment_method", AdminViews.add_payment_method, name="add_payment_method"),
-    path("add_payment_method_save", AdminViews.add_payment_method_save, name="add_payment_method_save"),
-    path("edit_payment_method/<payment_method_id>", AdminViews.edit_payment_method, name="edit_payment_method"),
-    path("delete_payment_method/<payment_method_id>", AdminViews.delete_payment_method, name="delete_payment_method"),
-    # banks
-    path("manage_banks", AdminViews.manage_banks, name="manage_banks"),
-    path("add_bank", AdminViews.add_bank, name="add_bank"),
-    path("add_bank_save", AdminViews.add_bank_save, name="add_bank_save"),
-    path("edit_bank/<bank_id>", AdminViews.edit_bank, name="edit_bank"),
-    path("delete_bank/<bank_id>", AdminViews.delete_bank, name="delete_bank"),
-
-    # FEE ITEMS
-    path("manage_fee_items", AdminViews.manage_fee_items, name="manage_fee_items"),
-    path("add_fee_item", AdminViews.add_fee_item, name="add_fee_item"),
-    path("add_fee_item_save", AdminViews.add_fee_item_save, name="add_fee_item_save"),
-    path("edit_fee_item/<fee_item_id>", AdminViews.edit_fee_item, name="edit_fee_item"),
-    path("delete_fee_item/<fee_item_id>", AdminViews.delete_fee_item, name="delete_fee_item"),
-
-    # BILLING TEMPLATES
-    path("manage_billing_templates", AdminViews.manage_billing_templates, name="manage_billing_templates"),
-    path("add_billing_template", AdminViews.add_billing_template, name="add_billing_template"),
-    path("add_billing_template_save", AdminViews.add_billing_template_save, name="add_billing_template_save"),
-    path("edit_billing_template/<billing_template_id>", AdminViews.edit_billing_template, name="edit_billing_template"),
-    path("delete_billing_template/<billing_template_id>", AdminViews.delete_billing_template, name="delete_billing_template"),
 
     
 

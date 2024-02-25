@@ -1,6 +1,6 @@
 {% extends 'admin_template/base_template.html' %} 
 {% block page_title %} 
-<b>Add Fee Item</b> 
+<b>Add Payment Method</b> 
 {% endblock page_title %} 
 {% block main_content %}
 {% load static %}
@@ -17,9 +17,12 @@
         <div class="row">
             
             <div class="col-md-12">
-                <div class="">
+                <div class="d-flex">
                     <div class="mr-3">
-                        <a class="btn btn-primary" href="{% url 'manage_fee_items' %}" role="button"> Manage Fee Item</a><br/>&nbsp;
+                        <a class="btn btn-primary" href="{% url 'finance:manage_payment_methods' %}" role="button"> Manage Payment Method</a><br/>&nbsp;
+                    </div>
+                    <div class="">
+                        <a class="btn btn-primary" href="{% url 'finance:manage_banks' %}" role="button"> Manage Banks</a><br/>&nbsp;
                     </div>
                 </div>
 
@@ -63,12 +66,12 @@
                                 <!-- general form elements -->
                                 <div class="card card-primary">
                                     <div class="card-header">
-                                        <h3 class="card-title">Add Fee Item</h3>
+                                        <h3 class="card-title">Add Payment Method</h3>
                                     </div>
                                     <!-- /.card-header -->
                                     <!-- form start -->
                                     <div class="card-body">
-                                        <form action="{%url 'add_fee_item_save' %}" method="POST">
+                                        <form action="{%url 'finance:add_payment_method_save' %}" method="POST">
                                             {% csrf_token %}
 
                                             {{form.as_p}}
