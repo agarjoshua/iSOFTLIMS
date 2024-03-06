@@ -9,11 +9,14 @@ from academics.models import Class, ClusterClass, Course, GradeLevel, ClassProgr
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.admin.views.decorators import user_passes_test
 
+from core.subviews.utilities.accesscontrolutilities import allow_user
+
 
 def is_admin(user):
     return user.is_superuser
 
 @user_passes_test(is_admin)
+@allow_user('1','4','6') 
 def add_class(request):
     # form = ClassCreateForm()
     if request.method == 'POST':
@@ -41,12 +44,14 @@ def add_class(request):
     return render (request, "class_templates/add_class_template.html", {'form': form})
     
 @user_passes_test(is_admin)
+@allow_user('1','4','6') 
 def manage_class(request):
     classs = Class.objects.all()
     context = {"classs": classs}
     return render(request, "class_templates/manage_class_template.html", context)
 
 @user_passes_test(is_admin)
+@allow_user('1','4','6') 
 def edit_class(request, class_id):
     selected_class = Class.objects.get(id=class_id)
     if request.method == 'POST':
@@ -67,7 +72,7 @@ def edit_class(request, class_id):
         _edit_class_helper(selected_class, class_id, request)
 
     return _edit_class_helper(selected_class, class_id, request)
-
+@allow_user('1','4','6') 
 def _edit_class_helper(selected_class, class_id, request):
     form = ClassEditForm(instance=selected_class)
     context = {'form': form, 'selected_class': selected_class, "id": class_id}
@@ -75,6 +80,7 @@ def _edit_class_helper(selected_class, class_id, request):
 
 
 @user_passes_test(is_admin)
+@allow_user('1','4','6') 
 def delete_class(request, class_id):
     selected_class = Class.objects.get(id=class_id)
     try:
@@ -89,18 +95,21 @@ def delete_class(request, class_id):
 
 
 @user_passes_test(is_admin)
+@allow_user('1','4','6') 
 def manage_grade(request):
     grade = GradeLevel.objects.all()
     context = {"grades": grade}
     return render(request, "class_templates/manage_grade_template.html", context)
 
 @user_passes_test(is_admin)
+@allow_user('1','4','6') 
 def add_grade(request):
     form = ClassGradeForm()
     context = {"form": form}
     return render(request, "class_templates/add_grade_template.html", context)  
              
 @user_passes_test(is_admin)
+@allow_user('1','4','6') 
 def add_grade_save(request):
     if request.method == 'POST':
         form = ClassGradeForm(request.POST)
@@ -114,6 +123,7 @@ def add_grade_save(request):
     render (request, "class_templates/manage_grade_template.html", {'form': form})
 
 @user_passes_test(is_admin)
+@allow_user('1','4','6') 
 def edit_grade(request, grade_id):
     selected_grade = GradeLevel.objects.get(id=grade_id)
     if request.method == 'POST':
@@ -141,6 +151,7 @@ def _edit_grade_helper(selected_grade, grade_id, request):
     return render(request, "class_templates/edit_grade_template.html", context)
 
 @user_passes_test(is_admin)
+@allow_user('1','4','6') 
 def delete_grade(request, grade_id):
     selected_grade = GradeLevel.objects.get(id=grade_id)
     try:
@@ -153,6 +164,7 @@ def delete_grade(request, grade_id):
 
 
 @user_passes_test(is_admin)
+@allow_user('1','4','6') 
 def clusterclass_list(request):
     clusters = ClusterClass.objects.all()
     classes = Class.objects.all()
@@ -165,11 +177,13 @@ def clusterclass_list(request):
     return render(request, "class_templates/manage_clusters_template.html", context)
 
 @user_passes_test(is_admin)
+@allow_user('1','4','6') 
 def clusterclass_detail(request, pk):
     clusterclass = get_object_or_404(ClusterClass, pk=pk)
     return render(request, 'class_templates/clusterclass_detail.html', {'clusterclass': clusterclass})
 
 @user_passes_test(is_admin)
+@allow_user('1','4','6') 
 def clusterclass_create(request):  # sourcery skip: extract-method
     if request.method == 'POST':
         form = ClusterClassForm(request.POST)
@@ -187,6 +201,7 @@ def clusterclass_create(request):  # sourcery skip: extract-method
 
 
 @user_passes_test(is_admin)
+@allow_user('1','4','6') 
 def clusterclass_edit(request,clusterclass_id):
     clusterclass = get_object_or_404(ClusterClass, id=clusterclass_id)
     if request.method == 'POST':
@@ -201,12 +216,15 @@ def clusterclass_edit(request,clusterclass_id):
     return render(request, 'class_templates/edit_clusterclass_template.html', {'form': form})
 
 
+@user_passes_test(is_admin)
+@allow_user('1','4','6') 
 def get_course_name(clusterclass_id):
     clusterclass = get_object_or_404(ClusterClass, id=clusterclass_id)
     course_name = clusterclass.course.course_name
     return course_name
 
-
+@user_passes_test(is_admin)
+@allow_user('1','4','6') 
 def add_class_progression(request):
     class_progression_form = ClassProgressionForm()
 
@@ -215,6 +233,8 @@ def add_class_progression(request):
         }
     return render(request, 'class_templates/add_class_progression.html', context)
 
+@user_passes_test(is_admin)
+@allow_user('1','4','6') 
 def add_class_progression_save(request):
         if request.method == 'POST':
             form = ClassProgressionForm(request.POST)
@@ -227,7 +247,8 @@ def add_class_progression_save(request):
             form = ClassProgressionForm()
         return render(request, 'class_templates/add_class_progression.html')
 
-
+@user_passes_test(is_admin)
+@allow_user('1','4','6') 
 def manage_class_progression(request):
     class_progressions = ClassProgression.objects.all()
     context = {
@@ -235,7 +256,8 @@ def manage_class_progression(request):
         }
     return render(request, 'class_templates/manage_class_progression.html', context)
 
-
+@user_passes_test(is_admin)
+@allow_user('1','4','6') 
 def edit_class_progression(request, class_progression_id):
     class_progression = get_object_or_404(ClassProgression, id=class_progression_id)
     edit_class_progression_form = Editclassprogressionform(instance=class_progression)
@@ -252,6 +274,8 @@ def edit_class_progression(request, class_progression_id):
     }
     return render(request, 'class_templates/edit_class_progression.html', context)
 
+@user_passes_test(is_admin)
+@allow_user('1','4','6') 
 def delete_class_progression(request, class_progression_id):
     
     try:

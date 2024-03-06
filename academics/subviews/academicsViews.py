@@ -4,7 +4,16 @@ from academics.forms.communicationForms import AcademicCommunicationForm
 from academics.models import AcademicCommunications, Session
 # from .models import Fee, Transaction
 from django.contrib import messages
+from core.subviews.utilities.accesscontrolutilities import allow_user
 
+# USER NUMBER REFERENCE
+# 1 = ADMIN
+# 2 = STAFF
+# 3 = STUDENTS
+# 4 = HOD
+# 5 = GUARDIAN
+# 6 = TEACHER
+@allow_user('1','4','6') 
 def academics_home(request):
     session_years = Session.objects.all()
     communicationsform = AcademicCommunicationForm()
@@ -19,6 +28,7 @@ def academics_home(request):
     
     return render(request, "academics_home.html", context)
 
+@allow_user('1','4','6') 
 def academics_comm_save(request):
     if request.method != "POST":
         messages.error(request, "Invalid Method!")

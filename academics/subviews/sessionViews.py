@@ -13,10 +13,13 @@ from django.db import DatabaseError, IntegrityError, DataError, OperationalError
 # 4 = HOD
 # 5 = GUARDIAN
 # 6 = TEACHER
- 
+from django.contrib.admin.views.decorators import user_passes_test
 
+def is_admin(user):
+    return user.is_superuser
 
-@allow_user('1','2','3','4','5','6')
+@user_passes_test(is_admin)
+@allow_user('1','4','6') 
 def manage_session(request):
     session_years = Session.objects.all()
 
@@ -28,11 +31,13 @@ def manage_session(request):
         }
     return render(request, "session_templates/manage_session_template.html", context)
 
-
+@user_passes_test(is_admin)
+@allow_user('1','4') 
 def add_session(request):
     return render(request, "session_templates/add_session_template.html")
 
-
+@user_passes_test(is_admin)
+@allow_user('1','4') 
 def add_session_save(request):
     if request.method != "POST":
         messages.error(request, "Invalid Method")
@@ -58,7 +63,8 @@ def add_session_save(request):
             messages.error(request, f"Failed to Add Session Year (i.e {e})")
             return redirect("add_session")
 
-
+@user_passes_test(is_admin)
+@allow_user('1','4') 
 def edit_session(request, session_id):
     selected_session = Session.objects.get(id=session_id)
     if request.method == 'POST':
@@ -87,7 +93,8 @@ def _edit_sessions_helper(selected_session, session_id, request):
     context = {'form': form, 'selected_session': selected_session, "id": session_id}
     return render(request, "session_templates/edit_session_template.html", context)
 
-
+@user_passes_test(is_admin)
+@allow_user('1','4') 
 def delete_session(request, session_id):
     session = Session.objects.get(id=session_id)
     try:

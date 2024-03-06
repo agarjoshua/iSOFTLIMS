@@ -7,9 +7,10 @@ import datetime
 from academics.models import Class # To Parse input DateTime into Python Date Time Object
 
 from core.models import Students,CustomUser
+from core.subviews.utilities.accesscontrolutilities import allow_user
 # Staffs, Courses, Subjects,  Attendance, AttendanceReport, LeaveReportStudent, FeedBackStudent, StudentResult
 
-
+@allow_user('1','4','6','3') 
 def student_view_attendance(request):
     student = Students.objects.get(admin=request.user.id) # Getting Logged in Student Data
     course = student.course_id # Getting Course Enrolled of LoggedIn Student
@@ -20,7 +21,7 @@ def student_view_attendance(request):
     }
     return render(request, "student_template/student_view_attendance.html", context)
 
-
+@allow_user('1','4','6','3') 
 def student_view_attendance_post(request):
     if request.method != "POST":
         messages.error(request, "Invalid Method")

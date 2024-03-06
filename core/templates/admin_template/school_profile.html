@@ -10,12 +10,22 @@
         
         <div class="mx-auto row">
             <div class="">
-                <a class="btn btn-success" href="{% url 'academics:manage_session' %}" role="button">
-                    Manage Sessions</a><br />&nbsp;
+                <a class="btn btn-danger" href="{% url 'manage_users' %}" role="button">
+                    Manage User Activation & Deletion</a><br />&nbsp;
+            </div>
+            
+            
+            <div class="ml-3">
+                <a class="btn btn-success" href="{% url 'manage_hod' %}" role="button">
+                    Manage HODs</a><br />&nbsp;
             </div>
             <div class="ml-3">
-                <a class="btn btn-success" href="{% url 'manage_users' %}" role="button">
-                    Manage All Users</a><br />&nbsp;
+                <a class="btn btn-success" href="{% url 'manage_staff' %}" role="button">
+                    Manage Staff</a><br />&nbsp;
+            </div>
+            <div class="ml-3">
+                <a class="btn btn-success" href="{% url 'manage_guardians' %}" role="button">
+                    Manage Guardian</a><br />&nbsp;
             </div>
 
             {% include 'core_navigation_navbar.html' %}

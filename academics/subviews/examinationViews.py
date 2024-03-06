@@ -11,8 +11,17 @@ from django.template.loader import render_to_string
 from django.http import JsonResponse
 
 from django.middleware import csrf
+from core.subviews.utilities.accesscontrolutilities import allow_user
 
 import pudb
+
+from django.contrib.admin.views.decorators import user_passes_test
+
+def is_admin(user):
+    return user.is_superuser
+
+@user_passes_test(is_admin)
+@allow_user('1','4','6') 
 def manage_examinations(request):
     
     # FORMS
@@ -48,6 +57,8 @@ def manage_examinations(request):
         }
     return render(request, "exam_templates/manage_examinations_template.html", context)
 
+@user_passes_test(is_admin)
+@allow_user('1','4','6') 
 def add_exam_type(request):
     if request.method == 'POST':
         form = ExamTypeForm(request.POST)
@@ -60,7 +71,9 @@ def add_exam_type(request):
                 messages.error(request,f'Exam type NOT Added Succesfully bacuse - {e}')
                 return redirect('academics:manage_exams')
 
-            
+
+@user_passes_test(is_admin)
+@allow_user('1','4','6')     
 def add_grade(request):
     if request.method == 'POST':
         grade = request.POST.get('grade')
@@ -87,7 +100,9 @@ def add_grade(request):
 
         
         return redirect('academics:manage_exams')
-
+    
+@user_passes_test(is_admin)
+@allow_user('1','4','6') 
 def add_new_grade(request):
     if request.method == 'POST':
         grade = request.POST.get('grade')
@@ -115,7 +130,8 @@ def add_new_grade(request):
         
         return redirect('academics:manage_exams')
     
-
+@user_passes_test(is_admin)
+@allow_user('1','4','6') 
 def register_for_exam(request):
     # student model has grade, we pick the subjects from the gradelevel
     if student := Students.objects.get(admin=request.user.id):

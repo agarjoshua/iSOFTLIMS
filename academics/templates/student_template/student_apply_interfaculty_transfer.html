@@ -1,0 +1,75 @@
+{% extends 'student_template/base_template.html' %}
+
+{% block page_title %}
+<b>Student Apply Interschool Transfer</b>
+{% endblock page_title %}
+
+{% block main_content %}
+
+{% load static %}
+
+<div class="content">
+    {% if messages %}
+    <div class="form-group">
+        <div class="col-12">
+            {% for message in messages %}
+            {% if message.tags == "error" %}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                {{ message }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            {% elif message.tags == "success" %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                {{ message }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="justify-content-between mx-2 my-2">
+        <form method="POST">
+            {% csrf_token %}
+
+            {{ interfaculty_transfer_approval_workflow_form.as_p }}
+
+            {% if not user %}
+            <div class="">
+                <button type="submit" class="btn btn-primary">Create Request</button>
+            </div>
+            {% else %}
+            <div class="">
+                <button type="submit" class="disabled btn btn-success">Request Created</button>
+            </div>
+            {% endif %}
+
+
+        </form>
+
+        
+    </div>
+
+</div>
+
+{% endblock main_content %}
+
+{% block custom_js %}
+
+{% comment %}
+With these changes, the "Select All" button will check all checkboxes in the table, and only unchecked checkboxes will
+be included in the mass edit action.
+{% endcomment %}
+
+<script>
+    
+
+   
+</script>
+
+{% endblock custom_js %}

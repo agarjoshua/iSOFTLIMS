@@ -7,8 +7,14 @@ from django.db.models import Q
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
 
+from core.subviews.utilities.accesscontrolutilities import allow_user
+from django.contrib.admin.views.decorators import user_passes_test
 
+def is_admin(user):
+    return user.is_superuser
 
+@user_passes_test(is_admin)
+@allow_user('1','4','6') 
 def manage_session_registation(request):
     currently_enrolled = Enrollment.objects.filter(Q(session__is_current=True))
     print(currently_enrolled)
@@ -18,6 +24,8 @@ def manage_session_registation(request):
         }
     return render(request, "session_templates/manage_session_registration_template.html", context)
 
+@user_passes_test(is_admin)
+@allow_user('1','4','6') 
 def enroll_student(request):
     if request.method == 'POST':
         form = EnrollmentCreateForm(request.POST)
@@ -48,7 +56,8 @@ def enroll_student(request):
     form = EnrollmentCreateForm()
     return render(request, 'session_templates/enroll_student_template.html', {'form': form})
 
-
+@user_passes_test(is_admin)
+@allow_user('1','4','6') 
 def confirm_enrollment(request,enrolled_id):
     selected_enrollment= Enrollment.objects.get(id=enrolled_id)
     return render(request, 'session_templates/enroll_student_template.html', {'form': form})
@@ -67,6 +76,8 @@ def mass_edit_enrolled(request):
 
     return redirect('academics:manage_session_registation')
 
+@user_passes_test(is_admin)
+@allow_user('1','4','6') 
 def revoke_enrollment(request, enrolled_id):
     revoked_enrollment = Enrollment.objects.get(id=enrolled_id)
     revoked_enrollment.is_active = False

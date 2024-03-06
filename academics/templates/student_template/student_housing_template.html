@@ -1,0 +1,117 @@
+{% extends 'student_template/base_template.html' %}
+
+{% block page_title %}
+<b>Student Housing</b>
+{% endblock page_title %}
+
+{% block main_content %}
+
+{% load static %}
+
+<section class="content">
+    <div class="container-fluid">
+        {% if messages %}
+    <div class="form-group">
+        <div class="col-12">
+            {% for message in messages %}
+            {% if message.tags == "error" %}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                {{ message }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            {% elif message.tags == "success" %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                {{ message }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            {% elif message.tags == "warning" %}
+            <div class="alert alert-warning alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                {{ message }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+          {% if student.booked_hostel == True %}
+          <h1 class="display-4 text-bold text-success">Housing status : Booked to student housing</h1>
+          <p class="lead text-bold">Name : {{student.name}}.</p>
+          <p class="lead text-bold">House : {{student.booking.house}} .</p>
+          {% else %}
+          <h1 class="display-4 text-bold text-warning">Housing status : N/A </h1>
+          <p class="lead">Hi <b>{{student.name}}</b>,Your are not registered to student housing.</p>
+          {% endif %}
+          
+        </div>
+        
+      </div>
+
+        <table id="register-table" class="table table-hover text-wrap inactive">
+            <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>Description</th>
+                    <th>Gender</th>
+                    <th>Campus</th>
+                    <th>Current Capacity</th>
+                    <th>Maximum Capacity</th>
+                    <th>Book Hostel</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% csrf_token %}
+                {% for i in houses %}
+                <tr>
+                    <td>{{ i.code }}</td>
+                    <td>{{ i.description }}</td>
+                    <td>{{ i.gender }}</td>
+                    <td>{{ i.campus }}</td>
+                    <td>{{ i.current_capacity }}</td>
+                    <td>{{ i.maximum_capacity }}</td>
+                        
+                    <td>
+                        
+                        {% if student.booked_hostel == False %}
+                        <div>
+                            <a href="{% url 'book_housing' i.id %}" class="btn btn-success">Book Hostel</a>
+                        </div>
+                        {% else %}
+                        <div>
+                            <a href="{% url 'book_housing' i.id %}" class="btn btn-success disabled">Book Hostel</a>
+                        </div>
+                        {% endif %}
+                    </td>
+                    
+                </tr>
+                
+                {% endfor %}
+    
+            </tbody>
+        </table>
+
+    </div><!-- /.container-fluid -->
+</section>
+
+{% endblock main_content %}
+
+{% block custom_js %}
+<script>
+    $(document).ready(function () {
+        //Code for Pie Chart
+        
+
+
+       }
+    )
+</script>
+{% endblock custom_js %}
+

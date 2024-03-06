@@ -6,8 +6,10 @@ from core.subviews.utilities.StudentViewUtilities import check_hod_type
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse
 
+from core.subviews.utilities.accesscontrolutilities import allow_user
 
 
+@allow_user('1','4') 
 def student_affairs_home(request):
     deffereals_count = DeferrmentApprovalWorklow.objects.count()
     temp_defer_count = TemporaryWithdrawalApprovalWorklow.objects.count()
@@ -23,7 +25,7 @@ def student_affairs_home(request):
             }
     return render(request, "admin_template/manage_student_admin_affairs.html", context)
 
-
+@allow_user('1','4') 
 def manage_student_approvals(request):
     approvals = DeferrmentApprovalWorklow.objects.all()
     deferrement_approval_workflow_form = AdminDefferementApprovalWorkflowForm()
@@ -45,6 +47,7 @@ def manage_student_approvals(request):
         }
         return render(request, "admin_template/manage_student_approvals.html", context)
 
+@allow_user('1','4') 
 def confirm_defer_student(request):  # sourcery skip: avoid-builtin-shadow
     id = request.POST.get('id')
     comments = request.POST.get('comments')
@@ -88,6 +91,7 @@ def confirm_defer_student(request):  # sourcery skip: avoid-builtin-shadow
     messages.success(request,'Application for deferrment made')
     return redirect("manage_student_approvals")
 
+@allow_user('1','4') 
 def deny_defer_student(request):
     id = request.POST.get('id')
     comments = request.POST.get('comments')
@@ -121,7 +125,7 @@ def deny_defer_student(request):
     return redirect("manage_student_approvals")
 
 
-
+@allow_user('1','4') 
 def manage_temporary_approvals(request):
     approvals = TemporaryWithdrawalApprovalWorklow.objects.all()
     temporary_deferrement_approval_workflow_form = TemporaryDefferementApprovalWorkflowForm()
@@ -144,6 +148,7 @@ def manage_temporary_approvals(request):
         }
         return render(request, "admin_template/manage_temporary_approvals.html", context)
 
+@allow_user('1','4') 
 def confirm_temporary_defer(request):
     id = request.POST.get('id')
     comments = request.POST.get('comments')
@@ -213,7 +218,7 @@ def deny_temporary_defer(request):
     messages.warning(request,'Application for declined made')
     return redirect("manage_temporary_approvals")
 
-
+@allow_user('1','4') 
 def apply_interfaculty_transfer(request):
 
     interfaculty_transfer_approval_workflow_form = StudentInterFacultyTransferForm()
@@ -275,7 +280,7 @@ def apply_interfaculty_transfer(request):
         }
     return render(request, "student_template/student_apply_interfaculty_transfer.html", context)
 
-
+@allow_user('1','4') 
 def manage_interfaculty_transfer(request):
     approvals = InterFacultyTransferApprovalWorklow.objects.all()
     temporary_deferrement_approval_workflow_form = InterFacultyTransferWorkflowForm()
@@ -298,6 +303,7 @@ def manage_interfaculty_transfer(request):
         }
         return render(request, "admin_template/manage_student_transfer_template.html", context)
 
+@allow_user('1','4') 
 def confirm_interfaculty_transfer(request):
     id = request.POST.get('id')
     comments = request.POST.get('comments')
@@ -337,6 +343,7 @@ def confirm_interfaculty_transfer(request):
     messages.success(request,'Application for deferrment made')
     return redirect("manage_temporary_approvals")
 
+@allow_user('1','4') 
 def deny_interfaculty_transfer(request):
     id = request.POST.get('id')
     comments = request.POST.get('comments')
@@ -370,6 +377,7 @@ def deny_interfaculty_transfer(request):
     messages.warning(request,'Application for declined made')
     return redirect("manage_temporary_approvals")
 
+@allow_user('1','4') 
 def apply_interschool_transfer(request):
 
     interschool_transfer_approval_workflow_form = StudentSchoolTransferForm() 

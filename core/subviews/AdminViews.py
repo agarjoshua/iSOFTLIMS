@@ -72,7 +72,7 @@ from django.db.models import Q
 # 6 = TEACHER
 
 
-@allow_user('1','2','3','4','5','6') 
+@allow_user('1') 
 def admin_home(request):
     all_teachers_count = Teacher.objects.all().count()
     all_student_count = Students.objects.all().count()
@@ -170,14 +170,14 @@ def admin_home(request):
     }
     return render(request, "admin_template/home_content.html", context)
 
-
+# @allow_user('1') 
 def admin_profile(request):
     user = CustomUser.objects.get(id=request.user.id)
 
     context = {"user": user}
     return render(request, "admin_template/admin_profile.html", context)
 
-
+# @allow_user('1') 
 def admin_profile_update(request):
     if request.method != "POST":
         messages.error(request, "Invalid Method!")
@@ -200,7 +200,7 @@ def admin_profile_update(request):
             messages.error(request, "Failed to Update Profile")
             return redirect("admin_profile")
 
-
+@allow_user('1') 
 def school_profile(request):
     user = CustomUser.objects.get(id=request.user.id)
     school_id = user.institution
@@ -283,7 +283,7 @@ def school_profile(request):
     # context = {"user": user, "institution": institution, "form":form}
     # return render(request, "admin_template/school_profile.html", context)
 
-
+@allow_user('1') 
 def admin_school_update(request):
     if request.method != "POST":
         messages.error(request, "Invalid Method!")
@@ -462,7 +462,7 @@ def admin_school_update(request):
     messages.success(request, "Profile Updated Successfully")
     return redirect("school_profile")
 
-
+@allow_user('1') 
 def administration(request):
     campus_form = CampusForm()
     edit_campus_form = CampusForm()
@@ -476,6 +476,7 @@ def administration(request):
     }
     return render(request, "admin_template/manage_administration.html",context)
 
+@allow_user('1') 
 def add_campus(request):
     if request.method == "POST":
         campus_form = CampusForm(request.POST)
@@ -488,7 +489,7 @@ def add_campus(request):
             return redirect("administration")
     return redirect("administration")
 
-
+@allow_user('1') 
 def edit_campus(request, campus_id):
     campus = Campus.objects.get(id=campus_id)
 
@@ -509,6 +510,7 @@ def edit_campus(request, campus_id):
     return render(request, "admin_template/edit_campus_template.html", context)
 
 # function for deleting a campus
+@allow_user('1') 
 def delete_campus(request, campus_id):
     campus = Campus.objects.get(id=campus_id)
     try:
@@ -518,6 +520,7 @@ def delete_campus(request, campus_id):
     except:
         messages.error(request, "Failed to Delete Campus.")
         return redirect("administration")
+
 
 def school(request):
     campus_form = CampusForm()
@@ -533,7 +536,7 @@ def school(request):
     }
     return render(request, "admin_template/manage_school_template.html",context)
 
-
+@allow_user('1') 
 def add_school(request):
     if request.method == "POST":
         school_form = SchoolForm(request.POST)
@@ -546,6 +549,7 @@ def add_school(request):
             return redirect("school")
     return redirect("schools")
 
+@allow_user('1') 
 def edit_school(request, school_id):
     school = School.objects.get(id=school_id) 
     if request.method == "POST":    
@@ -564,7 +568,7 @@ def edit_school(request, school_id):
     # return render(request, "admin_template/edit_school_template.html", context)
 
 
-
+@allow_user('1') 
 def delete_school(request, school_id):
     school = School.objects.get(id=school_id)
     try:
@@ -576,18 +580,23 @@ def delete_school(request, school_id):
         return redirect('schools')
 
 #create crud methods for programs
+@allow_user('1') 
 def programs(request):
     return render(request, "admin_template/manage_programs_template.html")
 
+@allow_user('1') 
 def add_program(request):
     return render(request, "admin_template/add_program_template.html")
 
+@allow_user('1') 
 def edit_program(request):
     return render(request, "admin_template/edit_program_template.html")
 
+@allow_user('1') 
 def delete_program(request):
     return render(request, "admin_template/delete_program_template.html")
 
+@allow_user('1') 
 def courses(request):
     courses = Course.objects.all()
     context = {
@@ -599,7 +608,7 @@ def courses(request):
 
 
 
-
+@allow_user('1') 
 def manage_users(request):
     users = CustomUser.objects.all()
 
@@ -610,6 +619,7 @@ def manage_users(request):
     }
     return render(request,'admin_template/manage_users_template.html', context)
 
+@allow_user('1','4') 
 def activate_user(request, user_id):
     user = CustomUser.objects.get(id=user_id)
     try:
@@ -621,6 +631,7 @@ def activate_user(request, user_id):
         messages.error(request, "User does not exist")
         return redirect('manage_users')
 
+@allow_user('1','4') 
 def deactivate_user(request, user_id):
     user = CustomUser.objects.get(id=user_id)
     # try:
@@ -632,7 +643,7 @@ def deactivate_user(request, user_id):
     #     messages.error(request, "User does not exist")
     #     return redirect('manage_users')
 
-
+@allow_user('1') 
 def add_staff(request):
     staff_type = StaffType.objects.all()
     departments = Department.objects.all()
@@ -643,7 +654,7 @@ def add_staff(request):
     }
     return render(request, "admin_template/add_staff_template.html", context)
 
-
+@allow_user('1') 
 def add_staff_save(request):
     if request.method != "POST":
         messages.error(request, "Invalid Method ")
@@ -698,7 +709,7 @@ def add_staff_save(request):
             messages.error(request, f"Failed to Add Staff - {e}!")
             return redirect("add_staff")
 
-
+@allow_user('1') 
 def manage_staff(request):
     staff = Staff.objects.all()
     teachers = Teacher.objects.all()
@@ -711,21 +722,21 @@ def manage_staff(request):
         }
     return render(request, "admin_template/manage_staff_template.html", context)
 
-
+@allow_user('1') 
 def edit_staff(request, staff_id):
     staff = Staff.objects.get(admin=staff_id)
     departments = Department.objects.all()
     context = {"staff": staff, "id": staff_id, "departments": departments}
     return render(request, "admin_template/edit_staff_template.html", context)
 
-
+@allow_user('1') 
 def edit_teacher(request, teacher_id):
     teacher = Teacher.objects.get(admin=teacher_id)
     departments = Department.objects.all()
     context = {"teacher": teacher, "id": teacher_id, "departments": departments}
     return render(request, "admin_template/edit_teacher_template.html", context)
 
-
+@allow_user('1') 
 def edit_staff_save(request):
     if request.method != "POST":
         return HttpResponse("<h2>Method Not Allowed</h2>")
@@ -762,7 +773,7 @@ def edit_staff_save(request):
             messages.error(request, "Failed to Update Staff.")
             return redirect("/edit_staff/" + staff_id)
 
-
+@allow_user('1') 
 def edit_teacher_save(request):
     if request.method != "POST":
         return HttpResponse("<h2>Method Not Allowed</h2>")
@@ -799,7 +810,7 @@ def edit_teacher_save(request):
             messages.error(request, f"Failed to Update Teacher. {e}")
             return redirect("/edit_teacher/" + teacher_id)
 
-
+@allow_user('1') 
 def delete_staff(request, staff_id):
     staff = Staff.objects.get(admin=staff_id)
     try:
@@ -810,6 +821,7 @@ def delete_staff(request, staff_id):
         messages.error(request, "Failed to Delete Staff.")
         return redirect("manage_staff")
 
+@allow_user('1') 
 def delete_teacher(request, teacher_id):
     teacher = Teacher.objects.get(admin=teacher_id)
     print(teacher)
@@ -821,7 +833,7 @@ def delete_teacher(request, teacher_id):
         messages.error(request, f"Failed to Delete Teacher. {e}")
         return redirect("manage_staff")
 
-
+@allow_user('1') 
 def manage_staff_type(request):
     staff_types = StaffType.objects.all()
     staff_type_form = AddStaffTypeForm()
@@ -831,6 +843,7 @@ def manage_staff_type(request):
         }
     return render(request, "admin_template/manage_stafftype_template.html", context)
 
+@allow_user('1') 
 def create_staff_type(request):
 
     if request.method != "POST":
@@ -858,7 +871,7 @@ def create_staff_type(request):
 
 #########################################MANAGE STUDENTS#######################################################################
 
-
+@allow_user('1','4') 
 def add_student(request):
     form = AddStudentForm()
     courses = Course.objects.all()
@@ -868,7 +881,7 @@ def add_student(request):
         }
     return render(request, "admin_template/add_student_template.html", context)
 
-
+@allow_user('1','4') 
 def add_student_save(request):
     if request.method != "POST":
         messages.error(request, "Invalid Method")
@@ -948,13 +961,13 @@ def add_student_save(request):
             messages.error(request, f"Form is not valid because {error_list}")
             return redirect("add_student")
 
-
+@allow_user('1','4') 
 def manage_students(request):
     students = Students.objects.all()
     context = {"students": students}
     return render(request, "admin_template/manage_student_template.html", context)
 
-
+@allow_user('1','4') 
 def edit_student(request, student_id):
     # Adding Student ID into Session Variable
     request.session["student_id"] = student_id
@@ -983,7 +996,7 @@ def edit_student(request, student_id):
         }
     return render(request, "admin_template/edit_student_template.html", context)
 
-
+@allow_user('1','4') 
 def edit_student_save(request):
     if request.method != "POST":
         return HttpResponse("Invalid Method!")
@@ -1042,7 +1055,7 @@ def edit_student_save(request):
         else:
             return redirect("/edit_student/" + student_id)
 
-
+@allow_user('1') 
 def delete_student(request, student_id):
     student = Students.objects.get(admin=student_id)
     try:
@@ -1055,19 +1068,19 @@ def delete_student(request, student_id):
 
 
 #########################################MANAGE PARENTS#######################################################################
-
+@allow_user('1','4') 
 def manage_guardians(request):
     guardians = Guardian.objects.all()
     context = {"guardians": guardians}
     return render(request, "admin_template/manage_guardian_template.html", context)
 
-
+@allow_user('1','4') 
 def add_guardian(request):
     form = AddGuardianForm()
     context = {"form": form}
     return render(request, "admin_template/add_guardian_template.html", context)
 
-
+@allow_user('1','4') 
 def add_guardian_save(request):
     if request.method != "POST":
         messages.error(request, "Invalid Method")
@@ -1111,7 +1124,7 @@ def add_guardian_save(request):
             messages.error(request, "Invalid form!")
             return redirect("add_guardian")
 
-
+@allow_user('1','2') 
 def edit_guardian(request, guardian_id):
     # Adding Guardian ID into Session Variable
     request.session["guardian_id"] = guardian_id
@@ -1130,7 +1143,7 @@ def edit_guardian(request, guardian_id):
     context = {"id": guardian_id, "username": guardian.admin.username, "form": form}
     return render(request, "admin_template/edit_guardian_template.html", context)
 
-
+@allow_user('1','4') 
 def edit_guardian_save(request):
     if request.method != "POST":
         return HttpResponse("Invalid Method!")
@@ -1175,7 +1188,7 @@ def edit_guardian_save(request):
         else:
             return redirect("/edit_guardian/" + guardian_id)
 
-
+@allow_user('1') 
 def delete_guardian(request, guardian_id):
     guardian = Guardian.objects.get(admin=guardian_id)
     try:
@@ -1188,19 +1201,19 @@ def delete_guardian(request, guardian_id):
 
 
 #########################################MANAGE HOD#######################################################################
-
+@allow_user('1') 
 def manage_hods(request):
     hod = HOD.objects.all()
     context = {"hod": hod}
     return render(request, "admin_template/manage_hod_template.html", context)
 
-
+@allow_user('1') 
 def add_hod(request):
     form = AddHodForm()
     context = {"form": form}
     return render(request, "admin_template/add_hod_template.html", context)
 
-
+@allow_user('1') 
 def add_hod_save(request):
     if request.method != "POST":
         messages.error(request, "Invalid Method")
@@ -1245,7 +1258,7 @@ def add_hod_save(request):
         else:
             return redirect("manage_hod")
 
-
+@allow_user('1') 
 def edit_hod(request, hod_id):
     # Adding Guardian ID into Session Variable
     request.session["hod_id"] = hod_id
@@ -1264,7 +1277,7 @@ def edit_hod(request, hod_id):
     context = {"id": hod_id, "username": hod.admin.username, "form": form}
     return render(request, "admin_template/edit_hod_template.html", context)
 
-
+@allow_user('1') 
 def edit_hod_save(request):
     if request.method != "POST":
         return HttpResponse("Invalid Method!")
@@ -1311,7 +1324,7 @@ def edit_hod_save(request):
         else:
             return redirect("/edit_hod/" + hod_id)
 
-
+@allow_user('1') 
 def delete_hod(request, hod_id):
     hod = HOD.objects.get(admin=hod_id)
     try:
@@ -1325,6 +1338,7 @@ def delete_hod(request, hod_id):
 
 
 #########################################MANAGE ADMISSIONS#######################################################################
+@allow_user('1') 
 def admissions(request):
     approved_applicants = Applicant.objects.filter(applicantapprovalworklow__finance_approved=True)
     applicant_approval_workflow_admissions = Applicant.objects.filter(applicantapprovalworklow__department_approved=True)
@@ -1356,7 +1370,7 @@ def admissions(request):
     }
     return render(request, "admin_template/manage_admissions_template.html", context)
 
-
+@allow_user('1','4') 
 def admissions_approve(request):
     applicant_id = request.POST.get("selected_id")
     applicant = Applicant.objects.get(applicant_id=applicant_id)
@@ -1374,7 +1388,7 @@ def admissions_approve(request):
         return HttpResponse(e)
 
 
-
+@allow_user('1','4') 
 def dvc_approve(request):
     applicant_id = request.POST.get("selected_id")
     applicant = Applicant.objects.get(applicant_id=applicant_id)
@@ -1442,7 +1456,7 @@ def dvc_approve(request):
         return HttpResponse(e)
 
 
-
+@allow_user('1') 
 def manage_departments(request):
     department = Department.objects.all()
     if sort_by := request.GET.get('sort'):
@@ -1452,14 +1466,14 @@ def manage_departments(request):
         }
     return render(request, "admin_template/manage_department_template.html", context)
 
-
+@allow_user('1') 
 def add_department(request):
     staff = Staff.objects.all()
     hod = HOD.objects.all()
     context = {"staff": staff, "hod": hod}
     return render(request, "admin_template/add_department_template.html", context)
 
-
+@allow_user('1') 
 def add_department_save(request):
     if request.method != "POST":
         messages.error(request, "Invalid Method ")
@@ -1493,7 +1507,7 @@ def add_department_save(request):
             print(e)
             return redirect("add_department")
 
-
+@allow_user('1') 
 def edit_department(request, department_id):
     department = Department.objects.get(id=department_id)
     staff = Staff.objects.all()
@@ -1506,7 +1520,7 @@ def edit_department(request, department_id):
     }
     return render(request, "admin_template/edit_department_template.html", context)
 
-
+@allow_user('1') 
 def edit_department_save(request):
     if request.method != "POST":
         return HttpResponse("<h2>Method Not Allowed</h2>")
@@ -1543,7 +1557,7 @@ def edit_department_save(request):
             print(e)
             return redirect("manage_departments")
 
-
+@allow_user('1') 
 def delete_department(request, department_id):
     department = Department.objects.get(id=department_id)
     try:
@@ -1555,7 +1569,7 @@ def delete_department(request, department_id):
         return redirect("manage_departments")
 
 #########################################MANAGE COURSES#######################################################################
-
+@allow_user('1','4') 
 def manage_courses(request):
     form = AddCourseForm()
     courses = Course.objects.all()
@@ -1569,7 +1583,7 @@ def manage_courses(request):
     }
     return render(request,'admin_template/manage_courses_template.html',context)
 
-
+@allow_user('1','4') 
 def add_course(request):
     form = AddCourseForm()
     context = {
@@ -1578,7 +1592,7 @@ def add_course(request):
 
     return render(request,'admin_template/add_course_template.html', context)
 
-
+@allow_user('1','4') 
 def add_course_save(request):
     if request.method != "POST":
         messages.error(request, "Invalid Method")
@@ -1595,7 +1609,8 @@ def add_course_save(request):
                 return redirect("add_course")
         messages.error(request, "Form is not valid!")
         return redirect("add_course")
-        
+
+@allow_user('1','4')        
 def edit_course(request, course_id):
     selected_course = Course.objects.get(id=course_id)
     if request.method == 'POST':
@@ -1624,7 +1639,7 @@ def _edit_sessions_helper(selected_course, course_id, request):
     context = {'form': form, 'selected_course': selected_course, "id": course_id}
     return render(request, "admin_template/edit_course_template.html", context)
 
-
+@allow_user('1') 
 def delete_course(request, course_id):
     course = Course.objects.get(id=course_id)
     try:
@@ -1653,6 +1668,7 @@ def check_if_course_exists(request):
 
 
 #########################################MANAGE HOUSES#######################################################################
+@allow_user('1','4') 
 def manage_houses(request):
     houses = House.objects.all()
 
@@ -1661,6 +1677,7 @@ def manage_houses(request):
     }
     return render(request, 'house_templates/list_houses_templates.html', context)
 
+@allow_user('1','4') 
 def add_house(request):
     form = HouseForm()
     context = {
@@ -1668,6 +1685,7 @@ def add_house(request):
     }
     return render(request, 'house_templates/add_house_template.html', context)
 
+@allow_user('1','4') 
 def add_house_save(request):
     if request.method != "POST":
         messages.error(request, "Invalid Method")
@@ -1689,7 +1707,7 @@ def add_house_save(request):
             messages.error(request, error_message)
             return redirect("add_house")
 
-
+@allow_user('1','4') 
 def edit_house(request, house_id):
     house = get_object_or_404(House, id=house_id)
     edit_house_form = EditHouseForm(instance=house)
@@ -1706,7 +1724,7 @@ def edit_house(request, house_id):
     }
     return render(request, 'house_templates/edit_house_template.html', context)
 
-
+@allow_user('1') 
 def delete_house(request, house_id):
     house = House.objects.get(id=house_id)
     try:
@@ -1717,7 +1735,7 @@ def delete_house(request, house_id):
         messages.error(request, "Failed to Delete House!")
         return redirect("manage_houses")
 
-
+@allow_user('1','4') 
 def manage_booking(request):
     booking = Booking.objects.all()
     context = {
@@ -1725,6 +1743,7 @@ def manage_booking(request):
     }
     return render(request, 'house_templates/manage_applications_template.html', context)
 
+@allow_user('1','4') 
 def confirm_booking(request, booking_id):
     # booking_id = request.POST.get("selected_id")
     booking = Booking.objects.get(id=booking_id)
@@ -1733,6 +1752,7 @@ def confirm_booking(request, booking_id):
     return redirect('manage_booking')
 
 ######################################### MANAGE SERVICES #######################################################################
+@allow_user('1','4') 
 def manage_services(request):
     services = Service.objects.all()
     context = {
@@ -1740,6 +1760,7 @@ def manage_services(request):
     }
     return render(request, 'admin_template/manage_services_template.html', context)
 
+@allow_user('1','4') 
 def add_service(request):
     form = ServiceForm()
     context = {
@@ -1747,6 +1768,7 @@ def add_service(request):
     }
     return render(request, 'admin_template/add_service_template.html', context)
 
+@allow_user('1','4') 
 def add_service_save(request):
     if request.method != "POST":
         messages.error(request, "Invalid Method")
@@ -1768,7 +1790,7 @@ def add_service_save(request):
             messages.error(request, error_message)
             return redirect("add_service")
         
-
+@allow_user('1','4') 
 def edit_service(request, service_id):
     service = get_object_or_404(Service, id=service_id)
     edit_service_form = EditServiceForm(instance=service)
@@ -1785,7 +1807,7 @@ def edit_service(request, service_id):
     }
     return render(request, 'admin_template/edit_service_template.html', context)
 
-
+@allow_user('1') 
 def delete_service(request, service_id):
     service = Service.objects.get(id=service_id)
     try:
@@ -1799,7 +1821,7 @@ def delete_service(request, service_id):
 
 
 ######################################### MANAGE ACTIVITIES #######################################################################
-
+@allow_user('1','4') 
 def manage_activities(request):
     activities = EcActivities.objects.all()
     context = {
@@ -1807,6 +1829,7 @@ def manage_activities(request):
     }
     return render(request, 'admin_template/manage_activity_template.html', context)
 
+@allow_user('1','4') 
 def add_activities(request):
     form = EcActivitiesForm()
     context = {
@@ -1814,7 +1837,7 @@ def add_activities(request):
     }
     return render(request, 'admin_template/add_activities_template.html', context)
 
-
+@allow_user('1','4') 
 def add_activities_save(request):
     if request.method != "POST":
         messages.error(request, "Invalid Method")
@@ -1836,7 +1859,7 @@ def add_activities_save(request):
             messages.error(request, error_message)
             return redirect("add_activities")
 
-
+@allow_user('1','4') 
 def edit_activities(request, service_id):
     service = get_object_or_404(EcActivities, id=service_id)
     edit_service_form = EditEcActivitiesForm(instance=service)
@@ -1853,6 +1876,7 @@ def edit_activities(request, service_id):
     }
     return render(request, 'admin_template/edit_activity_template.html', context)
 
+@allow_user('1','4') 
 def delete_activities(request, service_id):
     service = EcActivities.objects.get(id=service_id)
     try:
@@ -1866,6 +1890,7 @@ def delete_activities(request, service_id):
 
 
 ######################################### MANAGE JOBS AND POSITION #######################################################################
+@allow_user('1','4') 
 def manage_jobs(request):
     jobs = Job.objects.all()
     context = {
@@ -1873,6 +1898,7 @@ def manage_jobs(request):
     }
     return render(request, 'admin_template/manage_jobs_template.html', context)
 
+@allow_user('1','4') 
 def add_job(request):
     form = JobForm()
     context = {
@@ -1880,6 +1906,7 @@ def add_job(request):
     }
     return render(request, 'admin_template/add_job_template.html', context)
 
+@allow_user('1','4') 
 def add_job_save(request):
     if request.method != "POST":
         messages.error(request, "Invalid Method")
@@ -1901,6 +1928,7 @@ def add_job_save(request):
             messages.error(request, error_message)
             return redirect("add_job")
 
+@allow_user('1','4') 
 def edit_job(request, job_id):
     job = get_object_or_404(Job, id=job_id)
     edit_job_form = EditJobForm(instance=job)
@@ -1917,6 +1945,7 @@ def edit_job(request, job_id):
     }
     return render(request, 'admin_template/edit_job_template.html', context)
 
+@allow_user('1') 
 def delete_job(request, job_id):
     job = Job.objects.get(id=job_id)
     try:
@@ -1930,6 +1959,7 @@ def delete_job(request, job_id):
 
 
 ######################################### MANAGE RESPONSIBILITIES #######################################################################
+@allow_user('1','4') 
 def manage_responsibilities(request):
     user_responsibilities = UserResponsibility.objects.all()
     context = {
@@ -1937,6 +1967,7 @@ def manage_responsibilities(request):
     }
     return render(request, 'admin_template/manage_responsibilities_template.html', context)
 
+@allow_user('1','4') 
 def add_responsibility(request):
     form = ResponsibilityForm()
     context = {
@@ -1944,6 +1975,7 @@ def add_responsibility(request):
     }
     return render(request, 'admin_template/add_responsibility_template.html', context)
 
+@allow_user('1','4') 
 def add_responsibility_save(request):
     if request.method != "POST":
         messages.error(request, "Invalid Method")
@@ -1964,7 +1996,8 @@ def add_responsibility_save(request):
                 error_message += f"{field}: {', '.join(errors)}"
             messages.error(request, error_message)
             return redirect("add_responsibility")
-    
+
+@allow_user('1','4')     
 def edit_responsibility(request, responsibility_id):
     responsibility = get_object_or_404(UserResponsibility, id=responsibility_id) 
     edit_responsibility_form = EditResponsibilityForm(instance=responsibility)
@@ -1981,6 +2014,8 @@ def edit_responsibility(request, responsibility_id):
     }
     return render(request, 'admin_template/edit_responsibility_template.html', context)
 
+@allow_user('1') 
+@allow_user('1','4') 
 def delete_responsibility(request, responsibility_id):
     responsibility = UserResponsibility.objects.get(id=responsibility_id)
     try:
@@ -1995,6 +2030,7 @@ def delete_responsibility(request, responsibility_id):
 
 
 ######################################### MANAGE DISCIPLINARY ISSUES #######################################################################
+@allow_user('1','4') 
 def manage_disciplinary_issues(request):
     disciplinary_issues = DiscplinaryManagement.objects.all()
     context = {
@@ -2002,6 +2038,7 @@ def manage_disciplinary_issues(request):
     }
     return render(request, 'admin_template/manage_disciplinary_issues_template.html', context)
 
+@allow_user('1','4') 
 def add_disciplinary_issue(request):
     form = DisciplinaryManagementForm()
     context = {
@@ -2009,6 +2046,7 @@ def add_disciplinary_issue(request):
     }
     return render(request, 'admin_template/add_disciplinary_issue_template.html', context)
 
+@allow_user('1','4') 
 def add_disciplinary_issue_save(request):
     if request.method != "POST":
         messages.error(request, "Invalid Method")
@@ -2029,7 +2067,8 @@ def add_disciplinary_issue_save(request):
                 error_message += f"{field}: {', '.join(errors)}"
             messages.error(request, error_message)
             return redirect("add_disciplinary_issue")
-        
+
+@allow_user('1','4')         
 def edit_disciplinary_issue(request, disciplinary_id):
     disciplinary_issue = get_object_or_404(DiscplinaryManagement, id=disciplinary_id) 
     edit_disciplinary_issue_form = EditDisciplinaryManagementForm(instance=disciplinary_issue)
@@ -2046,6 +2085,7 @@ def edit_disciplinary_issue(request, disciplinary_id):
     }
     return render(request, 'admin_template/edit_disciplinary_issue_template.html', context)
 
+@allow_user('1') 
 def delete_disciplinary_issue(request, disciplinary_id):
     disciplinary_issue = DiscplinaryManagement.objects.get(id=disciplinary_id)
     try:
@@ -2066,6 +2106,7 @@ def delete_disciplinary_issue(request, disciplinary_id):
 
 
 #########################################   REPORTS   #######################################################################
+@allow_user('1','4') 
 def reports(requests):
 
     all_teachers_count = Teacher.objects.all().count()
@@ -2165,7 +2206,7 @@ def reports(requests):
     return render(requests, 'reports/core.html', context=context)
 
 
-
+@allow_user('1','4') 
 def processes(request):
     return render(request, 'admin_template/processes.html')
 
