@@ -118,10 +118,10 @@
               <ul class="flex-column pl-2 nav">
                 <li class="nav-item">
                   {% url 'academics:academics_home' as dashboard %}
-                  <a href="{{ dashboard }}" class="nav-link{% if request.path == dashboard %} bg-secondary{% endif %}{% if request.path == dashboard %} bg-secondary{% endif %}">
+                  <a href="{{ academics }}" class="nav-link{% if request.path == dashboard %} bg-secondary{% endif %}{% if request.path == dashboard %} bg-secondary{% endif %}">
                     <i class="nav-icon fas fa-user-graduate"></i>
                     <p>
-                      Dashboard
+                      Manage Academics 
                     </p>
                   </a>
                 </li>
